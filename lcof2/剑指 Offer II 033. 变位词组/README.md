@@ -1,4 +1,4 @@
-# [剑指 Offer II 033. 变位词组](https://leetcode-cn.com/problems/sfvd7V)
+# [剑指 Offer II 033. 变位词组](https://leetcode.cn/problems/sfvd7V)
 
 ## 题目描述
 
@@ -41,7 +41,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 49&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/group-anagrams/">https://leetcode-cn.com/problems/group-anagrams/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 49&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/group-anagrams/">https://leetcode.cn/problems/group-anagrams/</a></p>
 
 ## 解法
 
@@ -97,17 +97,15 @@ class Solution {
 ```cpp
 class Solution {
 public:
-    vector<vector<string>> groupAnagrams(vector<string> &strs) {
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
         unordered_map<string, vector<string>> chars;
-        for (auto s : strs)
-        {
+        for (auto s : strs) {
             string k = s;
             sort(k.begin(), k.end());
             chars[k].emplace_back(s);
         }
         vector<vector<string>> res;
-        for (auto it = chars.begin(); it != chars.end(); ++it)
-        {
+        for (auto it = chars.begin(); it != chars.end(); ++it) {
             res.emplace_back(it->second);
         }
         return res;

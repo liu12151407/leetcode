@@ -10,8 +10,8 @@
 
 与冒泡排序对比：
 
-- 在冒泡排序中，经过每一轮的排序处理后，数组后端的数是排好序的。
-- 在插入排序中，经过每一轮的排序处理后，数组前端的数是排好序的。
+-   在冒泡排序中，经过每一轮的排序处理后，数组后端的数是排好序的。
+-   在插入排序中，经过每一轮的排序处理后，数组前端的数是排好序的。
 
 ## 代码示例
 
@@ -27,7 +27,7 @@ public class InsertionSort {
     private static void insertionSort(int[] nums) {
         for (int i = 1, j, n = nums.length; i < n; ++i) {
             int num = nums[i];
-            for (j = i - 1; j >=0 && nums[j] > num; --j) {
+            for (j = i - 1; j >= 0 && nums[j] > num; --j) {
                 nums[j + 1] = nums[j];
             }
             nums[j + 1] = num;
@@ -95,11 +95,9 @@ func main() {
 
 using namespace std;
 
-void printvec(const vector<int> &vec, const string &strbegin = "", const string &strend = "")
-{
+void printvec(const vector<int>& vec, const string& strbegin = "", const string& strend = "") {
     cout << strbegin << endl;
-    for (auto val : vec)
-    {
+    for (auto val : vec) {
         cout << val << "\t";
     }
 
@@ -107,14 +105,11 @@ void printvec(const vector<int> &vec, const string &strbegin = "", const string 
     cout << strend << endl;
 }
 
-void insertsort(vector<int> &vec)
-{
-    for (int i = 1; i < vec.size(); i++)
-    {
+void insertsort(vector<int>& vec) {
+    for (int i = 1; i < vec.size(); i++) {
         int j = i - 1;
         int num = vec[i];
-        for (; j >= 0 && vec[j] > num; j--)
-        {
+        for (; j >= 0 && vec[j] > num; j--) {
             vec[j + 1] = vec[j];
         }
 
@@ -124,8 +119,7 @@ void insertsort(vector<int> &vec)
     return;
 }
 
-int main()
-{
+int main() {
     vector<int> vec = {9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
     printvec(vec);
     insertsort(vec);
@@ -197,16 +191,35 @@ public class Program
 }
 ```
 
+### **Python3**
+
+```python
+def insertion_sort(array):
+    for i in range(len(array)):
+        cur_index = i
+        while array[cur_index - 1] > array[cur_index] and cur_index - 1 >= 0:
+            array[cur_index], array[cur_index - 1] = (
+                array[cur_index - 1],
+                array[cur_index],
+            )
+            cur_index -= 1
+    return array
+
+
+array = [10, 17, 50, 7, 30, 24, 27, 45, 15, 5, 36, 21]
+print(insertion_sort(array))
+```
+
 <!-- tabs:end -->
 
 ## 算法分析
 
-空间复杂度 O(1)，时间复杂度 O(n²)。
+空间复杂度 $O(1)$，时间复杂度 $O(n^2)$。
 
 分情况讨论：
 
-1. 给定的数组按照顺序排好序：只需要进行 n-1 次比较，两两交换次数为 0，时间复杂度为 O(n)，这是最好的情况。
-1. 给定的数组按照逆序排列：需要进行 `n*(n-1)/2` 次比较，时间复杂度为 O(n²)，这是最坏的情况。
-1. 给定的数组杂乱无章：在这种情况下，平均时间复杂度是 O(n²)。
+1. 给定的数组按照顺序排好序：只需要进行 $n-1$ 次比较，两两交换次数为 0，时间复杂度为 $O(n)$，这是最好的情况。
+1. 给定的数组按照逆序排列：需要进行 $\frac{n\times (n-1)}{2}$ 次比较，时间复杂度为 $O(n^2)$，这是最坏的情况。
+1. 给定的数组杂乱无章：在这种情况下，平均时间复杂度是 $O(n^2)$。
 
-因此，时间复杂度是 O(n²)，这也是一种稳定的排序算法。
+因此，时间复杂度是 $O(n^2)$，这也是一种稳定的排序算法。

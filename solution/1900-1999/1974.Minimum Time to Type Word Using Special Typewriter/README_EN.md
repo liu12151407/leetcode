@@ -5,7 +5,7 @@
 ## Description
 
 <p>There is a special typewriter with lowercase English letters <code>&#39;a&#39;</code> to <code>&#39;z&#39;</code> arranged in a <strong>circle</strong> with a <strong>pointer</strong>. A character can <strong>only</strong> be typed if the pointer is pointing to that character. The pointer is <strong>initially</strong> pointing to the character <code>&#39;a&#39;</code>.</p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1900-1999/1974.Minimum%20Time%20to%20Type%20Word%20Using%20Special%20Typewriter/images/chart.jpg" style="width: 530px; height: 410px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1900-1999/1974.Minimum%20Time%20to%20Type%20Word%20Using%20Special%20Typewriter/images/chart.jpg" style="width: 530px; height: 410px;" />
 <p>Each second, you may perform one of the following operations:</p>
 
 <ul>
@@ -16,7 +16,7 @@
 <p>Given a string <code>word</code>, return the<strong> minimum</strong> number of seconds to type out the characters in <code>word</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> word = &quot;abc&quot;
@@ -30,7 +30,7 @@
 - Type the character &#39;c&#39; in 1 second.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> word = &quot;bza&quot;
@@ -45,7 +45,7 @@
 - Type the character &#39;a&#39; in 1 second.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> word = &quot;zjpc&quot;
@@ -77,13 +77,85 @@ The characters are printed as follows:
 ### **Python3**
 
 ```python
-
+class Solution:
+    def minTimeToType(self, word: str) -> int:
+        ans = prev = 0
+        for c in word:
+            curr = ord(c) - ord('a')
+            t = abs(prev - curr)
+            t = min(t, 26 - t)
+            ans += t + 1
+            prev = curr
+        return ans
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int minTimeToType(String word) {
+        int ans = 0;
+        int prev = 0;
+        for (char c : word.toCharArray()) {
+            int curr = c - 'a';
+            int t = Math.abs(prev - curr);
+            t = Math.min(t, 26 - t);
+            ans += t + 1;
+            prev = curr;
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int minTimeToType(string word) {
+        int ans = 0;
+        int prev = 0;
+        for (char& c : word) {
+            int curr = c - 'a';
+            int t = abs(prev - curr);
+            t = min(t, 26 - t);
+            ans += t + 1;
+            prev = curr;
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func minTimeToType(word string) int {
+	ans, prev := 0, 0
+	for _, c := range word {
+		curr := int(c - 'a')
+		t := abs(prev - curr)
+		t = min(t, 26-t)
+		ans += t + 1
+		prev = curr
+	}
+	return ans
+}
+
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
 ```
 
 ### **...**

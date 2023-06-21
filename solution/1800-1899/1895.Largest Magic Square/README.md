@@ -1,4 +1,4 @@
-# [1895. 最大的幻方](https://leetcode-cn.com/problems/largest-magic-square)
+# [1895. 最大的幻方](https://leetcode.cn/problems/largest-magic-square)
 
 [English Version](/solution/1800-1899/1895.Largest%20Magic%20Square/README_EN.md)
 
@@ -13,7 +13,7 @@
 <p> </p>
 
 <p><strong>示例 1：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1800-1899/1895.Largest%20Magic%20Square/images/magicsquare-grid.jpg" style="width: 413px; height: 335px;">
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1800-1899/1895.Largest%20Magic%20Square/images/magicsquare-grid.jpg" style="width: 413px; height: 335px;">
 <pre><b>输入：</b>grid = [[7,1,4,5,6],[2,5,1,6,4],[1,5,4,3,2],[1,2,7,3,4]]
 <b>输出：</b>3
 <b>解释：</b>最大幻方尺寸为 3 。
@@ -24,7 +24,7 @@
 </pre>
 
 <p><strong>示例 2：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1800-1899/1895.Largest%20Magic%20Square/images/magicsquare2-grid.jpg" style="width: 333px; height: 255px;">
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1800-1899/1895.Largest%20Magic%20Square/images/magicsquare2-grid.jpg" style="width: 333px; height: 255px;">
 <pre><b>输入：</b>grid = [[5,1,3,1],[9,3,3,1],[1,3,3,8]]
 <b>输出：</b>2
 </pre>
@@ -171,7 +171,7 @@ function largestMagicSquare(grid: number[][]): number {
         n = grid[0].length;
     // 前缀和
     let rowSum = Array.from({ length: m + 1 }, (v, i) =>
-            new Array(n + 1).fill(0)
+            new Array(n + 1).fill(0),
         ),
         colSum = Array.from({ length: m + 1 }, v => new Array(n + 1).fill(0));
     for (let i = 0; i < m; i++) {
@@ -210,7 +210,7 @@ function valid(
     x1: number,
     y1: number,
     x2: number,
-    y2: number
+    y2: number,
 ): boolean {
     let diff = rowSum[x1 + 1][y2 + 1] - rowSum[x1 + 1][y1];
     // 行
@@ -246,24 +246,19 @@ function valid(
 ```cpp
 class Solution {
 public:
-    int largestMagicSquare(vector<vector<int>> &grid) {
+    int largestMagicSquare(vector<vector<int>>& grid) {
         int m = grid.size(), n = grid.size();
         vector<vector<int>> rowsum(m + 1, vector<int>(n + 1));
         vector<vector<int>> colsum(m + 1, vector<int>(n + 1));
-        for (int i = 1; i <= m; ++i)
-        {
-            for (int j = 1; j <= n; ++j)
-            {
+        for (int i = 1; i <= m; ++i) {
+            for (int j = 1; j <= n; ++j) {
                 rowsum[i][j] = rowsum[i][j - 1] + grid[i - 1][j - 1];
                 colsum[i][j] = colsum[i - 1][j] + grid[i - 1][j - 1];
             }
         }
-        for (int k = min(m, n); k > 1; --k)
-        {
-            for (int i = 0; i + k - 1 < m; ++i)
-            {
-                for (int j = 0; j + k - 1 < n; ++j)
-                {
+        for (int k = min(m, n); k > 1; --k) {
+            for (int i = 0; i + k - 1 < m; ++i) {
+                for (int j = 0; j + k - 1 < n; ++j) {
                     int i2 = i + k - 1, j2 = j + k - 1;
                     if (check(grid, rowsum, colsum, i, j, i2, j2))
                         return k;
@@ -273,8 +268,7 @@ public:
         return 1;
     }
 
-    bool check(vector<vector<int>> &grid, vector<vector<int>> &rowsum, vector<vector<int>> &colsum, int x1, int y1, int x2, int y2)
-    {
+    bool check(vector<vector<int>>& grid, vector<vector<int>>& rowsum, vector<vector<int>>& colsum, int x1, int y1, int x2, int y2) {
         int val = rowsum[x1 + 1][y2 + 1] - rowsum[x1 + 1][y1];
         for (int i = x1 + 1; i <= x2; ++i)
             if (rowsum[i + 1][y2 + 1] - rowsum[i + 1][y1] != val)

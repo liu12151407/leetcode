@@ -18,7 +18,7 @@
 <p>Since the answer&nbsp;may be too large,&nbsp;return it modulo <code>10^9 + 7.</code></p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 1
@@ -26,7 +26,7 @@
 <strong>Explanation:</strong> All possible strings are: &quot;a&quot;, &quot;e&quot;, &quot;i&quot; , &quot;o&quot; and &quot;u&quot;.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 2
@@ -34,7 +34,7 @@
 <strong>Explanation:</strong> All possible strings are: &quot;ae&quot;, &quot;ea&quot;, &quot;ei&quot;, &quot;ia&quot;, &quot;ie&quot;, &quot;io&quot;, &quot;iu&quot;, &quot;oi&quot;, &quot;ou&quot; and &quot;ua&quot;.
 </pre>
 
-<p><strong>Example 3:&nbsp;</strong></p>
+<p><strong class="example">Example 3:&nbsp;</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 5
@@ -75,8 +75,13 @@ class Solution:
         dp = (1, 1, 1, 1, 1)
         MOD = 1000000007
         for _ in range(n - 1):
-            dp = ((dp[1] + dp[2] + dp[4]) % MOD, (dp[0] + dp[2]) %
-                  MOD, (dp[1] + dp[3]) % MOD, dp[2], (dp[2] + dp[3]) % MOD)
+            dp = (
+                (dp[1] + dp[2] + dp[4]) % MOD,
+                (dp[0] + dp[2]) % MOD,
+                (dp[1] + dp[3]) % MOD,
+                dp[2],
+                (dp[2] + dp[3]) % MOD,
+            )
         return sum(dp) % MOD
 ```
 
@@ -151,6 +156,33 @@ func countVowelPermutation(n int) int {
 	}
 	return ans
 }
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var countVowelPermutation = function (n) {
+    const mod = 1000000007;
+    const dp = new Array(5).fill(1);
+    const t = new Array(5).fill(0);
+    for (let i = 0; i < n - 1; ++i) {
+        t[0] = (dp[1] + dp[2] + dp[4]) % mod;
+        t[1] = (dp[0] + dp[2]) % mod;
+        t[2] = (dp[1] + dp[3]) % mod;
+        t[3] = dp[2];
+        t[4] = (dp[2] + dp[3]) % mod;
+        dp.splice(0, 5, ...t);
+    }
+    let ans = 0;
+    for (let i = 0; i < 5; ++i) {
+        ans = (ans + dp[i]) % mod;
+    }
+    return ans;
+};
 ```
 
 ### **...**

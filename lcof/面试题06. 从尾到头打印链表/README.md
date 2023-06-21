@@ -1,34 +1,35 @@
-# [面试题 06. 从尾到头打印链表](https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/)
+# [面试题 06. 从尾到头打印链表](https://leetcode.cn/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/)
 
 ## 题目描述
 
-输入一个链表的头节点，从尾到头反过来返回每个节点的值（用数组返回）。
+<p>输入一个链表的头节点，从尾到头反过来返回每个节点的值（用数组返回）。</p>
 
-**示例 1：**
+<p>&nbsp;</p>
 
-```
-输入：head = [1,3,2]
-输出：[2,3,1]
-```
+<p><strong>示例 1：</strong></p>
 
-**限制：**
+<pre><strong>输入：</strong>head = [1,3,2]
+<strong>输出：</strong>[2,3,1]</pre>
 
-- `0 <= 链表长度 <= 10000`
+<p>&nbsp;</p>
+
+<p><strong>限制：</strong></p>
+
+<p><code>0 &lt;= 链表长度 &lt;= 10000</code></p>
 
 ## 解法
 
-该题需要将链表转换为数组，且需要反向。由于目标是链表，无法第一时间得知长度，声明等长数组。
+**方法一：顺序遍历 + 反转**
 
-解题方案：
-- 遍历
-  - 从头到尾遍链表，获取链表长度，声明等长数组；
-  - 再次遍历并放入数组当中，在数组中的放置顺序是从尾到头。
-- 递归
-  - 记录深度，递归到链表尾部；
-  - 将深度化为数组长度，将回溯结果正序放入数组当中。
-- 动态数组
-  - 遍历链表，将元素放入数组当中；
-  - 遍历结束，将数组倒置后返回（`reverse()`）。
+我们可以顺序遍历链表，将每个节点的值存入数组中，然后将数组反转。
+
+时间复杂度 $O(n)$，空间复杂度 $O(n)$。其中 $n$ 为链表的长度。
+
+**方法二：递归**
+
+我们可以使用递归的方式，先递归得到 `head` 之后的节点反过来的值列表，然后将 `head` 的值加到列表的末尾。
+
+时间复杂度 $O(n)$，空间复杂度 $O(n)$。其中 $n$ 为链表的长度。
 
 <!-- tabs:start -->
 
@@ -41,19 +42,35 @@
 #         self.val = x
 #         self.next = None
 
+
 class Solution:
     def reversePrint(self, head: ListNode) -> List[int]:
-        res = []
+        ans = []
         while head:
-            res.append(head.val)
+            ans.append(head.val)
             head = head.next
-        return res[::-1]
+        return ans[::-1]
+```
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+
+class Solution:
+    def reversePrint(self, head: ListNode) -> List[int]:
+        if head is None:
+            return []
+        ans = self.reversePrint(head.next)
+        ans.append(head.val)
+        return ans
 ```
 
 ### **Java**
 
-- 栈实现：
-
 ```java
 /**
  * Definition for singly-linked list.
@@ -65,23 +82,19 @@ class Solution:
  */
 class Solution {
     public int[] reversePrint(ListNode head) {
-        Stack<Integer> s = new Stack<>();
-        while (head != null) {
-            s.push(head.val);
-            head = head.next;
+        Deque<Integer> stk = new ArrayDeque<>();
+        for (; head != null; head = head.next) {
+            stk.push(head.val);
         }
-        int[] res = new int[s.size()];
-        int i = 0;
-        while (!s.isEmpty()) {
-            res[i++] = s.pop();
+        int[] ans = new int[stk.size()];
+        for (int i = 0; !stk.isEmpty(); ++i) {
+            ans[i] = stk.pop();
         }
-        return res;
+        return ans;
     }
 }
 ```
 
-- 先计算链表长度 n，然后创建一个长度为 n 的结果数组。最后遍历链表，依次将节点值存放在数组上（从后往前）。
-
 ```java
 /**
  * Definition for singly-linked list.
@@ -93,22 +106,101 @@ class Solution {
  */
 class Solution {
     public int[] reversePrint(ListNode head) {
-        if (head == null) return new int[]{};
-        // 计算链表长度n
         int n = 0;
         ListNode cur = head;
-        while (cur != null) {
+        for (; cur != null; cur = cur.next) {
             ++n;
-            cur = cur.next;
         }
-        int[] res = new int[n];
+        int[] ans = new int[n];
         cur = head;
-        while (cur != null) {
-            res[--n] = cur.val;
-            cur = cur.next;
+        for (; cur != null; cur = cur.next) {
+            ans[--n] = cur.val;
         }
-        return res;
+        return ans;
     }
+}
+```
+
+### **C++**
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> reversePrint(ListNode* head) {
+        if (!head) return {};
+        vector<int> ans = reversePrint(head->next);
+        ans.push_back(head->val);
+        return ans;
+    }
+};
+```
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> reversePrint(ListNode* head) {
+        vector<int> ans;
+        for (; head; head = head->next) {
+            ans.push_back(head->val);
+        }
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func reversePrint(head *ListNode) (ans []int) {
+	for ; head != nil; head = head.Next {
+		ans = append(ans, head.Val)
+	}
+	for i, j := 0, len(ans)-1; i < j; i, j = i+1, j-1 {
+		ans[i], ans[j] = ans[j], ans[i]
+	}
+	return
+}
+```
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func reversePrint(head *ListNode) (ans []int) {
+	if head == nil {
+		return
+	}
+	ans = reversePrint(head.Next)
+	ans = append(ans, head.Val)
+	return
 }
 ```
 
@@ -127,90 +219,33 @@ class Solution {
  * @return {number[]}
  */
 var reversePrint = function (head) {
-    let res = [];
-    while (head != null) {
-        res.unshift(head.val);
-        head = head.next;
+    let ans = [];
+    for (; !!head; head = head.next) {
+        ans.unshift(head.val);
     }
-    return res;
+    return ans;
 };
 ```
 
-### **Go**
-
-```go
+```js
 /**
  * Definition for singly-linked list.
- * type ListNode struct {
- *     Val int
- *     Next *ListNode
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
  * }
  */
-//insert to the front
-func reversePrint(head *ListNode) []int {
-	res := []int{}
-	for head != nil {
-		res = append([]int{head.Val}, res...)
-		head = head.Next
-	}
-	return res
-}
-```
-
-### **C++**
-
-- 递归实现
-
-```cpp
 /**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode(int x) : val(x), next(NULL) {}
- * };
+ * @param {ListNode} head
+ * @return {number[]}
  */
-class Solution {
-public:
-    vector<int> ret;
-
-    void getVal(ListNode* head) {
-        // 这里可以看成是一个节点的树
-        if (head) {
-            if (head->next) {
-                getVal(head->next);
-            }
-            ret.push_back(head->val);
-        }
+var reversePrint = function (head) {
+    if (!head) {
+        return [];
     }
-
-    vector<int> reversePrint(ListNode* head) {
-        getVal(head);
-        // 返回的是全局的ret信息。在getVal函数中被赋值
-        return ret;
-    }
-};
-```
-
-- 栈实现
-
-```cpp
-class Solution {
-public:
-    vector<int> reversePrint(ListNode* head) {
-        stack<int> stk;
-        vector<int> ans;
-        ListNode *p = head;
-        while (p) {
-            stk.push(p->val);
-            p = p->next;
-        }
-        while (!stk.empty()) {
-            ans.push_back(stk.top());
-            stk.pop();
-        }
-        return ans;
-    }
+    const ans = reversePrint(head.next);
+    ans.push(head.val);
+    return ans;
 };
 ```
 
@@ -230,18 +265,15 @@ public:
  */
 
 function reversePrint(head: ListNode | null): number[] {
-    let res: number[] = [];
-    while (head != null) {
-        res.unshift(head.val);
-        head = head.next;
+    let ans: number[] = [];
+    for (; !!head; head = head.next) {
+        ans.unshift(head.val);
     }
-    return res;
+    return ans;
 }
 ```
 
 ### **Rust**
-
-- 动态数组
 
 ```rust
 // Definition for singly-linked list.
@@ -250,7 +282,7 @@ function reversePrint(head: ListNode | null): number[] {
 //   pub val: i32,
 //   pub next: Option<Box<ListNode>>
 // }
-// 
+//
 // impl ListNode {
 //   #[inline]
 //   fn new(val: i32) -> Self {
@@ -274,8 +306,6 @@ impl Solution {
 }
 ```
 
-- 遍历
-
 ```rust
 // Definition for singly-linked list.
 // #[derive(PartialEq, Eq, Clone, Debug)]
@@ -283,7 +313,7 @@ impl Solution {
 //   pub val: i32,
 //   pub next: Option<Box<ListNode>>
 // }
-// 
+//
 // impl ListNode {
 //   #[inline]
 //   fn new(val: i32) -> Self {
@@ -312,6 +342,30 @@ impl Solution {
         arr
     }
 }
+```
+
+### **C#**
+
+```cs
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int x) { val = x; }
+ * }
+ */
+ public class Solution {
+     public int[] ReversePrint(ListNode head) {
+         List<int> ans = new List<int>();
+         while (head != null) {
+             ans.Add(head.val);
+             head = head.next;
+         }
+         ans.Reverse();
+         return ans.ToArray();
+     }
+ }
 ```
 
 ### **...**

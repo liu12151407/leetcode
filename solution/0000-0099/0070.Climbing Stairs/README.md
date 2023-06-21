@@ -1,4 +1,4 @@
-# [70. 爬楼梯](https://leetcode-cn.com/problems/climbing-stairs)
+# [70. 爬楼梯](https://leetcode.cn/problems/climbing-stairs)
 
 [English Version](/solution/0000-0099/0070.Climbing%20Stairs/README_EN.md)
 
@@ -6,35 +6,59 @@
 
 <!-- 这里写题目描述 -->
 
-<p>假设你正在爬楼梯。需要 <em>n</em>&nbsp;阶你才能到达楼顶。</p>
+<p>假设你正在爬楼梯。需要 <code>n</code>&nbsp;阶你才能到达楼顶。</p>
 
-<p>每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？</p>
+<p>每次你可以爬 <code>1</code> 或 <code>2</code> 个台阶。你有多少种不同的方法可以爬到楼顶呢？</p>
 
-<p><strong>注意：</strong>给定 <em>n</em> 是一个正整数。</p>
+<p>&nbsp;</p>
 
 <p><strong>示例 1：</strong></p>
 
-<pre><strong>输入：</strong> 2
-<strong>输出：</strong> 2
-<strong>解释：</strong> 有两种方法可以爬到楼顶。
-1.  1 阶 + 1 阶
-2.  2 阶</pre>
+<pre>
+<strong>输入：</strong>n = 2
+<strong>输出：</strong>2
+<strong>解释：</strong>有两种方法可以爬到楼顶。
+1. 1 阶 + 1 阶
+2. 2 阶</pre>
 
 <p><strong>示例 2：</strong></p>
 
-<pre><strong>输入：</strong> 3
-<strong>输出：</strong> 3
-<strong>解释：</strong> 有三种方法可以爬到楼顶。
-1.  1 阶 + 1 阶 + 1 阶
-2.  1 阶 + 2 阶
-3.  2 阶 + 1 阶
+<pre>
+<strong>输入：</strong>n = 3
+<strong>输出：</strong>3
+<strong>解释：</strong>有三种方法可以爬到楼顶。
+1. 1 阶 + 1 阶 + 1 阶
+2. 1 阶 + 2 阶
+3. 2 阶 + 1 阶
 </pre>
+
+<p>&nbsp;</p>
+
+<p><strong>提示：</strong></p>
+
+<ul>
+	<li><code>1 &lt;= n &lt;= 45</code></li>
+</ul>
 
 ## 解法
 
 <!-- 这里可写通用的实现逻辑 -->
 
-想上第 `n` 级台阶，可从第 `n-1` 级台阶爬一级上去，也可从第 `n-2` 级台阶爬两级上去，即：`f(n) = f(n-1) + f(n-2)`。递推求解即可。
+**方法一：递推**
+
+我们定义 $f[i]$ 表示爬到第 $i$ 阶楼梯的方法数，那么 $f[i]$ 可以由 $f[i - 1]$ 和 $f[i - 2]$ 转移而来，即：
+
+$$
+f[i] = f[i - 1] + f[i - 2]
+$$
+
+初始条件为 $f[0] = 1$，$f[1] = 1$，即爬到第 0 阶楼梯的方法数为 1，爬到第 1 阶楼梯的方法数也为 1。
+
+答案即为 $f[n]$。
+
+由于 $f[i]$ 只与 $f[i - 1]$ 和 $f[i - 2]$ 有关，因此我们可以只用两个变量 $a$ 和 $b$ 来维护当前的方法数，空间复杂度降低为 $O(1)$。
+
+时间复杂度 $O(n)$，空间复杂度 $O(1)$。
 
 <!-- tabs:start -->
 
@@ -109,11 +133,61 @@ var climbStairs = function (n) {
 
 ```go
 func climbStairs(n int) int {
-    a, b := 0, 1
-    for i := 0; i < n; i++ {
-        a, b = b, a + b
+	a, b := 0, 1
+	for i := 0; i < n; i++ {
+		a, b = b, a+b
+	}
+	return b
+}
+```
+
+### **TypeScript**
+
+```ts
+function climbStairs(n: number): number {
+    let p = 1;
+    let q = 1;
+    for (let i = 1; i < n; i++) {
+        [p, q] = [q, p + q];
     }
-    return b
+    return q;
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn climb_stairs(n: i32) -> i32 {
+        let (mut p, mut q) = (1, 1);
+        for i in 1..n {
+            let t = p + q;
+            p = q;
+            q = t;
+        }
+        q
+    }
+}
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param Integer $n
+     * @return Integer
+     */
+    function climbStairs($n) {
+        if ($n <= 2) {
+            return $n;
+        }
+        $dp = [0, 1, 2];
+        for ($i = 3; $i <= $n; $i++) {
+            $dp[$i] = $dp[$i - 2] + $dp[$i - 1];
+        }
+        return $dp[$n];
+    }
 }
 ```
 

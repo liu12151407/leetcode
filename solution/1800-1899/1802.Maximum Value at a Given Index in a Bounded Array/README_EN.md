@@ -19,7 +19,7 @@
 <p>Note that <code>abs(x)</code> equals <code>x</code> if <code>x &gt;= 0</code>, and <code>-x</code> otherwise.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 4, index = 2,  maxSum = 6
@@ -28,7 +28,7 @@
 There are no arrays that satisfy all the conditions and have nums[2] == 3, so 2 is the maximum nums[2].
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 6, index = 1,  maxSum = 10
@@ -50,13 +50,84 @@ There are no arrays that satisfy all the conditions and have nums[2] == 3, so 2 
 ### **Python3**
 
 ```python
+class Solution:
+    def maxValue(self, n: int, index: int, maxSum: int) -> int:
+        def sum(x, cnt):
+            return (
+                (x + x - cnt + 1) * cnt // 2 if x >= cnt else (x + 1) * x // 2 + cnt - x
+            )
 
+        left, right = 1, maxSum
+        while left < right:
+            mid = (left + right + 1) >> 1
+            if sum(mid - 1, index) + sum(mid, n - index) <= maxSum:
+                left = mid
+            else:
+                right = mid - 1
+        return left
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int maxValue(int n, int index, int maxSum) {
+        int left = 1, right = maxSum;
+        while (left < right) {
+            int mid = (left + right + 1) >>> 1;
+            if (sum(mid - 1, index) + sum(mid, n - index) <= maxSum) {
+                left = mid;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return left;
+    }
 
+    private long sum(long x, int cnt) {
+        return x >= cnt ? (x + x - cnt + 1) * cnt / 2 : (x + 1) * x / 2 + cnt - x;
+    }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int maxValue(int n, int index, int maxSum) {
+        auto sum = [](long x, int cnt) {
+            return x >= cnt ? (x + x - cnt + 1) * cnt / 2 : (x + 1) * x / 2 + cnt - x;
+        };
+        int left = 1, right = maxSum;
+        while (left < right) {
+            int mid = (left + right + 1) >> 1;
+            if (sum(mid - 1, index) + sum(mid, n - index) <= maxSum) {
+                left = mid;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return left;
+    }
+};
+```
+
+### **Go**
+
+```go
+func maxValue(n int, index int, maxSum int) int {
+	sum := func(x, cnt int) int {
+		if x >= cnt {
+			return (x + x - cnt + 1) * cnt / 2
+		}
+		return (x+1)*x/2 + cnt - x
+	}
+	return sort.Search(maxSum, func(x int) bool {
+		x++
+		return sum(x-1, index)+sum(x, n-index) > maxSum
+	})
+}
 ```
 
 ### **...**

@@ -11,7 +11,7 @@
 <p>Return <em>the final string after the deletion</em>. It can be shown that the answer will always be <strong>unique</strong>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;le<u>e</u>etcode&quot;
@@ -21,7 +21,7 @@ Remove an &#39;e&#39; from the first group of &#39;e&#39;s to create &quot;leetc
 No three consecutive characters are equal, so return &quot;leetcode&quot;.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;<u>a</u>aab<u>aa</u>aa&quot;
@@ -32,7 +32,7 @@ Remove two &#39;a&#39;s from the second group of &#39;a&#39;s to create &quot;aa
 No three consecutive characters are equal, so return &quot;aabaa&quot;.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;aab&quot;
@@ -55,13 +55,87 @@ No three consecutive characters are equal, so return &quot;aabaa&quot;.
 ### **Python3**
 
 ```python
-
+class Solution:
+    def makeFancyString(self, s: str) -> str:
+        ans = []
+        for c in s:
+            if len(ans) > 1 and ans[-1] == ans[-2] == c:
+                continue
+            ans.append(c)
+        return ''.join(ans)
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public String makeFancyString(String s) {
+        StringBuilder ans = new StringBuilder();
+        for (char c : s.toCharArray()) {
+            int n = ans.length();
+            if (n > 1 && ans.charAt(n - 1) == c && ans.charAt(n - 2) == c) {
+                continue;
+            }
+            ans.append(c);
+        }
+        return ans.toString();
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    string makeFancyString(string s) {
+        string ans = "";
+        for (char& c : s) {
+            int n = ans.size();
+            if (n > 1 && ans[n - 1] == c && ans[n - 2] == c) continue;
+            ans.push_back(c);
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func makeFancyString(s string) string {
+	ans := []rune{}
+	for _, c := range s {
+		n := len(ans)
+		if n > 1 && ans[n-1] == c && ans[n-2] == c {
+			continue
+		}
+		ans = append(ans, c)
+	}
+	return string(ans)
+}
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param String $s
+     * @return String
+     */
+    function makeFancyString($s) {
+        $rs = '';
+        for ($i = 0; $i < strlen($s); $i++) {
+            if ($s[$i] == $s[$i + 1] && $s[$i] == $s[$i + 2]) {
+                continue;
+            } else {
+                $rs .= $s[$i];
+            }
+        }
+        return $rs;
+    }
+}
 ```
 
 ### **...**

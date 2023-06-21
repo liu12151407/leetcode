@@ -15,7 +15,7 @@
 <p>A <strong>substring</strong> is a contiguous sequence of characters in a string.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> word = &quot;aba&quot;
@@ -27,7 +27,7 @@
 - &quot;<u><strong>aba</strong></u>&quot; -&gt; &quot;aba&quot;
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> word = &quot;aabb&quot;
@@ -44,7 +44,7 @@
 - &quot;aab<u><strong>b</strong></u>&quot; -&gt; &quot;b&quot;
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> word = &quot;he&quot;
@@ -75,7 +75,7 @@ class Solution:
         state = 0
         ans = 0
         for c in word:
-            state ^= (1 << (ord(c) - ord('a')))
+            state ^= 1 << (ord(c) - ord('a'))
             ans += counter[state]
             for i in range(10):
                 ans += counter[state ^ (1 << i)]
@@ -139,8 +139,7 @@ public:
         counter[0] = 1;
         long long ans = 0;
         int state = 0;
-        for (char c : word)
-        {
+        for (char c : word) {
             state ^= (1 << (c - 'a'));
             ans += counter[state];
             for (int i = 0; i < 10; ++i) ans += counter[state ^ (1 << i)];

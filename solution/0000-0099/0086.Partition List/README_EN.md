@@ -9,14 +9,14 @@
 <p>You should <strong>preserve</strong> the original relative order of the nodes in each of the two partitions.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0000-0099/0086.Partition%20List/images/partition.jpg" style="width: 662px; height: 222px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0000-0099/0086.Partition%20List/images/partition.jpg" style="width: 662px; height: 222px;" />
 <pre>
 <strong>Input:</strong> head = [1,4,3,2,5,2], x = 3
 <strong>Output:</strong> [1,2,2,4,3,5]
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> head = [2,1], x = 2
@@ -45,7 +45,7 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    def partition(self, head: ListNode, x: int) -> ListNode:
+    def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
         d1, d2 = ListNode(), ListNode()
         t1, t2 = d1, d2
         while head:
@@ -116,15 +116,11 @@ public:
         ListNode* d2 = new ListNode();
         ListNode* t1 = d1;
         ListNode* t2 = d2;
-        while (head)
-        {
-            if (head->val < x)
-            {
+        while (head) {
+            if (head->val < x) {
                 t1->next = head;
                 t1 = t1->next;
-            }
-            else
-            {
+            } else {
                 t2->next = head;
                 t2 = t2->next;
             }

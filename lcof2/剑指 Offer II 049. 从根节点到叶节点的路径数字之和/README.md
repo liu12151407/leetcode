@@ -1,4 +1,4 @@
-# [剑指 Offer II 049. 从根节点到叶节点的路径数字之和](https://leetcode-cn.com/problems/3Etpl5)
+# [剑指 Offer II 049. 从根节点到叶节点的路径数字之和](https://leetcode.cn/problems/3Etpl5)
 
 ## 题目描述
 
@@ -21,7 +21,7 @@
 <p>&nbsp;</p>
 
 <p><strong>示例 1：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20049.%20%E4%BB%8E%E6%A0%B9%E8%8A%82%E7%82%B9%E5%88%B0%E5%8F%B6%E8%8A%82%E7%82%B9%E7%9A%84%E8%B7%AF%E5%BE%84%E6%95%B0%E5%AD%97%E4%B9%8B%E5%92%8C/images/num1tree.jpg" style="width: 212px; height: 182px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20049.%20%E4%BB%8E%E6%A0%B9%E8%8A%82%E7%82%B9%E5%88%B0%E5%8F%B6%E8%8A%82%E7%82%B9%E7%9A%84%E8%B7%AF%E5%BE%84%E6%95%B0%E5%AD%97%E4%B9%8B%E5%92%8C/images/num1tree.jpg" style="width: 212px; height: 182px;" />
 <pre>
 <strong>输入：</strong>root = [1,2,3]
 <strong>输出：</strong>25
@@ -31,7 +31,7 @@
 因此，数字总和 = 12 + 13 = <code>25</code></pre>
 
 <p><strong>示例 2：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20049.%20%E4%BB%8E%E6%A0%B9%E8%8A%82%E7%82%B9%E5%88%B0%E5%8F%B6%E8%8A%82%E7%82%B9%E7%9A%84%E8%B7%AF%E5%BE%84%E6%95%B0%E5%AD%97%E4%B9%8B%E5%92%8C/images/num2tree.jpg" style="width: 292px; height: 302px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20049.%20%E4%BB%8E%E6%A0%B9%E8%8A%82%E7%82%B9%E5%88%B0%E5%8F%B6%E8%8A%82%E7%82%B9%E7%9A%84%E8%B7%AF%E5%BE%84%E6%95%B0%E5%AD%97%E4%B9%8B%E5%92%8C/images/num2tree.jpg" style="width: 292px; height: 302px;" />
 <pre>
 <strong>输入：</strong>root = [4,9,0,5,1]
 <strong>输出：</strong>1026
@@ -56,7 +56,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 129&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/">https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 129&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/sum-root-to-leaf-numbers/">https://leetcode.cn/problems/sum-root-to-leaf-numbers/</a></p>
 
 ## 解法
 
@@ -144,11 +144,11 @@ class Solution {
  */
 class Solution {
 public:
-    int sumNumbers(TreeNode *root) {
+    int sumNumbers(TreeNode* root) {
         return dfs(root, 0);
     }
 
-    int dfs(TreeNode *root, int presum) {
+    int dfs(TreeNode* root, int presum) {
         if (!root) return 0;
         int s = presum * 10 + root->val;
         if (!root->left && !root->right) return s;
@@ -169,17 +169,17 @@ public:
  * }
  */
 func sumNumbers(root *TreeNode) int {
-    var dfs func(root *TreeNode, presum int) int
-    dfs = func(root *TreeNode, presum int) int {
-        if root == nil {
-            return 0
-        }
-        presum = presum * 10 + root.Val
-        if root.Left == nil && root.Right == nil {
-            return presum
-        }
-        return dfs(root.Left, presum) + dfs(root.Right, presum)
-    }
-    return dfs(root, 0)
+	var dfs func(root *TreeNode, presum int) int
+	dfs = func(root *TreeNode, presum int) int {
+		if root == nil {
+			return 0
+		}
+		presum = presum*10 + root.Val
+		if root.Left == nil && root.Right == nil {
+			return presum
+		}
+		return dfs(root.Left, presum) + dfs(root.Right, presum)
+	}
+	return dfs(root, 0)
 }
 ```

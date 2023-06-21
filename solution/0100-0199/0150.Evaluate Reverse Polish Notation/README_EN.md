@@ -4,16 +4,23 @@
 
 ## Description
 
-<p>Evaluate the value of an arithmetic expression in <a href="http://en.wikipedia.org/wiki/Reverse_Polish_notation" target="_blank">Reverse Polish Notation</a>.</p>
+<p>You are given an array of strings <code>tokens</code> that represents an arithmetic expression in a <a href="http://en.wikipedia.org/wiki/Reverse_Polish_notation" target="_blank">Reverse Polish Notation</a>.</p>
 
-<p>Valid operators are <code>+</code>, <code>-</code>, <code>*</code>, and <code>/</code>. Each operand may be an integer or another expression.</p>
+<p>Evaluate the expression. Return <em>an integer that represents the value of the expression</em>.</p>
 
-<p><strong>Note</strong> that division between two integers should truncate toward zero.</p>
+<p><strong>Note</strong> that:</p>
 
-<p>It is guaranteed that the given RPN expression is always valid. That means the expression would always evaluate to a result, and there will not be any division by zero operation.</p>
+<ul>
+	<li>The valid operators are <code>&#39;+&#39;</code>, <code>&#39;-&#39;</code>, <code>&#39;*&#39;</code>, and <code>&#39;/&#39;</code>.</li>
+	<li>Each operand may be an integer or another expression.</li>
+	<li>The division between two integers always <strong>truncates toward zero</strong>.</li>
+	<li>There will not be any division by zero.</li>
+	<li>The input represents a valid arithmetic expression in a reverse polish notation.</li>
+	<li>The answer and all the intermediate calculations can be represented in a <strong>32-bit</strong> integer.</li>
+</ul>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> tokens = [&quot;2&quot;,&quot;1&quot;,&quot;+&quot;,&quot;3&quot;,&quot;*&quot;]
@@ -21,7 +28,7 @@
 <strong>Explanation:</strong> ((2 + 1) * 3) = 9
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> tokens = [&quot;4&quot;,&quot;13&quot;,&quot;5&quot;,&quot;/&quot;,&quot;+&quot;]
@@ -29,7 +36,7 @@
 <strong>Explanation:</strong> (4 + (13 / 5)) = 6
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> tokens = [&quot;10&quot;,&quot;6&quot;,&quot;9&quot;,&quot;3&quot;,&quot;+&quot;,&quot;-11&quot;,&quot;*&quot;,&quot;/&quot;,&quot;*&quot;,&quot;17&quot;,&quot;+&quot;,&quot;5&quot;,&quot;+&quot;]
@@ -60,13 +67,14 @@
 ```python
 import operator
 
+
 class Solution:
     def evalRPN(self, tokens: List[str]) -> int:
         opt = {
             "+": operator.add,
             "-": operator.sub,
             "*": operator.mul,
-            "/": operator.truediv
+            "/": operator.truediv,
         }
         s = []
         for token in tokens:
@@ -110,18 +118,18 @@ class Solution {
                 int y = stk.pop();
                 int x = stk.pop();
                 switch (t) {
-                    case "+":
-                        stk.push(x + y);
-                        break;
-                    case "-":
-                        stk.push(x - y);
-                        break;
-                    case "*":
-                        stk.push(x * y);
-                        break;
-                    default:
-                        stk.push(x / y);
-                        break;
+                case "+":
+                    stk.push(x + y);
+                    break;
+                case "-":
+                    stk.push(x - y);
+                    break;
+                case "*":
+                    stk.push(x * y);
+                    break;
+                default:
+                    stk.push(x / y);
+                    break;
                 }
             }
         }
@@ -138,20 +146,21 @@ public:
     int evalRPN(vector<string>& tokens) {
         stack<int> stk;
         for (auto& t : tokens) {
-            if (t.size() > 1 || isdigit(t[0]))
-            {
+            if (t.size() > 1 || isdigit(t[0])) {
                 stk.push(stoi(t));
-            }
-            else
-            {
+            } else {
                 int y = stk.top();
                 stk.pop();
                 int x = stk.top();
                 stk.pop();
-                if (t[0] == '+') stk.push(x + y);
-                else if (t[0] == '-') stk.push(x - y);
-                else if (t[0] == '*') stk.push(x * y);
-                else stk.push(x / y);
+                if (t[0] == '+')
+                    stk.push(x + y);
+                else if (t[0] == '-')
+                    stk.push(x - y);
+                else if (t[0] == '*')
+                    stk.push(x * y);
+                else
+                    stk.push(x / y);
             }
         }
         return stk.top();
@@ -190,6 +199,99 @@ func evalRPN(tokens []string) int {
 func popInt(stack *arraystack.Stack) int {
 	v, _ := stack.Pop()
 	return v.(int)
+}
+```
+
+### **C#**
+
+```cs
+using System.Collections.Generic;
+
+public class Solution {
+    public int EvalRPN(string[] tokens) {
+        var stack = new Stack<int>();
+        foreach (var token in tokens)
+        {
+            switch (token)
+            {
+                case "+":
+                    stack.Push(stack.Pop() + stack.Pop());
+                    break;
+                case "-":
+                    stack.Push(-stack.Pop() + stack.Pop());
+                    break;
+                case "*":
+                    stack.Push(stack.Pop() * stack.Pop());
+                    break;
+                case "/":
+                    var right = stack.Pop();
+                    stack.Push(stack.Pop() / right);
+                    break;
+                default:
+                    stack.Push(int.Parse(token));
+                    break;
+            }
+        }
+        return stack.Pop();
+    }
+}
+```
+
+### **TypeScript**
+
+```ts
+function evalRPN(tokens: string[]): number {
+    const stack = [];
+    for (const token of tokens) {
+        if (/\d/.test(token)) {
+            stack.push(Number(token));
+        } else {
+            const a = stack.pop();
+            const b = stack.pop();
+            switch (token) {
+                case '+':
+                    stack.push(b + a);
+                    break;
+                case '-':
+                    stack.push(b - a);
+                    break;
+                case '*':
+                    stack.push(b * a);
+                    break;
+                case '/':
+                    stack.push(~~(b / a));
+                    break;
+            }
+        }
+    }
+    return stack[0];
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn eval_rpn(tokens: Vec<String>) -> i32 {
+        let mut stack = vec![];
+        for token in tokens {
+            match token.parse() {
+                Ok(num) => stack.push(num),
+                Err(_) => {
+                    let a = stack.pop().unwrap();
+                    let b = stack.pop().unwrap();
+                    stack.push(match token.as_str() {
+                        "+" => b + a,
+                        "-" => b - a,
+                        "*" => b * a,
+                        "/" => b / a,
+                        _ => 0,
+                    })
+                }
+            }
+        }
+        stack[0]
+    }
 }
 ```
 

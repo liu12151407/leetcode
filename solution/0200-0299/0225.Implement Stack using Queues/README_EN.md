@@ -4,7 +4,7 @@
 
 ## Description
 
-<p>Implement a last in first out (LIFO) stack using only two queues. The implemented stack should support all the functions of a normal queue (<code>push</code>, <code>top</code>, <code>pop</code>, and <code>empty</code>).</p>
+<p>Implement a last-in-first-out (LIFO) stack using only two queues. The implemented stack should support all the functions of a normal stack (<code>push</code>, <code>top</code>, <code>pop</code>, and <code>empty</code>).</p>
 
 <p>Implement the <code>MyStack</code> class:</p>
 
@@ -18,12 +18,12 @@
 <p><b>Notes:</b></p>
 
 <ul>
-	<li>You must use <strong>only</strong> standard operations of a queue, which means only <code>push to back</code>, <code>peek/pop from front</code>, <code>size</code>, and <code>is empty</code> operations are valid.</li>
-	<li>Depending on your language, the queue may not be supported natively. You may simulate a queue using a list or deque (double-ended queue), as long as you use only a queue&#39;s standard operations.</li>
+	<li>You must use <strong>only</strong> standard operations of a queue, which means that only <code>push to back</code>, <code>peek/pop from front</code>, <code>size</code> and <code>is empty</code> operations are valid.</li>
+	<li>Depending on your language, the queue may not be supported natively. You may simulate a queue using a list or deque (double-ended queue) as long as you use only a queue&#39;s standard operations.</li>
 </ul>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input</strong>
@@ -51,7 +51,7 @@ myStack.empty(); // return False
 </ul>
 
 <p>&nbsp;</p>
-<p><strong>Follow-up:</strong> Can you implement the stack such that each operation is <strong><a href="https://en.wikipedia.org/wiki/Amortized_analysis" target="_blank">amortized</a></strong> <code>O(1)</code> time complexity? In other words, performing <code>n</code> operations will take overall <code>O(n)</code> time even if one of those operations may take longer. You can use more than two queues.</p>
+<p><strong>Follow-up:</strong> Can you implement the stack using only one queue?</p>
 
 ## Solutions
 
@@ -61,44 +61,24 @@ myStack.empty(); // return False
 
 ```python
 class MyStack:
-
     def __init__(self):
-        """
-        Initialize your data structure here.
-        """
-        self.q = []
-
+        self.q1 = deque()
+        self.q2 = deque()
 
     def push(self, x: int) -> None:
-        """
-        Push element x onto stack.
-        """
-        self.q.append(x)
-        n = len(self.q)
-        for i in range(1, n):
-            self.q.append(self.q.pop(0))
-
+        self.q2.append(x)
+        while self.q1:
+            self.q2.append(self.q1.popleft())
+        self.q1, self.q2 = self.q2, self.q1
 
     def pop(self) -> int:
-        """
-        Removes the element on top of the stack and returns that element.
-        """
-        return self.q.pop(0)
-
+        return self.q1.popleft()
 
     def top(self) -> int:
-        """
-        Get the top element.
-        """
-        return self.q[0]
-
+        return self.q1[0]
 
     def empty(self) -> bool:
-        """
-        Returns whether the stack is empty.
-        """
-        return len(self.q) == 0
-
+        return len(self.q1) == 0
 
 
 # Your MyStack object will be instantiated and called as such:
@@ -112,37 +92,35 @@ class MyStack:
 ### **Java**
 
 ```java
+import java.util.Deque;
+
 class MyStack {
+    private Deque<Integer> q1 = new ArrayDeque<>();
+    private Deque<Integer> q2 = new ArrayDeque<>();
 
-    private Deque<Integer> q;
-
-    /** Initialize your data structure here. */
     public MyStack() {
-        q = new ArrayDeque<>();
     }
 
-    /** Push element x onto stack. */
     public void push(int x) {
-        q.offerLast(x);
-        int n = q.size();
-        while (n-- > 1) {
-            q.offerLast(q.pollFirst());
+        q2.offer(x);
+        while (!q1.isEmpty()) {
+            q2.offer(q1.poll());
         }
+        Deque<Integer> q = q1;
+        q1 = q2;
+        q2 = q;
     }
 
-    /** Removes the element on top of the stack and returns that element. */
     public int pop() {
-        return q.pollFirst();
+        return q1.poll();
     }
 
-    /** Get the top element. */
     public int top() {
-        return q.peekFirst();
+        return q1.peek();
     }
 
-    /** Returns whether the stack is empty. */
     public boolean empty() {
-        return q.isEmpty();
+        return q1.isEmpty();
     }
 }
 
@@ -153,6 +131,137 @@ class MyStack {
  * int param_2 = obj.pop();
  * int param_3 = obj.top();
  * boolean param_4 = obj.empty();
+ */
+```
+
+### **C++**
+
+```cpp
+class MyStack {
+public:
+    MyStack() {
+    }
+
+    void push(int x) {
+        q2.push(x);
+        while (!q1.empty()) {
+            q2.push(q1.front());
+            q1.pop();
+        }
+        swap(q1, q2);
+    }
+
+    int pop() {
+        int x = q1.front();
+        q1.pop();
+        return x;
+    }
+
+    int top() {
+        return q1.front();
+    }
+
+    bool empty() {
+        return q1.empty();
+    }
+
+private:
+    queue<int> q1;
+    queue<int> q2;
+};
+
+/**
+ * Your MyStack object will be instantiated and called as such:
+ * MyStack* obj = new MyStack();
+ * obj->push(x);
+ * int param_2 = obj->pop();
+ * int param_3 = obj->top();
+ * bool param_4 = obj->empty();
+ */
+```
+
+### **Go**
+
+```go
+type MyStack struct {
+	q1 []int
+	q2 []int
+}
+
+func Constructor() MyStack {
+	return MyStack{}
+}
+
+func (this *MyStack) Push(x int) {
+	this.q2 = append(this.q2, x)
+	for len(this.q1) > 0 {
+		this.q2 = append(this.q2, this.q1[0])
+		this.q1 = this.q1[1:]
+	}
+	this.q1, this.q2 = this.q2, this.q1
+}
+
+func (this *MyStack) Pop() int {
+	x := this.q1[0]
+	this.q1 = this.q1[1:]
+	return x
+}
+
+func (this *MyStack) Top() int {
+	return this.q1[0]
+}
+
+func (this *MyStack) Empty() bool {
+	return len(this.q1) == 0
+}
+
+/**
+ * Your MyStack object will be instantiated and called as such:
+ * obj := Constructor();
+ * obj.Push(x);
+ * param_2 := obj.Pop();
+ * param_3 := obj.Top();
+ * param_4 := obj.Empty();
+ */
+```
+
+### **TypeScript**
+
+```ts
+class MyStack {
+    q1: number[] = [];
+    q2: number[] = [];
+
+    constructor() {}
+
+    push(x: number): void {
+        this.q2.push(x);
+        while (this.q1.length) {
+            this.q2.push(this.q1.shift()!);
+        }
+        [this.q1, this.q2] = [this.q2, this.q1];
+    }
+
+    pop(): number {
+        return this.q1.shift()!;
+    }
+
+    top(): number {
+        return this.q1[0];
+    }
+
+    empty(): boolean {
+        return this.q1.length === 0;
+    }
+}
+
+/**
+ * Your MyStack object will be instantiated and called as such:
+ * var obj = new MyStack()
+ * obj.push(x)
+ * var param_2 = obj.pop()
+ * var param_3 = obj.top()
+ * var param_4 = obj.empty()
  */
 ```
 

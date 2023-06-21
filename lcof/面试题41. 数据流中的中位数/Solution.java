@@ -1,31 +1,26 @@
 class MedianFinder {
-    Queue<Integer> minHeap;
-    Queue<Integer> maxHeap;
+    private PriorityQueue<Integer> q1 = new PriorityQueue<>();
+    private PriorityQueue<Integer> q2 = new PriorityQueue<>((a, b) -> b - a);
 
     /** initialize your data structure here. */
     public MedianFinder() {
-        minHeap = new PriorityQueue<>();
-        maxHeap = new PriorityQueue<>((a, b) -> b - a);
     }
-    
+
     public void addNum(int num) {
-        if (maxHeap.size() == minHeap.size()) {
-            maxHeap.offer(num);
-            // 放入小根堆(小根堆多1)
-            minHeap.offer(maxHeap.poll());
+        if (q1.size() > q2.size()) {
+            q1.offer(num);
+            q2.offer(q1.poll());
         } else {
-            minHeap.offer(num);
-            // 放入大根堆(大小堆数量相等)
-            maxHeap.offer(minHeap.poll());
+            q2.offer(num);
+            q1.offer(q2.poll());
         }
     }
-    
+
     public double findMedian() {
-        if (((maxHeap.size() + minHeap.size()) & 1) == 0) {
-            // 偶数个，取两个堆顶平均值
-            return (maxHeap.peek() + minHeap.peek()) / 2.0;
+        if (q1.size() > q2.size()) {
+            return q1.peek();
         }
-        return minHeap.peek();
+        return (q1.peek() + q2.peek()) / 2.0;
     }
 }
 

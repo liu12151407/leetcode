@@ -1,4 +1,4 @@
-# [剑指 Offer II 092. 翻转字符](https://leetcode-cn.com/problems/cyJERH)
+# [剑指 Offer II 092. 翻转字符](https://leetcode.cn/problems/cyJERH)
 
 ## 题目描述
 
@@ -47,7 +47,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 926&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/flip-string-to-monotone-increasing/">https://leetcode-cn.com/problems/flip-string-to-monotone-increasing/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 926&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/flip-string-to-monotone-increasing/">https://leetcode.cn/problems/flip-string-to-monotone-increasing/</a></p>
 
 ## 解法
 
@@ -66,7 +66,7 @@ class Solution:
     def minFlipsMonoIncr(self, s: str) -> int:
         n = len(s)
         left, right = [0] * (n + 1), [0] * (n + 1)
-        ans = 0x3f3f3f3f
+        ans = 0x3F3F3F3F
         for i in range(1, n + 1):
             left[i] = left[i - 1] + (1 if s[i - 1] == '1' else 0)
         for i in range(n - 1, -1, -1):

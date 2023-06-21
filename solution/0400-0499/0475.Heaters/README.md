@@ -1,4 +1,4 @@
-# [475. 供暖器](https://leetcode-cn.com/problems/heaters)
+# [475. 供暖器](https://leetcode.cn/problems/heaters)
 
 [English Version](/solution/0400-0499/0475.Heaters/README_EN.md)
 
@@ -121,17 +121,22 @@ class Solution {
 function findRadius(houses: number[], heaters: number[]): number {
     houses.sort((a, b) => a - b);
     heaters.sort((a, b) => a - b);
-    const m = houses.length, n = heaters.length;
+    const m = houses.length,
+        n = heaters.length;
     let ans = 0;
     for (let i = 0, j = 0; i < m; i++) {
         let cur = Math.abs(houses[i] - heaters[j]);
-        while (j + 1 < n && (Math.abs(houses[i] - heaters[j]) >= Math.abs(houses[i] - heaters[j + 1]))) {
+        while (
+            j + 1 < n &&
+            Math.abs(houses[i] - heaters[j]) >=
+                Math.abs(houses[i] - heaters[j + 1])
+        ) {
             cur = Math.min(Math.abs(houses[i] - heaters[++j]), cur);
         }
         ans = Math.max(cur, ans);
     }
     return ans;
-};
+}
 ```
 
 ### **C++**
@@ -145,8 +150,10 @@ public:
         int left = 0, right = 1e9;
         while (left < right) {
             int mid = left + right >> 1;
-            if (check(houses, heaters, mid)) right = mid;
-            else left = mid + 1;
+            if (check(houses, heaters, mid))
+                right = mid;
+            else
+                left = mid + 1;
         }
         return left;
     }
@@ -154,14 +161,15 @@ public:
     bool check(vector<int>& houses, vector<int>& heaters, int r) {
         int m = houses.size(), n = heaters.size();
         int i = 0, j = 0;
-        while (i < m)
-        {
+        while (i < m) {
             if (j >= n) return false;
             int mi = heaters[j] - r;
             int mx = heaters[j] + r;
             if (houses[i] < mi) return false;
-            if (houses[i] > mx) ++j;
-            else ++i;
+            if (houses[i] > mx)
+                ++j;
+            else
+                ++i;
         }
         return true;
     }

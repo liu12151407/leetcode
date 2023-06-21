@@ -1,4 +1,4 @@
-# [1159. 市场分析 II](https://leetcode-cn.com/problems/market-analysis-ii)
+# [1159. 市场分析 II](https://leetcode.cn/problems/market-analysis-ii)
 
 [English Version](/solution/1100-1199/1159.Market%20Analysis%20II/README_EN.md)
 
@@ -114,7 +114,28 @@ id为 4 的用户的查询结果是 no，因为他卖出的第二件商品的品
 ### **SQL**
 
 ```sql
-
+# Write your MySQL query statement below
+SELECT
+    u.user_id AS seller_id,
+    CASE
+        WHEN u.favorite_brand = i.item_brand THEN 'yes'
+        ELSE 'no'
+    END AS 2nd_item_fav_brand
+FROM
+    users AS u
+    LEFT JOIN (
+        SELECT
+            order_date,
+            item_id,
+            seller_id,
+            rank() OVER (
+                PARTITION BY seller_id
+                ORDER BY order_date
+            ) AS rk
+        FROM orders
+    ) AS o
+        ON u.user_id = o.seller_id AND o.rk = 2
+    LEFT JOIN items AS i ON o.item_id = i.item_id;
 ```
 
 <!-- tabs:end -->

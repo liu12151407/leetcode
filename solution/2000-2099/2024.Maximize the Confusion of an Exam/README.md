@@ -1,4 +1,4 @@
-# [2024. 考试的最大困扰度](https://leetcode-cn.com/problems/maximize-the-confusion-of-an-exam)
+# [2024. 考试的最大困扰度](https://leetcode.cn/problems/maximize-the-confusion-of-an-exam)
 
 [English Version](/solution/2000-2099/2024.Maximize%20the%20Confusion%20of%20an%20Exam/README_EN.md)
 
@@ -64,7 +64,7 @@
 
 思路同 [1004. 最大连续 1 的个数 III](/solution/1000-1099/1004.Max%20Consecutive%20Ones%20III/README.md)
 
-维护一个单调变长的窗口。这种窗口经常出现在寻求“最大窗口”的问题中：因为要求的是”最大“，所以我们没有必要缩短窗口，于是代码就少了缩短窗口的部分；从另一个角度讲，本题里的 K 是资源数，一旦透支，窗口就不能再增长了。
+维护一个单调变长的窗口。这种窗口经常出现在寻求“最大窗口”的问题中：因为要求的是“最大”，所以我们没有必要缩短窗口，于是代码就少了缩短窗口的部分；从另一个角度讲，本题里的 K 是资源数，一旦透支，窗口就不能再增长了。
 
 -   l 是窗口左端点，负责移动起始位置
 -   r 是窗口右端点，负责扩展窗口
@@ -130,10 +130,9 @@ public:
         return max(get('T', k, answerKey), get('F', k, answerKey));
     }
 
-    int get(char c, int k, string answerKey) {
+    int get(char c, int k, string& answerKey) {
         int l = 0, r = 0;
-        while (r < answerKey.size())
-        {
+        while (r < answerKey.size()) {
             if (answerKey[r++] == c) --k;
             if (k < 0 && answerKey[l++] == c) ++k;
         }
@@ -170,6 +169,56 @@ func max(a, b int) int {
 		return a
 	}
 	return b
+}
+```
+
+### **TypeScript**
+
+```ts
+function maxConsecutiveAnswers(answerKey: string, k: number): number {
+    const n = answerKey.length;
+    const getMaxCount = (target: 'T' | 'F'): number => {
+        let l = 0;
+        let u = k;
+        for (const c of answerKey) {
+            if (c !== target) {
+                u--;
+            }
+            if (u < 0 && answerKey[l++] !== target) {
+                u++;
+            }
+        }
+        return n - l;
+    };
+    return Math.max(getMaxCount('T'), getMaxCount('F'));
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn max_consecutive_answers(answer_key: String, k: i32) -> i32 {
+        let bs = answer_key.as_bytes();
+        let n = bs.len();
+        let get_max_count = |target| {
+            let mut l = 0;
+            let mut u = k;
+            for b in bs.iter() {
+                if b != &target {
+                    u -= 1;
+                }
+                if u < 0 {
+                    if bs[l] != target {
+                        u += 1;
+                    }
+                    l += 1;
+                }
+            }
+            n - l
+        };
+        get_max_count(b'T').max(get_max_count(b'F')) as i32
+    }
 }
 ```
 

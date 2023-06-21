@@ -4,24 +4,30 @@
 
 ## Description
 
-<p>Given a non-negative integer <code>x</code>,&nbsp;compute and return <em>the square root of</em> <code>x</code>.</p>
+<p>Given a non-negative integer <code>x</code>, return <em>the square root of </em><code>x</code><em> rounded down to the nearest integer</em>. The returned integer should be <strong>non-negative</strong> as well.</p>
 
-<p>Since the return type&nbsp;is an integer, the decimal digits are <strong>truncated</strong>, and only <strong>the integer part</strong> of the result&nbsp;is returned.</p>
+<p>You <strong>must not use</strong> any built-in exponent function or operator.</p>
+
+<ul>
+	<li>For example, do not use <code>pow(x, 0.5)</code> in c++ or <code>x ** 0.5</code> in python.</li>
+</ul>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> x = 4
 <strong>Output:</strong> 2
+<strong>Explanation:</strong> The square root of 4 is 2, so we return 2.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> x = 8
 <strong>Output:</strong> 2
-<strong>Explanation:</strong> The square root of 8 is 2.82842..., and since the decimal part is truncated, 2 is returned.</pre>
+<strong>Explanation:</strong> The square root of 8 is 2.82842..., and since we round it down to the nearest integer, 2 is returned.
+</pre>
 
 <p>&nbsp;</p>
 <p><strong>Constraints:</strong></p>
@@ -60,7 +66,7 @@ class Solution {
         int left = 0, right = x;
         while (left < right) {
             int mid = (left + right + 1) >>> 1;
-            if (mid <= x /mid) {
+            if (mid <= x / mid) {
                 // mid*mid <= x
                 left = mid;
             } else {
@@ -79,11 +85,12 @@ class Solution {
 public:
     int mySqrt(int x) {
         long long left = 0, right = x;
-        while (left < right)
-        {
+        while (left < right) {
             long long mid = left + ((right - left + 1) >> 1);
-            if (mid <= x / mid) left = mid;
-            else right = mid - 1;
+            if (mid <= x / mid)
+                left = mid;
+            else
+                right = mid - 1;
         }
         return (int) left;
     }
@@ -148,6 +155,29 @@ public class Solution {
             }
         }
         return left;
+    }
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn my_sqrt(x: i32) -> i32 {
+        if x < 2 {
+            return x;
+        }
+        let mut l = 1;
+        let mut r = x / 2;
+        while l < r {
+            let mid = (l + r + 1) >> 1;
+            if x / mid < mid {
+                r = mid - 1
+            } else {
+                l = mid;
+            }
+        }
+        l
     }
 }
 ```

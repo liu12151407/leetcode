@@ -1,4 +1,4 @@
-# [1532. 最近的三笔订单](https://leetcode-cn.com/problems/the-most-recent-three-orders)
+# [1532. 最近的三笔订单](https://leetcode.cn/problems/the-most-recent-three-orders)
 
 [English Version](/solution/1500-1599/1532.The%20Most%20Recent%20Three%20Orders/README_EN.md)
 
@@ -106,12 +106,35 @@ Marwan 只有 1 笔订单。
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：窗口函数**
+
 <!-- tabs:start -->
 
 ### **SQL**
 
 ```sql
-
+# Write your MySQL query statement below
+SELECT
+    name AS customer_name,
+    o.customer_id,
+    order_id,
+    order_date
+FROM
+    Customers AS c
+    JOIN (
+        SELECT
+            customer_id,
+            order_date,
+            order_id,
+            rank() OVER (
+                PARTITION BY customer_id
+                ORDER BY order_date DESC
+            ) AS rk
+        FROM orders
+    ) AS o
+        ON c.customer_id = o.customer_id
+WHERE rk <= 3
+ORDER BY name, o.customer_id, order_date DESC;
 ```
 
 <!-- tabs:end -->

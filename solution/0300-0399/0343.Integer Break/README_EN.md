@@ -9,7 +9,7 @@
 <p>Return <em>the maximum product you can get</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 2
@@ -17,7 +17,7 @@
 <strong>Explanation:</strong> 2 = 1 + 1, 1 &times; 1 = 1.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 10
@@ -50,6 +50,18 @@ class Solution:
         return dp[n]
 ```
 
+```python
+class Solution:
+    def integerBreak(self, n: int) -> int:
+        if n < 4:
+            return n - 1
+        if n % 3 == 0:
+            return pow(3, n // 3)
+        if n % 3 == 1:
+            return pow(3, n // 3 - 1) * 4
+        return pow(3, n // 3) * 2
+```
+
 ### **Java**
 
 ```java
@@ -63,6 +75,23 @@ class Solution {
             }
         }
         return dp[n];
+    }
+}
+```
+
+```java
+class Solution {
+    public int integerBreak(int n) {
+        if (n < 4) {
+            return n - 1;
+        }
+        if (n % 3 == 0) {
+            return (int) Math.pow(3, n / 3);
+        }
+        if (n % 3 == 1) {
+            return (int) Math.pow(3, n / 3 - 1) * 4;
+        }
+        return (int) Math.pow(3, n / 3) * 2;
     }
 }
 ```
@@ -81,6 +110,24 @@ public:
             }
         }
         return dp[n];
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    int integerBreak(int n) {
+        if (n < 4) {
+            return n - 1;
+        }
+        if (n % 3 == 0) {
+            return pow(3, n / 3);
+        }
+        if (n % 3 == 1) {
+            return pow(3, n / 3 - 1) * 4;
+        }
+        return pow(3, n / 3) * 2;
     }
 };
 ```
@@ -104,6 +151,77 @@ func max(a, b int) int {
 		return a
 	}
 	return b
+}
+```
+
+```go
+func integerBreak(n int) int {
+	if n < 4 {
+		return n - 1
+	}
+	if n%3 == 0 {
+		return int(math.Pow(3, float64(n/3)))
+	}
+	if n%3 == 1 {
+		return int(math.Pow(3, float64(n/3-1))) * 4
+	}
+	return int(math.Pow(3, float64(n/3))) * 2
+}
+```
+
+### **C**
+
+```c
+int integerBreak(int n) {
+    if (n < 4) {
+        return n - 1;
+    }
+    int count = (n - 2) / 3;
+    return pow(3, count) * (n - count * 3);
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn integer_break(n: i32) -> i32 {
+        if n < 4 {
+            return n - 1;
+        }
+        let count = (n - 2) / 3;
+        3i32.pow(count as u32) * (n - count * 3)
+    }
+}
+```
+
+### **TypeScript**
+
+```ts
+function integerBreak(n: number): number {
+    let dp = new Array(n + 1).fill(1);
+    for (let i = 3; i <= n; i++) {
+        for (let j = 1; j < i; j++) {
+            dp[i] = Math.max(dp[i], j * (i - j), j * dp[i - j]);
+        }
+    }
+    return dp.pop();
+}
+```
+
+```ts
+function integerBreak(n: number): number {
+    if (n < 4) {
+        return n - 1;
+    }
+    const m = Math.floor(n / 3);
+    if (n % 3 == 0) {
+        return 3 ** m;
+    }
+    if (n % 3 == 1) {
+        return 3 ** (m - 1) * 4;
+    }
+    return 3 ** m * 2;
 }
 ```
 

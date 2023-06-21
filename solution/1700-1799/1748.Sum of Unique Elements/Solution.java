@@ -1,15 +1,15 @@
 class Solution {
     public int sumOfUnique(int[] nums) {
-        int[] counter = new int[101];
-        for (int num : nums) {
-            ++counter[num];
+        int[] cnt = new int[101];
+        for (int x : nums) {
+            ++cnt[x];
         }
-        int res = 0;
-        for (int i = 1; i < 101; ++i) {
-            if (counter[i] == 1) {
-                res += i;
+        int ans = 0;
+        for (int x = 0; x < 101; ++x) {
+            if (cnt[x] == 1) {
+                ans += x;
             }
         }
-        return res;
+        return ans;
     }
 }

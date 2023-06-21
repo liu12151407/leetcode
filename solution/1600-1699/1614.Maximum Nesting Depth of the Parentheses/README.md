@@ -1,4 +1,4 @@
-# [1614. 括号的最大嵌套深度](https://leetcode-cn.com/problems/maximum-nesting-depth-of-the-parentheses)
+# [1614. 括号的最大嵌套深度](https://leetcode.cn/problems/maximum-nesting-depth-of-the-parentheses)
 
 [English Version](/solution/1600-1699/1614.Maximum%20Nesting%20Depth%20of%20the%20Parentheses/README_EN.md)
 
@@ -10,11 +10,11 @@
 
 <ul>
 	<li>字符串是一个空字符串 <code>""</code>，或者是一个不为 <code>"("</code> 或 <code>")"</code> 的单字符。</li>
-	<li>字符串可以写为 <code>AB</code>（<code>A</code> 与 <code>B</code> 字符串连接），其中 <code>A</code> 和 <code>B</code> 都是 <strong>有效括号字符串</strong> 。</li>
+	<li>字符串可以写为 <code>AB</code>（<code>A</code> 与 <code>B</code>&nbsp;字符串连接），其中 <code>A</code> 和 <code>B</code> 都是 <strong>有效括号字符串</strong> 。</li>
 	<li>字符串可以写为 <code>(A)</code>，其中 <code>A</code> 是一个 <strong>有效括号字符串</strong> 。</li>
 </ul>
 
-<p>类似地，可以定义任何有效括号字符串 <code>S</code> 的 <strong>嵌套深度</strong> <code>depth(S)</code>：</p>
+<p>类似地，可以定义任何有效括号字符串&nbsp;<code>S</code> 的 <strong>嵌套深度</strong> <code>depth(S)</code>：</p>
 
 <ul>
 	<li><code>depth("") = 0</code></li>
@@ -27,7 +27,7 @@
 
 <p>给你一个 <strong>有效括号字符串</strong> <code>s</code>，返回该字符串的<em> </em><code>s</code> <strong>嵌套深度</strong> 。</p>
 
-<p> </p>
+<p>&nbsp;</p>
 
 <p><strong>示例 1：</strong></p>
 
@@ -44,26 +44,12 @@
 <strong>输出：</strong>3
 </pre>
 
-<p><strong>示例 3：</strong></p>
-
-<pre>
-<strong>输入：</strong>s = "1+(<strong>2</strong>*3)/(2-1)"
-<strong>输出：</strong>1
-</pre>
-
-<p><strong>示例 4：</strong></p>
-
-<pre>
-<strong>输入：</strong>s = "<strong>1</strong>"
-<strong>输出：</strong>0
-</pre>
-
-<p> </p>
+<p>&nbsp;</p>
 
 <p><strong>提示：</strong></p>
 
 <ul>
-	<li><code>1 <= s.length <= 100</code></li>
+	<li><code>1 &lt;= s.length &lt;= 100</code></li>
 	<li><code>s</code> 由数字 <code>0-9</code> 和字符 <code>'+'</code>、<code>'-'</code>、<code>'*'</code>、<code>'/'</code>、<code>'('</code>、<code>')'</code> 组成</li>
 	<li>题目数据保证括号表达式 <code>s</code> 是 <strong>有效的括号表达式</strong></li>
 </ul>
@@ -71,6 +57,14 @@
 ## 解法
 
 <!-- 这里可写通用的实现逻辑 -->
+
+**方法一：遍历**
+
+我们可以遍历字符串，维护当前的嵌套深度，遇到左括号时深度加一，并且更新组最大深大；遇到右括号时深度减一。
+
+遍历结束后，返回最大深度即可。
+
+时间复杂度 $O(n)$，空间复杂度 $O(1)$。其中 $n$ 为字符串长度。
 
 <!-- tabs:start -->
 
@@ -81,13 +75,13 @@
 ```python
 class Solution:
     def maxDepth(self, s: str) -> int:
-        n = ans = 0
+        ans = d = 0
         for c in s:
             if c == '(':
-                n += 1
-                ans = max(ans, n)
+                d += 1
+                ans = max(ans, d)
             elif c == ')':
-                n -= 1
+                d -= 1
         return ans
 ```
 
@@ -98,12 +92,13 @@ class Solution:
 ```java
 class Solution {
     public int maxDepth(String s) {
-        int n = 0, ans = 0;
-        for (char c : s.toCharArray()) {
+        int ans = 0, d = 0;
+        for (int i = 0; i < s.length(); ++i) {
+            char c = s.charAt(i);
             if (c == '(') {
-                ans = Math.max(ans, ++n);
+                ans = Math.max(ans, ++d);
             } else if (c == ')') {
-                --n;
+                --d;
             }
         }
         return ans;
@@ -117,11 +112,13 @@ class Solution {
 class Solution {
 public:
     int maxDepth(string s) {
-        int n = 0, ans = 0;
-        for (char c : s)
-        {
-            if (c == '(') ans = max(ans, ++n);
-            else if (c == ')') --n;
+        int ans = 0, d = 0;
+        for (char& c : s) {
+            if (c == '(') {
+                ans = max(ans, ++d);
+            } else if (c == ')') {
+                --d;
+            }
         }
         return ans;
     }
@@ -131,19 +128,24 @@ public:
 ### **Go**
 
 ```go
-func maxDepth(s string) int {
-	n, ans := 0, 0
+func maxDepth(s string) (ans int) {
+	d := 0
 	for _, c := range s {
 		if c == '(' {
-			n++
-			if ans < n {
-				ans = n
-			}
+			d++
+			ans = max(ans, d)
 		} else if c == ')' {
-			n--
+			d--
 		}
 	}
-	return ans
+	return
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }
 ```
 
@@ -155,11 +157,14 @@ func maxDepth(s string) int {
  * @return {number}
  */
 var maxDepth = function (s) {
-    let n = 0,
-        ans = 0;
-    for (let c of s) {
-        if (c == '(') ans = Math.max(ans, ++n);
-        else if (c == ')') --n;
+    let ans = 0;
+    let d = 0;
+    for (const c of s) {
+        if (c === '(') {
+            ans = Math.max(ans, ++d);
+        } else if (c === ')') {
+            --d;
+        }
     }
     return ans;
 };
@@ -170,20 +175,33 @@ var maxDepth = function (s) {
 ```cs
 public class Solution {
     public int MaxDepth(string s) {
-        int n = 0, ans = 0;
-        foreach (char c in s)
-        {
-            if (c == '(')
-            {
-                ans = Math.Max(ans, ++n);
-            }
-            else if (c == ')')
-            {
-                --n;
+        int ans = 0, d = 0;
+        foreach(char c in s) {
+            if (c == '(') {
+                ans = Math.Max(ans, ++d);
+            } else if (c == ')') {
+                --d;
             }
         }
         return ans;
     }
+}
+```
+
+### **TypeScript**
+
+```ts
+function maxDepth(s: string): number {
+    let ans = 0;
+    let d = 0;
+    for (const c of s) {
+        if (c === '(') {
+            ans = Math.max(ans, ++d);
+        } else if (c === ')') {
+            --d;
+        }
+    }
+    return ans;
 }
 ```
 

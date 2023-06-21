@@ -1,4 +1,4 @@
-# [剑指 Offer II 083. 没有重复元素集合的全排列](https://leetcode-cn.com/problems/VvJkup)
+# [剑指 Offer II 083. 没有重复元素集合的全排列](https://leetcode.cn/problems/VvJkup)
 
 ## 题目描述
 
@@ -41,7 +41,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 46&nbsp;题相同：<a href="https://leetcode-cn.com/problems/permutations/">https://leetcode-cn.com/problems/permutations/</a>&nbsp;</p>
+<p><meta charset="UTF-8" />注意：本题与主站 46&nbsp;题相同：<a href="https://leetcode.cn/problems/permutations/">https://leetcode.cn/problems/permutations/</a>&nbsp;</p>
 
 ## 解法
 
@@ -93,7 +93,8 @@ class Solution {
         return res;
     }
 
-    private void dfs(int u, int n, int[] nums, boolean[] used, List<Integer> path, List<List<Integer>> res) {
+    private void dfs(
+        int u, int n, int[] nums, boolean[] used, List<Integer> path, List<List<Integer>> res) {
         if (u == n) {
             res.add(new ArrayList<>(path));
             return;
@@ -159,15 +160,12 @@ public:
     }
 
     void dfs(int u, int n, vector<int>& nums, vector<bool>& used, vector<int>& path, vector<vector<int>>& res) {
-        if (u == n)
-        {
+        if (u == n) {
             res.emplace_back(path);
             return;
         }
-        for (int i = 0; i < n; ++i)
-        {
-            if (!used[i])
-            {
+        for (int i = 0; i < n; ++i) {
+            if (!used[i]) {
                 path[u] = nums[i];
                 used[i] = true;
                 dfs(u + 1, n, nums, used, path, res);

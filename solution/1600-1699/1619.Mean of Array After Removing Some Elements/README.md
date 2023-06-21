@@ -1,4 +1,4 @@
-# [1619. 删除某些元素后的数组均值](https://leetcode-cn.com/problems/mean-of-array-after-removing-some-elements)
+# [1619. 删除某些元素后的数组均值](https://leetcode.cn/problems/mean-of-array-after-removing-some-elements)
 
 [English Version](/solution/1600-1699/1619.Mean%20of%20Array%20After%20Removing%20Some%20Elements/README_EN.md)
 
@@ -62,6 +62,14 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：模拟**
+
+直接模拟。
+
+先对数组 `arr` 排序，然后截取中间的 90% 个元素，求平均值。
+
+时间复杂度 $O(n\log n)$。其中 $n$ 为数组 `arr` 的长度。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -74,7 +82,7 @@ class Solution:
         n = len(arr)
         start, end = int(n * 0.05), int(n * 0.95)
         arr.sort()
-        t = arr[start: end]
+        t = arr[start:end]
         return round(sum(t) / len(t), 5)
 ```
 
@@ -138,6 +146,23 @@ func trimMean(arr []int) float64 {
 		sum += float64(arr[i])
 	}
 	return sum / (float64(n) * 0.9)
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn trim_mean(mut arr: Vec<i32>) -> f64 {
+        arr.sort();
+        let n = arr.len();
+        let count = (n as f64 * 0.05).floor() as usize;
+        let mut sum = 0;
+        for i in count..n - count {
+            sum += arr[i];
+        }
+        sum as f64 / (n as f64 * 0.9)
+    }
 }
 ```
 

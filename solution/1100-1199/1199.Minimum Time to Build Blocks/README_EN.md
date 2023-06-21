@@ -15,7 +15,7 @@
 <p>Initially, there is only <strong>one</strong> worker.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> blocks = [1], split = 1
@@ -23,7 +23,7 @@
 <strong>Explanation: </strong>We use 1 worker to build 1 block in 1 time unit.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> blocks = [1,2], split = 5
@@ -31,7 +31,7 @@
 <strong>Explanation: </strong>We split the worker into 2 workers in 5 time units then assign each of them to a block so the cost is 5 + max(1, 2) = 7.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> blocks = [1,2,3], split = 1
@@ -57,13 +57,76 @@ The cost is 1 + max(3, 1 + max(1, 2)) = 4.
 ### **Python3**
 
 ```python
-
+class Solution:
+    def minBuildTime(self, blocks: List[int], split: int) -> int:
+        heapify(blocks)
+        while len(blocks) > 1:
+            heappop(blocks)
+            heappush(blocks, heappop(blocks) + split)
+        return blocks[0]
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int minBuildTime(int[] blocks, int split) {
+        PriorityQueue<Integer> q = new PriorityQueue<>();
+        for (int x : blocks) {
+            q.offer(x);
+        }
+        while (q.size() > 1) {
+            q.poll();
+            q.offer(q.poll() + split);
+        }
+        return q.poll();
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int minBuildTime(vector<int>& blocks, int split) {
+        priority_queue<int, vector<int>, greater<int>> pq;
+        for (int v : blocks) pq.push(v);
+        while (pq.size() > 1) {
+            pq.pop();
+            int x = pq.top();
+            pq.pop();
+            pq.push(x + split);
+        }
+        return pq.top();
+    }
+};
+```
+
+### **Go**
+
+```go
+func minBuildTime(blocks []int, split int) int {
+	q := hp{}
+	for _, v := range blocks {
+		heap.Push(&q, v)
+	}
+	for q.Len() > 1 {
+		heap.Pop(&q)
+		heap.Push(&q, heap.Pop(&q).(int)+split)
+	}
+	return q.IntSlice[0]
+}
+
+type hp struct{ sort.IntSlice }
+
+func (h *hp) Push(v interface{}) { h.IntSlice = append(h.IntSlice, v.(int)) }
+func (h *hp) Pop() interface{} {
+	a := h.IntSlice
+	v := a[len(a)-1]
+	h.IntSlice = a[:len(a)-1]
+	return v
+}
 ```
 
 ### **...**

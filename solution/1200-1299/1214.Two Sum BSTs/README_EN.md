@@ -7,16 +7,16 @@
 <p>Given the roots of two binary search trees, <code>root1</code> and <code>root2</code>, return <code>true</code> if and only if there is a node in the first tree and a node in the second tree whose values sum up to a given integer <code>target</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1200-1299/1214.Two%20Sum%20BSTs/images/1368_1_a2.png" style="height: 140px; width: 150px;"><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1200-1299/1214.Two%20Sum%20BSTs/images/1368_1_b.png" style="height: 136px; width: 150px;"></strong></p>
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1200-1299/1214.Two%20Sum%20BSTs/images/ex1.png" style="width: 369px; height: 169px;" />
 <pre>
 <strong>Input:</strong> root1 = [2,1,4], root2 = [1,0,3], target = 5
 <strong>Output:</strong> true
 <strong>Explanation: </strong>2 and 3 sum up to 5.
 </pre>
 
-<p><strong>Example 2:</strong></p>
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1200-1299/1214.Two%20Sum%20BSTs/images/1368_2_a.png" style="height: 137px; width: 150px;"><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1200-1299/1214.Two%20Sum%20BSTs/images/1368_2_b.png" style="height: 168px; width: 150px;"></strong></p>
+<p><strong class="example">Example 2:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1200-1299/1214.Two%20Sum%20BSTs/images/ex2.png" style="width: 453px; height: 290px;" />
 <pre>
 <strong>Input:</strong> root1 = [0,-10,10], root2 = [5,1,7,0,2], target = 18
 <strong>Output:</strong> false
@@ -132,13 +132,12 @@ class Solution {
  */
 class Solution {
 public:
-    bool twoSumBSTs(TreeNode *root1, TreeNode *root2, int target) {
+    bool twoSumBSTs(TreeNode* root1, TreeNode* root2, int target) {
         vector<int> vals1, vals2;
         inorder(root1, vals1);
         inorder(root2, vals2);
         int i = 0, j = vals2.size() - 1;
-        while (i < vals1.size() && j >= 0)
-        {
+        while (i < vals1.size() && j >= 0) {
             int s = vals1[i] + vals2[j];
             if (s == target)
                 return true;
@@ -150,9 +149,8 @@ public:
         return false;
     }
 
-    void inorder(TreeNode *root, vector<int> &vals) {
-        if (root)
-        {
+    void inorder(TreeNode* root, vector<int>& vals) {
+        if (root) {
             inorder(root->left, vals);
             vals.push_back(root->val);
             inorder(root->right, vals);

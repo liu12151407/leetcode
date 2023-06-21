@@ -1,4 +1,4 @@
-# [剑指 Offer II 106. 二分图](https://leetcode-cn.com/problems/vEAB3K)
+# [剑指 Offer II 106. 二分图](https://leetcode.cn/problems/vEAB3K)
 
 ## 题目描述
 
@@ -23,7 +23,7 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20106.%20%E4%BA%8C%E5%88%86%E5%9B%BE/images/bi2.jpg" style="width: 222px; height: 222px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20106.%20%E4%BA%8C%E5%88%86%E5%9B%BE/images/bi2.jpg" style="width: 222px; height: 222px;" /></p>
 
 <pre>
 <strong>输入：</strong>graph = [[1,2,3],[0,2],[0,1,3],[0,2]]
@@ -32,7 +32,7 @@
 
 <p><strong>示例 2：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20106.%20%E4%BA%8C%E5%88%86%E5%9B%BE/images/bi1.jpg" style="width: 222px; height: 222px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20106.%20%E4%BA%8C%E5%88%86%E5%9B%BE/images/bi1.jpg" style="width: 222px; height: 222px;" /></p>
 
 <pre>
 <strong>输入：</strong>graph = [[1,3],[0,2],[1,3],[0,2]]
@@ -55,7 +55,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 785&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/is-graph-bipartite/">https://leetcode-cn.com/problems/is-graph-bipartite/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 785&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/is-graph-bipartite/">https://leetcode.cn/problems/is-graph-bipartite/</a></p>
 
 ## 解法
 
@@ -71,12 +71,14 @@
 # 初始化，p存储每个点的父节点
 p = list(range(n))
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
         # 路径压缩
         p[x] = find(p[x])
     return p[x]
+
 
 # 合并a和b所在的两个集合
 p[find(a)] = find(b)
@@ -89,12 +91,14 @@ p[find(a)] = find(b)
 p = list(range(n))
 size = [1] * n
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
         # 路径压缩
         p[x] = find(p[x])
     return p[x]
+
 
 # 合并a和b所在的两个集合
 if find(a) != find(b):
@@ -109,6 +113,7 @@ if find(a) != find(b):
 p = list(range(n))
 d = [0] * n
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
@@ -116,6 +121,7 @@ def find(x):
         d[x] += d[p[x]]
         p[x] = t
     return p[x]
+
 
 # 合并a和b所在的两个集合
 p[find(a)] = find(b)
@@ -133,14 +139,13 @@ d[find(a)] = distance
 ```python
 class Solution:
     def isBipartite(self, graph: List[List[int]]) -> bool:
-        n = len(graph)
-        p = list(range(n))
-
         def find(x):
             if p[x] != x:
                 p[x] = find(p[x])
             return p[x]
 
+        n = len(graph)
+        p = list(range(n))
         for u, g in enumerate(graph):
             for v in g:
                 if find(u) == find(v):
@@ -195,16 +200,14 @@ public:
         int n = graph.size();
         p.resize(n);
         for (int i = 0; i < n; ++i) p[i] = i;
-        for (int u = 0; u < n; ++u)
-        {
-            auto g = graph[u];
-            for (int v : g)
-            {
-                if (find(u) == find(v)) return false;
+        for (int u = 0; u < n; ++u) {
+            auto& g = graph[u];
+            for (int v : g) {
+                if (find(u) == find(v)) return 0;
                 p[find(v)] = find(g[0]);
             }
         }
-        return true;
+        return 1;
     }
 
     int find(int x) {
@@ -217,13 +220,18 @@ public:
 ### **Go**
 
 ```go
-var p []int
-
 func isBipartite(graph [][]int) bool {
 	n := len(graph)
-	p = make([]int, n)
-	for i := 0; i < n; i++ {
+	p := make([]int, n)
+	for i := range p {
 		p[i] = i
+	}
+	var find func(x int) int
+	find = func(x int) int {
+		if p[x] != x {
+			p[x] = find(p[x])
+		}
+		return p[x]
 	}
 	for u, g := range graph {
 		for _, v := range g {
@@ -234,13 +242,6 @@ func isBipartite(graph [][]int) bool {
 		}
 	}
 	return true
-}
-
-func find(x int) int {
-	if p[x] != x {
-		p[x] = find(p[x])
-	}
-	return p[x]
 }
 ```
 

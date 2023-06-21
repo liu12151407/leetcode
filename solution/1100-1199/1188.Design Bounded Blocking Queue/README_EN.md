@@ -18,7 +18,7 @@
 <p>Please do not use built-in implementations of bounded blocking queue as this will not be accepted in an interview.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong>
@@ -47,7 +47,7 @@ queue.dequeue();    // The consumer thread returns 2 from the queue. The produce
 queue.size();       // 2 elements remaining in the queue. size() is always called at the end of each test case.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong>
@@ -92,10 +92,99 @@ Since the number of threads for producer/consumer is greater than 1, we do not k
 
 <!-- tabs:start -->
 
-### **SQL**
+### **Python3**
 
-```sql
+```python
+from threading import Semaphore
 
+
+class BoundedBlockingQueue(object):
+    def __init__(self, capacity: int):
+        self.s1 = Semaphore(capacity)
+        self.s2 = Semaphore(0)
+        self.q = deque()
+
+    def enqueue(self, element: int) -> None:
+        self.s1.acquire()
+        self.q.append(element)
+        self.s2.release()
+
+    def dequeue(self) -> int:
+        self.s2.acquire()
+        ans = self.q.popleft()
+        self.s1.release()
+        return ans
+
+    def size(self) -> int:
+        return len(self.q)
+```
+
+### **Java**
+
+```java
+class BoundedBlockingQueue {
+    private Semaphore s1;
+    private Semaphore s2;
+    private Deque<Integer> q = new ArrayDeque<>();
+
+    public BoundedBlockingQueue(int capacity) {
+        s1 = new Semaphore(capacity);
+        s2 = new Semaphore(0);
+    }
+
+    public void enqueue(int element) throws InterruptedException {
+        s1.acquire();
+        q.offer(element);
+        s2.release();
+    }
+
+    public int dequeue() throws InterruptedException {
+        s2.acquire();
+        int ans = q.poll();
+        s1.release();
+        return ans;
+    }
+
+    public int size() {
+        return q.size();
+    }
+}
+```
+
+### **C++**
+
+```cpp
+#include <semaphore.h>
+
+class BoundedBlockingQueue {
+public:
+    BoundedBlockingQueue(int capacity) {
+        sem_init(&s1, 0, capacity);
+        sem_init(&s2, 0, 0);
+    }
+
+    void enqueue(int element) {
+        sem_wait(&s1);
+        q.push(element);
+        sem_post(&s2);
+    }
+
+    int dequeue() {
+        sem_wait(&s2);
+        int ans = q.front();
+        q.pop();
+        sem_post(&s1);
+        return ans;
+    }
+
+    int size() {
+        return q.size();
+    }
+
+private:
+    queue<int> q;
+    sem_t s1, s2;
+};
 ```
 
 <!-- tabs:end -->

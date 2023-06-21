@@ -1,4 +1,4 @@
-# [剑指 Offer II 022. 链表中环的入口节点](https://leetcode-cn.com/problems/c32eOV)
+# [剑指 Offer II 022. 链表中环的入口节点](https://leetcode.cn/problems/c32eOV)
 
 ## 题目描述
 
@@ -17,7 +17,7 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20022.%20%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%8E%AF%E7%9A%84%E5%85%A5%E5%8F%A3%E8%8A%82%E7%82%B9/images/circularlinkedlist.png" style="height: 97px; width: 300px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20022.%20%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%8E%AF%E7%9A%84%E5%85%A5%E5%8F%A3%E8%8A%82%E7%82%B9/images/circularlinkedlist.png" style="height: 97px; width: 300px;" /></p>
 
 <pre>
 <strong>输入：</strong>head = [3,2,0,-4], pos = 1
@@ -27,7 +27,7 @@
 
 <p><strong>示例&nbsp;2：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20022.%20%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%8E%AF%E7%9A%84%E5%85%A5%E5%8F%A3%E8%8A%82%E7%82%B9/images/circularlinkedlist_test2.png" style="height: 74px; width: 141px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20022.%20%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%8E%AF%E7%9A%84%E5%85%A5%E5%8F%A3%E8%8A%82%E7%82%B9/images/circularlinkedlist_test2.png" style="height: 74px; width: 141px;" /></p>
 
 <pre>
 <strong>输入：</strong>head = [1,2], pos = 0
@@ -37,7 +37,7 @@
 
 <p><strong>示例 3：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20022.%20%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%8E%AF%E7%9A%84%E5%85%A5%E5%8F%A3%E8%8A%82%E7%82%B9/images/circularlinkedlist_test3.png" style="height: 45px; width: 45px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20022.%20%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%8E%AF%E7%9A%84%E5%85%A5%E5%8F%A3%E8%8A%82%E7%82%B9/images/circularlinkedlist_test3.png" style="height: 45px; width: 45px;" /></p>
 
 <pre>
 <strong>输入：</strong>head = [1], pos = -1
@@ -61,7 +61,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 142&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/linked-list-cycle-ii/">https://leetcode-cn.com/problems/linked-list-cycle-ii/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 142&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/linked-list-cycle-ii/">https://leetcode.cn/problems/linked-list-cycle-ii/</a></p>
 
 ## 解法
 
@@ -93,6 +93,7 @@
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
+
 
 class Solution:
     def detectCycle(self, head: ListNode) -> ListNode:
@@ -160,7 +161,7 @@ public class Solution {
  */
 class Solution {
 public:
-    ListNode *detectCycle(ListNode *head) {
+    ListNode* detectCycle(ListNode* head) {
         ListNode* slow = head;
         ListNode* fast = head;
         bool hasCycle = false;
@@ -229,20 +230,20 @@ var detectCycle = function (head) {
  * }
  */
 func detectCycle(head *ListNode) *ListNode {
-    slow, fast := head, head
-    hasCycle := false
-    for !hasCycle && fast != nil && fast.Next != nil {
-        slow, fast = slow.Next, fast.Next.Next
-        hasCycle = slow == fast
-    }
-    if !hasCycle {
-        return nil
-    }
-    p := head
-    for p != slow {
-        p, slow = p.Next, slow.Next
-    }
-    return p
+	slow, fast := head, head
+	hasCycle := false
+	for !hasCycle && fast != nil && fast.Next != nil {
+		slow, fast = slow.Next, fast.Next.Next
+		hasCycle = slow == fast
+	}
+	if !hasCycle {
+		return nil
+	}
+	p := head
+	for p != slow {
+		p, slow = p.Next, slow.Next
+	}
+	return p
 }
 ```
 

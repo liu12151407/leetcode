@@ -1,4 +1,4 @@
-# [1889. 装包裹的最小浪费空间](https://leetcode-cn.com/problems/minimum-space-wasted-from-packaging)
+# [1889. 装包裹的最小浪费空间](https://leetcode.cn/problems/minimum-space-wasted-from-packaging)
 
 [English Version](/solution/1800-1899/1889.Minimum%20Space%20Wasted%20From%20Packaging/README_EN.md)
 
@@ -78,18 +78,18 @@
 class Solution:
     def minWastedSpace(self, packages: List[int], boxes: List[List[int]]) -> int:
         packages.sort()
-        res = float('inf')
+        res = inf
         for box in boxes:
             box.sort()
             if packages[-1] > box[-1]:
                 continue
             t = last = 0
             for b in box:
-                idx = bisect.bisect_right(packages, b, lo=last)
+                idx = bisect_right(packages, b, lo=last)
                 t += (idx - last) * b
                 last = idx
             res = min(res, t)
-        return -1 if res == float('inf') else (res - sum(packages)) % (10 ** 9 + 7)
+        return -1 if res == inf else (res - sum(packages)) % (10**9 + 7)
 ```
 
 ### **Java**

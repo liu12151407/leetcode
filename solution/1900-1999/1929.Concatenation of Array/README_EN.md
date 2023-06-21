@@ -11,7 +11,7 @@
 <p>Return <em>the array </em><code>ans</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,2,1]
@@ -20,7 +20,7 @@
 - ans = [nums[0],nums[1],nums[2],nums[0],nums[1],nums[2]]
 - ans = [1,2,1,1,2,1]</pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,3,2,1]
@@ -66,20 +66,6 @@ class Solution {
 }
 ```
 
-### **JavaScript**
-
-```js
-/**
- * @param {number[]} nums
- * @return {number[]}
- */
-var getConcatenation = function (nums) {
-    let ans = nums.slice();
-    ans.splice(nums.length, 0, ...nums);
-    return ans;
-};
-```
-
 ### **C++**
 
 ```cpp
@@ -99,6 +85,54 @@ public:
 ```go
 func getConcatenation(nums []int) []int {
 	return append(nums, nums...)
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var getConcatenation = function (nums) {
+    let ans = nums.slice();
+    ans.splice(nums.length, 0, ...nums);
+    return ans;
+};
+```
+
+### **TypeScript**
+
+```ts
+function getConcatenation(nums: number[]): number[] {
+    return [...nums, ...nums];
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn get_concatenation(nums: Vec<i32>) -> Vec<i32> {
+        nums.repeat(2)
+    }
+}
+```
+
+### **C**
+
+```c
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* getConcatenation(int* nums, int numsSize, int* returnSize) {
+    int* ans = malloc(sizeof(int) * numsSize * 2);
+    for (int i = 0; i < numsSize; i++) {
+        ans[i] = ans[i + numsSize] = nums[i];
+    }
+    *returnSize = numsSize * 2;
+    return ans;
 }
 ```
 

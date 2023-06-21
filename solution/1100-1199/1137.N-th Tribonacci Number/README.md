@@ -1,4 +1,4 @@
-# [1137. 第 N 个泰波那契数](https://leetcode-cn.com/problems/n-th-tribonacci-number)
+# [1137. 第 N 个泰波那契数](https://leetcode.cn/problems/n-th-tribonacci-number)
 
 [English Version](/solution/1100-1199/1137.N-th%20Tribonacci%20Number/README_EN.md)
 
@@ -41,6 +41,16 @@ T_4 = 1 + 1 + 2 = 4
 ## 解法
 
 <!-- 这里可写通用的实现逻辑 -->
+
+**方法一：动态规划**
+
+根据题目中给出的递推式，我们可以使用动态规划求解。
+
+我们定义三个变量 $a$, $b$, $c$，分别表示 $T_{n-3}$, $T_{n-2}$, $T_{n-1}$，初始值分别为 $0$, $1$, $1$。
+
+然后从 $n$ 减小到 $0$，每次更新 $a$, $b$, $c$ 的值，直到 $n$ 为 $0$ 时，答案即为 $a$。
+
+时间复杂度 $O(n)$，空间复杂度 $O(1)$。其中 $n$ 为给定的整数。
 
 <!-- tabs:start -->
 
@@ -125,6 +135,29 @@ var tribonacci = function (n) {
     }
     return a;
 };
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param Integer $n
+     * @return Integer
+     */
+    function tribonacci($n) {
+        if ($n == 0) {
+            return 0;
+        } elseif ($n == 1 || $n == 2) {
+            return 1;
+        }
+        $dp = [0, 1, 1];
+        for ($i = 3; $i <= $n; $i++) {
+            $dp[$i] = $dp[$i - 1] + $dp[$i - 2] + $dp[$i - 3];
+        }
+        return $dp[$n];
+    }
+}
 ```
 
 ### **...**

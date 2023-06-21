@@ -1,4 +1,4 @@
-# [1371. 每个元音包含偶数次的最长子字符串](https://leetcode-cn.com/problems/find-the-longest-substring-containing-vowels-in-even-counts)
+# [1371. 每个元音包含偶数次的最长子字符串](https://leetcode.cn/problems/find-the-longest-substring-containing-vowels-in-even-counts)
 
 [English Version](/solution/1300-1399/1371.Find%20the%20Longest%20Substring%20Containing%20Vowels%20in%20Even%20Counts/README_EN.md)
 
@@ -49,7 +49,7 @@
 
 前缀异或 + 状态压缩。
 
-类似题目：[1915. 最美子字符串的数目](/solution/1900-1999/1915.Number%20of%20Wonderful%20Substrings/README.md)
+相似题目：[1915. 最美子字符串的数目](/solution/1900-1999/1915.Number%20of%20Wonderful%20Substrings/README.md)
 
 <!-- tabs:start -->
 
@@ -60,14 +60,14 @@
 ```python
 class Solution:
     def findTheLongestSubstring(self, s: str) -> int:
-        pos = [float('inf')] * 32
+        pos = [inf] * 32
         pos[0] = -1
         vowels = 'aeiou'
         state = ans = 0
         for i, c in enumerate(s):
             for j, v in enumerate(vowels):
                 if c == v:
-                    state ^= (1 << j)
+                    state ^= 1 << j
             ans = max(ans, i - pos[state])
             pos[state] = min(pos[state], i)
         return ans
@@ -100,7 +100,6 @@ class Solution {
         return ans;
     }
 }
-
 ```
 
 ### **C++**
@@ -113,8 +112,7 @@ public:
         pos[0] = -1;
         string vowels = "aeiou";
         int state = 0, ans = 0;
-        for (int i = 0; i < s.size(); ++i)
-        {
+        for (int i = 0; i < s.size(); ++i) {
             for (int j = 0; j < 5; ++j)
                 if (s[i] == vowels[j])
                     state ^= (1 << j);

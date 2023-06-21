@@ -43,11 +43,13 @@ Each row of this table indicates the salary of the employee whose ID is employee
 
 <p>Return the result table ordered by <code>employee_id</code> <strong>in ascending order</strong>.</p>
 
-<p>The query result format is in the following example:</p>
+<p>The query result format is in the following example.</p>
 
 <p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
+<strong>Input:</strong> 
 Employees table:
 +-------------+----------+
 | employee_id | name     |
@@ -64,15 +66,14 @@ Salaries table:
 | 1           | 22517  |
 | 4           | 63539  |
 +-------------+--------+
-
-Result table:
+<strong>Output:</strong> 
 +-------------+
 | employee_id |
 +-------------+
 | 1           |
 | 2           |
 +-------------+
-
+<strong>Explanation:</strong> 
 Employees 1, 2, 4, and 5 are working at this company.
 The name of employee 1 is missing.
 The salary of employee 2 is missing.
@@ -85,7 +86,22 @@ The salary of employee 2 is missing.
 ### **SQL**
 
 ```sql
-
+SELECT employee_id
+FROM Employees AS e
+WHERE
+    e.employee_id NOT IN (
+        SELECT employee_id
+        FROM Salaries
+    )
+UNION
+SELECT employee_id
+FROM Salaries AS s
+WHERE
+    s.employee_id NOT IN (
+        SELECT employee_id
+        FROM Employees
+    )
+ORDER BY employee_id;
 ```
 
 <!-- tabs:end -->

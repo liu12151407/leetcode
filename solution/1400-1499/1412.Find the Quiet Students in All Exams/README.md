@@ -1,4 +1,4 @@
-# [1412. 查找成绩处于中游的学生](https://leetcode-cn.com/problems/find-the-quiet-students-in-all-exams)
+# [1412. 查找成绩处于中游的学生](https://leetcode.cn/problems/find-the-quiet-students-in-all-exams)
 
 [English Version](/solution/1400-1499/1412.Find%20the%20Quiet%20Students%20in%20All%20Exams/README_EN.md)
 
@@ -97,7 +97,29 @@ Result 表：
 ### **SQL**
 
 ```sql
-
+# Write your MySQL query statement below
+WITH
+    t AS (
+        SELECT
+            *,
+            rank() OVER (
+                PARTITION BY exam_id
+                ORDER BY score DESC
+            ) AS rk1,
+            rank() OVER (
+                PARTITION BY exam_id
+                ORDER BY score ASC
+            ) AS rk2
+        FROM Exam
+    )
+SELECT
+    t.student_id,
+    student_name
+FROM
+    t
+    JOIN Student AS s ON t.student_id = s.student_id
+GROUP BY t.student_id
+HAVING sum(rk1 = 1) = 0 AND sum(rk2 = 1) = 0;
 ```
 
 <!-- tabs:end -->

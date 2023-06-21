@@ -13,22 +13,27 @@
 <p>It is <strong>guaranteed</strong> that the length of the answer string is less than <code>10<sup>4</sup></code> for all the given inputs.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<pre><strong>Input:</strong> numerator = 1, denominator = 2
-<strong>Output:</strong> "0.5"
-</pre><p><strong>Example 2:</strong></p>
-<pre><strong>Input:</strong> numerator = 2, denominator = 1
-<strong>Output:</strong> "2"
-</pre><p><strong>Example 3:</strong></p>
-<pre><strong>Input:</strong> numerator = 2, denominator = 3
-<strong>Output:</strong> "0.(6)"
-</pre><p><strong>Example 4:</strong></p>
-<pre><strong>Input:</strong> numerator = 4, denominator = 333
-<strong>Output:</strong> "0.(012)"
-</pre><p><strong>Example 5:</strong></p>
-<pre><strong>Input:</strong> numerator = 1, denominator = 5
-<strong>Output:</strong> "0.2"
+<p><strong class="example">Example 1:</strong></p>
+
+<pre>
+<strong>Input:</strong> numerator = 1, denominator = 2
+<strong>Output:</strong> &quot;0.5&quot;
 </pre>
+
+<p><strong class="example">Example 2:</strong></p>
+
+<pre>
+<strong>Input:</strong> numerator = 2, denominator = 1
+<strong>Output:</strong> &quot;2&quot;
+</pre>
+
+<p><strong class="example">Example 3:</strong></p>
+
+<pre>
+<strong>Input:</strong> numerator = 4, denominator = 333
+<strong>Output:</strong> &quot;0.(012)&quot;
+</pre>
+
 <p>&nbsp;</p>
 <p><strong>Constraints:</strong></p>
 
@@ -128,14 +133,12 @@ public:
         if (num == 0) return res;
         res += ".";
         unordered_map<LL, int> mp;
-        while (num)
-        {
+        while (num) {
             mp[num] = res.size();
             num *= 10;
             res += to_string(num / d);
             num %= d;
-            if (mp.count(num))
-            {
+            if (mp.count(num)) {
                 int idx = mp[num];
                 res.insert(idx, "(");
                 res += ")";

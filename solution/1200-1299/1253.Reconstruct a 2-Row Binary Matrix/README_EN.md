@@ -22,7 +22,7 @@
 <p>If no valid solution exists, return an empty 2-D array.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> upper = 2, lower = 1, colsum = [1,1,1]
@@ -30,14 +30,14 @@
 <strong>Explanation: </strong>[[1,0,1],[0,1,0]], and [[0,1,1],[1,0,0]] are also correct answers.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> upper = 2, lower = 3, colsum = [2,2,1,1]
 <strong>Output:</strong> []
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> upper = 5, lower = 5, colsum = [2,1,2,0,1,0,1,2,0,1]
@@ -60,13 +60,161 @@
 ### **Python3**
 
 ```python
-
+class Solution:
+    def reconstructMatrix(
+        self, upper: int, lower: int, colsum: List[int]
+    ) -> List[List[int]]:
+        n = len(colsum)
+        ans = [[0] * n for _ in range(2)]
+        for j, v in enumerate(colsum):
+            if v == 2:
+                ans[0][j] = ans[1][j] = 1
+                upper, lower = upper - 1, lower - 1
+            if v == 1:
+                if upper > lower:
+                    upper -= 1
+                    ans[0][j] = 1
+                else:
+                    lower -= 1
+                    ans[1][j] = 1
+            if upper < 0 or lower < 0:
+                return []
+        return ans if lower == upper == 0 else []
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public List<List<Integer>> reconstructMatrix(int upper, int lower, int[] colsum) {
+        int n = colsum.length;
+        List<Integer> first = new ArrayList<>();
+        List<Integer> second = new ArrayList<>();
+        for (int j = 0; j < n; ++j) {
+            int a = 0, b = 0;
+            if (colsum[j] == 2) {
+                a = b = 1;
+                upper--;
+                lower--;
+            } else if (colsum[j] == 1) {
+                if (upper > lower) {
+                    upper--;
+                    a = 1;
+                } else {
+                    lower--;
+                    b = 1;
+                }
+            }
+            if (upper < 0 || lower < 0) {
+                break;
+            }
+            first.add(a);
+            second.add(b);
+        }
+        return upper == 0 && lower == 0 ? List.of(first, second) : List.of();
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> reconstructMatrix(int upper, int lower, vector<int>& colsum) {
+        int n = colsum.size();
+        vector<vector<int>> ans(2, vector<int>(n));
+        for (int j = 0; j < n; ++j) {
+            if (colsum[j] == 2) {
+                ans[0][j] = ans[1][j] = 1;
+                upper--;
+                lower--;
+            }
+            if (colsum[j] == 1) {
+                if (upper > lower) {
+                    upper--;
+                    ans[0][j] = 1;
+                } else {
+                    lower--;
+                    ans[1][j] = 1;
+                }
+            }
+            if (upper < 0 || lower < 0) {
+                break;
+            }
+        }
+        return upper || lower ? vector<vector<int>>() : ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func reconstructMatrix(upper int, lower int, colsum []int) [][]int {
+	n := len(colsum)
+	ans := make([][]int, 2)
+	for i := range ans {
+		ans[i] = make([]int, n)
+	}
+	for j, v := range colsum {
+		if v == 2 {
+			ans[0][j], ans[1][j] = 1, 1
+			upper--
+			lower--
+		}
+		if v == 1 {
+			if upper > lower {
+				upper--
+				ans[0][j] = 1
+			} else {
+				lower--
+				ans[1][j] = 1
+			}
+		}
+		if upper < 0 || lower < 0 {
+			break
+		}
+	}
+	if upper != 0 || lower != 0 {
+		return [][]int{}
+	}
+	return ans
+}
+```
+
+### **TypeScript**
+
+```ts
+function reconstructMatrix(
+    upper: number,
+    lower: number,
+    colsum: number[],
+): number[][] {
+    const n = colsum.length;
+    const ans: number[][] = Array(2)
+        .fill(0)
+        .map(() => Array(n).fill(0));
+    for (let j = 0; j < n; ++j) {
+        if (colsum[j] === 2) {
+            ans[0][j] = ans[1][j] = 1;
+            upper--;
+            lower--;
+        } else if (colsum[j] === 1) {
+            if (upper > lower) {
+                ans[0][j] = 1;
+                upper--;
+            } else {
+                ans[1][j] = 1;
+                lower--;
+            }
+        }
+        if (upper < 0 || lower < 0) {
+            break;
+        }
+    }
+    return upper || lower ? [] : ans;
+}
 ```
 
 ### **...**

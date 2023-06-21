@@ -1,4 +1,4 @@
-# [1325. 删除给定值的叶子节点](https://leetcode-cn.com/problems/delete-leaves-with-a-given-value)
+# [1325. 删除给定值的叶子节点](https://leetcode.cn/problems/delete-leaves-with-a-given-value)
 
 [English Version](/solution/1300-1399/1325.Delete%20Leaves%20With%20a%20Given%20Value/README_EN.md)
 
@@ -16,7 +16,7 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1300-1399/1325.Delete%20Leaves%20With%20a%20Given%20Value/images/sample_1_1684.png" style="height: 120px; width: 550px;"></strong></p>
+<p><strong><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1300-1399/1325.Delete%20Leaves%20With%20a%20Given%20Value/images/sample_1_1684.png" style="height: 120px; width: 550px;"></strong></p>
 
 <pre><strong>输入：</strong>root = [1,2,3,2,null,2,4], target = 2
 <strong>输出：</strong>[1,null,3,null,4]
@@ -27,7 +27,7 @@
 
 <p><strong>示例 2：</strong></p>
 
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1300-1399/1325.Delete%20Leaves%20With%20a%20Given%20Value/images/sample_2_1684.png" style="height: 120px; width: 300px;"></strong></p>
+<p><strong><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1300-1399/1325.Delete%20Leaves%20With%20a%20Given%20Value/images/sample_2_1684.png" style="height: 120px; width: 300px;"></strong></p>
 
 <pre><strong>输入：</strong>root = [1,3,3,3,2], target = 3
 <strong>输出：</strong>[1,3,null,null,2]
@@ -35,7 +35,7 @@
 
 <p><strong>示例 3：</strong></p>
 
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1300-1399/1325.Delete%20Leaves%20With%20a%20Given%20Value/images/sample_3_1684.png" style="width: 450px;"></strong></p>
+<p><strong><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1300-1399/1325.Delete%20Leaves%20With%20a%20Given%20Value/images/sample_3_1684.png" style="width: 450px;"></strong></p>
 
 <pre><strong>输入：</strong>root = [1,2,null,2,null,2], target = 2
 <strong>输出：</strong>[1]
@@ -67,7 +67,15 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
-后序遍历，遇到叶子节点值为 target 的时候，将叶子节点置为 null。此过程使用一个父节点来完成。
+**方法一：递归**
+
+我们先判断 $root$ 节点是否为空，若为空，则返回空。
+
+否则，递归地处理 $root$ 的左右子树，即调用 `root.left = removeLeafNodes(root.left, target)` 和 `root.right = removeLeafNodes(root.right, target)`。
+
+然后判断 $root$ 节点是否为叶子节点，即判断 $root.left$ 和 $root.right$ 是否为空，且 $root.val$ 是否等于 $target$。若是，则返回空，否则返回 $root$。
+
+时间复杂度 $O(n)$，空间复杂度 $O(n)$。其中 $n$ 为二叉树的节点个数。
 
 <!-- tabs:start -->
 
@@ -83,21 +91,16 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def removeLeafNodes(self, root: Optional[TreeNode], target: int) -> Optional[TreeNode]:
-        def dfs(root, prev):
-            if root is None:
-                return
-            dfs(root.left, root)
-            dfs(root.right, root)
-            if root.left is None and root.right is None and root.val == target:
-                if prev.left == root:
-                    prev.left = None
-                else:
-                    prev.right = None
-
-        p = TreeNode(val=0, left=root)
-        dfs(root, p)
-        return p.left
+    def removeLeafNodes(
+        self, root: Optional[TreeNode], target: int
+    ) -> Optional[TreeNode]:
+        if root is None:
+            return None
+        root.left = self.removeLeafNodes(root.left, target)
+        root.right = self.removeLeafNodes(root.right, target)
+        if root.left is None and root.right is None and root.val == target:
+            return None
+        return root
 ```
 
 ### **Java**
@@ -122,24 +125,15 @@ class Solution:
  */
 class Solution {
     public TreeNode removeLeafNodes(TreeNode root, int target) {
-        TreeNode p = new TreeNode(0, root, null);
-        dfs(root, p, target);
-        return p.left;
-    }
-
-    private void dfs(TreeNode root, TreeNode prev, int target) {
         if (root == null) {
-            return;
+            return null;
         }
-        dfs(root.left, root, target);
-        dfs(root.right, root, target);
+        root.left = removeLeafNodes(root.left, target);
+        root.right = removeLeafNodes(root.right, target);
         if (root.left == null && root.right == null && root.val == target) {
-            if (prev.left == root) {
-                prev.left = null;
-            } else {
-                prev.right = null;
-            }
+            return null;
         }
+        return root;
     }
 }
 ```
@@ -161,20 +155,15 @@ class Solution {
 class Solution {
 public:
     TreeNode* removeLeafNodes(TreeNode* root, int target) {
-        TreeNode* p = new TreeNode(0, root, nullptr);
-        dfs(root, p, target);
-        return p->left;
-    }
-
-    void dfs(TreeNode* root, TreeNode* prev, int target) {
-        if (!root) return;
-        dfs(root->left, root, target);
-        dfs(root->right, root, target);
-        if (!root->left && !root->right && root->val == target)
-        {
-            if (prev->left == root) prev->left = nullptr;
-            else prev->right = nullptr;
+        if (!root) {
+            return nullptr;
         }
+        root->left = removeLeafNodes(root->left, target);
+        root->right = removeLeafNodes(root->right, target);
+        if (!root->left && !root->right && root->val == target) {
+            return nullptr;
+        }
+        return root;
     }
 };
 ```
@@ -191,24 +180,48 @@ public:
  * }
  */
 func removeLeafNodes(root *TreeNode, target int) *TreeNode {
-	p := &TreeNode{0, root, nil}
-	var dfs func(root, prev *TreeNode)
-	dfs = func(root, prev *TreeNode) {
-		if root == nil {
-			return
-		}
-		dfs(root.Left, root)
-		dfs(root.Right, root)
-		if root.Left == nil && root.Right == nil && root.Val == target {
-			if prev.Left == root {
-				prev.Left = nil
-			} else {
-				prev.Right = nil
-			}
-		}
+	if root == nil {
+		return nil
 	}
-	dfs(root, p)
-	return p.Left
+	root.Left = removeLeafNodes(root.Left, target)
+	root.Right = removeLeafNodes(root.Right, target)
+	if root.Left == nil && root.Right == nil && root.Val == target {
+		return nil
+	}
+	return root
+}
+```
+
+### **TypeScript**
+
+```ts
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function removeLeafNodes(
+    root: TreeNode | null,
+    target: number,
+): TreeNode | null {
+    if (!root) {
+        return null;
+    }
+    root.left = removeLeafNodes(root.left, target);
+    root.right = removeLeafNodes(root.right, target);
+    if (!root.left && !root.right && root.val == target) {
+        return null;
+    }
+    return root;
 }
 ```
 

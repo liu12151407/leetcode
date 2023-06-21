@@ -1,4 +1,4 @@
-# [LCP 06. 拿硬币](https://leetcode-cn.com/problems/na-ying-bi)
+# [LCP 06. 拿硬币](https://leetcode.cn/problems/na-ying-bi)
 
 ## 题目描述
 
@@ -85,6 +85,34 @@ func minCount(coins []int) int {
 		ans += (coin + 1) / 2
 	}
 	return ans
+}
+```
+
+### **C**
+
+```c
+int minCount(int* coins, int coinsSize) {
+    int res = 0;
+    for (int i = 0; i < coinsSize; i++) {
+        int coin = coins[i];
+        if (coin % 2 == 1) {
+            res++;
+        }
+        res += coin / 2;
+    }
+    return res;
+}
+```
+
+### **TypeScript**
+
+```ts
+function minCount(coins: number[]): number {
+    let ans = 0;
+    for (const coin of coins) {
+        ans += Math.floor((coin + 1) / 2);
+    }
+    return ans;
 }
 ```
 

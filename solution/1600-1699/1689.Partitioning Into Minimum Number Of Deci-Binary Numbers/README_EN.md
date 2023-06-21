@@ -9,41 +9,29 @@
 <p>Given a string <code>n</code> that represents a positive decimal integer, return <em>the <strong>minimum</strong> number of positive <strong>deci-binary</strong> numbers needed so that they sum up to </em><code>n</code><em>.</em></p>
 
 <p>&nbsp;</p>
-
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
-
 <strong>Input:</strong> n = &quot;32&quot;
-
 <strong>Output:</strong> 3
-
 <strong>Explanation:</strong> 10 + 11 + 11 = 32
-
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
-
 <strong>Input:</strong> n = &quot;82734&quot;
-
 <strong>Output:</strong> 8
-
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
-
 <strong>Input:</strong> n = &quot;27346209830709182346&quot;
-
 <strong>Output:</strong> 9
-
 </pre>
 
 <p>&nbsp;</p>
-
 <p><strong>Constraints:</strong></p>
 
 <ul>
@@ -69,22 +57,12 @@ class Solution:
 ```java
 class Solution {
     public int minPartitions(String n) {
-        int res = 0;
-        for (char c : n.toCharArray()) {
-            res = Math.max(res, c - '0');
+        int ans = 0;
+        for (int i = 0; i < n.length(); ++i) {
+            ans = Math.max(ans, n.charAt(i) - '0');
         }
-        return res;
+        return ans;
     }
-}
-```
-
-### **TypeScript**
-
-```ts
-function minPartitions(n: string): number {
-    let nums = n.split("").map(d => parseInt(d));
-    let ans = Math.max(...nums);
-    return ans;
 }
 ```
 
@@ -94,11 +72,9 @@ function minPartitions(n: string): number {
 class Solution {
 public:
     int minPartitions(string n) {
-        int res = 0;
-        for (auto& c : n) {
-            res = max(res, c - '0');
-        }
-        return res;
+        int ans = 0;
+        for (char& c : n) ans = max(ans, c - '0');
+        return ans;
     }
 };
 ```
@@ -106,15 +82,52 @@ public:
 ### **Go**
 
 ```go
-func minPartitions(n string) int {
-	res := 0
+func minPartitions(n string) (ans int) {
 	for _, c := range n {
-		t := int(c - '0')
-		if t > res {
-			res = t
+		if t := int(c - '0'); ans < t {
+			ans = t
 		}
 	}
-	return res
+	return
+}
+```
+
+### **TypeScript**
+
+```ts
+function minPartitions(n: string): number {
+    let nums = n.split('').map(d => parseInt(d));
+    let ans = Math.max(...nums);
+    return ans;
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn min_partitions(n: String) -> i32 {
+        let mut ans = 0;
+        for c in n.as_bytes() {
+            ans = ans.max((c - b'0') as i32);
+        }
+        ans
+    }
+}
+```
+
+### **C**
+
+```c
+int minPartitions(char* n) {
+    int ans = 0;
+    for (int i = 0; n[i]; i++) {
+        int v = n[i] - '0';
+        if (v > ans) {
+            ans = v;
+        }
+    }
+    return ans;
 }
 ```
 

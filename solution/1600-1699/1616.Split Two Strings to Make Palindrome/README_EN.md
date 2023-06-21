@@ -13,7 +13,7 @@
 <p><strong>Notice</strong> that&nbsp;<code>x + y</code> denotes the concatenation of strings <code>x</code> and <code>y</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> a = &quot;x&quot;, b = &quot;y&quot;
@@ -24,14 +24,14 @@ b<sub>prefix</sub> = &quot;&quot;, b<sub>suffix</sub> = &quot;y&quot;
 Then, a<sub>prefix</sub> + b<sub>suffix</sub> = &quot;&quot; + &quot;y&quot; = &quot;y&quot;, which is a palindrome.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
-<strong>Input:</strong> a = &quot;abdef&quot;, b = &quot;fecab&quot;
-<strong>Output:</strong> true
+<strong>Input:</strong> a = &quot;xbdef&quot;, b = &quot;xecab&quot;
+<strong>Output:</strong> false
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> a = &quot;ulacfd&quot;, b = &quot;jizalu&quot;
@@ -40,13 +40,6 @@ Then, a<sub>prefix</sub> + b<sub>suffix</sub> = &quot;&quot; + &quot;y&quot; = &
 a<sub>prefix</sub> = &quot;ula&quot;, a<sub>suffix</sub> = &quot;cfd&quot;
 b<sub>prefix</sub> = &quot;jiz&quot;, b<sub>suffix</sub> = &quot;alu&quot;
 Then, a<sub>prefix</sub> + b<sub>suffix</sub> = &quot;ula&quot; + &quot;alu&quot; = &quot;ulaalu&quot;, which is a palindrome.
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> a = &quot;xbdef&quot;, b = &quot;xecab&quot;
-<strong>Output:</strong> false
 </pre>
 
 <p>&nbsp;</p>
@@ -65,13 +58,157 @@ Then, a<sub>prefix</sub> + b<sub>suffix</sub> = &quot;ula&quot; + &quot;alu&quot
 ### **Python3**
 
 ```python
+class Solution:
+    def checkPalindromeFormation(self, a: str, b: str) -> bool:
+        def check1(a: str, b: str) -> bool:
+            i, j = 0, len(b) - 1
+            while i < j and a[i] == b[j]:
+                i, j = i + 1, j - 1
+            return i >= j or check2(a, i, j) or check2(b, i, j)
 
+        def check2(a: str, i: int, j: int) -> bool:
+            return a[i : j + 1] == a[i : j + 1][::-1]
+
+        return check1(a, b) or check1(b, a)
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public boolean checkPalindromeFormation(String a, String b) {
+        return check1(a, b) || check1(b, a);
+    }
 
+    private boolean check1(String a, String b) {
+        int i = 0;
+        int j = b.length() - 1;
+        while (i < j && a.charAt(i) == b.charAt(j)) {
+            i++;
+            j--;
+        }
+        return i >= j || check2(a, i, j) || check2(b, i, j);
+    }
+
+    private boolean check2(String a, int i, int j) {
+        while (i < j && a.charAt(i) == a.charAt(j)) {
+            i++;
+            j--;
+        }
+        return i >= j;
+    }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool checkPalindromeFormation(string a, string b) {
+        return check1(a, b) || check1(b, a);
+    }
+
+private:
+    bool check1(string& a, string& b) {
+        int i = 0, j = b.size() - 1;
+        while (i < j && a[i] == b[j]) {
+            ++i;
+            --j;
+        }
+        return i >= j || check2(a, i, j) || check2(b, i, j);
+    }
+
+    bool check2(string& a, int i, int j) {
+        while (i <= j && a[i] == a[j]) {
+            ++i;
+            --j;
+        }
+        return i >= j;
+    }
+};
+```
+
+### **Go**
+
+```go
+func checkPalindromeFormation(a string, b string) bool {
+	return check1(a, b) || check1(b, a)
+}
+
+func check1(a, b string) bool {
+	i, j := 0, len(b)-1
+	for i < j && a[i] == b[j] {
+		i++
+		j--
+	}
+	return i >= j || check2(a, i, j) || check2(b, i, j)
+}
+
+func check2(a string, i, j int) bool {
+	for i < j && a[i] == a[j] {
+		i++
+		j--
+	}
+	return i >= j
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn check_palindrome_formation(a: String, b: String) -> bool {
+        fn check1(a: &[u8], b: &[u8]) -> bool {
+            let (mut i, mut j) = (0, b.len() - 1);
+            while i < j && a[i] == b[j] {
+                i += 1;
+                j -= 1;
+            }
+            if i >= j {
+                return true;
+            }
+            check2(a, i, j) || check2(b, i, j)
+        }
+
+        fn check2(a: &[u8], mut i: usize, mut j: usize) -> bool {
+            while i < j && a[i] == a[j] {
+                i += 1;
+                j -= 1;
+            }
+            i >= j
+        }
+
+        let a = a.as_bytes();
+        let b = b.as_bytes();
+        check1(a, b) || check1(b, a)
+    }
+}
+```
+
+### **TypeScript**
+
+```ts
+function checkPalindromeFormation(a: string, b: string): boolean {
+    const check1 = (a: string, b: string) => {
+        let i = 0;
+        let j = b.length - 1;
+        while (i < j && a.charAt(i) === b.charAt(j)) {
+            i++;
+            j--;
+        }
+        return i >= j || check2(a, i, j) || check2(b, i, j);
+    };
+
+    const check2 = (a: string, i: number, j: number) => {
+        while (i < j && a.charAt(i) === a.charAt(j)) {
+            i++;
+            j--;
+        }
+        return i >= j;
+    };
+    return check1(a, b) || check1(b, a);
+}
 ```
 
 ### **...**

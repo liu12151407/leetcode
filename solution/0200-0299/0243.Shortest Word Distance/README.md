@@ -1,4 +1,4 @@
-# [243. 最短单词距离](https://leetcode-cn.com/problems/shortest-word-distance)
+# [243. 最短单词距离](https://leetcode.cn/problems/shortest-word-distance)
 
 [English Version](/solution/0200-0299/0243.Shortest%20Word%20Distance/README_EN.md)
 
@@ -6,27 +6,44 @@
 
 <!-- 这里写题目描述 -->
 
-<p>给定一个单词列表和两个单词 <em>word1</em> 和 <em>word2</em>，返回列表中这两个单词之间的最短距离。</p>
+<p>给定一个字符串数组&nbsp;<code>wordDict</code>&nbsp;和两个已经存在于该数组中的不同的字符串&nbsp;<code>word1</code> 和 <code>word2</code> 。返回列表中这两个单词之间的最短距离。</p>
 
-<p><strong>示例:</strong><br>
-假设 words = <code>[&quot;practice&quot;, &quot;makes&quot;, &quot;perfect&quot;, &quot;coding&quot;, &quot;makes&quot;]</code></p>
+<p>&nbsp;</p>
 
-<pre><strong>输入:</strong> <em>word1</em> = <code>&ldquo;coding&rdquo;</code>, <em>word2</em> = <code>&ldquo;practice&rdquo;</code>
+<p><strong>示例 1:</strong></p>
+
+<pre>
+<strong>输入:</strong> wordsDict = ["practice", "makes", "perfect", "coding", "makes"], word1 = "coding", word2 = "practice"
 <strong>输出:</strong> 3
 </pre>
 
-<pre><strong>输入:</strong> <em>word1</em> = <code>&quot;makes&quot;</code>, <em>word2</em> = <code>&quot;coding&quot;</code>
-<strong>输出:</strong> 1
-</pre>
+<p><strong>示例&nbsp;2:</strong></p>
 
-<p><strong>注意:</strong><br>
-你可以假设 <em>word1</em> 不等于 <em>word2</em>, 并且 <em>word1</em> 和 <em>word2</em> 都在列表里。</p>
+<pre>
+<strong>输入:</strong> wordsDict = ["practice", "makes", "perfect", "coding", "makes"], word1 = "makes", word2 = "coding"
+<strong>输出:</strong> 1</pre>
+
+<p>&nbsp;</p>
+
+<p><strong>提示:</strong><meta charset="UTF-8" /></p>
+
+<ul>
+	<li><code>1 &lt;= wordsDict.length &lt;= 3 * 10<sup>4</sup></code></li>
+	<li><code>1 &lt;= wordsDict[i].length &lt;= 10</code></li>
+	<li><code>wordsDict[i]</code>&nbsp;由小写英文字母组成</li>
+	<li><code>word1</code>&nbsp;和&nbsp;<code>word2</code>&nbsp;在&nbsp;<code>wordsDict</code> 中</li>
+	<li><code>word1 != word2</code></li>
+</ul>
 
 ## 解法
 
 <!-- 这里可写通用的实现逻辑 -->
 
-用两个指针 `i1`, `i2` 保存 `word1` 和 `word2` 最近出现的位置，然后每次计算距离 `Math.abs(i1 - i2)` 是否比此前的记录更小，是则更新最短距离。
+**方法一：双指针**
+
+遍历数组 `wordsDict`，找到 `word1` 和 `word2` 的下标 $i$ 和 $j$，求 $i-j$ 的最小值。
+
+时间复杂度 $O(n)$，空间复杂度 $O(1)$。其中 $n$ 为数组 `wordsDict` 的长度。
 
 <!-- tabs:start -->
 
@@ -37,16 +54,16 @@
 ```python
 class Solution:
     def shortestDistance(self, wordsDict: List[str], word1: str, word2: str) -> int:
-        i1 = i2 = -1
-        shortest_distance = len(wordsDict)
-        for i in range(len(wordsDict)):
-            if wordsDict[i] == word1:
-                i1 = i
-            elif wordsDict[i] == word2:
-                i2 = i
-            if i1 != -1 and i2 != -1:
-                shortest_distance = min(shortest_distance, abs(i1 - i2))
-        return shortest_distance
+        i = j = -1
+        ans = inf
+        for k, w in enumerate(wordsDict):
+            if w == word1:
+                i = k
+            if w == word2:
+                j = k
+            if i != -1 and j != -1:
+                ans = min(ans, abs(i - j))
+        return ans
 ```
 
 ### **Java**
@@ -56,34 +73,78 @@ class Solution:
 ```java
 class Solution {
     public int shortestDistance(String[] wordsDict, String word1, String word2) {
-        int i1 = -1, i2 = -1;
-        int shortestDistance = wordsDict.length;
-        for (int i = 0; i < wordsDict.length; ++i) {
-            if (word1.equals(wordsDict[i])) {
-                i1 = i;
-            } else if (word2.equals(wordsDict[i])) {
-                i2 = i;
+        int ans = 0x3f3f3f3f;
+        for (int k = 0, i = -1, j = -1; k < wordsDict.length; ++k) {
+            if (wordsDict[k].equals(word1)) {
+                i = k;
             }
-            if (i1 != -1 && i2 != -1) {
-                shortestDistance = Math.min(shortestDistance, Math.abs(i1 - i2));
+            if (wordsDict[k].equals(word2)) {
+                j = k;
+            }
+            if (i != -1 && j != -1) {
+                ans = Math.min(ans, Math.abs(i - j));
             }
         }
-        return shortestDistance;
+        return ans;
     }
 }
 ```
 
-### **TypeScript**
+### **C++**
 
-```ts
-function integerBreak(n: number): number {
-    let dp = new Array(n + 1).fill(1);
-    for (let i = 3; i <= n; i++) {
-        for (let j = 1; j < i; j++) {
-            dp[i] = Math.max(dp[i], j * (i - j), j * dp[i - j]);
+```cpp
+class Solution {
+public:
+    int shortestDistance(vector<string>& wordsDict, string word1, string word2) {
+        int ans = INT_MAX;
+        for (int k = 0, i = -1, j = -1; k < wordsDict.size(); ++k) {
+            if (wordsDict[k] == word1) {
+                i = k;
+            }
+            if (wordsDict[k] == word2) {
+                j = k;
+            }
+            if (i != -1 && j != -1) {
+                ans = min(ans, abs(i - j));
+            }
         }
+        return ans;
     }
-    return dp.pop();
+};
+```
+
+### **Go**
+
+```go
+func shortestDistance(wordsDict []string, word1 string, word2 string) int {
+	ans := 0x3f3f3f3f
+	i, j := -1, -1
+	for k, w := range wordsDict {
+		if w == word1 {
+			i = k
+		}
+		if w == word2 {
+			j = k
+		}
+		if i != -1 && j != -1 {
+			ans = min(ans, abs(i-j))
+		}
+	}
+	return ans
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
 }
 ```
 

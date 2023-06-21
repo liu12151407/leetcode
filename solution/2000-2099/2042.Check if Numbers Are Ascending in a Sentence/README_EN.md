@@ -15,8 +15,8 @@
 <p>Return <code>true</code><em> if so, or </em><code>false</code><em> otherwise</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="example-1" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2042.Check%20if%20Numbers%20Are%20Ascending%20in%20a%20Sentence/images/example1.png" style="width: 637px; height: 48px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="example-1" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2042.Check%20if%20Numbers%20Are%20Ascending%20in%20a%20Sentence/images/example1.png" style="width: 637px; height: 48px;" />
 <pre>
 <strong>Input:</strong> s = &quot;1 box has 3 blue 4 red 6 green and 12 yellow marbles&quot;
 <strong>Output:</strong> true
@@ -24,7 +24,7 @@
 They are strictly increasing from left to right: 1 &lt; 3 &lt; 4 &lt; 6 &lt; 12.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;hello world 5 x 5&quot;
@@ -32,21 +32,12 @@ They are strictly increasing from left to right: 1 &lt; 3 &lt; 4 &lt; 6 &lt; 12.
 <strong>Explanation:</strong> The numbers in s are: <u><strong>5</strong></u>, <strong><u>5</u></strong>. They are not strictly increasing.
 </pre>
 
-<p><strong>Example 3:</strong></p>
-<img alt="example-3" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2042.Check%20if%20Numbers%20Are%20Ascending%20in%20a%20Sentence/images/example3.png" style="width: 794px; height: 48px;" />
+<p><strong class="example">Example 3:</strong></p>
+<img alt="example-3" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2042.Check%20if%20Numbers%20Are%20Ascending%20in%20a%20Sentence/images/example3.png" style="width: 794px; height: 48px;" />
 <pre>
 <strong>Input:</strong> s = &quot;sunset is at 7 51 pm overnight lows will be in the low 50 and 60 s&quot;
 <strong>Output:</strong> false
 <strong>Explanation:</strong> The numbers in s are: 7, <u><strong>51</strong></u>, <u><strong>50</strong></u>, 60. They are not strictly increasing.
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> s = &quot;4 5 11 26&quot;
-<strong>Output:</strong> true
-<strong>Explanation:</strong> The numbers in s are: 4, 5, 11, 26.
-They are strictly increasing from left to right: 4 &lt; 5 &lt; 11 &lt; 26.
 </pre>
 
 <p>&nbsp;</p>
@@ -71,12 +62,31 @@ They are strictly increasing from left to right: 4 &lt; 5 &lt; 11 &lt; 26.
 ```python
 class Solution:
     def areNumbersAscending(self, s: str) -> bool:
-        curr = 0
-        for t in s.split(' '):
+        pre = 0
+        for t in s.split():
             if t[0].isdigit():
-                if curr >= int(t):
+                if (cur := int(t)) <= pre:
                     return False
-                curr = int(t)
+                pre = cur
+        return True
+```
+
+```python
+class Solution:
+    def areNumbersAscending(self, s: str) -> bool:
+        pre = i = 0
+        n = len(s)
+        while i < n:
+            if s[i].isdigit():
+                cur = 0
+                while i < n and s[i].isdigit():
+                    cur = cur * 10 + int(s[i])
+                    i += 1
+                if pre >= cur:
+                    return False
+                pre = cur
+            else:
+                i += 1
         return True
 ```
 
@@ -85,36 +95,18 @@ class Solution:
 ```java
 class Solution {
     public boolean areNumbersAscending(String s) {
-        int curr = 0;
-        for (String t : s.split(" ")) {
-            char c = t.charAt(0);
-            if (Character.isDigit(c)) {
-                int x = Integer.parseInt(t);
-                if (curr >= x) {
+        int pre = 0;
+        for (var t : s.split(" ")) {
+            if (t.charAt(0) <= '9') {
+                int cur = Integer.parseInt(t);
+                if (pre >= cur) {
                     return false;
                 }
-                curr = x;
+                pre = cur;
             }
         }
         return true;
     }
-}
-```
-
-### **TypeScript**
-
-```ts
-function areNumbersAscending(s: string): boolean {
-    let strs = s.split(" ");
-    let prev = Number.MIN_SAFE_INTEGER;
-    for (let str of strs) {
-        let num = Number(str);
-        if (!isNaN(num)) {
-            if (num <= prev) return false;
-            prev = num;
-        }
-    }
-    return true;
 }
 ```
 
@@ -124,16 +116,16 @@ function areNumbersAscending(s: string): boolean {
 class Solution {
 public:
     bool areNumbersAscending(string s) {
-        int curr = 0;
+        int pre = 0;
         istringstream is(s);
         string t;
-        while (is >> t)
-        {
-            if (isdigit(t[0]))
-            {
-                int x = stoi(t);
-                if (curr >= x) return false;
-                curr = x;
+        while (is >> t) {
+            if (isdigit(t[0])) {
+                int cur = stoi(t);
+                if (pre >= cur) {
+                    return false;
+                }
+                pre = cur;
             }
         }
         return true;
@@ -145,17 +137,81 @@ public:
 
 ```go
 func areNumbersAscending(s string) bool {
-	curr := 0
+	pre := 0
 	for _, t := range strings.Split(s, " ") {
-		if unicode.IsDigit(rune(t[0])) {
-			x, _ := strconv.Atoi(t)
-			if curr >= x {
+		if t[0] <= '9' {
+			cur, _ := strconv.Atoi(t)
+			if pre >= cur {
 				return false
 			}
-			curr = x
+			pre = cur
 		}
 	}
 	return true
+}
+```
+
+### **TypeScript**
+
+```ts
+function areNumbersAscending(s: string): boolean {
+    let pre = -1;
+    for (const cur of s.split(' ')) {
+        if (cur[0] <= '9') {
+            const num = Number(cur);
+            if (num <= pre) {
+                return false;
+            }
+            pre = num;
+        }
+    }
+    return true;
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn are_numbers_ascending(s: String) -> bool {
+        let mut pre = -1;
+        for cur in s.split(' ') {
+            if cur.as_bytes()[0] <= b'9' {
+                let num = cur.parse::<i32>().unwrap();
+                if num <= pre {
+                    return false;
+                }
+                pre = num;
+            }
+        }
+        true
+    }
+}
+```
+
+### **C**
+
+```c
+bool areNumbersAscending(char* s) {
+    int pre = -1;
+    int cur = 0;
+    for (int i = 0; s[i]; i++) {
+        if (isdigit(s[i])) {
+            cur = cur * 10 + s[i] - '0';
+        } else {
+            if (cur != 0) {
+                if (cur <= pre) {
+                    return 0;
+                }
+                pre = cur;
+                cur = 0;
+            }
+        }
+    }
+    if (cur != 0 && cur <= pre) {
+        return 0;
+    }
+    return 1;
 }
 ```
 

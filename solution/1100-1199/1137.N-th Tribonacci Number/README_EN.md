@@ -11,35 +11,24 @@
 <p>Given <code>n</code>, return the value of T<sub>n</sub>.</p>
 
 <p>&nbsp;</p>
-
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
-
 <strong>Input:</strong> n = 4
-
 <strong>Output:</strong> 4
-
 <strong>Explanation:</strong>
-
 T_3 = 0 + 1 + 1 = 2
-
 T_4 = 1 + 1 + 2 = 4
-
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
-
 <strong>Input:</strong> n = 25
-
 <strong>Output:</strong> 1389537
-
 </pre>
 
 <p>&nbsp;</p>
-
 <p><strong>Constraints:</strong></p>
 
 <ul>
@@ -128,6 +117,29 @@ var tribonacci = function (n) {
     }
     return a;
 };
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param Integer $n
+     * @return Integer
+     */
+    function tribonacci($n) {
+        if ($n == 0) {
+            return 0;
+        } elseif ($n == 1 || $n == 2) {
+            return 1;
+        }
+        $dp = [0, 1, 1];
+        for ($i = 3; $i <= $n; $i++) {
+            $dp[$i] = $dp[$i - 1] + $dp[$i - 2] + $dp[$i - 3];
+        }
+        return $dp[$n];
+    }
+}
 ```
 
 ### **...**

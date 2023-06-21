@@ -1,4 +1,4 @@
-# [剑指 Offer II 055. 二叉搜索树迭代器](https://leetcode-cn.com/problems/kTOapQ)
+# [剑指 Offer II 055. 二叉搜索树迭代器](https://leetcode.cn/problems/kTOapQ)
 
 ## 题目描述
 
@@ -24,7 +24,7 @@
 
 <p><strong>示例：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20055.%20%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E8%BF%AD%E4%BB%A3%E5%99%A8/images/bst-tree.png" style="width: 189px; height: 178px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20055.%20%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E8%BF%AD%E4%BB%A3%E5%99%A8/images/bst-tree.png" style="width: 189px; height: 178px;" /></p>
 
 <pre>
 <strong>输入</strong>
@@ -66,7 +66,7 @@ bSTIterator.hasNext(); // 返回 False
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 173&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/binary-search-tree-iterator/">https://leetcode-cn.com/problems/binary-search-tree-iterator/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 173&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/binary-search-tree-iterator/">https://leetcode.cn/problems/binary-search-tree-iterator/</a></p>
 
 ## 解法
 
@@ -98,7 +98,6 @@ bSTIterator.hasNext(); // 返回 False
 #         self.left = left
 #         self.right = right
 class BSTIterator:
-
     def __init__(self, root: TreeNode):
         def inorder(root):
             if root:
@@ -133,7 +132,6 @@ class BSTIterator:
 #         self.left = left
 #         self.right = right
 class BSTIterator:
-
     def __init__(self, root: TreeNode):
         self.stack = []
         while root:
@@ -440,6 +438,122 @@ BSTIterator.prototype.hasNext = function () {
  * var obj = new BSTIterator(root)
  * var param_1 = obj.next()
  * var param_2 = obj.hasNext()
+ */
+```
+
+### **TypeScript**
+
+```ts
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+class BSTIterator {
+    private stack: number[];
+
+    constructor(root: TreeNode | null) {
+        this.stack = [];
+        const dfs = ({ val, left, right }: TreeNode) => {
+            right && dfs(right);
+            this.stack.push(val);
+            left && dfs(left);
+        };
+        dfs(root);
+    }
+
+    next(): number {
+        return this.stack.pop();
+    }
+
+    hasNext(): boolean {
+        return this.stack.length !== 0;
+    }
+}
+
+/**
+ * Your BSTIterator object will be instantiated and called as such:
+ * var obj = new BSTIterator(root)
+ * var param_1 = obj.next()
+ * var param_2 = obj.hasNext()
+ */
+```
+
+### **Rust**
+
+```rust
+// Definition for a binary tree node.
+// #[derive(Debug, PartialEq, Eq)]
+// pub struct TreeNode {
+//   pub val: i32,
+//   pub left: Option<Rc<RefCell<TreeNode>>>,
+//   pub right: Option<Rc<RefCell<TreeNode>>>,
+// }
+//
+// impl TreeNode {
+//   #[inline]
+//   pub fn new(val: i32) -> Self {
+//     TreeNode {
+//       val,
+//       left: None,
+//       right: None
+//     }
+//   }
+// }
+use std::rc::Rc;
+use std::cell::RefCell;
+struct BSTIterator {
+    stack: Vec<i32>
+}
+
+
+/**
+ * `&self` means the method takes an immutable reference.
+ * If you need a mutable reference, change it to `&mut self` instead.
+ */
+impl BSTIterator {
+    fn dfs(root: &Option<Rc<RefCell<TreeNode>>>, stack: &mut Vec<i32>) {
+        let node = root.as_ref().unwrap().borrow();
+        if node.right.is_some() {
+            Self::dfs(&node.right, stack);
+        }
+        stack.push(node.val);
+        if node.left.is_some() {
+            Self::dfs(&node.left, stack);
+        }
+    }
+
+    fn new(root: Option<Rc<RefCell<TreeNode>>>) -> Self {
+        let mut stack = Vec::new();
+        Self::dfs(&root, &mut stack);
+        Self {
+            stack
+        }
+    }
+
+    fn next(&mut self) -> i32 {
+        self.stack.pop().unwrap()
+    }
+
+    fn has_next(&self) -> bool {
+        !self.stack.is_empty()
+    }
+}
+
+/**
+ * Your BSTIterator object will be instantiated and called as such:
+ * let obj = BSTIterator::new(root);
+ * let ret_1: i32 = obj.next();
+ * let ret_2: bool = obj.has_next();
  */
 ```
 

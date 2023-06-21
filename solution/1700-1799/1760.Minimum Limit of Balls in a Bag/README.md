@@ -1,4 +1,4 @@
-# [1760. 袋子里最少数目的球](https://leetcode-cn.com/problems/minimum-limit-of-balls-in-a-bag)
+# [1760. 袋子里最少数目的球](https://leetcode.cn/problems/minimum-limit-of-balls-in-a-bag)
 
 [English Version](/solution/1700-1799/1760.Minimum%20Limit%20of%20Balls%20in%20a%20Bag/README_EN.md)
 
@@ -12,12 +12,10 @@
 
 <ul>
 	<li>选择任意一个袋子，并将袋子里的球分到 2 个新的袋子中，每个袋子里都有 <strong>正整数</strong> 个球。
-
     <ul>
     	<li>比方说，一个袋子里有 <code>5</code> 个球，你可以把它们分到两个新袋子里，分别有 <code>1</code> 个和 <code>4</code> 个球，或者分别有 <code>2</code> 个和 <code>3</code> 个球。</li>
     </ul>
     </li>
-
 </ul>
 
 <p>你的开销是单个袋子里球数目的 <strong>最大值</strong> ，你想要 <strong>最小化</strong> 开销。</p>
@@ -70,9 +68,11 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
-二分查找。
+**方法一：二分查找**
 
-题目可以转换为：对某个开销值，看它能不能在 maxOperations 次操作内得到。二分枚举开销值，找到最小的开销值即可。
+我们可以将题目可以转换为：对某个开销值，看它能不能在 maxOperations 次操作内得到。因此，二分枚举开销值，找到最小的且满足条件的开销值即可。
+
+时间复杂度 $O(n \times \log M)$。其中 $n$ 和 $M$ 分别为数组 `nums` 的长度和最大值。
 
 <!-- tabs:start -->
 
@@ -83,15 +83,10 @@
 ```python
 class Solution:
     def minimumSize(self, nums: List[int], maxOperations: int) -> int:
-        left, right = 1, max(nums)
-        while left < right:
-            mid = (left + right) >> 1
-            ops = sum([(num - 1) // mid for num in nums])
-            if ops <= maxOperations:
-                right = mid
-            else:
-                left = mid + 1
-        return left
+        def check(mx: int) -> bool:
+            return sum((x - 1) // mx for x in nums) <= maxOperations
+
+        return bisect_left(range(1, max(nums)), True, key=check) + 1
 ```
 
 ### **Java**
@@ -101,14 +96,17 @@ class Solution:
 ```java
 class Solution {
     public int minimumSize(int[] nums, int maxOperations) {
-        int left = 1, right = 1000000000;
+        int left = 1, right = 0;
+        for (int x : nums) {
+            right = Math.max(right, x);
+        }
         while (left < right) {
-            int mid = (left + right) >>> 1;
-            long ops = 0;
-            for (int num : nums) {
-                ops += (num - 1) / mid;
+            int mid = (left + right) >> 1;
+            long cnt = 0;
+            for (int x : nums) {
+                cnt += (x - 1) / mid;
             }
-            if (ops <= maxOperations) {
+            if (cnt <= maxOperations) {
                 right = mid;
             } else {
                 left = mid + 1;
@@ -127,12 +125,12 @@ public:
     int minimumSize(vector<int>& nums, int maxOperations) {
         int left = 1, right = *max_element(nums.begin(), nums.end());
         while (left < right) {
-            int mid = left + (right - left >> 1);
-            long long ops = 0;
-            for (int num : nums) {
-                ops += (num - 1) / mid;
+            int mid = (left + right) >> 1;
+            long long cnt = 0;
+            for (int x : nums) {
+                cnt += (x - 1) / mid;
             }
-            if (ops <= maxOperations) {
+            if (cnt <= maxOperations) {
                 right = mid;
             } else {
                 left = mid + 1;
@@ -147,30 +145,74 @@ public:
 
 ```go
 func minimumSize(nums []int, maxOperations int) int {
-	left, right := 1, max(nums)
-	for left < right {
-		mid := (left + right) >> 1
-		var ops int
-		for _, num := range nums {
-			ops += (num - 1) / mid
-		}
-		if ops <= maxOperations {
-			right = mid
-		} else {
-			left = mid + 1
-		}
+	r := 0
+	for _, x := range nums {
+		r = max(r, x)
 	}
-	return left
+	return 1 + sort.Search(r, func(mx int) bool {
+		mx++
+		cnt := 0
+		for _, x := range nums {
+			cnt += (x - 1) / mx
+		}
+		return cnt <= maxOperations
+	})
 }
 
-func max(nums []int) int {
-	res := 0
-	for _, num := range nums {
-		if res < num {
-			res = num
-		}
+func max(a, b int) int {
+	if a > b {
+		return a
 	}
-	return res
+	return b
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number[]} nums
+ * @param {number} maxOperations
+ * @return {number}
+ */
+var minimumSize = function (nums, maxOperations) {
+    let left = 1;
+    let right = Math.max(...nums);
+    while (left < right) {
+        const mid = (left + right) >> 1;
+        let cnt = 0;
+        for (const x of nums) {
+            cnt += ~~((x - 1) / mid);
+        }
+        if (cnt <= maxOperations) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+    return left;
+};
+```
+
+### **TypeScript**
+
+```ts
+function minimumSize(nums: number[], maxOperations: number): number {
+    let left = 1;
+    let right = Math.max(...nums);
+    while (left < right) {
+        const mid = (left + right) >> 1;
+        let cnt = 0;
+        for (const x of nums) {
+            cnt += ~~((x - 1) / mid);
+        }
+        if (cnt <= maxOperations) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+    return left;
 }
 ```
 

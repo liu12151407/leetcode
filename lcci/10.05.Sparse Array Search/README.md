@@ -1,4 +1,4 @@
-# [面试题 10.05. 稀疏数组搜索](https://leetcode-cn.com/problems/sparse-array-search-lcci)
+# [面试题 10.05. 稀疏数组搜索](https://leetcode.cn/problems/sparse-array-search-lcci)
 
 [中文文档](/lcci/10.05.Sparse%20Array%20Search/README.md)
 
@@ -82,12 +82,13 @@ class Solution {
 public:
     int findString(vector<string>& words, string s) {
         int left = 0, right = words.size() - 1;
-        while (left < right)
-        {
+        while (left < right) {
             int mid = left + right >> 1;
             while (left < mid && words[mid] == "") --mid;
-            if (s <= words[mid]) right = mid;
-            else left = mid + 1;
+            if (s <= words[mid])
+                right = mid;
+            else
+                left = mid + 1;
         }
         return words[left] == s ? left : -1;
     }

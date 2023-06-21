@@ -1,4 +1,4 @@
-# [1996. 游戏中弱角色的数量](https://leetcode-cn.com/problems/the-number-of-weak-characters-in-the-game)
+# [1996. 游戏中弱角色的数量](https://leetcode.cn/problems/the-number-of-weak-characters-in-the-game)
 
 [English Version](/solution/1900-1999/1996.The%20Number%20of%20Weak%20Characters%20in%20the%20Game/README_EN.md)
 
@@ -52,6 +52,16 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：排序 + 遍历**
+
+我们可以将所有角色按照攻击力降序排序，防御力升序排序。
+
+然后遍历所有角色，对于当前角色，如果其防御力小于之前的最大防御力，则说明其为弱角色，答案加一，否则更新最大防御力。
+
+遍历结束后，即可得到答案。
+
+时间复杂度 $O(n \times \log n)$，空间复杂度 $O(\log n)$。其中 $n$ 为角色数量。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -59,7 +69,14 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def numberOfWeakCharacters(self, properties: List[List[int]]) -> int:
+        properties.sort(key=lambda x: (-x[0], x[1]))
+        ans = mx = 0
+        for _, x in properties:
+            ans += x < mx
+            mx = max(mx, x)
+        return ans
 ```
 
 ### **Java**
@@ -67,7 +84,99 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public int numberOfWeakCharacters(int[][] properties) {
+        Arrays.sort(properties, (a, b) -> b[0] - a[0] == 0 ? a[1] - b[1] : b[0] - a[0]);
+        int ans = 0, mx = 0;
+        for (var x : properties) {
+            if (x[1] < mx) {
+                ++ans;
+            }
+            mx = Math.max(mx, x[1]);
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int numberOfWeakCharacters(vector<vector<int>>& properties) {
+        sort(properties.begin(), properties.end(), [&](auto& a, auto& b) { return a[0] == b[0] ? a[1] < b[1] : a[0] > b[0]; });
+        int ans = 0, mx = 0;
+        for (auto& x : properties) {
+            ans += x[1] < mx;
+            mx = max(mx, x[1]);
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func numberOfWeakCharacters(properties [][]int) (ans int) {
+	sort.Slice(properties, func(i, j int) bool {
+		a, b := properties[i], properties[j]
+		if a[0] == b[0] {
+			return a[1] < b[1]
+		}
+		return a[0] > b[0]
+	})
+	mx := 0
+	for _, x := range properties {
+		if x[1] < mx {
+			ans++
+		} else {
+			mx = x[1]
+		}
+	}
+	return
+}
+```
+
+### **TypeScript**
+
+```ts
+function numberOfWeakCharacters(properties: number[][]): number {
+    properties.sort((a, b) => (a[0] == b[0] ? a[1] - b[1] : b[0] - a[0]));
+    let ans = 0;
+    let mx = 0;
+    for (const [, x] of properties) {
+        if (x < mx) {
+            ans++;
+        } else {
+            mx = x;
+        }
+    }
+    return ans;
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number[][]} properties
+ * @return {number}
+ */
+var numberOfWeakCharacters = function (properties) {
+    properties.sort((a, b) => (a[0] == b[0] ? a[1] - b[1] : b[0] - a[0]));
+    let ans = 0;
+    let mx = 0;
+    for (const [, x] of properties) {
+        if (x < mx) {
+            ans++;
+        } else {
+            mx = x;
+        }
+    }
+    return ans;
+};
 ```
 
 ### **...**

@@ -13,7 +13,7 @@
 <p>Return <em>the <strong>minimum number of moves</strong> that you need to determine <strong>with certainty</strong> what the value of </em><code>f</code> is.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 2
@@ -24,19 +24,15 @@ If the second egg breaks but the first egg didn&#39;t, we know that f = 1.
 Otherwise, if both eggs survive, we know that f = 2.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 100
 <strong>Output:</strong> 14
 <strong>Explanation:</strong> One optimal strategy is:
-- Drop the 1st egg at floor 9. If it breaks, we know f is between 0 and 8. Drop the 2nd egg starting
-  from floor 1 and going up one at a time to find f within 7 more drops. Total drops is 1 + 7 = 8.
-- If the 1st egg does not break, drop the 1st egg again at floor 22. If it breaks, we know f is between 9
-  and 21. Drop the 2nd egg starting from floor 10 and going up one at a time to find f within 12 more
-  drops. Total drops is 2 + 12 = 14.
-- If the 1st egg does not break again, follow a similar process dropping the 1st egg from floors 34, 45,
-  55, 64, 72, 79, 85, 90, 94, 97, 99, and 100.
+- Drop the 1st egg at floor 9. If it breaks, we know f is between 0 and 8. Drop the 2nd egg starting from floor 1 and going up one at a time to find f within 8 more drops. Total drops is 1 + 8 = 9.
+- If the 1st egg does not break, drop the 1st egg again at floor 22. If it breaks, we know f is between 9 and 21. Drop the 2nd egg starting from floor 10 and going up one at a time to find f within 12 more drops. Total drops is 2 + 12 = 14.
+- If the 1st egg does not break again, follow a similar process dropping the 1st egg from floors 34, 45, 55, 64, 72, 79, 85, 90, 94, 97, 99, and 100.
 Regardless of the outcome, it takes at most 14 drops to determine f.
 </pre>
 

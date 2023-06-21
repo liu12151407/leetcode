@@ -1,4 +1,4 @@
-# [2011. 执行操作后的变量值](https://leetcode-cn.com/problems/final-value-of-variable-after-performing-operations)
+# [2011. 执行操作后的变量值](https://leetcode.cn/problems/final-value-of-variable-after-performing-operations)
 
 [English Version](/solution/2000-2099/2011.Final%20Value%20of%20Variable%20After%20Performing%20Operations/README_EN.md)
 
@@ -69,6 +69,12 @@ X--：X 减 1 ，X = 1 - 1 = 0
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：模拟**
+
+遍历数组 `operations`，对于每个操作 $operations[i]$，如果包含 `'+'`，那么答案加 $1$，否则答案减 $1$。
+
+时间复杂度为 $O(n)$，空间复杂度 $O(1)$。其中 $n$ 为数组 `operations` 的长度。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -89,23 +95,11 @@ class Solution:
 class Solution {
     public int finalValueAfterOperations(String[] operations) {
         int ans = 0;
-        for (String s : operations) {
+        for (var s : operations) {
             ans += (s.charAt(1) == '+' ? 1 : -1);
         }
         return ans;
     }
-}
-```
-
-### **TypeScript**
-
-```ts
-function finalValueAfterOperations(operations: string[]): number {
-    let ans = 0;
-    for (let operation of operations) {
-        ans += operation.includes("+") ? 1 : -1;
-    }
-    return ans;
 }
 ```
 
@@ -116,7 +110,7 @@ class Solution {
 public:
     int finalValueAfterOperations(vector<string>& operations) {
         int ans = 0;
-        for (auto s : operations) ans += (s[1] == '+' ? 1 : -1);
+        for (auto& s : operations) ans += (s[1] == '+' ? 1 : -1);
         return ans;
     }
 };
@@ -125,16 +119,75 @@ public:
 ### **Go**
 
 ```go
-func finalValueAfterOperations(operations []string) int {
-    ans := 0
-    for _, s := range operations {
-        if s[1] == '+' {
-            ans += 1
-        } else {
-            ans -= 1
-        }
+func finalValueAfterOperations(operations []string) (ans int) {
+	for _, s := range operations {
+		if s[1] == '+' {
+			ans += 1
+		} else {
+			ans -= 1
+		}
+	}
+	return
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {string[]} operations
+ * @return {number}
+ */
+var finalValueAfterOperations = function (operations) {
+    let ans = 0;
+    for (const s of operations) {
+        ans += s[1] === '+' ? 1 : -1;
     }
-    return ans
+    return ans;
+};
+```
+
+### **TypeScript**
+
+```ts
+function finalValueAfterOperations(operations: string[]): number {
+    let ans = 0;
+    for (let operation of operations) {
+        ans += operation.includes('+') ? 1 : -1;
+    }
+    return ans;
+}
+```
+
+```ts
+function finalValueAfterOperations(operations: string[]): number {
+    return operations.reduce((r, v) => r + (v[1] === '+' ? 1 : -1), 0);
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn final_value_after_operations(operations: Vec<String>) -> i32 {
+        let mut ans = 0;
+        for s in operations.iter() {
+            ans += if s.as_bytes()[1] == b'+' { 1 } else { -1 };
+        }
+        ans
+    }
+}
+```
+
+### **C**
+
+```c
+int finalValueAfterOperations(char** operations, int operationsSize) {
+    int ans = 0;
+    for (int i = 0; i < operationsSize; i++) {
+        ans += operations[i][1] == '+' ? 1 : -1;
+    }
+    return ans;
 }
 ```
 

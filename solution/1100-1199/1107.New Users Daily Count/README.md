@@ -1,4 +1,4 @@
-# [1107. 每日新用户统计](https://leetcode-cn.com/problems/new-users-daily-count)
+# [1107. 每日新用户统计](https://leetcode.cn/problems/new-users-daily-count)
 
 [English Version](/solution/1100-1199/1107.New%20Users%20Daily%20Count/README_EN.md)
 
@@ -66,7 +66,19 @@ ID 为 5 的用户第一次登陆于 2019-03-01，因此他不算在 2019-06-21 
 ### **SQL**
 
 ```sql
-
+# Write your MySQL query statement below
+SELECT
+    login_date,
+    count(user_id) AS user_count
+FROM
+    (
+        SELECT min(activity_date) AS login_date, user_id
+        FROM Traffic
+        WHERE activity = 'login'
+        GROUP BY user_id
+    ) AS t
+WHERE DATEDIFF('2019-6-30', login_date) <= 90
+GROUP BY login_date;
 ```
 
 <!-- tabs:end -->

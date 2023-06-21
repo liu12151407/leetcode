@@ -1,4 +1,4 @@
-# [2028. 找出缺失的观测数据](https://leetcode-cn.com/problems/find-missing-observations)
+# [2028. 找出缺失的观测数据](https://leetcode.cn/problems/find-missing-observations)
 
 [English Version](/solution/2000-2099/2028.Find%20Missing%20Observations/README_EN.md)
 
@@ -64,6 +64,16 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：构造**
+
+根据题目描述，所有数字之和为 $(n + m) \times mean$，已知的数字之和为 `sum(rolls)`，那么缺失的数字之和为 $s = (n + m) \times mean - sum(rolls)$。
+
+如果 $s \gt n \times 6$ 或者 $s \lt n$，说明不存在满足条件的答案，返回空数组。
+
+否则，我们可以将 $s$ 平均分配到 $n$ 个数字上，即每个数字的值为 $s / n$，其中 $s \bmod n$ 个数字的值再加上 $1$。
+
+时间复杂度 $O(n + m)$，空间复杂度 $O(1)$。其中 $n$ 和 $m$ 分别为缺失的数字个数和已知的数字个数。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -71,7 +81,16 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def missingRolls(self, rolls: List[int], mean: int, n: int) -> List[int]:
+        m = len(rolls)
+        s = (n + m) * mean - sum(rolls)
+        if s > n * 6 or s < n:
+            return []
+        ans = [s // n] * n
+        for i in range(s % n):
+            ans[i] += 1
+        return ans
 ```
 
 ### **Java**
@@ -79,7 +98,137 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public int[] missingRolls(int[] rolls, int mean, int n) {
+        int m = rolls.length;
+        int s = (n + m) * mean;
+        for (int v : rolls) {
+            s -= v;
+        }
+        if (s > n * 6 || s < n) {
+            return new int[0];
+        }
+        int[] ans = new int[n];
+        Arrays.fill(ans, s / n);
+        for (int i = 0; i < s % n; ++i) {
+            ++ans[i];
+        }
+        return ans;
+    }
+}
+```
 
+### **TypeScript**
+
+```ts
+function missingRolls(rolls: number[], mean: number, n: number): number[] {
+    const len = rolls.length + n;
+    const sum = rolls.reduce((p, v) => p + v);
+    const max = n * 6;
+    const min = n;
+    if ((sum + max) / len < mean || (sum + min) / len > mean) {
+        return [];
+    }
+
+    const res = new Array(n);
+    for (let i = min; i <= max; i++) {
+        if ((sum + i) / len === mean) {
+            const num = Math.floor(i / n);
+            res.fill(num);
+            let count = i - n * num;
+            let j = 0;
+            while (count != 0) {
+                if (res[j] === 6) {
+                    j++;
+                } else {
+                    res[j]++;
+                    count--;
+                }
+            }
+            break;
+        }
+    }
+    return res;
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn missing_rolls(rolls: Vec<i32>, mean: i32, n: i32) -> Vec<i32> {
+        let n = n as usize;
+        let mean = mean as usize;
+        let len = rolls.len() + n;
+        let sum: i32 = rolls.iter().sum();
+        let sum = sum as usize;
+        let max = n * 6;
+        let min = n;
+        if (sum + max) < mean * len || (sum + min) > mean * len {
+            return vec![];
+        }
+
+        let mut res = vec![0; n];
+        for i in min..=max {
+            if (sum + i) / len == mean {
+                let num = i / n;
+                res.fill(num as i32);
+                let mut count = i - n * num;
+                let mut j = 0;
+                while count != 0 {
+                    if res[j] == 6 {
+                        j += 1;
+                    } else {
+                        res[j] += 1;
+                        count -= 1;
+                    }
+                }
+                break;
+            }
+        }
+        res
+    }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    vector<int> missingRolls(vector<int>& rolls, int mean, int n) {
+        int m = rolls.size();
+        int s = (n + m) * mean;
+        for (int& v : rolls) s -= v;
+        if (s > n * 6 || s < n) return {};
+        vector<int> ans(n, s / n);
+        for (int i = 0; i < s % n; ++i) ++ans[i];
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func missingRolls(rolls []int, mean int, n int) []int {
+	m := len(rolls)
+	s := (n + m) * mean
+	for _, v := range rolls {
+		s -= v
+	}
+	if s > n*6 || s < n {
+		return []int{}
+	}
+	ans := make([]int, n)
+	for i, j := 0, 0; i < n; i, j = i+1, j+1 {
+		ans[i] = s / n
+		if j < s%n {
+			ans[i]++
+		}
+	}
+	return ans
+}
 ```
 
 ### **...**

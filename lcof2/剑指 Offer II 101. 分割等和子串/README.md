@@ -1,4 +1,4 @@
-# [剑指 Offer II 101. 分割等和子串](https://leetcode-cn.com/problems/NUPfPr)
+# [剑指 Offer II 101. 分割等和子串](https://leetcode.cn/problems/NUPfPr)
 
 ## 题目描述
 
@@ -36,7 +36,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 416&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/partition-equal-subset-sum/">https://leetcode-cn.com/problems/partition-equal-subset-sum/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 416&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/partition-equal-subset-sum/">https://leetcode.cn/problems/partition-equal-subset-sum/</a></p>
 
 ## 解法
 
@@ -105,7 +105,7 @@ class Solution:
             return False
         target = s >> 1
 
-        @lru_cache(None)
+        @cache
         def dfs(i, s):
             nonlocal target
             if s > target or i >= len(nums):
@@ -160,10 +160,8 @@ public:
         vector<bool> dp(n);
         dp[0] = true;
         if (nums[0] < n) dp[nums[0]] = true;
-        for (int i = 1; i < m; ++i)
-        {
-            for (int j = n - 1; j >= nums[i]; --j)
-            {
+        for (int i = 1; i < m; ++i) {
+            for (int j = n - 1; j >= nums[i]; --j) {
                 dp[j] = dp[j] || dp[j - nums[i]];
             }
         }

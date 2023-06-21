@@ -1,4 +1,4 @@
-# [735. 行星碰撞](https://leetcode-cn.com/problems/asteroid-collision)
+# [735. 行星碰撞](https://leetcode.cn/problems/asteroid-collision)
 
 [English Version](/solution/0700-0799/0735.Asteroid%20Collision/README_EN.md)
 
@@ -12,7 +12,7 @@
 
 <p>找出碰撞后剩下的所有行星。碰撞规则：两个行星相互碰撞，较小的行星会爆炸。如果两颗行星大小相同，则两颗行星都会爆炸。两颗移动方向相同的行星，永远不会发生碰撞。</p>
 
-<p> </p>
+<p>&nbsp;</p>
 
 <p><strong>示例 1：</strong></p>
 
@@ -35,20 +35,13 @@
 <strong>输出：</strong>[10]
 <b>解释：</b>2 和 -5 发生碰撞后剩下 -5 。10 和 -5 发生碰撞后剩下 10 。</pre>
 
-<p><strong>示例 4：</strong></p>
-
-<pre>
-<strong>输入：</strong>asteroids = [-2,-1,1,2]
-<strong>输出：</strong>[-2,-1,1,2]
-<b>解释</b><strong>：</strong>-2 和 -1 向左移动，而 1 和 2 向右移动。 由于移动方向相同的行星不会发生碰撞，所以最终没有行星发生碰撞。 </pre>
-
-<p> </p>
+<p>&nbsp;</p>
 
 <p><strong>提示：</strong></p>
 
 <ul>
-	<li><code>2 <= asteroids.length <= 10<sup>4</sup></code></li>
-	<li><code>-1000 <= asteroids[i] <= 1000</code></li>
+	<li><code>2 &lt;= asteroids.length&nbsp;&lt;= 10<sup>4</sup></code></li>
+	<li><code>-1000 &lt;= asteroids[i] &lt;= 1000</code></li>
 	<li><code>asteroids[i] != 0</code></li>
 </ul>
 
@@ -56,10 +49,12 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：栈模拟**
+
 可以类比成左右括号匹配：
 
-- 向右移动的小行星（左括号）：不会引发碰撞，直接入栈
-- 向左移动的小行星（右括号）：可能会和之前向右移动的小行星发生碰撞，特殊处理
+-   向右移动的小行星（左括号）：不会引发碰撞，直接入栈
+-   向左移动的小行星（右括号）：可能会和之前向右移动的小行星发生碰撞，特殊处理
 
 因为答案需要碰撞后剩下的所有小行星，相当于栈里最后剩下的元素，所以可以直接用数组表示栈
 
@@ -77,11 +72,11 @@ class Solution:
             if a > 0:
                 ans.append(a)
             else:
-                while len(ans) > 0 and ans[-1] > 0 and ans[-1] < -a:
+                while ans and 0 < ans[-1] < -a:
                     ans.pop()
-                if len(ans) > 0 and ans[-1] == -a:
+                if ans and ans[-1] == -a:
                     ans.pop()
-                elif len(ans) == 0 or ans[-1] < -a:
+                elif not ans or ans[-1] < -a:
                     ans.append(a)
         return ans
 ```

@@ -1,4 +1,4 @@
-# [1287. 有序数组中出现次数超过 25%的元素](https://leetcode-cn.com/problems/element-appearing-more-than-25-in-sorted-array)
+# [1287. 有序数组中出现次数超过 25%的元素](https://leetcode.cn/problems/element-appearing-more-than-25-in-sorted-array)
 
 [English Version](/solution/1200-1299/1287.Element%20Appearing%20More%20Than%2025%25%20In%20Sorted%20Array/README_EN.md)
 
@@ -110,6 +110,26 @@ var findSpecialInteger = function (arr) {
     }
     return 0;
 };
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param Integer[] $arr
+     * @return Integer
+     */
+    function findSpecialInteger($arr) {
+        $len = count($arr);
+        for ($i = 0; $i < $len; $i++) {
+            if ($arr[$i] == $arr[$i + ($len >> 2)]) {
+                return $arr[$i];
+            }
+        }
+        return -1;
+    }
+}
 ```
 
 ### **...**

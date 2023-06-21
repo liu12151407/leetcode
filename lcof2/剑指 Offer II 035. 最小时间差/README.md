@@ -1,4 +1,4 @@
-# [剑指 Offer II 035. 最小时间差](https://leetcode-cn.com/problems/569nqc)
+# [剑指 Offer II 035. 最小时间差](https://leetcode.cn/problems/569nqc)
 
 ## 题目描述
 
@@ -33,7 +33,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 539&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/minimum-time-difference/">https://leetcode-cn.com/problems/minimum-time-difference/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 539&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/minimum-time-difference/">https://leetcode.cn/problems/minimum-time-difference/</a></p>
 
 ## 解法
 
@@ -99,7 +99,7 @@ class Solution {
 ```cpp
 class Solution {
 public:
-    int findMinDifference(vector<string> &timePoints) {
+    int findMinDifference(vector<string>& timePoints) {
         if (timePoints.size() > 24 * 60)
             return 0;
         vector<int> mins;

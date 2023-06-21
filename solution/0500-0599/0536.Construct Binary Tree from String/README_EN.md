@@ -11,21 +11,21 @@
 <p>You always start to construct the <b>left</b> child node of the parent first if it exists.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0536.Construct%20Binary%20Tree%20from%20String/images/butree.jpg" style="width: 382px; height: 322px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0536.Construct%20Binary%20Tree%20from%20String/images/butree.jpg" style="width: 382px; height: 322px;" />
 <pre>
 <strong>Input:</strong> s = &quot;4(2(3)(1))(6(5))&quot;
 <strong>Output:</strong> [4,2,6,3,1,5]
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;4(2(3)(1))(6(5)(7))&quot;
 <strong>Output:</strong> [4,2,6,3,1,5,7]
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;-4(2(3)(1))(6(5)(7))&quot;
@@ -73,10 +73,10 @@ class Solution:
                     cnt -= 1
                 if cnt == 0:
                     if start == p:
-                        root.left = dfs(s[start + 1: i])
+                        root.left = dfs(s[start + 1 : i])
                         start = i + 1
                     else:
-                        root.right = dfs(s[start + 1: i])
+                        root.right = dfs(s[start + 1 : i])
             return root
 
         return dfs(s)
@@ -163,18 +163,17 @@ public:
         TreeNode* root = new TreeNode(stoi(s.substr(0, p)));
         int start = p;
         int cnt = 0;
-        for (int i = p; i < s.size(); ++i)
-        {
-            if (s[i] == '(') ++cnt;
-            else if (s[i] == ')') --cnt;
-            if (cnt == 0)
-            {
-                if (start == p)
-                {
+        for (int i = p; i < s.size(); ++i) {
+            if (s[i] == '(')
+                ++cnt;
+            else if (s[i] == ')')
+                --cnt;
+            if (cnt == 0) {
+                if (start == p) {
                     root->left = dfs(s.substr(start + 1, i - start - 1));
                     start = i + 1;
-                }
-                else root->right = dfs(s.substr(start + 1, i - start - 1));
+                } else
+                    root->right = dfs(s.substr(start + 1, i - start - 1));
             }
         }
         return root;

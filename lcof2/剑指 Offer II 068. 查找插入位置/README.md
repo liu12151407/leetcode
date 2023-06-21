@@ -1,4 +1,4 @@
-# [剑指 Offer II 068. 查找插入位置](https://leetcode-cn.com/problems/N6YdxV)
+# [剑指 Offer II 068. 查找插入位置](https://leetcode.cn/problems/N6YdxV)
 
 ## 题目描述
 
@@ -58,7 +58,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 35&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/search-insert-position/">https://leetcode-cn.com/problems/search-insert-position/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 35&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/search-insert-position/">https://leetcode.cn/problems/search-insert-position/</a></p>
 
 ## 解法
 
@@ -113,11 +113,12 @@ class Solution {
 public:
     int searchInsert(vector<int>& nums, int target) {
         int left = 0, right = nums.size();
-        while (left < right)
-        {
+        while (left < right) {
             int mid = left + right >> 1;
-            if (nums[mid] >= target) right = mid;
-            else left = mid + 1;
+            if (nums[mid] >= target)
+                right = mid;
+            else
+                left = mid + 1;
         }
         return left;
     }

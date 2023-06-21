@@ -1,4 +1,4 @@
-# [剑指 Offer II 009. 乘积小于 K 的子数组](https://leetcode-cn.com/problems/ZVAVXX)
+# [剑指 Offer II 009. 乘积小于 K 的子数组](https://leetcode.cn/problems/ZVAVXX)
 
 ## 题目描述
 
@@ -35,7 +35,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 713&nbsp;题相同：<a href="https://leetcode-cn.com/problems/subarray-product-less-than-k/">https://leetcode-cn.com/problems/subarray-product-less-than-k/</a>&nbsp;</p>
+<p><meta charset="UTF-8" />注意：本题与主站 713&nbsp;题相同：<a href="https://leetcode.cn/problems/subarray-product-less-than-k/">https://leetcode.cn/problems/subarray-product-less-than-k/</a>&nbsp;</p>
 
 ## 解法
 
@@ -123,11 +123,11 @@ public:
         for (right = 0; right < nums.size(); right++) {
             mul *= nums[right];
 
-            while(left <= right && mul >= k) {
+            while (left <= right && mul >= k) {
                 mul /= nums[left++];
             }
 
-            count += right >= left? right - left + 1: 0;
+            count += right >= left ? right - left + 1 : 0;
         }
 
         return count;

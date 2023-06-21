@@ -1,4 +1,4 @@
-# [1393. 股票的资本损益](https://leetcode-cn.com/problems/capital-gainloss)
+# [1393. 股票的资本损益](https://leetcode.cn/problems/capital-gainloss)
 
 [English Version](/solution/1300-1399/1393.Capital%20GainLoss/README_EN.md)
 
@@ -72,16 +72,16 @@ Corona Masks 股票在第1天以10美元的价格买入，在第3天以1010美�
 ### **SQL**
 
 ```sql
-# Write your MySQL query statement below
 SELECT
     stock_name,
-    sum(
-        CASE WHEN operation = 'Buy' THEN -price ELSE price END
+    SUM(
+        CASE
+            WHEN operation = 'Buy' THEN -price
+            ELSE price
+        END
     ) AS capital_gain_loss
-FROM
-    Stocks
-GROUP BY
-    stock_name;
+FROM Stocks
+GROUP BY stock_name;
 ```
 
 <!-- tabs:end -->

@@ -16,7 +16,7 @@
 <p>Return <em>the <strong>maximum</strong> possible number of ways to <strong>partition</strong> </em><code>nums</code><em> to satisfy both conditions after changing <strong>at most</strong> one element</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [2,-1,2], k = 3
@@ -26,7 +26,7 @@ There is one way to partition the array:
 - For pivot = 2, we have the partition [3,-1 | 2]: 3 + -1 == 2.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [0,0,0], k = 1
@@ -37,7 +37,7 @@ There are two ways to partition the array:
 - For pivot = 2, we have the partition [0,0 | 0]: 0 + 0 == 0.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [22,4,-25,-20,-15,15,-16,7,19,-10,0,-13,-14], k = -33
@@ -62,13 +62,126 @@ There are four ways to partition the array.
 ### **Python3**
 
 ```python
+class Solution:
+    def waysToPartition(self, nums: List[int], k: int) -> int:
+        n = len(nums)
+        s = [nums[0]] * n
+        right = defaultdict(int)
+        for i in range(1, n):
+            s[i] = s[i - 1] + nums[i]
+            right[s[i - 1]] += 1
 
+        ans = 0
+        if s[-1] % 2 == 0:
+            ans = right[s[-1] // 2]
+
+        left = defaultdict(int)
+        for v, x in zip(s, nums):
+            d = k - x
+            if (s[-1] + d) % 2 == 0:
+                t = left[(s[-1] + d) // 2] + right[(s[-1] - d) // 2]
+                if ans < t:
+                    ans = t
+            left[v] += 1
+            right[v] -= 1
+        return ans
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int waysToPartition(int[] nums, int k) {
+        int n = nums.length;
+        int[] s = new int[n];
+        s[0] = nums[0];
+        Map<Integer, Integer> right = new HashMap<>();
+        for (int i = 0; i < n - 1; ++i) {
+            right.merge(s[i], 1, Integer::sum);
+            s[i + 1] = s[i] + nums[i + 1];
+        }
+        int ans = 0;
+        if (s[n - 1] % 2 == 0) {
+            ans = right.getOrDefault(s[n - 1] / 2, 0);
+        }
+        Map<Integer, Integer> left = new HashMap<>();
+        for (int i = 0; i < n; ++i) {
+            int d = k - nums[i];
+            if ((s[n - 1] + d) % 2 == 0) {
+                int t = left.getOrDefault((s[n - 1] + d) / 2, 0)
+                    + right.getOrDefault((s[n - 1] - d) / 2, 0);
+                ans = Math.max(ans, t);
+            }
+            left.merge(s[i], 1, Integer::sum);
+            right.merge(s[i], -1, Integer::sum);
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int waysToPartition(vector<int>& nums, int k) {
+        int n = nums.size();
+        long long s[n];
+        s[0] = nums[0];
+        unordered_map<long long, int> right;
+        for (int i = 0; i < n - 1; ++i) {
+            right[s[i]]++;
+            s[i + 1] = s[i] + nums[i + 1];
+        }
+        int ans = 0;
+        if (s[n - 1] % 2 == 0) {
+            ans = right[s[n - 1] / 2];
+        }
+        unordered_map<long long, int> left;
+        for (int i = 0; i < n; ++i) {
+            int d = k - nums[i];
+            if ((s[n - 1] + d) % 2 == 0) {
+                int t = left[(s[n - 1] + d) / 2] + right[(s[n - 1] - d) / 2];
+                ans = max(ans, t);
+            }
+            left[s[i]]++;
+            right[s[i]]--;
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func waysToPartition(nums []int, k int) (ans int) {
+	n := len(nums)
+	s := make([]int, n)
+	s[0] = nums[0]
+	right := map[int]int{}
+	for i := range nums[:n-1] {
+		right[s[i]]++
+		s[i+1] = s[i] + nums[i+1]
+	}
+	if s[n-1]%2 == 0 {
+		ans = right[s[n-1]/2]
+	}
+	left := map[int]int{}
+	for i, x := range nums {
+		d := k - x
+		if (s[n-1]+d)%2 == 0 {
+			t := left[(s[n-1]+d)/2] + right[(s[n-1]-d)/2]
+			if ans < t {
+				ans = t
+			}
+		}
+		left[s[i]]++
+		right[s[i]]--
+	}
+	return
+}
 ```
 
 ### **...**

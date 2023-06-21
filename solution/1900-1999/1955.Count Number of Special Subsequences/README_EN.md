@@ -16,15 +16,15 @@
 <p>A <strong>subsequence</strong> of an array is a sequence that can be derived from the array by deleting some or no elements without changing the order of the remaining elements. Two subsequences are <strong>different</strong> if the <strong>set of indices</strong> chosen are different.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [0,1,2,2]
 <strong>Output:</strong> 3
-<strong>Explanation:</strong> The special subsequences are [<u>0</u>,<u>1</u>,<u>2</u>,2], [<u>0</u>,<u>1</u>,2,<u>2</u>], and [<u>0</u>,<u>1</u>,<u>2</u>,<u>2</u>].
+<strong>Explanation:</strong> The special subsequences are bolded [<strong><u>0</u></strong>,<strong><u>1</u></strong>,<strong><u>2</u></strong>,2], [<strong><u>0</u></strong>,<strong><u>1</u></strong>,2,<strong><u>2</u></strong>], and [<strong><u>0</u></strong>,<strong><u>1</u></strong>,<strong><u>2</u></strong>,<strong><u>2</u></strong>].
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [2,2,0,0]
@@ -32,19 +32,19 @@
 <strong>Explanation:</strong> There are no special subsequences in [2,2,0,0].
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [0,1,2,0,1,2]
 <strong>Output:</strong> 7
-<strong>Explanation:</strong> The special subsequences are:
-- [<u>0</u>,<u>1</u>,<u>2</u>,0,1,2]
-- [<u>0</u>,<u>1</u>,2,0,1,<u>2</u>]
-- [<u>0</u>,<u>1</u>,<u>2</u>,0,1,<u>2</u>]
-- [<u>0</u>,<u>1</u>,2,0,<u>1</u>,<u>2</u>]
-- [<u>0</u>,1,2,<u>0</u>,<u>1</u>,<u>2</u>]
-- [<u>0</u>,1,2,0,<u>1</u>,<u>2</u>]
-- [0,1,2,<u>0</u>,<u>1</u>,<u>2</u>]
+<strong>Explanation:</strong> The special subsequences are bolded:
+- [<strong><u>0</u></strong>,<strong><u>1</u></strong>,<strong><u>2</u></strong>,0,1,2]
+- [<strong><u>0</u></strong>,<strong><u>1</u></strong>,2,0,1,<strong><u>2</u></strong>]
+- [<strong><u>0</u></strong>,<strong><u>1</u></strong>,<strong><u>2</u></strong>,0,1,<strong><u>2</u></strong>]
+- [<strong><u>0</u></strong>,<strong><u>1</u></strong>,2,0,<strong><u>1</u></strong>,<strong><u>2</u></strong>]
+- [<strong><u>0</u></strong>,1,2,<strong><u>0</u></strong>,<strong><u>1</u></strong>,<strong><u>2</u></strong>]
+- [<strong><u>0</u></strong>,1,2,0,<strong><u>1</u></strong>,<strong><u>2</u></strong>]
+- [0,1,2,<strong><u>0</u></strong>,<strong><u>1</u></strong>,<strong><u>2</u></strong>]
 </pre>
 
 <p>&nbsp;</p>

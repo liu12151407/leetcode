@@ -4,72 +4,66 @@
 
 ## Description
 
-<p>Given an integer array <code>nums</code>, find the contiguous subarray (containing at least one number) which has the largest sum and return <em>its sum</em>.</p>
+<p>Given an integer array <code>nums</code>, find the <span data-keyword="subarray-nonempty">subarray</span> with the largest sum, and return <em>its sum</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [-2,1,-3,4,-1,2,1,-5,4]
 <strong>Output:</strong> 6
-<strong>Explanation:</strong> [4,-1,2,1] has the largest sum = 6.
+<strong>Explanation:</strong> The subarray [4,-1,2,1] has the largest sum 6.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1]
 <strong>Output:</strong> 1
+<strong>Explanation:</strong> The subarray [1] has the largest sum 1.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [5,4,-1,7,8]
 <strong>Output:</strong> 23
+<strong>Explanation:</strong> The subarray [5,4,-1,7,8] has the largest sum 23.
 </pre>
 
 <p>&nbsp;</p>
 <p><strong>Constraints:</strong></p>
 
 <ul>
-	<li><code>1 &lt;= nums.length &lt;= 3 * 10<sup>4</sup></code></li>
-	<li><code>-10<sup>5</sup> &lt;= nums[i] &lt;= 10<sup>5</sup></code></li>
+	<li><code>1 &lt;= nums.length &lt;= 10<sup>5</sup></code></li>
+	<li><code>-10<sup>4</sup> &lt;= nums[i] &lt;= 10<sup>4</sup></code></li>
 </ul>
 
 <p>&nbsp;</p>
-<strong>Follow up:</strong> If you have figured out the <code>O(n)</code> solution, try coding another solution using the <strong>divide and conquer</strong> approach, which is more subtle.
+<p><strong>Follow up:</strong> If you have figured out the <code>O(n)</code> solution, try coding another solution using the <strong>divide and conquer</strong> approach, which is more subtle.</p>
 
 ## Solutions
-
-### 1. Dynamic programming
-
-### 2. Divide and Conquer
 
 <!-- tabs:start -->
 
 ### **Python3**
 
-Dynamic programming.
-
 ```python
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
-        res = f = nums[0]
-        for num in nums[1:]:
-            f = num + max(f, 0)
-            res = max(res, f)
-        return res
+        ans = f = nums[0]
+        for x in nums[1:]:
+            f = max(f, 0) + x
+            ans = max(ans, f)
+        return ans
 ```
-
-Divide and Conquer.
 
 ```python
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
         def crossMaxSub(nums, left, mid, right):
             lsum = rsum = 0
-            lmx = rmx = float('-inf')
+            lmx = rmx = -inf
             for i in range(mid, left - 1, -1):
                 lsum += nums[i]
                 lmx = max(lmx, lsum)
@@ -93,22 +87,18 @@ class Solution:
 
 ### **Java**
 
-Dynamic programming.
-
 ```java
 class Solution {
     public int maxSubArray(int[] nums) {
-        int f = nums[0], res = nums[0];
-        for (int i = 1, n = nums.length; i < n; ++i) {
-            f = nums[i] + Math.max(f, 0);
-            res = Math.max(res, f);
+        int ans = nums[0];
+        for (int i = 1, f = nums[0]; i < nums.length; ++i) {
+            f = Math.max(f, 0) + nums[i];
+            ans = Math.max(ans, f);
         }
-        return res;
+        return ans;
     }
 }
 ```
-
-Divide and Conquer.
 
 ```java
 class Solution {
@@ -148,14 +138,47 @@ class Solution {
 class Solution {
 public:
     int maxSubArray(vector<int>& nums) {
-        int f = nums[0], res = nums[0];
+        int ans = nums[0], f = nums[0];
         for (int i = 1; i < nums.size(); ++i) {
-            f = nums[i] + max(f, 0);
-            res = max(res, f);
+            f = max(f, 0) + nums[i];
+            ans = max(ans, f);
         }
-        return res;
+        return ans;
     }
 };
+```
+
+### **Go**
+
+```go
+func maxSubArray(nums []int) int {
+	ans, f := nums[0], nums[0]
+	for _, x := range nums[1:] {
+		f = max(f, 0) + x
+		ans = max(ans, f)
+	}
+	return ans
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+```
+
+### **TypeScript**
+
+```ts
+function maxSubArray(nums: number[]): number {
+    let [ans, f] = [nums[0], nums[0]];
+    for (let i = 1; i < nums.length; ++i) {
+        f = Math.max(f, 0) + nums[i];
+        ans = Math.max(ans, f);
+    }
+    return ans;
+}
 ```
 
 ### **JavaScript**
@@ -166,33 +189,13 @@ public:
  * @return {number}
  */
 var maxSubArray = function (nums) {
-    let f = nums[0],
-        res = nums[0];
+    let [ans, f] = [nums[0], nums[0]];
     for (let i = 1; i < nums.length; ++i) {
-        f = nums[i] + Math.max(f, 0);
-        res = Math.max(res, f);
+        f = Math.max(f, 0) + nums[i];
+        ans = Math.max(ans, f);
     }
-    return res;
+    return ans;
 };
-```
-
-### **Go**
-
-```go
-func maxSubArray(nums []int) int {
-    f, res := nums[0], nums[0]
-    for i := 1; i < len(nums); i++ {
-        if f > 0 {
-            f += nums[i]
-        } else {
-            f = nums[i]
-        }
-        if f > res {
-            res = f
-        }
-    }
-    return res
-}
 ```
 
 ### **C#**
@@ -200,13 +203,29 @@ func maxSubArray(nums []int) int {
 ```cs
 public class Solution {
     public int MaxSubArray(int[] nums) {
-        int res = nums[0], f = nums[0];
-        for (int i = 1; i < nums.Length; ++i)
-        {
-            f = nums[i] + Math.Max(f, 0);
-            res = Math.Max(res, f);
+        int ans = nums[0], f = nums[0];
+        for (int i = 1; i < nums.Length; ++i) {
+            f = Math.Max(f, 0) + nums[i];
+            ans = Math.Max(ans, f);
         }
-        return res;
+        return ans;
+    }
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn max_sub_array(nums: Vec<i32>) -> i32 {
+        let n = nums.len();
+        let mut ans = nums[0];
+        let mut f = nums[0];
+        for i in 1..n {
+            f = f.max(0) + nums[i];
+            ans = ans.max(f);
+        }
+        ans
     }
 }
 ```

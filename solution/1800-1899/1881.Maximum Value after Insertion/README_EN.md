@@ -16,7 +16,7 @@
 <p>Return <em>a string representing the <strong>maximum</strong> value of </em><code>n</code><em>​​​​​​ after the insertion</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = &quot;99&quot;, x = 9
@@ -24,7 +24,7 @@
 <strong>Explanation:</strong> The result is the same regardless of where you insert 9.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = &quot;-13&quot;, x = 2
@@ -52,22 +52,16 @@
 ```python
 class Solution:
     def maxValue(self, n: str, x: int) -> str:
-        negative = n[0] == '-'
-        i, res = 0, []
-        if negative:
-            i += 1
-            res.append('-')
-        find = False
-        while i < len(n):
-            num = int(n[i])
-            if (negative and x < num) or (not negative and x > num):
-                res.append(str(x))
-                find = True
-                break
-            res.append(n[i])
-            i += 1
-        res.append(n[i:] if find else str(x))
-        return ''.join(res)
+        if n[0] != '-':
+            for i, c in enumerate(n):
+                if int(c) < x:
+                    return n[:i] + str(x) + n[i:]
+            return n + str(x)
+        else:
+            for i, c in enumerate(n[1:]):
+                if int(c) > x:
+                    return n[: i + 1] + str(x) + n[i + 1 :]
+            return n + str(x)
 ```
 
 ### **Java**
@@ -75,26 +69,51 @@ class Solution:
 ```java
 class Solution {
     public String maxValue(String n, int x) {
-        boolean negative = n.charAt(0) == '-';
-        StringBuilder res = new StringBuilder();
         int i = 0;
-        if (negative) {
-            ++i;
-            res.append("-");
+        if (n.charAt(0) != '-') {
+            for (; i < n.length() && n.charAt(i) - '0' >= x; ++i)
+                ;
+        } else {
+            for (i = 1; i < n.length() && n.charAt(i) - '0' <= x; ++i)
+                ;
         }
-        boolean find = false;
-        for (; i < n.length(); ++i) {
-            int num = n.charAt(i) - '0';
-            if ((negative && x < num) || (!negative && x > num)) {
-                res.append(x);
-                find = true;
-                break;
-            }
-            res.append(n.charAt(i));
-        }
-        res.append(find ? n.substring(i) : x);
-        return res.toString();
+        return n.substring(0, i) + x + n.substring(i);
     }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    string maxValue(string n, int x) {
+        int i = 0;
+        if (n[0] != '-')
+            for (; i < n.size() && n[i] - '0' >= x; ++i)
+                ;
+        else
+            for (i = 1; i < n.size() && n[i] - '0' <= x; ++i)
+                ;
+        return n.substr(0, i) + to_string(x) + n.substr(i);
+    }
+};
+```
+
+### **Go**
+
+```go
+func maxValue(n string, x int) string {
+	i := 0
+	y := byte('0' + x)
+	if n[0] != '-' {
+		for ; i < len(n) && n[i] >= y; i++ {
+		}
+	} else {
+		for i = 1; i < len(n) && n[i] <= y; i++ {
+		}
+	}
+	return n[:i] + string(y) + n[i:]
 }
 ```
 
@@ -110,7 +129,7 @@ var maxValue = function (n, x) {
     let nums = [...n];
     let sign = 1,
         i = 0;
-    if (nums[0] == "-") {
+    if (nums[0] == '-') {
         sign = -1;
         i++;
     }
@@ -118,7 +137,7 @@ var maxValue = function (n, x) {
         i++;
     }
     nums.splice(i, 0, x);
-    return nums.join("");
+    return nums.join('');
 };
 ```
 

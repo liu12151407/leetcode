@@ -14,47 +14,26 @@
 <p>Return <em>the minimum number of operations to transform </em><code>n</code><em> into </em><code>0</code><em>.</em></p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-
-<pre>
-<strong>Input:</strong> n = 0
-<strong>Output:</strong> 0
-</pre>
-
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 3
 <strong>Output:</strong> 2
 <strong>Explanation:</strong> The binary representation of 3 is &quot;11&quot;.
-&quot;<u>1</u>1&quot; -&gt; &quot;<u>0</u>1&quot; with the 2nd operation since the 0th bit is 1.
-&quot;0<u>1</u>&quot; -&gt; &quot;0<u>0</u>&quot; with the 1st operation.
+&quot;<u>1</u>1&quot; -&gt; &quot;<u>0</u>1&quot; with the 2<sup>nd</sup> operation since the 0<sup>th</sup> bit is 1.
+&quot;0<u>1</u>&quot; -&gt; &quot;0<u>0</u>&quot; with the 1<sup>st</sup> operation.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 6
 <strong>Output:</strong> 4
 <strong>Explanation:</strong> The binary representation of 6 is &quot;110&quot;.
-&quot;<u>1</u>10&quot; -&gt; &quot;<u>0</u>10&quot; with the 2nd operation since the 1st bit is 1 and 0th through 0th bits are 0.
-&quot;01<u>0</u>&quot; -&gt; &quot;01<u>1</u>&quot; with the 1st operation.
-&quot;0<u>1</u>1&quot; -&gt; &quot;0<u>0</u>1&quot; with the 2nd operation since the 0th bit is 1.
-&quot;00<u>1</u>&quot; -&gt; &quot;00<u>0</u>&quot; with the 1st operation.
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> n = 9
-<strong>Output:</strong> 14
-</pre>
-
-<p><strong>Example 5:</strong></p>
-
-<pre>
-<strong>Input:</strong> n = 333
-<strong>Output:</strong> 393
+&quot;<u>1</u>10&quot; -&gt; &quot;<u>0</u>10&quot; with the 2<sup>nd</sup> operation since the 1<sup>st</sup> bit is 1 and 0<sup>th</sup> through 0<sup>th</sup> bits are 0.
+&quot;01<u>0</u>&quot; -&gt; &quot;01<u>1</u>&quot; with the 1<sup>st</sup> operation.
+&quot;0<u>1</u>1&quot; -&gt; &quot;0<u>0</u>1&quot; with the 2<sup>nd</sup> operation since the 0<sup>th</sup> bit is 1.
+&quot;00<u>1</u>&quot; -&gt; &quot;00<u>0</u>&quot; with the 1<sup>st</sup> operation.
 </pre>
 
 <p>&nbsp;</p>
@@ -71,13 +50,33 @@
 ### **Python3**
 
 ```python
-
+class Solution:
+    def minimumOneBitOperations(self, n: int) -> int:
+        if n <= 1:
+            return n
+        for i in range(64):
+            if (n >> i) == 1:
+                base = 1 << i
+                break
+        return 2 * base - 1 - self.minimumOneBitOperations(n - base)
 ```
 
-### **Java**
+### **Go**
 
-```java
-
+```go
+func minimumOneBitOperations(n int) int {
+	if n <= 1 {
+		return n
+	}
+	base := 0
+	for i := 0; i < 64; i++ {
+		if (n >> i) == 1 {
+			base = 1 << i
+			break
+		}
+	}
+	return (base << 1) - 1 - minimumOneBitOperations(n-base)
+}
 ```
 
 ### **...**

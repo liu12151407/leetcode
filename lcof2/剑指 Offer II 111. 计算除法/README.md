@@ -1,4 +1,4 @@
-# [剑指 Offer II 111. 计算除法](https://leetcode-cn.com/problems/vlzXQL)
+# [剑指 Offer II 111. 计算除法](https://leetcode.cn/problems/vlzXQL)
 
 ## 题目描述
 
@@ -57,7 +57,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 399&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/evaluate-division/">https://leetcode-cn.com/problems/evaluate-division/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 399&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/evaluate-division/">https://leetcode.cn/problems/evaluate-division/</a></p>
 
 ## 解法
 
@@ -71,12 +71,14 @@
 # 初始化，p存储每个点的父节点
 p = list(range(n))
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
         # 路径压缩
         p[x] = find(p[x])
     return p[x]
+
 
 # 合并a和b所在的两个集合
 p[find(a)] = find(b)
@@ -89,12 +91,14 @@ p[find(a)] = find(b)
 p = list(range(n))
 size = [1] * n
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
         # 路径压缩
         p[x] = find(p[x])
     return p[x]
+
 
 # 合并a和b所在的两个集合
 if find(a) != find(b):
@@ -109,6 +113,7 @@ if find(a) != find(b):
 p = list(range(n))
 d = [0] * n
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
@@ -116,6 +121,7 @@ def find(x):
         d[x] += d[p[x]]
         p[x] = t
     return p[x]
+
 
 # 合并a和b所在的两个集合
 p[find(a)] = find(b)
@@ -132,7 +138,9 @@ d[find(a)] = distance
 
 ```python
 class Solution:
-    def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
+    def calcEquation(
+        self, equations: List[List[str]], values: List[float], queries: List[List[str]]
+    ) -> List[float]:
         n = len(equations)
         p = list(range(n << 1))
         w = [1.0] * (n << 1)
@@ -180,7 +188,8 @@ class Solution {
     private int[] p;
     private double[] w;
 
-    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+    public double[] calcEquation(
+        List<List<String>> equations, double[] values, List<List<String>> queries) {
         int n = equations.size();
         p = new int[n << 1];
         w = new double[n << 1];
@@ -242,15 +251,13 @@ public:
 
     vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
         int n = equations.size();
-        for (int i = 0; i < (n << 1); ++i)
-        {
+        for (int i = 0; i < (n << 1); ++i) {
             p.push_back(i);
             w.push_back(1.0);
         }
         unordered_map<string, int> mp;
         int idx = 0;
-        for (int i = 0; i < n; ++i)
-        {
+        for (int i = 0; i < n; ++i) {
             auto e = equations[i];
             string a = e[0], b = e[1];
             if (mp.find(a) == mp.end()) mp[a] = idx++;
@@ -262,12 +269,11 @@ public:
         }
         int m = queries.size();
         vector<double> res;
-        for (int i = 0; i < m; ++i)
-        {
+        for (int i = 0; i < m; ++i) {
             string c = queries[i][0], d = queries[i][1];
-            if (mp.find(c) == mp.end() || mp.find(d) == mp.end()) res.push_back(-1.0);
-            else
-            {
+            if (mp.find(c) == mp.end() || mp.find(d) == mp.end())
+                res.push_back(-1.0);
+            else {
                 int pa = find(mp[c]), pb = find(mp[d]);
                 res.push_back(pa == pb ? w[mp[c]] / w[mp[d]] : -1.0);
             }
@@ -276,8 +282,7 @@ public:
     }
 
     int find(int x) {
-        if (p[x] != x)
-        {
+        if (p[x] != x) {
             int origin = p[x];
             p[x] = find(p[x]);
             w[x] *= w[origin];

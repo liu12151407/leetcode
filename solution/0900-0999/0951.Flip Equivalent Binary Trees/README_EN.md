@@ -8,43 +8,29 @@
 
 <p>A binary tree <strong>X</strong>&nbsp;is <em>flip equivalent</em> to a binary tree <strong>Y</strong> if and only if we can make <strong>X</strong> equal to <strong>Y</strong> after some number of flip operations.</p>
 
-<p>Given the roots of two binary trees <code>root1</code> and <code>root2</code>, return <code>true</code> if the two trees are flip equivelent or <code>false</code> otherwise.</p>
+<p>Given the roots of two binary trees <code>root1</code> and <code>root2</code>, return <code>true</code> if the two trees are flip equivalent or <code>false</code> otherwise.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="Flipped Trees Diagram" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0951.Flip%20Equivalent%20Binary%20Trees/images/tree_ex.png" style="width: 500px; height: 220px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="Flipped Trees Diagram" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0951.Flip%20Equivalent%20Binary%20Trees/images/tree_ex.png" style="width: 500px; height: 220px;" />
 <pre>
 <strong>Input:</strong> root1 = [1,2,3,4,5,6,null,null,null,7,8], root2 = [1,3,2,null,6,4,5,null,null,null,null,8,7]
 <strong>Output:</strong> true
 <strong>Explanation: </strong>We flipped at nodes with values 1, 3, and 5.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> root1 = [], root2 = []
 <strong>Output:</strong> true
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> root1 = [], root2 = [1]
 <strong>Output:</strong> false
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> root1 = [0,null,1], root2 = []
-<strong>Output:</strong> false
-</pre>
-
-<p><strong>Example 5:</strong></p>
-
-<pre>
-<strong>Input:</strong> root1 = [0,null,1], root2 = [0,1]
-<strong>Output:</strong> true
 </pre>
 
 <p>&nbsp;</p>
@@ -77,7 +63,9 @@ class Solution:
                 return True
             if root1 is None or root2 is None or root1.val != root2.val:
                 return False
-            return (dfs(root1.left, root2.left) and dfs(root1.right, root2.right)) or (dfs(root1.left, root2.right) and dfs(root1.right, root2.left))
+            return (dfs(root1.left, root2.left) and dfs(root1.right, root2.right)) or (
+                dfs(root1.left, root2.right) and dfs(root1.right, root2.left)
+            )
 
         return dfs(root1, root2)
 ```
@@ -112,7 +100,8 @@ class Solution {
         if (root1 == null || root2 == null || root1.val != root2.val) {
             return false;
         }
-        return (dfs(root1.left, root2.left) && dfs(root1.right, root2.right)) || (dfs(root1.left, root2.right) && dfs(root1.right, root2.left));
+        return (dfs(root1.left, root2.left) && dfs(root1.right, root2.right))
+            || (dfs(root1.left, root2.right) && dfs(root1.right, root2.left));
     }
 }
 ```

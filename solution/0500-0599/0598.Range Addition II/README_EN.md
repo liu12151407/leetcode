@@ -9,22 +9,22 @@
 <p>Count and return <em>the number of maximum integers in the matrix after performing all the operations</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0598.Range%20Addition%20II/images/ex1.jpg" style="width: 750px; height: 176px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0598.Range%20Addition%20II/images/ex1.jpg" style="width: 750px; height: 176px;" />
 <pre>
 <strong>Input:</strong> m = 3, n = 3, ops = [[2,2],[3,3]]
 <strong>Output:</strong> 4
 <strong>Explanation:</strong> The maximum integer in M is 2, and there are four of it in M. So return 4.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> m = 3, n = 3, ops = [[2,2],[3,3],[3,3],[3,3],[2,2],[3,3],[3,3],[3,3],[2,2],[3,3],[3,3],[3,3]]
 <strong>Output:</strong> 4
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> m = 3, n = 3, ops = []
@@ -36,7 +36,7 @@
 
 <ul>
 	<li><code>1 &lt;= m, n &lt;= 4 * 10<sup>4</sup></code></li>
-	<li><code>1 &lt;= ops.length &lt;= 10<sup>4</sup></code></li>
+	<li><code>0 &lt;= ops.length &lt;= 10<sup>4</sup></code></li>
 	<li><code>ops[i].length == 2</code></li>
 	<li><code>1 &lt;= a<sub>i</sub> &lt;= m</code></li>
 	<li><code>1 &lt;= b<sub>i</sub> &lt;= n</code></li>

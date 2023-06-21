@@ -1,30 +1,38 @@
-# [面试题 58 - II. 左旋转字符串](https://leetcode-cn.com/problems/zuo-xuan-zhuan-zi-fu-chuan-lcof/)
+# [面试题 58 - II. 左旋转字符串](https://leetcode.cn/problems/zuo-xuan-zhuan-zi-fu-chuan-lcof/)
 
 ## 题目描述
 
-字符串的左旋转操作是把字符串前面的若干个字符转移到字符串的尾部。请定义一个函数实现字符串左旋转操作的功能。比如，输入字符串"abcdefg"和数字 2，该函数将返回左旋转两位得到的结果"cdefgab"。
+<p>字符串的左旋转操作是把字符串前面的若干个字符转移到字符串的尾部。请定义一个函数实现字符串左旋转操作的功能。比如，输入字符串&quot;abcdefg&quot;和数字2，该函数将返回左旋转两位得到的结果&quot;cdefgab&quot;。</p>
 
-**示例 1：**
+<p>&nbsp;</p>
 
-```
-输入: s = "abcdefg", k = 2
-输出: "cdefgab"
-```
+<p><strong>示例 1：</strong></p>
 
-**示例 2：**
+<pre><strong>输入:</strong> s = &quot;abcdefg&quot;, k = 2
+<strong>输出:&nbsp;</strong>&quot;cdefgab&quot;
+</pre>
 
-```
-输入: s = "lrloseumgh", k = 6
-输出: "umghlrlose"
-```
+<p><strong>示例 2：</strong></p>
 
-**限制：**
+<pre><strong>输入:</strong> s = &quot;lrloseumgh&quot;, k = 6
+<strong>输出:&nbsp;</strong>&quot;umghlrlose&quot;
+</pre>
 
-- `1 <= k < s.length <= 10000`
+<p>&nbsp;</p>
+
+<p><strong>限制：</strong></p>
+
+<ul>
+	<li><code>1 &lt;= k &lt; s.length &lt;= 10000</code></li>
+</ul>
 
 ## 解法
 
-需要注意，此题是旋转，而非位移。当 `n >= s.length` 时，字符串不变。
+**方法一：模拟**
+
+我们可以将字符串分为两部分，分别对两部分进行翻转，然后再对整个字符串进行翻转，即可得到结果。或者直接截取两个子串，然后拼接起来。
+
+时间复杂度 $O(n)$，空间复杂度 $O(n)$。其中 $n$ 为字符串长度。
 
 <!-- tabs:start -->
 
@@ -46,6 +54,29 @@ class Solution {
 }
 ```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    string reverseLeftWords(string s, int n) {
+        return s.substr(n) + s.substr(0, n);
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    string reverseLeftWords(string s, int n) {
+        reverse(s.begin(), s.begin() + n);
+        reverse(s.begin() + n, s.end());
+        reverse(s.begin(), s.end());
+        return s;
+    }
+};
+```
+
 ### **JavaScript**
 
 ```js
@@ -55,7 +86,7 @@ class Solution {
  * @return {string}
  */
 var reverseLeftWords = function (s, n) {
-    return s.substring(n) + s.substr(0, n);
+    return s.substring(n) + s.substring(0, n);
 };
 ```
 
@@ -72,11 +103,18 @@ func reverseLeftWords(s string, n int) string {
 ```rust
 impl Solution {
     pub fn reverse_left_words(s: String, n: i32) -> String {
-        let len = s.len() as i32;
-        if n >= len {
-            return s;
-        }
-        String::from(&s[n as usize..]) + &s[..n as usize]
+        let n = n as usize;
+        String::from(&s[n..]) + &s[..n]
+    }
+}
+```
+
+### **C#**
+
+```cs
+public class Solution {
+    public string ReverseLeftWords(string s, int n) {
+        return s.Substring(n) + s.Substring(0, n);
     }
 }
 ```

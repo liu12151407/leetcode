@@ -9,7 +9,7 @@
 <p>Given an integer <code>n</code>, return <em>the <strong>smallest numerically balanced</strong> number <strong>strictly greater</strong> than </em><code>n</code><em>.</em></p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 1
@@ -20,7 +20,7 @@
 It is also the smallest numerically balanced number strictly greater than 1.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 1000
@@ -33,7 +33,7 @@ It is also the smallest numerically balanced number strictly greater than 1000.
 Note that 1022 cannot be the answer because 0 appeared more than 0 times.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 3000
@@ -71,8 +71,8 @@ class Solution:
                     return False
             return True
 
-        for i in range(n + 1, 10 ** 7):
-            if (check(i)):
+        for i in range(n + 1, 10**7):
+            if check(i):
                 return i
         return -1
 ```
@@ -137,8 +137,7 @@ function isValid(n: number): boolean {
 class Solution {
 public:
     int nextBeautifulNumber(int n) {
-        for (int i = n + 1; i < 10000000; ++i)
-        {
+        for (int i = n + 1; i < 10000000; ++i) {
             if (check(i)) return i;
         }
         return -1;
@@ -148,8 +147,7 @@ public:
         string s = to_string(num);
         vector<int> counter(10);
         for (char c : s) ++counter[c - '0'];
-        for (char c : s)
-        {
+        for (char c : s) {
             if (counter[c - '0'] != c - '0') return false;
         }
         return true;

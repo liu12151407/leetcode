@@ -1,4 +1,4 @@
-# [1603. 设计停车系统](https://leetcode-cn.com/problems/design-parking-system)
+# [1603. 设计停车系统](https://leetcode.cn/problems/design-parking-system)
 
 [English Version](/solution/1600-1699/1603.Design%20Parking%20System/README_EN.md)
 
@@ -48,7 +48,11 @@ parkingSystem.addCar(1); // 返回 false ，因为没有空的大车位，唯一
 
 <!-- 这里可写通用的实现逻辑 -->
 
-为每种车维护一个计数器，初始值为车位的数目。此后，每来一辆车，就将对应类型的计数器减 1。当计数器为 0 时，说明车位已满。
+**方法一：模拟**
+
+为每种车维护一个计数器，初始值为车位的数目。此后，每来一辆车，就将对应类型的计数器减 `1`。当计数器为 `0` 时，说明车位已满。
+
+时间复杂度 $O(1)$，空间复杂度 $O(1)$。
 
 <!-- tabs:start -->
 
@@ -58,15 +62,13 @@ parkingSystem.addCar(1); // 返回 false ，因为没有空的大车位，唯一
 
 ```python
 class ParkingSystem:
-
     def __init__(self, big: int, medium: int, small: int):
-        self.spaces = [big, medium, small]
-
+        self.cnt = [0, big, medium, small]
 
     def addCar(self, carType: int) -> bool:
-        if self.spaces[carType - 1] <= 0:
+        if self.cnt[carType] == 0:
             return False
-        self.spaces[carType - 1] -= 1
+        self.cnt[carType] -= 1
         return True
 
 
@@ -81,20 +83,17 @@ class ParkingSystem:
 
 ```java
 class ParkingSystem {
-
-    private int[] spaces = new int[3];
+    private int[] cnt;
 
     public ParkingSystem(int big, int medium, int small) {
-        spaces[0] = big;
-        spaces[1] = medium;
-        spaces[2] = small;
+        cnt = new int[] {0, big, medium, small};
     }
 
     public boolean addCar(int carType) {
-        if (spaces[carType - 1] <= 0) {
+        if (cnt[carType] == 0) {
             return false;
         }
-        --spaces[carType - 1];
+        --cnt[carType];
         return true;
     }
 }
@@ -104,6 +103,158 @@ class ParkingSystem {
  * ParkingSystem obj = new ParkingSystem(big, medium, small);
  * boolean param_1 = obj.addCar(carType);
  */
+```
+
+### **C++**
+
+```cpp
+class ParkingSystem {
+public:
+    vector<int> cnt;
+
+    ParkingSystem(int big, int medium, int small) {
+        cnt = {0, big, medium, small};
+    }
+
+    bool addCar(int carType) {
+        if (cnt[carType] == 0) return false;
+        --cnt[carType];
+        return true;
+    }
+};
+
+/**
+ * Your ParkingSystem object will be instantiated and called as such:
+ * ParkingSystem* obj = new ParkingSystem(big, medium, small);
+ * bool param_1 = obj->addCar(carType);
+ */
+```
+
+### **Go**
+
+```go
+type ParkingSystem struct {
+	cnt []int
+}
+
+func Constructor(big int, medium int, small int) ParkingSystem {
+	return ParkingSystem{[]int{0, big, medium, small}}
+}
+
+func (this *ParkingSystem) AddCar(carType int) bool {
+	if this.cnt[carType] == 0 {
+		return false
+	}
+	this.cnt[carType]--
+	return true
+}
+
+/**
+ * Your ParkingSystem object will be instantiated and called as such:
+ * obj := Constructor(big, medium, small);
+ * param_1 := obj.AddCar(carType);
+ */
+```
+
+### **TypeScript**
+
+```ts
+class ParkingSystem {
+    private count: [number, number, number];
+
+    constructor(big: number, medium: number, small: number) {
+        this.count = [big, medium, small];
+    }
+
+    addCar(carType: number): boolean {
+        if (this.count[carType - 1] === 0) {
+            return false;
+        }
+        this.count[carType - 1]--;
+        return true;
+    }
+}
+
+/**
+ * Your ParkingSystem object will be instantiated and called as such:
+ * var obj = new ParkingSystem(big, medium, small)
+ * var param_1 = obj.addCar(carType)
+ */
+```
+
+### **Rust**
+
+```rust
+struct ParkingSystem {
+    count: [i32; 3],
+}
+
+
+/**
+ * `&self` means the method takes an immutable reference.
+ * If you need a mutable reference, change it to `&mut self` instead.
+ */
+impl ParkingSystem {
+
+    fn new(big: i32, medium: i32, small: i32) -> Self {
+        Self {
+            count: [big, medium, small]
+        }
+    }
+
+    fn add_car(&mut self, car_type: i32) -> bool {
+        let i = (car_type - 1) as usize;
+        if self.count[i] == 0 {
+            return false;
+        }
+        self.count[i] -= 1;
+        true
+    }
+}
+
+/**
+ * Your ParkingSystem object will be instantiated and called as such:
+ * let obj = ParkingSystem::new(big, medium, small);
+ * let ret_1: bool = obj.add_car(carType);
+ */
+```
+
+### **C**
+
+```c
+typedef struct {
+    int* count;
+} ParkingSystem;
+
+ParkingSystem* parkingSystemCreate(int big, int medium, int small) {
+    ParkingSystem* res = malloc(sizeof(ParkingSystem));
+    res->count = malloc(sizeof(int) * 3);
+    res->count[0] = big;
+    res->count[1] = medium;
+    res->count[2] = small;
+    return res;
+}
+
+bool parkingSystemAddCar(ParkingSystem* obj, int carType) {
+    int i = carType - 1;
+    if (!obj->count[i]) {
+        return 0;
+    }
+    obj->count[i]--;
+    return 1;
+}
+
+void parkingSystemFree(ParkingSystem* obj) {
+    free(obj);
+}
+
+/**
+ * Your ParkingSystem struct will be instantiated and called as such:
+ * ParkingSystem* obj = parkingSystemCreate(big, medium, small);
+ * bool param_1 = parkingSystemAddCar(obj, carType);
+
+ * parkingSystemFree(obj);
+*/
 ```
 
 ### **...**

@@ -1,4 +1,4 @@
-# [1831. 每天的最大交易](https://leetcode-cn.com/problems/maximum-transaction-each-day)
+# [1831. 每天的最大交易](https://leetcode.cn/problems/maximum-transaction-each-day)
 
 [English Version](/solution/1800-1899/1831.Maximum%20Transaction%20Each%20Day/README_EN.md)
 
@@ -71,7 +71,21 @@ Result table:
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```sql
-
+# Write your MySQL query statement below
+SELECT
+    transaction_id
+FROM
+    (
+        SELECT
+            transaction_id,
+            rank() OVER (
+                PARTITION BY date_format(day, '%Y-%m-%d')
+                ORDER BY amount DESC
+            ) AS rk
+        FROM Transactions
+        ORDER BY transaction_id
+    ) AS t
+WHERE rk = 1;
 ```
 
 <!-- tabs:end -->

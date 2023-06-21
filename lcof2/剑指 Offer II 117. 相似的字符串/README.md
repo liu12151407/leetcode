@@ -1,4 +1,4 @@
-# [剑指 Offer II 117. 相似的字符串](https://leetcode-cn.com/problems/H6lPxb)
+# [剑指 Offer II 117. 相似的字符串](https://leetcode.cn/problems/H6lPxb)
 
 ## 题目描述
 
@@ -43,7 +43,7 @@
 
 <p>&nbsp; &nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 839&nbsp;题相同：<a href="https://leetcode-cn.com/problems/similar-string-groups/">https://leetcode-cn.com/problems/similar-string-groups/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 839&nbsp;题相同：<a href="https://leetcode.cn/problems/similar-string-groups/">https://leetcode.cn/problems/similar-string-groups/</a></p>
 
 ## 解法
 
@@ -57,12 +57,14 @@
 # 初始化，p存储每个点的父节点
 p = list(range(n))
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
         # 路径压缩
         p[x] = find(p[x])
     return p[x]
+
 
 # 合并a和b所在的两个集合
 p[find(a)] = find(b)
@@ -75,12 +77,14 @@ p[find(a)] = find(b)
 p = list(range(n))
 size = [1] * n
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
         # 路径压缩
         p[x] = find(p[x])
     return p[x]
+
 
 # 合并a和b所在的两个集合
 if find(a) != find(b):
@@ -95,6 +99,7 @@ if find(a) != find(b):
 p = list(range(n))
 d = [0] * n
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
@@ -102,6 +107,7 @@ def find(x):
         d[x] += d[p[x]]
         p[x] = t
     return p[x]
+
 
 # 合并a和b所在的两个集合
 p[find(a)] = find(b)
@@ -119,26 +125,17 @@ d[find(a)] = distance
 ```python
 class Solution:
     def numSimilarGroups(self, strs: List[str]) -> int:
-        n = len(strs)
-        p = list(range(n))
-
         def find(x):
             if p[x] != x:
                 p[x] = find(p[x])
             return p[x]
 
-        def check(a, b):
-            cnt = 0
-            for i, c in enumerate(a):
-                if c != b[i]:
-                    cnt += 1
-            return cnt <= 2
-
+        n, l = len(strs), len(strs[0])
+        p = list(range(n))
         for i in range(n):
             for j in range(i + 1, n):
-                if check(strs[i], strs[j]):
+                if sum(strs[i][k] != strs[j][k] for k in range(l)) <= 2:
                     p[find(i)] = find(j)
-
         return sum(i == find(i) for i in range(n))
 ```
 
@@ -198,30 +195,27 @@ class Solution {
 class Solution {
 public:
     vector<int> p;
+
     int numSimilarGroups(vector<string>& strs) {
         int n = strs.size();
-        for (int i = 0; i < n; ++i) p.push_back(i);
+        p.resize(n);
+        for (int i = 0; i < n; ++i) p[i] = i;
         for (int i = 0; i < n; ++i)
-        {
             for (int j = i + 1; j < n; ++j)
-            {
                 if (check(strs[i], strs[j]))
                     p[find(i)] = find(j);
-            }
-        }
-        int res = 0;
+        int ans = 0;
         for (int i = 0; i < n; ++i)
-        {
-            if (i == find(i)) ++res;
-        }
-        return res;
+            if (i == find(i))
+                ++ans;
+        return ans;
     }
 
     bool check(string a, string b) {
         int cnt = 0;
-        int n = a.size();
-        for (int i = 0; i < n; ++i)
-            if (a[i] != b[i]) ++cnt;
+        for (int i = 0; i < a.size(); ++i)
+            if (a[i] != b[i])
+                ++cnt;
         return cnt <= 2;
     }
 
@@ -235,46 +229,42 @@ public:
 ### **Go**
 
 ```go
-var p []int
-
 func numSimilarGroups(strs []string) int {
 	n := len(strs)
-	p = make([]int, n)
-	for i := 0; i < n; i++ {
+	p := make([]int, n)
+	for i := range p {
 		p[i] = i
+	}
+	check := func(a, b string) bool {
+		cnt := 0
+		for i := range a {
+			if a[i] != b[i] {
+				cnt++
+			}
+		}
+		return cnt <= 2
+	}
+	var find func(x int) int
+	find = func(x int) int {
+		if p[x] != x {
+			p[x] = find(p[x])
+		}
+		return p[x]
 	}
 	for i := 0; i < n; i++ {
 		for j := i + 1; j < n; j++ {
-			if !check(strs[i], strs[j]) {
-				continue
+			if check(strs[i], strs[j]) {
+				p[find(i)] = find(j)
 			}
-			p[find(i)] = find(j)
 		}
 	}
-	res := 0
+	ans := 0
 	for i := 0; i < n; i++ {
 		if i == find(i) {
-			res++
+			ans++
 		}
 	}
-	return res
-}
-
-func check(a, b string) bool {
-	cnt, n := 0, len(a)
-	for i := 0; i < n; i++ {
-		if a[i] != b[i] {
-			cnt++
-		}
-	}
-	return cnt <= 2
-}
-
-func find(x int) int {
-	if p[x] != x {
-		p[x] = find(p[x])
-	}
-	return p[x]
+	return ans
 }
 ```
 

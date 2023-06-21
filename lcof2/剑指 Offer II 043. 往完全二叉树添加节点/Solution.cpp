@@ -14,10 +14,8 @@ public:
     vector<TreeNode*> tree;
 
     CBTInserter(TreeNode* root) {
-        queue<TreeNode*> q;
-        q.push(root);
-        while (!q.empty())
-        {
+        queue<TreeNode*> q{{root}};
+        while (!q.empty()) {
             auto node = q.front();
             q.pop();
             tree.push_back(node);
@@ -25,16 +23,19 @@ public:
             if (node->right) q.push(node->right);
         }
     }
-    
-    int insert(int val) {
-        int pidx = tree.size() - 1 >> 1;
-        TreeNode* node = new TreeNode(val);
+
+    int insert(int v) {
+        int pid = tree.size() - 1 >> 1;
+        TreeNode* node = new TreeNode(v);
         tree.push_back(node);
-        if (!tree[pidx]->left) tree[pidx]->left = node;
-        else tree[pidx]->right = node;
-        return tree[pidx]->val;
+        TreeNode* p = tree[pid];
+        if (!p->left)
+            p->left = node;
+        else
+            p->right = node;
+        return p->val;
     }
-    
+
     TreeNode* get_root() {
         return tree[0];
     }
@@ -43,6 +44,6 @@ public:
 /**
  * Your CBTInserter object will be instantiated and called as such:
  * CBTInserter* obj = new CBTInserter(root);
- * int param_1 = obj->insert(val);
+ * int param_1 = obj->insert(v);
  * TreeNode* param_2 = obj->get_root();
  */

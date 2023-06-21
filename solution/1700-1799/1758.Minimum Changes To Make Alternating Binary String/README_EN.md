@@ -11,7 +11,7 @@
 <p>Return <em>the <strong>minimum</strong> number of operations needed to make</em> <code>s</code> <em>alternating</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;0100&quot;
@@ -19,7 +19,7 @@
 <strong>Explanation:</strong> If you change the last character to &#39;1&#39;, s will be &quot;0101&quot;, which is alternating.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;10&quot;
@@ -27,7 +27,7 @@
 <strong>Explanation:</strong> s is already alternating.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;1111&quot;
@@ -52,9 +52,7 @@
 ```python
 class Solution:
     def minOperations(self, s: str) -> int:
-        cnt = 0
-        for i, c in enumerate(s):
-            cnt += c == '01'[i & 1]
+        cnt = sum(c != '01'[i & 1] for i, c in enumerate(s))
         return min(cnt, len(s) - cnt)
 ```
 
@@ -65,7 +63,7 @@ class Solution {
     public int minOperations(String s) {
         int cnt = 0, n = s.length();
         for (int i = 0; i < n; ++i) {
-            cnt += (s.charAt(i) == "01".charAt(i & 1) ? 1 : 0);
+            cnt += (s.charAt(i) != "01".charAt(i & 1) ? 1 : 0);
         }
         return Math.min(cnt, n - cnt);
     }
@@ -79,12 +77,76 @@ class Solution {
 public:
     int minOperations(string s) {
         int cnt = 0, n = s.size();
-        for (int i = 0; i < n; ++i) {
-            cnt += s[i] == "01"[i & 1];
-        }
+        for (int i = 0; i < n; ++i) cnt += s[i] != "01"[i & 1];
         return min(cnt, n - cnt);
     }
 };
+```
+
+### **Go**
+
+```go
+func minOperations(s string) int {
+	cnt := 0
+	for i, c := range s {
+		if c != []rune("01")[i&1] {
+			cnt++
+		}
+	}
+	return min(cnt, len(s)-cnt)
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+```
+
+### **TypeScript**
+
+```ts
+function minOperations(s: string): number {
+    const n = s.length;
+    let count = 0;
+    for (let i = 0; i < n; i++) {
+        count += s[i] !== '01'[i & 1] ? 1 : 0;
+    }
+    return Math.min(count, n - count);
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn min_operations(s: String) -> i32 {
+        let n = s.len();
+        let s = s.as_bytes();
+        let cs = [b'0', b'1'];
+        let mut count = 0;
+        for i in 0..n {
+            count += if s[i] != cs[i & 1] { 1 } else { 0 };
+        }
+        count.min(n - count) as i32
+    }
+}
+```
+
+### **C**
+
+```c
+#define min(a, b) (((a) < (b)) ? (a) : (b))
+
+int minOperations(char* s) {
+    int n = strlen(s);
+    int count = 0;
+    for (int i = 0; i < n; i++) {
+        count += s[i] != ('0' + (i & 1)) ? 0 : 1;
+    }
+    return min(count, n - count);
+}
 ```
 
 ### **...**

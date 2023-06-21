@@ -11,7 +11,7 @@
 <p>Given the <code>encoded</code> array, return <em>the original array</em> <code>perm</code>. It is guaranteed that the answer exists and is unique.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> encoded = [3,1]
@@ -19,7 +19,7 @@
 <strong>Explanation:</strong> If perm = [1,2,3], then encoded = [1 XOR 2,2 XOR 3] = [3,1]
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> encoded = [6,5,4,6]
@@ -42,13 +42,87 @@
 ### **Python3**
 
 ```python
-
+class Solution:
+    def decode(self, encoded: List[int]) -> List[int]:
+        n = len(encoded) + 1
+        a = b = 0
+        for i in range(0, n - 1, 2):
+            a ^= encoded[i]
+        for i in range(1, n + 1):
+            b ^= i
+        perm = [0] * n
+        perm[-1] = a ^ b
+        for i in range(n - 2, -1, -1):
+            perm[i] = encoded[i] ^ perm[i + 1]
+        return perm
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int[] decode(int[] encoded) {
+        int n = encoded.length + 1;
+        int a = 0, b = 0;
+        for (int i = 0; i < n - 1; i += 2) {
+            a ^= encoded[i];
+        }
+        for (int i = 1; i <= n; ++i) {
+            b ^= i;
+        }
+        int[] perm = new int[n];
+        perm[n - 1] = a ^ b;
+        for (int i = n - 2; i >= 0; --i) {
+            perm[i] = encoded[i] ^ perm[i + 1];
+        }
+        return perm;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    vector<int> decode(vector<int>& encoded) {
+        int n = encoded.size() + 1;
+        int a = 0, b = 0;
+        for (int i = 0; i < n - 1; i += 2) {
+            a ^= encoded[i];
+        }
+        for (int i = 1; i <= n; ++i) {
+            b ^= i;
+        }
+        vector<int> perm(n);
+        perm[n - 1] = a ^ b;
+        for (int i = n - 2; ~i; --i) {
+            perm[i] = encoded[i] ^ perm[i + 1];
+        }
+        return perm;
+    }
+};
+```
+
+### **Go**
+
+```go
+func decode(encoded []int) []int {
+	n := len(encoded) + 1
+	a, b := 0, 0
+	for i := 0; i < n-1; i += 2 {
+		a ^= encoded[i]
+	}
+	for i := 1; i <= n; i++ {
+		b ^= i
+	}
+	perm := make([]int, n)
+	perm[n-1] = a ^ b
+	for i := n - 2; i >= 0; i-- {
+		perm[i] = encoded[i] ^ perm[i+1]
+	}
+	return perm
+}
 ```
 
 ### **...**

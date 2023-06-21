@@ -1,4 +1,4 @@
-# [270. 最接近的二叉搜索树值](https://leetcode-cn.com/problems/closest-binary-search-tree-value)
+# [270. 最接近的二叉搜索树值](https://leetcode.cn/problems/closest-binary-search-tree-value)
 
 [English Version](/solution/0200-0299/0270.Closest%20Binary%20Search%20Tree%20Value/README_EN.md)
 
@@ -6,27 +6,33 @@
 
 <!-- 这里写题目描述 -->
 
-<p>给定一个不为空的二叉搜索树和一个目标值 target，请在该二叉搜索树中找到最接近目标值 target 的数值。</p>
+给你二叉搜索树的根节点 <code>root</code> 和一个目标值 <code>target</code> ，请在该二叉搜索树中找到最接近目标值 <code>target</code> 的数值。如果有多个答案，返回最小的那个。
 
-<p><strong>注意：</strong></p>
+<p>&nbsp;</p>
+
+<p><strong class="example">示例 1：</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0200-0299/0270.Closest%20Binary%20Search%20Tree%20Value/images/closest1-1-tree.jpg" style="width: 292px; height: 302px;" />
+<pre>
+<strong>输入：</strong>root = [4,2,5,1,3], target = 3.714286
+<strong>输出：</strong>4
+</pre>
+
+<p><strong class="example">示例 2：</strong></p>
+
+<pre>
+<strong>输入：</strong>root = [1], target = 4.428571
+<strong>输出：</strong>1
+</pre>
+
+<p>&nbsp;</p>
+
+<p><strong>提示：</strong></p>
 
 <ul>
-	<li>给定的目标值 target 是一个浮点数</li>
-	<li>题目保证在该二叉搜索树中只会存在一个最接近目标值的数</li>
+	<li>树中节点的数目在范围 <code>[1, 10<sup>4</sup>]</code> 内</li>
+	<li><code>0 &lt;= Node.val &lt;= 10<sup>9</sup></code></li>
+	<li><code>-10<sup>9</sup> &lt;= target &lt;= 10<sup>9</sup></code></li>
 </ul>
-
-<p><strong>示例：</strong></p>
-
-<pre><strong>输入:</strong> root = [4,2,5,1,3]，目标值 target = 3.714286
-
-    4
-   / \
-  2   5
- / \
-1   3
-
-<strong>输出:</strong> 4
-</pre>
 
 ## 解法
 
@@ -49,7 +55,7 @@
 #         self.right = right
 class Solution:
     def closestValue(self, root: Optional[TreeNode], target: float) -> int:
-        ans, mi = root.val, float('inf')
+        ans, mi = root.val, inf
         while root:
             t = abs(root.val - target)
             if t < mi:
@@ -119,7 +125,7 @@ class Solution {
  * @param {number} target
  * @return {number}
  */
-var closestValue = function(root, target) {
+var closestValue = function (root, target) {
     let ans = root.val;
     let mi = Number.MAX_VALUE;
     while (root) {
@@ -157,16 +163,16 @@ public:
     int closestValue(TreeNode* root, double target) {
         int ans = root->val;
         double mi = INT_MAX;
-        while (root)
-        {
+        while (root) {
             double t = abs(root->val - target);
-            if (t < mi)
-            {
+            if (t < mi) {
                 mi = t;
                 ans = root->val;
             }
-            if (root->val > target) root = root->left;
-            else root = root->right;
+            if (root->val > target)
+                root = root->left;
+            else
+                root = root->right;
         }
         return ans;
     }

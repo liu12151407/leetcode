@@ -20,7 +20,7 @@
 <p>Return <em>the number of unhappy friends</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 4, preferences = [[1, 2, 3], [3, 2, 0], [3, 1, 0], [1, 2, 0]], pairs = [[0, 1], [2, 3]]
@@ -35,7 +35,7 @@ Friend 3 is unhappy because:
 Friends 0 and 2 are happy.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 2, preferences = [[1], [0]], pairs = [[1, 0]]
@@ -43,7 +43,7 @@ Friends 0 and 2 are happy.
 <strong>Explanation:</strong> Both friends 0 and 1 are happy.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 4, preferences = [[1, 3, 2], [2, 3, 0], [1, 3, 0], [0, 2, 1]], pairs = [[1, 3], [0, 2]]
@@ -75,13 +75,124 @@ Friends 0 and 2 are happy.
 ### **Python3**
 
 ```python
-
+class Solution:
+    def unhappyFriends(
+        self, n: int, preferences: List[List[int]], pairs: List[List[int]]
+    ) -> int:
+        d = [{p: i for i, p in enumerate(v)} for v in preferences]
+        p = {}
+        for x, y in pairs:
+            p[x] = y
+            p[y] = x
+        ans = 0
+        for x in range(n):
+            y = p[x]
+            ans += any(d[u][x] < d[u][p[u]] for u in preferences[x][: d[x][y]])
+        return ans
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int unhappyFriends(int n, int[][] preferences, int[][] pairs) {
+        int[][] d = new int[n][n];
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n - 1; ++j) {
+                d[i][preferences[i][j]] = j;
+            }
+        }
+        int[] p = new int[n];
+        for (var e : pairs) {
+            int x = e[0], y = e[1];
+            p[x] = y;
+            p[y] = x;
+        }
+        int ans = 0;
+        for (int x = 0; x < n; ++x) {
+            int y = p[x];
+            int find = 0;
+            for (int i = 0; i < d[x][y]; ++i) {
+                int u = preferences[x][i];
+                if (d[u][x] < d[u][p[u]]) {
+                    find = 1;
+                    break;
+                }
+            }
+            ans += find;
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int unhappyFriends(int n, vector<vector<int>>& preferences, vector<vector<int>>& pairs) {
+        int d[n][n];
+        int p[n];
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n - 1; ++j) {
+                d[i][preferences[i][j]] = j;
+            }
+        }
+        for (auto& e : pairs) {
+            int x = e[0], y = e[1];
+            p[x] = y;
+            p[y] = x;
+        }
+        int ans = 0;
+        for (int x = 0; x < n; ++x) {
+            int y = p[x];
+            int find = 0;
+            for (int i = 0; i < d[x][y]; ++i) {
+                int u = preferences[x][i];
+                if (d[u][x] < d[u][p[u]]) {
+                    find = 1;
+                    break;
+                }
+            }
+            ans += find;
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func unhappyFriends(n int, preferences [][]int, pairs [][]int) (ans int) {
+	d := make([][]int, n)
+	p := make([]int, n)
+	for i := range d {
+		d[i] = make([]int, n)
+		for j := 0; j < n-1; j++ {
+			d[i][preferences[i][j]] = j
+		}
+	}
+	for _, e := range pairs {
+		x, y := e[0], e[1]
+		p[x] = y
+		p[y] = x
+	}
+	for x := 0; x < n; x++ {
+		y := p[x]
+		find := 0
+		for i := 0; i < d[x][y]; i++ {
+			u := preferences[x][i]
+			if d[u][x] < d[u][p[u]] {
+				find = 1
+				break
+			}
+		}
+		ans += find
+	}
+	return
+}
 ```
 
 ### **...**

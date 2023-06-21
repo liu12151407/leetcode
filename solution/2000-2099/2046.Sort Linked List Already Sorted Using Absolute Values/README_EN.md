@@ -7,8 +7,8 @@
 Given the <code>head</code> of a singly linked list that is sorted in <strong>non-decreasing</strong> order using the <strong>absolute values</strong> of its nodes, return <em>the list sorted in <strong>non-decreasing</strong> order using the <strong>actual values</strong> of its nodes</em>.
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2046.Sort%20Linked%20List%20Already%20Sorted%20Using%20Absolute%20Values/images/image-20211017201318-4.png" style="width: 621px; height: 250px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2046.Sort%20Linked%20List%20Already%20Sorted%20Using%20Absolute%20Values/images/image-20211017201240-3.png" style="width: 621px; height: 250px;" />
 <pre>
 <strong>Input:</strong> head = [0,2,-5,5,10,-10]
 <strong>Output:</strong> [-10,-5,0,2,5,10]
@@ -17,8 +17,8 @@ The list sorted in non-descending order using the absolute values of the nodes i
 The list sorted in non-descending order using the actual values is [-10,-5,0,2,5,10].
 </pre>
 
-<p><strong>Example 2:</strong></p>
-<img src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2046.Sort%20Linked%20List%20Already%20Sorted%20Using%20Absolute%20Values/images/image-20211017201318-4.png" style="width: 338px; height: 250px;" />
+<p><strong class="example">Example 2:</strong></p>
+<img src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2046.Sort%20Linked%20List%20Already%20Sorted%20Using%20Absolute%20Values/images/image-20211017201318-4.png" style="width: 338px; height: 250px;" />
 <pre>
 <strong>Input:</strong> head = [0,1,2]
 <strong>Output:</strong> [0,1,2]
@@ -26,7 +26,7 @@ The list sorted in non-descending order using the actual values is [-10,-5,0,2,5
 The linked list is already sorted in non-decreasing order.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> head = [1]
@@ -128,18 +128,14 @@ public:
     ListNode* sortLinkedList(ListNode* head) {
         ListNode* prev = head;
         ListNode* curr = head->next;
-        while (curr)
-        {
-            if (curr->val < 0)
-            {
+        while (curr) {
+            if (curr->val < 0) {
                 auto t = curr->next;
                 prev->next = t;
                 curr->next = head;
                 head = curr;
                 curr = t;
-            }
-            else
-            {
+            } else {
                 prev = curr;
                 curr = curr->next;
             }

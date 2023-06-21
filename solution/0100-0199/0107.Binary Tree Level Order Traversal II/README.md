@@ -1,4 +1,4 @@
-# [107. 二叉树的层序遍历 II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii)
+# [107. 二叉树的层序遍历 II](https://leetcode.cn/problems/binary-tree-level-order-traversal-ii)
 
 [English Version](/solution/0100-0199/0107.Binary%20Tree%20Level%20Order%20Traversal%20II/README_EN.md)
 
@@ -6,28 +6,39 @@
 
 <!-- 这里写题目描述 -->
 
-<p>给定一个二叉树，返回其节点值自底向上的层序遍历。 （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）</p>
+<p>给你二叉树的根节点 <code>root</code> ，返回其节点值 <strong>自底向上的层序遍历</strong> 。 （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）</p>
 
-<p>例如：<br />
-给定二叉树 <code>[3,9,20,null,null,15,7]</code>,</p>
+<p>&nbsp;</p>
 
+<p><strong>示例 1：</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0107.Binary%20Tree%20Level%20Order%20Traversal%20II/images/tree1.jpg" style="width: 277px; height: 302px;" />
 <pre>
-    3
-   / \
-  9  20
-    /  \
-   15   7
+<strong>输入：</strong>root = [3,9,20,null,null,15,7]
+<strong>输出：</strong>[[15,7],[9,20],[3]]
 </pre>
 
-<p>返回其自底向上的层序遍历为：</p>
+<p><strong>示例 2：</strong></p>
 
 <pre>
-[
-  [15,7],
-  [9,20],
-  [3]
-]
+<strong>输入：</strong>root = [1]
+<strong>输出：</strong>[[1]]
 </pre>
+
+<p><strong>示例 3：</strong></p>
+
+<pre>
+<strong>输入：</strong>root = []
+<strong>输出：</strong>[]
+</pre>
+
+<p>&nbsp;</p>
+
+<p><strong>提示：</strong></p>
+
+<ul>
+	<li>树中节点数目在范围 <code>[0, 2000]</code> 内</li>
+	<li><code>-1000 &lt;= Node.val &lt;= 1000</code></li>
+</ul>
 
 ## 解法
 
@@ -49,15 +60,14 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def levelOrderBottom(self, root: TreeNode) -> List[List[int]]:
+    def levelOrderBottom(self, root: Optional[TreeNode]) -> List[List[int]]:
         ans = []
         if root is None:
             return ans
         q = deque([root])
         while q:
-            n = len(q)
             t = []
-            for _ in range(n):
+            for _ in range(len(q)):
                 node = q.popleft()
                 t.append(node.val)
                 if node.left:
@@ -135,17 +145,16 @@ public:
         vector<vector<int>> ans;
         if (!root) return ans;
         queue<TreeNode*> q{{root}};
-        while (!q.empty())
-        {
+        while (!q.empty()) {
             vector<int> t;
-            for (int i = q.size(); i > 0; --i) {
-                TreeNode* node = q.front();
+            for (int i = q.size(); i; --i) {
+                auto node = q.front();
                 q.pop();
-                t.push_back(node->val);
+                t.emplace_back(node->val);
                 if (node->left) q.push(node->left);
                 if (node->right) q.push(node->right);
             }
-            ans.push_back(t);
+            ans.emplace_back(t);
         }
         reverse(ans.begin(), ans.end());
         return ans;

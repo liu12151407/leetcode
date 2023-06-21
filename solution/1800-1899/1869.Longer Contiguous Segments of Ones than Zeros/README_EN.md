@@ -4,16 +4,16 @@
 
 ## Description
 
-<p>Given a binary string <code>s</code>, return <code>true</code><em> if the <strong>longest</strong> contiguous segment of </em><code>1</code><em>s is <strong>strictly longer</strong> than the <strong>longest</strong> contiguous segment of </em><code>0</code><em>s in </em><code>s</code>. Return <code>false</code><em> otherwise</em>.</p>
+<p>Given a binary string <code>s</code>, return <code>true</code><em> if the <strong>longest</strong> contiguous segment of </em><code>1</code>&#39;<em>s is <strong>strictly longer</strong> than the <strong>longest</strong> contiguous segment of </em><code>0</code>&#39;<em>s in </em><code>s</code>, or return <code>false</code><em> otherwise</em>.</p>
 
 <ul>
-	<li>For example, in <code>s = &quot;<u>11</u>01<u>000</u>10&quot;</code> the longest contiguous segment of <code>1</code>s has length <code>2</code>, and the longest contiguous segment of <code>0</code>s has length <code>3</code>.</li>
+	<li>For example, in <code>s = &quot;<u>11</u>01<u>000</u>10&quot;</code> the longest continuous segment of <code>1</code>s has length <code>2</code>, and the longest continuous segment of <code>0</code>s has length <code>3</code>.</li>
 </ul>
 
-<p>Note that if there are no <code>0</code>s, then the longest contiguous segment of <code>0</code>s is considered to have length <code>0</code>. The same applies if there are no <code>1</code>s.</p>
+<p>Note that if there are no <code>0</code>&#39;s, then the longest continuous segment of <code>0</code>&#39;s is considered to have a length <code>0</code>. The same applies if there is no <code>1</code>&#39;s.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;1101&quot;
@@ -24,7 +24,7 @@ The longest contiguous segment of 0s has length 1: &quot;11<u>0</u>1&quot;
 The segment of 1s is longer, so return true.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;111000&quot;
@@ -35,7 +35,7 @@ The longest contiguous segment of 0s has length 3: &quot;111<u>000</u>&quot;
 The segment of 1s is not longer, so return false.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;110100010&quot;
@@ -113,7 +113,7 @@ var checkZeroOnes = function (s) {
     let t0 = 0,
         t1 = 0;
     for (let char of s) {
-        if (char == "0") {
+        if (char == '0') {
             t0++;
             t1 = 0;
         } else {
@@ -135,15 +135,11 @@ public:
     bool checkZeroOnes(string s) {
         int n0 = 0, n1 = 0;
         int t0 = 0, t1 = 0;
-        for (auto c : s)
-        {
-            if (c == '0')
-            {
+        for (auto c : s) {
+            if (c == '0') {
                 ++t0;
                 t1 = 0;
-            }
-            else
-            {
+            } else {
                 ++t1;
                 t0 = 0;
             }

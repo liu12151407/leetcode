@@ -1,4 +1,4 @@
-# [1108. IP 地址无效化](https://leetcode-cn.com/problems/defanging-an-ip-address)
+# [1108. IP 地址无效化](https://leetcode.cn/problems/defanging-an-ip-address)
 
 [English Version](/solution/1100-1199/1108.Defanging%20an%20IP%20Address/README_EN.md)
 
@@ -36,6 +36,12 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：直接替换**
+
+我们直接将字符串中的 `'.'` 替换为 `'[.]'` 即可。
+
+时间复杂度 $O(n)$，其中 $n$ 为字符串的长度。忽略答案的空间消耗，空间复杂度 $O(1)$。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -64,7 +70,7 @@ class Solution {
 
 ```ts
 function defangIPaddr(address: string): string {
-    return address.split(".").join("[.]");
+    return address.split('.').join('[.]');
 }
 ```
 
@@ -74,7 +80,7 @@ function defangIPaddr(address: string): string {
 class Solution {
 public:
     string defangIPaddr(string address) {
-        for (int i = address.size(); i >= 0; --i){
+        for (int i = address.size(); i >= 0; --i) {
             if (address[i] == '.') {
                 address.replace(i, 1, "[.]");
             }

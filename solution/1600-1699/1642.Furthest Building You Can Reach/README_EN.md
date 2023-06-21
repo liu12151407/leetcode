@@ -18,8 +18,8 @@
 <p><em>Return the furthest building index (0-indexed) you can reach if you use the given ladders and bricks optimally.</em></p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1600-1699/1642.Furthest%20Building%20You%20Can%20Reach/images/q4.gif" style="width: 562px; height: 561px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1600-1699/1642.Furthest%20Building%20You%20Can%20Reach/images/q4.gif" style="width: 562px; height: 561px;" />
 <pre>
 <strong>Input:</strong> heights = [4,2,7,6,9,14,12], bricks = 5, ladders = 1
 <strong>Output:</strong> 4
@@ -31,14 +31,14 @@
 It is impossible to go beyond building 4 because you do not have any more bricks or ladders.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> heights = [4,12,2,7,3,18,20,3,19], bricks = 10, ladders = 2
 <strong>Output:</strong> 7
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> heights = [14,3,19,3], bricks = 17, ladders = 0
@@ -62,13 +62,104 @@ It is impossible to go beyond building 4 because you do not have any more bricks
 ### **Python3**
 
 ```python
-
+class Solution:
+    def furthestBuilding(self, heights: List[int], bricks: int, ladders: int) -> int:
+        h = []
+        for i, a in enumerate(heights[:-1]):
+            b = heights[i + 1]
+            d = b - a
+            if d > 0:
+                heappush(h, d)
+                if len(h) > ladders:
+                    bricks -= heappop(h)
+                    if bricks < 0:
+                        return i
+        return len(heights) - 1
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int furthestBuilding(int[] heights, int bricks, int ladders) {
+        PriorityQueue<Integer> q = new PriorityQueue<>();
+        int n = heights.length;
+        for (int i = 0; i < n - 1; ++i) {
+            int a = heights[i], b = heights[i + 1];
+            int d = b - a;
+            if (d > 0) {
+                q.offer(d);
+                if (q.size() > ladders) {
+                    bricks -= q.poll();
+                    if (bricks < 0) {
+                        return i;
+                    }
+                }
+            }
+        }
+        return n - 1;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int furthestBuilding(vector<int>& heights, int bricks, int ladders) {
+        priority_queue<int, vector<int>, greater<int>> q;
+        int n = heights.size();
+        for (int i = 0; i < n - 1; ++i) {
+            int a = heights[i], b = heights[i + 1];
+            int d = b - a;
+            if (d > 0) {
+                q.push(d);
+                if (q.size() > ladders) {
+                    bricks -= q.top();
+                    q.pop();
+                    if (bricks < 0) {
+                        return i;
+                    }
+                }
+            }
+        }
+        return n - 1;
+    }
+};
+```
+
+### **Go**
+
+```go
+func furthestBuilding(heights []int, bricks int, ladders int) int {
+	q := hp{}
+	n := len(heights)
+	for i, a := range heights[:n-1] {
+		b := heights[i+1]
+		d := b - a
+		if d > 0 {
+			heap.Push(&q, d)
+			if q.Len() > ladders {
+				bricks -= heap.Pop(&q).(int)
+				if bricks < 0 {
+					return i
+				}
+			}
+		}
+	}
+	return n - 1
+}
+
+type hp struct{ sort.IntSlice }
+
+func (h *hp) Push(v interface{}) { h.IntSlice = append(h.IntSlice, v.(int)) }
+func (h *hp) Pop() interface{} {
+	a := h.IntSlice
+	v := a[len(a)-1]
+	h.IntSlice = a[:len(a)-1]
+	return v
+}
 ```
 
 ### **...**

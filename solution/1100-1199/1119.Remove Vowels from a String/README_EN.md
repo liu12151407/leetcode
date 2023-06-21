@@ -7,14 +7,14 @@
 <p>Given a string <code>s</code>, remove the vowels <code>&#39;a&#39;</code>, <code>&#39;e&#39;</code>, <code>&#39;i&#39;</code>, <code>&#39;o&#39;</code>, and <code>&#39;u&#39;</code> from it, and return the new string.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;leetcodeisacommunityforcoders&quot;
 <strong>Output:</strong> &quot;ltcdscmmntyfrcdrs&quot;
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;aeiou&quot;
@@ -38,11 +38,7 @@
 ```python
 class Solution:
     def removeVowels(self, s: str) -> str:
-        res = []
-        for c in s:
-            if c not in {'a', 'e', 'i', 'o', 'u'}:
-                res.append(c)
-        return ''.join(res)
+        return "".join(c for c in s if c not in "aeiou")
 ```
 
 ### **Java**
@@ -50,14 +46,46 @@ class Solution:
 ```java
 class Solution {
     public String removeVowels(String s) {
-        StringBuilder res = new StringBuilder();
-        for (char c : s.toCharArray()) {
+        StringBuilder ans = new StringBuilder();
+        for (int i = 0; i < s.length(); ++i) {
+            char c = s.charAt(i);
             if (!(c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u')) {
-                res.append(c);
+                ans.append(c);
             }
         }
-        return res.toString();
+        return ans.toString();
     }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    string removeVowels(string s) {
+        string ans;
+        for (char& c : s) {
+            if (!(c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u')) {
+                ans += c;
+            }
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func removeVowels(s string) string {
+	ans := []rune{}
+	for _, c := range s {
+		if !(c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') {
+			ans = append(ans, c)
+		}
+	}
+	return string(ans)
 }
 ```
 

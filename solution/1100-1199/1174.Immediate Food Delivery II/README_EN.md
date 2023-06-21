@@ -21,15 +21,19 @@ The table holds information about food delivery to customers that make orders at
 
 <p>&nbsp;</p>
 
-<p>If the preferred delivery date of the customer is the same as the&nbsp;order date&nbsp;then the order is called <em>immediate</em>&nbsp;otherwise it&#39;s called <em>scheduled</em>.</p>
+<p>If the customer&#39;s preferred delivery date is the same as the order date, then the order is called <strong>immediate;</strong> otherwise, it is called <strong>scheduled</strong>.</p>
 
-<p>The&nbsp;<em>first order</em>&nbsp;of a customer is the order with the earliest order date that customer made. It is guaranteed that a customer has exactly one first order.</p>
+<p>The <strong>first order</strong> of a customer is the order with the earliest order date that the customer made. It is guaranteed that a customer has precisely one first order.</p>
 
-<p>Write an SQL query to find the&nbsp;percentage of immediate orders in the first orders of all customers,&nbsp;<strong>rounded to 2 decimal places</strong>.</p>
+<p>Write an SQL query to find the percentage of immediate orders in the first orders of all customers, <strong>rounded to 2 decimal places</strong>.</p>
 
-<p>The query result format is in the following example:</p>
+<p>The query result format is in the following example.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
+<strong>Input:</strong> 
 Delivery table:
 +-------------+-------------+------------+-----------------------------+
 | delivery_id | customer_id | order_date | customer_pref_delivery_date |
@@ -42,13 +46,13 @@ Delivery table:
 | 6           | 2           | 2019-08-11 | 2019-08-13                  |
 | 7           | 4           | 2019-08-09 | 2019-08-09                  |
 +-------------+-------------+------------+-----------------------------+
-
-Result table:
+<strong>Output:</strong> 
 +----------------------+
 | immediate_percentage |
 +----------------------+
 | 50.00                |
 +----------------------+
+<strong>Explanation:</strong> 
 The customer id 1 has a first order with delivery id 1 and it is scheduled.
 The customer id 2 has a first order with delivery id 2 and it is immediate.
 The customer id 3 has a first order with delivery id 5 and it is scheduled.
@@ -63,7 +67,30 @@ Hence, half the customers have immediate first orders.
 ### **SQL**
 
 ```sql
-
+# Write your MySQL query statement below
+select
+    round(
+        sum(
+            if(
+                t1.order_date = t1.customer_pref_delivery_date,
+                1,
+                0
+            )
+        ) / count(1) * 100,
+        2
+    ) as immediate_percentage
+from
+    Delivery t1
+    right join (
+        select
+            customer_id,
+            min(order_date) as order_date
+        from
+            Delivery
+        group by
+            customer_id
+    ) t2 on t1.customer_id = t2.customer_id
+    and t1.order_date = t2.order_date
 ```
 
 <!-- tabs:end -->

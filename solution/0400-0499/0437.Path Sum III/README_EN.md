@@ -9,15 +9,15 @@
 <p>The path does not need to start or end at the root or a leaf, but it must go downwards (i.e., traveling only from parent nodes to child nodes).</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0400-0499/0437.Path%20Sum%20III/images/pathsum3-1-tree.jpg" style="width: 450px; height: 386px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0400-0499/0437.Path%20Sum%20III/images/pathsum3-1-tree.jpg" style="width: 450px; height: 386px;" />
 <pre>
 <strong>Input:</strong> root = [10,5,-3,3,2,null,11,3,-2,null,1], targetSum = 8
 <strong>Output:</strong> 3
 <strong>Explanation:</strong> The paths that sum to 8 are shown.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> root = [5,4,8,11,null,13,4,7,2,null,null,5,1], targetSum = 22
@@ -47,24 +47,19 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def pathSum(self, root: TreeNode, targetSum: int) -> int:
-        preSum = defaultdict(int)
-        preSum[0] = 1
-
-        def dfs(node: TreeNode, cur: int) -> int:
-            if not node:
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
+        def dfs(node, s):
+            if node is None:
                 return 0
+            s += node.val
+            ans = cnt[s - targetSum]
+            cnt[s] += 1
+            ans += dfs(node.left, s)
+            ans += dfs(node.right, s)
+            cnt[s] -= 1
+            return ans
 
-            cur += node.val
-            ret = preSum[cur - targetSum]
-
-            preSum[cur] += 1
-            ret += dfs(node.left, cur)
-            ret += dfs(node.right, cur)
-            preSum[cur] -= 1
-
-            return ret
-
+        cnt = Counter({0: 1})
         return dfs(root, 0)
 ```
 
@@ -87,65 +82,27 @@ class Solution:
  * }
  */
 class Solution {
-
-    private final Map<Integer, Integer> preSum = new HashMap<>();
+    private Map<Long, Integer> cnt = new HashMap<>();
+    private int targetSum;
 
     public int pathSum(TreeNode root, int targetSum) {
-        preSum.put(0, 1);
-        return dfs(root, 0, targetSum);
+        cnt.put(0L, 1);
+        this.targetSum = targetSum;
+        return dfs(root, 0);
     }
 
-    private int dfs(TreeNode node, int cur, int targetSum) {
+    private int dfs(TreeNode node, long s) {
         if (node == null) {
             return 0;
         }
-
-        cur += node.val;
-        int ret = preSum.getOrDefault(cur - targetSum, 0);
-
-        preSum.merge(cur, 1, Integer::sum);
-        ret += dfs(node.left, cur, targetSum);
-        ret += dfs(node.right, cur, targetSum);
-        preSum.merge(cur, -1, Integer::sum);
-
-        return ret;
+        s += node.val;
+        int ans = cnt.getOrDefault(s - targetSum, 0);
+        cnt.merge(s, 1, Integer::sum);
+        ans += dfs(node.left, s);
+        ans += dfs(node.right, s);
+        cnt.merge(s, -1, Integer::sum);
+        return ans;
     }
-}
-```
-
-### **Go**
-
-```go
-/**
- * Definition for a binary tree node.
- * type TreeNode struct {
- *     Val int
- *     Left *TreeNode
- *     Right *TreeNode
- * }
- */
-func pathSum(root *TreeNode, targetSum int) int {
-	preSum := make(map[int]int)
-	preSum[0] = 1
-
-	var dfs func(*TreeNode, int) int
-	dfs = func(node *TreeNode, cur int) int {
-		if node == nil {
-			return 0
-		}
-
-		cur += node.Val
-		ret := preSum[cur-targetSum]
-
-		preSum[cur]++
-		ret += dfs(node.Left, cur)
-		ret += dfs(node.Right, cur)
-		preSum[cur]--
-
-		return ret
-	}
-
-	return dfs(root, 0)
 }
 ```
 
@@ -166,28 +123,49 @@ func pathSum(root *TreeNode, targetSum int) int {
 class Solution {
 public:
     int pathSum(TreeNode* root, int targetSum) {
-        unordered_map<int, int> preSum;
-        preSum[0] = 1;
-
-        function<int(TreeNode*, int)> dfs = [&](TreeNode* node, int cur) {
-            if (node == nullptr) {
-                return 0;
-            }
-
-            cur += node->val;
-            int ret = preSum[cur - targetSum];
-
-            ++preSum[cur];
-            ret += dfs(node->left, cur);
-            ret += dfs(node->right, cur);
-            --preSum[cur];
-
-            return ret;
+        unordered_map<long, int> cnt;
+        cnt[0] = 1;
+        function<int(TreeNode*, long)> dfs = [&](TreeNode* node, long s) -> int {
+            if (!node) return 0;
+            s += node->val;
+            int ans = cnt[s - targetSum];
+            ++cnt[s];
+            ans += dfs(node->left, s) + dfs(node->right, s);
+            --cnt[s];
+            return ans;
         };
-
         return dfs(root, 0);
     }
 };
+```
+
+### **Go**
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func pathSum(root *TreeNode, targetSum int) int {
+	cnt := map[int]int{0: 1}
+	var dfs func(*TreeNode, int) int
+	dfs = func(node *TreeNode, s int) int {
+		if node == nil {
+			return 0
+		}
+		s += node.Val
+		ans := cnt[s-targetSum]
+		cnt[s]++
+		ans += dfs(node.Left, s) + dfs(node.Right, s)
+		cnt[s]--
+		return ans
+	}
+	return dfs(root, 0)
+}
 ```
 
 ### **...**

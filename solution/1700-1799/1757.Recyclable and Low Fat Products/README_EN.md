@@ -24,11 +24,13 @@ recyclable is an ENUM of types (&#39;Y&#39;, &#39;N&#39;) where &#39;Y&#39; mean
 
 <p>Return the result table in <strong>any order</strong>.</p>
 
-<p>The query result format is in the following example:</p>
+<p>The query result format is in the following example.</p>
 
 <p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
+<strong>Input:</strong> 
 Products table:
 +-------------+----------+------------+
 | product_id  | low_fats | recyclable |
@@ -39,14 +41,14 @@ Products table:
 | 3           | Y        | Y          |
 | 4           | N        | N          |
 +-------------+----------+------------+
-Result table:
+<strong>Output:</strong> 
 +-------------+
 | product_id  |
 +-------------+
 | 1           |
 | 3           |
 +-------------+
-Only products 1 and 3 are both low fat and recyclable.
+<strong>Explanation:</strong> Only products 1 and 3 are both low fat and recyclable.
 </pre>
 
 ## Solutions
@@ -56,14 +58,10 @@ Only products 1 and 3 are both low fat and recyclable.
 ### **SQL**
 
 ```sql
-# Write your MySQL query statement below
 SELECT
     product_id
-FROM
-    Products
-WHERE
-    low_fats = 'Y'
-AND recyclable = 'Y';
+FROM Products
+WHERE low_fats = 'Y' AND recyclable = 'Y';
 ```
 
 <!-- tabs:end -->

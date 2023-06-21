@@ -9,7 +9,7 @@
 <p>Given two integers <code>x</code> and <code>y</code>, return <em>the <strong>Hamming distance</strong> between them</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> x = 1, y = 4
@@ -21,7 +21,7 @@
 The above arrows point to positions where the corresponding bits are different.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> x = 3, y = 1
@@ -39,10 +39,10 @@ The above arrows point to positions where the corresponding bits are different.
 
 Use xor operation to find different bits.
 
-- 0 ^ 0 = 0
-- 1 ^ 1 = 0
-- 0 ^ 1 = 1
-- 1 ^ 0 = 1
+-   0 ^ 0 = 0
+-   1 ^ 1 = 0
+-   0 ^ 1 = 1
+-   1 ^ 0 = 1
 
 <!-- tabs:start -->
 
@@ -51,11 +51,7 @@ Use xor operation to find different bits.
 ```python
 class Solution:
     def hammingDistance(self, x: int, y: int) -> int:
-        num, count = x ^ y, 0
-        while num != 0:
-            num &= num - 1
-            count += 1
-        return count
+        return (x ^ y).bit_count()
 ```
 
 ### **Java**
@@ -63,24 +59,27 @@ class Solution:
 ```java
 class Solution {
     public int hammingDistance(int x, int y) {
-        int num = x ^ y;
-        int count = 0;
-        while (num != 0) {
-            num &= num - 1;
-            count++;
-        }
-        return count;
+        return Integer.bitCount(x ^ y);
     }
 }
 ```
 
-Or use the library function `Integer.bitCount()`
+### **C++**
 
-```java
+```cpp
 class Solution {
-    public int hammingDistance(int x, int y) {
-        return Integer.bitCount(x ^ y);
+public:
+    int hammingDistance(int x, int y) {
+        return __builtin_popcount(x ^ y);
     }
+};
+```
+
+### **Go**
+
+```go
+func hammingDistance(x int, y int) int {
+	return bits.OnesCount(uint(x ^ y))
 }
 ```
 
@@ -93,44 +92,27 @@ class Solution {
  * @return {number}
  */
 var hammingDistance = function (x, y) {
-    let distance = x ^ y;
-    let count = 0;
-    while (distance != 0) {
-        count++;
-        distance &= distance - 1;
+    x ^= y;
+    let ans = 0;
+    while (x) {
+        x -= x & -x;
+        ++ans;
     }
-    return count;
+    return ans;
 };
 ```
 
-### **C++**
+### **TypeScript**
 
-```cpp
-class Solution {
-public:
-    int hammingDistance(int x, int y) {
-        x ^= y;
-        int count = 0;
-        while (x) {
-            ++count;
-            x &= (x - 1);
-        }
-        return count;
+```ts
+function hammingDistance(x: number, y: number): number {
+    x ^= y;
+    let ans = 0;
+    while (x) {
+        x -= x & -x;
+        ++ans;
     }
-};
-```
-
-### **Go**
-
-```go
-func hammingDistance(x int, y int) int {
-	x ^= y
-	count := 0
-	for x != 0 {
-		count++
-		x &= (x - 1)
-	}
-	return count
+    return ans;
 }
 ```
 

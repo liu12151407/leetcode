@@ -1,4 +1,4 @@
-# [16.21. Sum Swap](https://leetcode-cn.com/problems/sum-swap-lcci)
+# [16.21. Sum Swap](https://leetcode.cn/problems/sum-swap-lcci)
 
 [中文文档](/lcci/16.21.Sum%20Swap/README.md)
 
@@ -69,16 +69,16 @@ class Solution {
         }
         int diff = s1 - s2;
         if ((diff & 1) == 1) {
-            return new int[]{};
+            return new int[] {};
         }
         diff >>= 1;
         for (int a : array1) {
             int b = a - diff;
             if (s.contains(b)) {
-                return new int[]{a, b};
+                return new int[] {a, b};
             }
         }
-        return new int[]{};
+        return new int[] {};
     }
 }
 ```

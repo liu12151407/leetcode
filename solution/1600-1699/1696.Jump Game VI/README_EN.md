@@ -13,7 +13,7 @@
 <p>Return <em>the <strong>maximum score</strong> you can get</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [<u>1</u>,<u>-1</u>,-2,<u>4</u>,-7,<u>3</u>], k = 2
@@ -21,7 +21,7 @@
 <strong>Explanation:</strong> You can choose your jumps forming the subsequence [1,-1,4,3] (underlined above). The sum is 7.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [<u>10</u>,-5,-2,<u>4</u>,0,<u>3</u>], k = 3
@@ -29,7 +29,7 @@
 <strong>Explanation:</strong> You can choose your jumps forming the subsequence [10,4,3] (underlined above). The sum is 17.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,-5,-20,4,-1,3,-6,-3], k = 2
@@ -40,8 +40,8 @@
 <p><strong>Constraints:</strong></p>
 
 <ul>
-	<li>&nbsp;<code>1 &lt;= nums.length, k &lt;= 10<sup>5</sup></code></li>
-	<li><code>-10<sup>4</sup>&nbsp;&lt;= nums[i]&nbsp;&lt;= 10<sup>4</sup></code></li>
+	<li><code>1 &lt;= nums.length, k &lt;= 10<sup>5</sup></code></li>
+	<li><code>-10<sup>4</sup> &lt;= nums[i] &lt;= 10<sup>4</sup></code></li>
 </ul>
 
 ## Solutions
@@ -51,13 +51,85 @@
 ### **Python3**
 
 ```python
-
+class Solution:
+    def maxResult(self, nums: List[int], k: int) -> int:
+        n = len(nums)
+        f = [0] * n
+        q = deque([0])
+        for i in range(n):
+            if i - q[0] > k:
+                q.popleft()
+            f[i] = nums[i] + f[q[0]]
+            while q and f[q[-1]] <= f[i]:
+                q.pop()
+            q.append(i)
+        return f[-1]
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int maxResult(int[] nums, int k) {
+        int n = nums.length;
+        int[] f = new int[n];
+        Deque<Integer> q = new ArrayDeque<>();
+        q.offer(0);
+        for (int i = 0; i < n; ++i) {
+            if (i - q.peekFirst() > k) {
+                q.pollFirst();
+            }
+            f[i] = nums[i] + f[q.peekFirst()];
+            while (!q.isEmpty() && f[q.peekLast()] <= f[i]) {
+                q.pollLast();
+            }
+            q.offerLast(i);
+        }
+        return f[n - 1];
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int maxResult(vector<int>& nums, int k) {
+        int n = nums.size();
+        int f[n];
+        f[0] = 0;
+        deque<int> q = {0};
+        for (int i = 0; i < n; ++i) {
+            if (i - q.front() > k) q.pop_front();
+            f[i] = nums[i] + f[q.front()];
+            while (!q.empty() && f[q.back()] <= f[i]) q.pop_back();
+            q.push_back(i);
+        }
+        return f[n - 1];
+    }
+};
+```
+
+### **Go**
+
+```go
+func maxResult(nums []int, k int) int {
+	n := len(nums)
+	f := make([]int, n)
+	q := []int{0}
+	for i, v := range nums {
+		if i-q[0] > k {
+			q = q[1:]
+		}
+		f[i] = v + f[q[0]]
+		for len(q) > 0 && f[q[len(q)-1]] <= f[i] {
+			q = q[:len(q)-1]
+		}
+		q = append(q, i)
+	}
+	return f[n-1]
+}
 ```
 
 ### **...**

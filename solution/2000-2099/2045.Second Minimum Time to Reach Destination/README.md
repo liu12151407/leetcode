@@ -1,4 +1,4 @@
-# [2045. 到达目的地的第二短时间](https://leetcode-cn.com/problems/second-minimum-time-to-reach-destination)
+# [2045. 到达目的地的第二短时间](https://leetcode.cn/problems/second-minimum-time-to-reach-destination)
 
 [English Version](/solution/2000-2099/2045.Second%20Minimum%20Time%20to%20Reach%20Destination/README_EN.md)
 
@@ -29,7 +29,7 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2045.Second%20Minimum%20Time%20to%20Reach%20Destination/images/e1.png" style="width: 200px; height: 250px;" />        <img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2045.Second%20Minimum%20Time%20to%20Reach%20Destination/images/e2.png" style="width: 200px; height: 250px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2045.Second%20Minimum%20Time%20to%20Reach%20Destination/images/e1.png" style="width: 200px; height: 250px;" />        <img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2045.Second%20Minimum%20Time%20to%20Reach%20Destination/images/e2.png" style="width: 200px; height: 250px;" /></p>
 
 <pre>
 <strong>输入：</strong>n = 5, edges = [[1,2],[1,3],[1,4],[3,4],[4,5]], time = 3, change = 5
@@ -54,14 +54,14 @@
 
 <p><strong>示例 2：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2045.Second%20Minimum%20Time%20to%20Reach%20Destination/images/eg2.png" style="width: 225px; height: 50px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2045.Second%20Minimum%20Time%20to%20Reach%20Destination/images/eg2.png" style="width: 225px; height: 50px;" /></p>
 
 <pre>
 <strong>输入：</strong>n = 2, edges = [[1,2]], time = 3, change = 2
 <strong>输出：</strong>11
 <strong>解释：</strong>
 最短时间路径是 1 -&gt; 2 ，总花费时间 = 3 分钟
-最短时间路径是 1 -&gt; 2 -&gt; 1 -&gt; 2 ，总花费时间 = 11 分钟</pre>
+第二短时间路径是 1 -&gt; 2 -&gt; 1 -&gt; 2 ，总花费时间 = 11 分钟</pre>
 
 <p>&nbsp;</p>
 
@@ -90,13 +90,15 @@
 
 ```python
 class Solution:
-    def secondMinimum(self, n: int, edges: List[List[int]], time: int, change: int) -> int:
+    def secondMinimum(
+        self, n: int, edges: List[List[int]], time: int, change: int
+    ) -> int:
         g = defaultdict(set)
         for u, v in edges:
             g[u].add(v)
             g[v].add(u)
         q = deque([(1, 0)])
-        dist = [[float('inf')] * 2 for _ in range(n + 1)]
+        dist = [[inf] * 2 for _ in range(n + 1)]
         dist[1][1] = 0
         while q:
             u, d = q.popleft()
@@ -106,7 +108,7 @@ class Solution:
                     q.append((v, d + 1))
                 elif dist[v][0] < d + 1 < dist[v][1]:
                     dist[v][1] = d + 1
-                    if v == n:	
+                    if v == n:
                         break
                     q.append((v, d + 1))
         ans = 0
@@ -125,16 +127,14 @@ class Solution:
 class Solution {
     public int secondMinimum(int n, int[][] edges, int time, int change) {
         List<Integer>[] g = new List[n + 1];
-        for (int i = 0; i < n + 1; ++i) {
-            g[i] = new ArrayList<>();
-        }
+        Arrays.setAll(g, k -> new ArrayList<>());
         for (int[] e : edges) {
             int u = e[0], v = e[1];
             g[u].add(v);
             g[v].add(u);
         }
         Deque<int[]> q = new LinkedList<>();
-        q.offerLast(new int[]{1, 0});
+        q.offerLast(new int[] {1, 0});
         int[][] dist = new int[n + 1][2];
         for (int i = 0; i < n + 1; ++i) {
             Arrays.fill(dist[i], Integer.MAX_VALUE);
@@ -146,13 +146,13 @@ class Solution {
             for (int v : g[u]) {
                 if (d + 1 < dist[v][0]) {
                     dist[v][0] = d + 1;
-                    q.offerLast(new int[]{v, d + 1});
+                    q.offerLast(new int[] {v, d + 1});
                 } else if (dist[v][0] < d + 1 && d + 1 < dist[v][1]) {
                     dist[v][1] = d + 1;
                     if (v == n) {
                         break;
                     }
-                    q.offerLast(new int[]{v, d + 1});
+                    q.offerLast(new int[] {v, d + 1});
                 }
             }
         }

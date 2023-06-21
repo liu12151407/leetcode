@@ -1,4 +1,4 @@
-# [590. N 叉树的后序遍历](https://leetcode-cn.com/problems/n-ary-tree-postorder-traversal)
+# [590. N 叉树的后序遍历](https://leetcode.cn/problems/n-ary-tree-postorder-traversal)
 
 [English Version](/solution/0500-0599/0590.N-ary%20Tree%20Postorder%20Traversal/README_EN.md)
 
@@ -6,23 +6,15 @@
 
 <!-- 这里写题目描述 -->
 
-<p>给定一个 N 叉树，返回其节点值的<strong> 后序遍历</strong> 。</p>
+<p>给定一个 n&nbsp;叉树的根节点<meta charset="UTF-8" />&nbsp;<code>root</code>&nbsp;，返回 <em>其节点值的<strong> 后序遍历</strong></em> 。</p>
 
-<p>N 叉树 在输入中按层序遍历进行序列化表示，每组子节点由空值 <code>null</code> 分隔（请参见示例）。</p>
+<p>n 叉树 在输入中按层序遍历进行序列化表示，每组子节点由空值 <code>null</code> 分隔（请参见示例）。</p>
 
-<div class="original__bRMd">
-<div>
-<p> </p>
-
-<p><strong>进阶：</strong></p>
-
-<p>递归法很简单，你可以使用迭代法完成此题吗?</p>
-
-<p> </p>
+<p>&nbsp;</p>
 
 <p><strong>示例 1：</strong></p>
 
-<p><img src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0590.N-ary%20Tree%20Postorder%20Traversal/images/narytreeexample.png" style="width: 100%; max-width: 300px;" /></p>
+<p><img src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0590.N-ary%20Tree%20Postorder%20Traversal/images/narytreeexample.png" style="height: 193px; width: 300px;" /></p>
 
 <pre>
 <strong>输入：</strong>root = [1,null,3,2,4,null,5,6]
@@ -31,23 +23,26 @@
 
 <p><strong>示例 2：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0590.N-ary%20Tree%20Postorder%20Traversal/images/sample_4_964.png" style="width: 296px; height: 241px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0590.N-ary%20Tree%20Postorder%20Traversal/images/sample_4_964.png" style="height: 269px; width: 296px;" /></p>
 
 <pre>
 <strong>输入：</strong>root = [1,null,2,3,4,5,null,null,6,7,null,8,null,9,10,null,null,11,null,12,null,13,null,null,14]
 <strong>输出：</strong>[2,6,14,11,7,3,12,8,4,13,9,10,5,1]
 </pre>
 
-<p> </p>
+<p>&nbsp;</p>
 
 <p><strong>提示：</strong></p>
 
 <ul>
-	<li>N 叉树的高度小于或等于 <code>1000</code></li>
-	<li>节点总数在范围 <code>[0, 10^4]</code> 内</li>
+	<li>节点总数在范围 <code>[0, 10<sup>4</sup>]</code> 内</li>
+	<li><code>0 &lt;= Node.val &lt;= 10<sup>4</sup></code></li>
+	<li>n 叉树的高度小于或等于 <code>1000</code></li>
 </ul>
-</div>
-</div>
+
+<p>&nbsp;</p>
+
+<p><strong>进阶：</strong>递归法很简单，你可以使用迭代法完成此题吗?</p>
 
 ## 解法
 
@@ -69,6 +64,7 @@ class Node:
         self.val = val
         self.children = children
 """
+
 
 class Solution:
     def postorder(self, root: 'Node') -> List[int]:
@@ -95,18 +91,18 @@ class Node:
         self.children = children
 """
 
+
 class Solution:
     def postorder(self, root: 'Node') -> List[int]:
-        if root is None:
-            return []
-        stk = [root]
         ans = []
+        if root is None:
+            return ans
+        stk = [root]
         while stk:
             node = stk.pop()
             ans.append(node.val)
-            if node.children:
-                for child in node.children:
-                    stk.append(child)
+            for child in node.children:
+                stk.append(child)
         return ans[::-1]
 ```
 
@@ -156,7 +152,6 @@ class Solution {
         ans.add(root.val);
     }
 }
-
 ```
 
 迭代：
@@ -182,27 +177,23 @@ class Node {
 */
 
 class Solution {
-
     public List<Integer> postorder(Node root) {
+        LinkedList<Integer> ans = new LinkedList<>();
         if (root == null) {
-            return Collections.emptyList();
+            return ans;
         }
         Deque<Node> stk = new ArrayDeque<>();
-        stk.offerLast(root);
-        LinkedList<Integer> ans = new LinkedList<>();
+        stk.offer(root);
         while (!stk.isEmpty()) {
-            Node node = stk.pollLast();
-            ans.addFirst(node.val);
-            if (node.children != null) {
-                for (Node child : node.children) {
-                    stk.offerLast(child);
-                }
+            root = stk.pollLast();
+            ans.addFirst(root.val);
+            for (Node child : root.children) {
+                stk.offer(child);
             }
         }
         return ans;
     }
 }
-
 ```
 
 ### **C++**
@@ -272,17 +263,14 @@ public:
 class Solution {
 public:
     vector<int> postorder(Node* root) {
-        if (!root) return {};
-        stack<Node*> stk;
-        stk.push(root);
         vector<int> ans;
-        while (!stk.empty())
-        {
-            auto& node = stk.top();
+        if (!root) return ans;
+        stack<Node*> stk{{root}};
+        while (!stk.empty()) {
+            root = stk.top();
+            ans.push_back(root->val);
             stk.pop();
-            ans.push_back(node->val);
-            for (auto& child : node->children)
-                stk.push(child);
+            for (Node* child : root->children) stk.push(child);
         }
         reverse(ans.begin(), ans.end());
         return ans;
@@ -332,21 +320,89 @@ func postorder(root *Node) []int {
  */
 
 func postorder(root *Node) []int {
-	if root == nil {
-		return []int{}
-	}
-	var stk []*Node
 	var ans []int
-	stk = append(stk, root)
+	if root == nil {
+		return ans
+	}
+	stk := []*Node{root}
 	for len(stk) > 0 {
-		node := stk[len(stk)-1]
+		root = stk[len(stk)-1]
 		stk = stk[:len(stk)-1]
-		ans = append([]int{node.Val}, ans...)
-		for _, child := range node.Children {
+		ans = append([]int{root.Val}, ans...)
+		for _, child := range root.Children {
 			stk = append(stk, child)
 		}
 	}
 	return ans
+}
+```
+
+### **TypeScript**
+
+递归：
+
+```ts
+/**
+ * Definition for node.
+ * class Node {
+ *     val: number
+ *     children: Node[]
+ *     constructor(val?: number) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.children = []
+ *     }
+ * }
+ */
+
+function postorder(root: Node | null): number[] {
+    const res = [];
+    const dfs = (root: Node | null) => {
+        if (root == null) {
+            return;
+        }
+        for (const node of root.children) {
+            dfs(node);
+        }
+        res.push(root.val);
+    };
+    dfs(root);
+    return res;
+}
+```
+
+迭代：
+
+```ts
+/**
+ * Definition for node.
+ * class Node {
+ *     val: number
+ *     children: Node[]
+ *     constructor(val?: number) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.children = []
+ *     }
+ * }
+ */
+
+function postorder(root: Node | null): number[] {
+    const res = [];
+    if (root == null) {
+        return res;
+    }
+    const stack = [root];
+    while (stack.length !== 0) {
+        const target = stack[stack.length - 1];
+        if (target.children == null) {
+            res.push(stack.pop().val);
+        } else {
+            for (let i = target.children.length - 1; i >= 0; i--) {
+                stack.push(target.children[i]);
+            }
+            target.children = null;
+        }
+    }
+    return res;
 }
 ```
 

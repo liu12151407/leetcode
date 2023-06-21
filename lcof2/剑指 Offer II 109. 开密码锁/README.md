@@ -1,4 +1,4 @@
-# [剑指 Offer II 109. 开密码锁](https://leetcode-cn.com/problems/zlDJc7)
+# [剑指 Offer II 109. 开密码锁](https://leetcode.cn/problems/zlDJc7)
 
 ## 题目描述
 
@@ -63,7 +63,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 752&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/open-the-lock/">https://leetcode-cn.com/problems/open-the-lock/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 752&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/open-the-lock/">https://leetcode.cn/problems/open-the-lock/</a></p>
 
 ## 解法
 
@@ -153,7 +153,7 @@ class Solution {
         return -1;
     }
 
-    private char prev(char c)  {
+    private char prev(char c) {
         return c == '0' ? '9' : (char) (c - 1);
     }
 
@@ -190,15 +190,12 @@ public:
         queue<string> q;
         q.push("0000");
         int step = 0;
-        while (!q.empty())
-        {
+        while (!q.empty()) {
             ++step;
-            for (int i = 0, n = q.size(); i < n; ++i)
-            {
+            for (int i = 0, n = q.size(); i < n; ++i) {
                 string status = q.front();
                 q.pop();
-                for (auto t : get(status))
-                {
+                for (auto t : get(status)) {
                     if (visited.count(t) || s.count(t)) continue;
                     if (t == target) return step;
                     q.push(t);
@@ -219,8 +216,7 @@ public:
 
     vector<string> get(string& t) {
         vector<string> res;
-        for (int i = 0; i < 4; ++i)
-        {
+        for (int i = 0; i < 4; ++i) {
             char c = t[i];
             t[i] = prev(c);
             res.push_back(t);

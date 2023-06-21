@@ -7,7 +7,7 @@
 <p>Given an integer array <code>nums</code>, return <code>true</code><em> if there exists a triple of indices </em><code>(i, j, k)</code><em> such that </em><code>i &lt; j &lt; k</code><em> and </em><code>nums[i] &lt; nums[j] &lt; nums[k]</code>. If no such indices exists, return <code>false</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,2,3,4,5]
@@ -15,7 +15,7 @@
 <strong>Explanation:</strong> Any triplet where i &lt; j &lt; k is valid.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [5,4,3,2,1]
@@ -23,7 +23,7 @@
 <strong>Explanation:</strong> No triplet exists.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [2,1,5,0,4,6]
@@ -35,7 +35,7 @@
 <p><strong>Constraints:</strong></p>
 
 <ul>
-	<li><code>1 &lt;= nums.length &lt;= 10<sup>5</sup></code></li>
+	<li><code>1 &lt;= nums.length &lt;= 5 * 10<sup>5</sup></code></li>
 	<li><code>-2<sup>31</sup> &lt;= nums[i] &lt;= 2<sup>31</sup> - 1</code></li>
 </ul>
 
@@ -51,7 +51,7 @@
 ```python
 class Solution:
     def increasingTriplet(self, nums: List[int]) -> bool:
-        mi, mid = float('inf'), float('inf')
+        mi, mid = inf, inf
         for num in nums:
             if num > mid:
                 return True
@@ -135,11 +135,12 @@ class Solution {
 public:
     bool increasingTriplet(vector<int>& nums) {
         int mi = INT_MAX, mid = INT_MAX;
-        for (int num : nums)
-        {
+        for (int num : nums) {
             if (num > mid) return true;
-            if (num <= mi) mi = num;
-            else mid = num;
+            if (num <= mi)
+                mi = num;
+            else
+                mid = num;
         }
         return false;
     }
@@ -162,6 +163,31 @@ func increasingTriplet(nums []int) bool {
 		}
 	}
 	return false
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn increasing_triplet(nums: Vec<i32>) -> bool {
+        let n = nums.len();
+        if n < 3 {
+            return false;
+        }
+        let mut min = i32::MAX;
+        let mut mid = i32::MAX;
+        for num in nums.into_iter() {
+            if num <= min {
+                min = num;
+            } else if num <= mid {
+                mid = num;
+            } else {
+                return true;
+            }
+        }
+        false
+    }
 }
 ```
 

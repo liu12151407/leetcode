@@ -13,7 +13,7 @@
 <p>A <strong>substring</strong> is a contiguous sequence of characters in a string.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;xyzzaz&quot;
@@ -22,7 +22,7 @@
 The only good substring of length 3 is &quot;xyz&quot;.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;aababcabc&quot;
@@ -50,7 +50,7 @@ class Solution:
     def countGoodSubstrings(self, s: str) -> int:
         count, n = 0, len(s)
         for i in range(n - 2):
-            count += (s[i] != s[i + 1] and s[i] != s[i + 2] and s[i + 1] != s[i + 2])
+            count += s[i] != s[i + 1] and s[i] != s[i + 2] and s[i + 1] != s[i + 2]
         return count
 ```
 
@@ -86,6 +86,30 @@ function countGoodSubstrings(s: string): number {
         }
     }
     return count;
+}
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param String $s
+     * @return Integer
+     */
+    function countGoodSubstrings($s) {
+        $cnt = 0;
+        for ($i = 0; $i < strlen($s) - 2; $i++) {
+            if (
+                $s[$i] != $s[$i + 1] &&
+                $s[$i] != $s[$i + 2] &&
+                $s[$i + 1] != $s[$i + 2]
+            ) {
+                $cnt++;
+            }
+        }
+        return $cnt++;
+    }
 }
 ```
 

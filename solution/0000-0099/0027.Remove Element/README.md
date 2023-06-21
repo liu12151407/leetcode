@@ -1,4 +1,4 @@
-# [27. 移除元素](https://leetcode-cn.com/problems/remove-element)
+# [27. 移除元素](https://leetcode.cn/problems/remove-element)
 
 [English Version](/solution/0000-0099/0027.Remove%20Element/README_EN.md)
 
@@ -65,6 +65,16 @@ for (int i = 0; i < len; i++) {
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：一次遍历**
+
+我们用变量 $k$ 记录当前不等于 $val$ 的元素个数。
+
+遍历数组 $nums$，如果当前元素 $x$ 不等于 $val$，则将 $x$ 赋值给 $nums[k]$，并将 $k$ 自增 $1$。
+
+最后返回 $k$ 即可。
+
+时间复杂度 $O(n)$，空间复杂度 $O(1)$。其中 $n$ 为数组 $nums$ 的长度。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -74,13 +84,12 @@ for (int i = 0; i < len; i++) {
 ```python
 class Solution:
     def removeElement(self, nums: List[int], val: int) -> int:
-        cnt, n = 0, len(nums)
-        for i in range(n):
-            if nums[i] == val:
-                cnt += 1
-            else:
-                nums[i - cnt] = nums[i]
-        return n - cnt
+        k = 0
+        for x in nums:
+            if x != val:
+                nums[k] = x
+                k += 1
+        return k
 ```
 
 ### **Java**
@@ -90,12 +99,13 @@ class Solution:
 ```java
 class Solution {
     public int removeElement(int[] nums, int val) {
-        int cnt = 0, n = nums.length;
-        for (int i = 0; i < n; ++i) {
-            if (nums[i] == val) ++cnt;
-            else nums[i - cnt] = nums[i];
+        int k = 0;
+        for (int x : nums) {
+            if (x != val) {
+                nums[k++] = x;
+            }
         }
-        return n - cnt;
+        return k;
     }
 }
 ```
@@ -106,14 +116,44 @@ class Solution {
 class Solution {
 public:
     int removeElement(vector<int>& nums, int val) {
-        int cnt = 0, n = nums.size();
-        for (int i = 0; i < n; ++i) {
-            if (nums[i] == val) ++cnt;
-            else nums[i - cnt] = nums[i];
+        int k = 0;
+        for (int x : nums) {
+            if (x != val) {
+                nums[k++] = x;
+            }
         }
-        return n - cnt;
+        return k;
     }
 };
+```
+
+### **Go**
+
+```go
+func removeElement(nums []int, val int) int {
+	k := 0
+	for _, x := range nums {
+		if x != val {
+			nums[k] = x
+			k++
+		}
+	}
+	return k
+}
+```
+
+### **TypeScript**
+
+```ts
+function removeElement(nums: number[], val: number): number {
+    let k: number = 0;
+    for (const x of nums) {
+        if (x !== val) {
+            nums[k++] = x;
+        }
+    }
+    return k;
+}
 ```
 
 ### **JavaScript**
@@ -125,30 +165,14 @@ public:
  * @return {number}
  */
 var removeElement = function (nums, val) {
-    let cnt = 0;
-    const n = nums.length;
-    for (let i = 0; i < n; ++i) {
-        if (nums[i] == val) ++cnt;
-        else nums[i - cnt] = nums[i];
-    }
-    return n - cnt;
-};
-```
-
-### **Go**
-
-```go
-func removeElement(nums []int, val int) int {
-    cnt, n := 0, len(nums)
-    for i := 0; i < n; i++ {
-        if (nums[i] == val) {
-            cnt++
-        } else {
-            nums[i - cnt] = nums[i]
+    let k = 0;
+    for (const x of nums) {
+        if (x !== val) {
+            nums[k++] = x;
         }
     }
-    return n - cnt
-}
+    return k;
+};
 ```
 
 ### **Rust**
@@ -156,14 +180,33 @@ func removeElement(nums []int, val int) int {
 ```rust
 impl Solution {
     pub fn remove_element(nums: &mut Vec<i32>, val: i32) -> i32 {
-        let mut len = 0;
+        let mut k = 0;
         for i in 0..nums.len() {
             if nums[i] != val {
-                nums[len] = nums[i];
-                len += 1;
+                nums[k] = nums[i];
+                k += 1;
             }
         }
-        len as i32
+        k as i32
+    }
+}
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param Integer[] $nums
+     * @param Integer $val
+     * @return Integer
+     */
+    function removeElement(&$nums, $val) {
+        for ($i = count($nums) - 1; $i >= 0; $i--) {
+            if ($nums[$i] == $val) {
+                array_splice($nums, $i, 1);
+            }
+        }
     }
 }
 ```

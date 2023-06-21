@@ -15,37 +15,25 @@
 <p>Return <em>the <strong>maximum</strong> such product difference</em>.</p>
 
 <p>&nbsp;</p>
-
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
-
 <strong>Input:</strong> nums = [5,6,2,7,4]
-
 <strong>Output:</strong> 34
-
 <strong>Explanation:</strong> We can choose indices 1 and 3 for the first pair (6, 7) and indices 2 and 4 for the second pair (2, 4).
-
 The product difference is (6 * 7) - (2 * 4) = 34.
-
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
-
 <strong>Input:</strong> nums = [4,2,5,9,7,4,8]
-
 <strong>Output:</strong> 64
-
 <strong>Explanation:</strong> We can choose indices 3 and 6 for the first pair (9, 8) and indices 1 and 5 for the second pair (2, 4).
-
 The product difference is (9 * 8) - (2 * 4) = 64.
-
 </pre>
 
 <p>&nbsp;</p>
-
 <p><strong>Constraints:</strong></p>
 
 <ul>

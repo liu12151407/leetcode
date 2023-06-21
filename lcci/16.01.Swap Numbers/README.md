@@ -1,4 +1,4 @@
-# [面试题 16.01. 交换数字](https://leetcode-cn.com/problems/swap-numbers-lcci)
+# [面试题 16.01. 交换数字](https://leetcode.cn/problems/swap-numbers-lcci)
 
 [English Version](/lcci/16.01.Swap%20Numbers/README_EN.md)
 
@@ -58,6 +58,13 @@ function swapNumbers(numbers: number[]): number[] {
     numbers[0] ^= numbers[1];
     numbers[1] ^= numbers[0];
     numbers[0] ^= numbers[1];
+    return numbers;
+}
+```
+
+```ts
+function swapNumbers(numbers: number[]): number[] {
+    [numbers[0], numbers[1]] = [numbers[1], numbers[0]];
     return numbers;
 }
 ```

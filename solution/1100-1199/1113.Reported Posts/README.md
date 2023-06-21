@@ -1,4 +1,4 @@
-# [1113. 报告的记录](https://leetcode-cn.com/problems/reported-posts)
+# [1113. 报告的记录](https://leetcode.cn/problems/reported-posts)
 
 [English Version](/solution/1100-1199/1113.Reported%20Posts/README_EN.md)
 
@@ -66,7 +66,18 @@ Result table:
 ### **SQL**
 
 ```sql
-
+# Write your MySQL query statement below
+SELECT
+	extra report_reason,
+	count(
+	DISTINCT ( post_id )) report_count
+FROM
+	Actions
+WHERE
+	action_date = '2019-07-04'
+	AND action = 'report'
+GROUP BY
+	extra
 ```
 
 <!-- tabs:end -->

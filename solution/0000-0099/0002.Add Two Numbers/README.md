@@ -1,4 +1,4 @@
-# [2. 两数相加](https://leetcode-cn.com/problems/add-two-numbers)
+# [2. 两数相加](https://leetcode.cn/problems/add-two-numbers)
 
 [English Version](/solution/0000-0099/0002.Add%20Two%20Numbers/README_EN.md)
 
@@ -15,7 +15,7 @@
 <p> </p>
 
 <p><strong>示例 1：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0000-0099/0002.Add%20Two%20Numbers/images/addtwonumber1.jpg" style="width: 483px; height: 342px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0000-0099/0002.Add%20Two%20Numbers/images/addtwonumber1.jpg" style="width: 483px; height: 342px;" />
 <pre>
 <strong>输入：</strong>l1 = [2,4,3], l2 = [5,6,4]
 <strong>输出：</strong>[7,0,8]
@@ -50,6 +50,16 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：模拟**
+
+我们同时遍历两个链表 $l_1$ 和 $l_2$，并使用变量 $carry$ 表示当前是否有进位。
+
+每次遍历时，我们取出对应链表的当前位，计算它们与进位 $carry$ 的和，然后更新进位的值，最后将当前位的值加入答案链表。如果两个链表都遍历完了，并且进位为 $0$ 时，遍历结束。
+
+最后我们返回答案链表的头节点即可。
+
+时间复杂度 $O(max(m, n))$，其中 $m$ 和 $n$ 分别为两个链表的长度。我们需要遍历两个链表的全部位置，而处理每个位置只需要 $O(1)$ 的时间。忽略答案的空间消耗，空间复杂度 $O(1)$。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -63,16 +73,18 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
+    def addTwoNumbers(
+        self, l1: Optional[ListNode], l2: Optional[ListNode]
+    ) -> Optional[ListNode]:
         dummy = ListNode()
-        carry, cur = 0, dummy
+        carry, curr = 0, dummy
         while l1 or l2 or carry:
-            s = (0 if not l1 else l1.val) + (0 if not l2 else l2.val) + carry
+            s = (l1.val if l1 else 0) + (l2.val if l2 else 0) + carry
             carry, val = divmod(s, 10)
-            cur.next = ListNode(val)
-            cur = cur.next
-            l1 = None if not l1 else l1.next
-            l2 = None if not l2 else l2.next
+            curr.next = ListNode(val)
+            curr = curr.next
+            l1 = l1.next if l1 else None
+            l2 = l2.next if l2 else None
         return dummy.next
 ```
 
@@ -215,28 +227,28 @@ public class Solution {
  * }
  */
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
-    dummy := &ListNode{}
-    carry := 0
-    cur := dummy
-    for l1 != nil || l2 != nil || carry != 0 {
-        s := carry
-        if l1 != nil {
-            s += l1.Val
-        }
-        if l2 != nil {
-            s += l2.Val
-        }
-        carry = s / 10
-        cur.Next = &ListNode{s % 10, nil}
-        cur = cur.Next
-        if l1 != nil {
-            l1 = l1.Next
-        }
-        if l2 != nil {
-            l2 = l2.Next
-        }
-    }
-    return dummy.Next
+	dummy := &ListNode{}
+	carry := 0
+	cur := dummy
+	for l1 != nil || l2 != nil || carry != 0 {
+		s := carry
+		if l1 != nil {
+			s += l1.Val
+		}
+		if l2 != nil {
+			s += l2.Val
+		}
+		carry = s / 10
+		cur.Next = &ListNode{s % 10, nil}
+		cur = cur.Next
+		if l1 != nil {
+			l1 = l1.Next
+		}
+		if l2 != nil {
+			l2 = l2.Next
+		}
+	}
+	return dummy.Next
 }
 ```
 
@@ -337,6 +349,90 @@ proc addTwoNumbers(l1: var SinglyLinkedList, l2: var SinglyLinkedList): SinglyLi
   for i in psum: aggregate.append(($i).parseInt())
 
   result = aggregate
+```
+
+### **TypeScript**
+
+```ts
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+function addTwoNumbers(
+    l1: ListNode | null,
+    l2: ListNode | null,
+): ListNode | null {
+    const dummy = new ListNode();
+    let cur = dummy;
+    let sum = 0;
+    while (l1 != null || l2 != null || sum !== 0) {
+        if (l1 != null) {
+            sum += l1.val;
+            l1 = l1.next;
+        }
+        if (l2 != null) {
+            sum += l2.val;
+            l2 = l2.next;
+        }
+        cur.next = new ListNode(sum % 10);
+        cur = cur.next;
+        sum = Math.floor(sum / 10);
+    }
+    return dummy.next;
+}
+```
+
+### **Rust**
+
+```rust
+// Definition for singly-linked list.
+// #[derive(PartialEq, Eq, Clone, Debug)]
+// pub struct ListNode {
+//   pub val: i32,
+//   pub next: Option<Box<ListNode>>
+// }
+//
+// impl ListNode {
+//   #[inline]
+//   fn new(val: i32) -> Self {
+//     ListNode {
+//       next: None,
+//       val
+//     }
+//   }
+// }
+impl Solution {
+    pub fn add_two_numbers(
+        mut l1: Option<Box<ListNode>>,
+        mut l2: Option<Box<ListNode>>,
+    ) -> Option<Box<ListNode>> {
+        let mut dummy = Some(Box::new(ListNode::new(0)));
+        let mut cur = &mut dummy;
+        let mut sum = 0;
+        while l1.is_some() || l2.is_some() || sum != 0 {
+            if let Some(node) = l1 {
+                sum += node.val;
+                l1 = node.next;
+            }
+            if let Some(node) = l2 {
+                sum += node.val;
+                l2 = node.next;
+            }
+            cur.as_mut().unwrap().next = Some(Box::new(ListNode::new(sum % 10)));
+            cur = &mut cur.as_mut().unwrap().next;
+            sum /= 10;
+        }
+        dummy.unwrap().next.take()
+    }
+}
 ```
 
 ### **...**

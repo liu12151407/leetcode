@@ -1,4 +1,4 @@
-# [1925. 统计平方和三元组的数目](https://leetcode-cn.com/problems/count-square-sum-triples)
+# [1925. 统计平方和三元组的数目](https://leetcode.cn/problems/count-square-sum-triples)
 
 [English Version](/solution/1900-1999/1925.Count%20Square%20Sum%20Triples/README_EN.md)
 
@@ -50,9 +50,9 @@ class Solution:
         res = 0
         for a in range(1, n + 1):
             for b in range(1, n + 1):
-                t = a ** 2 + b ** 2
+                t = a**2 + b**2
                 c = int(sqrt(t))
-                if c <= n and c ** 2 == t:
+                if c <= n and c**2 == t:
                     res += 1
         return res
 ```

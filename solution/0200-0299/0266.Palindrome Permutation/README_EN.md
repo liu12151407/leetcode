@@ -4,24 +4,24 @@
 
 ## Description
 
-<p>Given a string <code>s</code>, return <code>true</code> if a permutation of the string could form a palindrome.</p>
+<p>Given a string <code>s</code>, return <code>true</code> <em>if a permutation of the string could form a </em><span data-keyword="palindrome-string"><em><strong>palindrome</strong></em></span><em> and </em><code>false</code><em> otherwise</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;code&quot;
 <strong>Output:</strong> false
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;aab&quot;
 <strong>Output:</strong> true
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;carerac&quot;
@@ -45,8 +45,7 @@
 ```python
 class Solution:
     def canPermutePalindrome(self, s: str) -> bool:
-        counter = Counter(s)
-        return sum(e % 2 for e in counter.values()) < 2
+        return sum(v % 2 for v in Counter(s).values()) <= 1
 ```
 
 ### **Java**
@@ -54,15 +53,15 @@ class Solution:
 ```java
 class Solution {
     public boolean canPermutePalindrome(String s) {
-        Map<Character, Integer> counter = new HashMap<>();
+        int[] cnt = new int[26];
         for (char c : s.toCharArray()) {
-            counter.put(c, counter.getOrDefault(c, 0) + 1);
+            ++cnt[c - 'a'];
         }
-        int oddCnt = 0;
-        for (int e : counter.values()) {
-            oddCnt += e % 2;
+        int n = 0;
+        for (int v : cnt) {
+            n += v % 2;
         }
-        return oddCnt < 2;
+        return n < 2;
     }
 }
 ```
@@ -73,11 +72,11 @@ class Solution {
 class Solution {
 public:
     bool canPermutePalindrome(string s) {
-        unordered_map<char, int> counter;
-        for (char c : s) ++counter[c];
-        int oddCnt = 0;
-        for (auto& it : counter) oddCnt += it.second % 2;
-        return oddCnt < 2;
+        vector<int> cnt(26);
+        for (char& c : s) ++cnt[c - 'a'];
+        int n = 0;
+        for (int& v : cnt) n += v & 1;
+        return n < 2;
     }
 };
 ```
@@ -86,16 +85,36 @@ public:
 
 ```go
 func canPermutePalindrome(s string) bool {
-    counter := make(map[rune]int)
-    for _, c := range s {
-        counter[c]++
-    }
-    oddCnt := 0
-    for _, e := range counter {
-        oddCnt += e % 2
-    }
-    return oddCnt < 2
+	cnt := make([]int, 26)
+	for _, c := range s {
+		cnt[c-'a']++
+	}
+	n := 0
+	for _, v := range cnt {
+		n += v & 1
+	}
+	return n < 2
 }
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {string} s
+ * @return {boolean}
+ */
+var canPermutePalindrome = function (s) {
+    let ss = new Set();
+    for (let c of s) {
+        if (ss.has(c)) {
+            ss.delete(c);
+        } else {
+            ss.add(c);
+        }
+    }
+    return ss.size < 2;
+};
 ```
 
 ### **...**

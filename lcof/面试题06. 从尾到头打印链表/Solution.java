@@ -8,20 +8,14 @@
  */
 class Solution {
     public int[] reversePrint(ListNode head) {
-        if (head == null) return new int[]{};
-        // 计算链表长度n
-        int n = 0;
-        ListNode cur = head;
-        while (cur != null) {
-            ++n;
-            cur = cur.next;
+        Deque<Integer> stk = new ArrayDeque<>();
+        for (; head != null; head = head.next) {
+            stk.push(head.val);
         }
-        int[] res = new int[n];
-        cur = head;
-        while (cur != null) {
-            res[--n] = cur.val;
-            cur = cur.next;
+        int[] ans = new int[stk.size()];
+        for (int i = 0; !stk.isEmpty(); ++i) {
+            ans[i] = stk.pop();
         }
-        return res;
+        return ans;
     }
 }

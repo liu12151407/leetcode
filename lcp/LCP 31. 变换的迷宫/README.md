@@ -1,4 +1,4 @@
-# [LCP 31. 变换的迷宫](https://leetcode-cn.com/problems/Db3wC1)
+# [LCP 31. 变换的迷宫](https://leetcode.cn/problems/Db3wC1)
 
 ## 题目描述
 
@@ -10,8 +10,8 @@
 
 小力背包有以下两个魔法卷轴（卷轴使用一次后消失）：
 
-- 临时消除术：将指定位置在下一个时刻变为空地；
-- 永久消除术：将指定位置永久变为空地。
+-   临时消除术：将指定位置在下一个时刻变为空地；
+-   永久消除术：将指定位置永久变为空地。
 
 请判断在迷宫变化结束前（含最后时刻），小力能否在不经过任意陷阱的情况下到达迷宫出口呢？
 
@@ -24,7 +24,7 @@
 > 输出：`true`
 >
 > 解释：
-> ![maze.gif](https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcp/LCP%2031.%20变换的迷宫/images/1615892239-SCIjyf-maze.gif)
+> ![maze.gif](https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcp/LCP%2031.%20变换的迷宫/images/1615892239-SCIjyf-maze.gif)
 
 **示例 2：**
 
@@ -44,9 +44,9 @@
 
 **提示：**
 
-- `1 <= maze.length <= 100`
-- `1 <= maze[i].length, maze[i][j].length <= 50`
-- `maze[i][j]` 仅包含 `"."`、`"#"`
+-   `1 <= maze.length <= 100`
+-   `1 <= maze[i].length, maze[i][j].length <= 50`
+-   `maze[i][j]` 仅包含 `"."`、`"#"`
 
 ## 解法
 

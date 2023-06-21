@@ -6,10 +6,10 @@
 
 <p>Given an array of <strong>distinct</strong> integers <code>nums</code> and a target integer <code>target</code>, return <em>the number of possible combinations that add up to</em>&nbsp;<code>target</code>.</p>
 
-<p>The answer is <strong>guaranteed</strong> to fit in a <strong>32-bit</strong> integer.</p>
+<p>The test cases are generated so that the answer can fit in a <strong>32-bit</strong> integer.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,2,3], target = 4
@@ -26,7 +26,7 @@ The possible combination ways are:
 Note that different sequences are counted as different combinations.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [9], target = 3
@@ -59,13 +59,12 @@ Dynamic programming.
 ```python
 class Solution:
     def combinationSum4(self, nums: List[int], target: int) -> int:
-        dp = [0] * (target + 1)
-        dp[0] = 1
+        f = [1] + [0] * target
         for i in range(1, target + 1):
-            for num in nums:
-                if i >= num:
-                    dp[i] += dp[i - num]
-        return dp[-1]
+            for x in nums:
+                if i >= x:
+                    f[i] += f[i - x]
+        return f[target]
 ```
 
 ### **Java**
@@ -73,16 +72,16 @@ class Solution:
 ```java
 class Solution {
     public int combinationSum4(int[] nums, int target) {
-        int[] dp = new int[target + 1];
-        dp[0] = 1;
+        int[] f = new int[target + 1];
+        f[0] = 1;
         for (int i = 1; i <= target; ++i) {
-            for (int num : nums) {
-                if (i >= num) {
-                    dp[i] += dp[i - num];
+            for (int x : nums) {
+                if (i >= x) {
+                    f[i] += f[i - x];
                 }
             }
         }
-        return dp[target];
+        return f[target];
     }
 }
 ```
@@ -93,16 +92,17 @@ class Solution {
 class Solution {
 public:
     int combinationSum4(vector<int>& nums, int target) {
-        vector<int> dp(target + 1);
-        dp[0] = 1;
+        int f[target + 1];
+        memset(f, 0, sizeof(f));
+        f[0] = 1;
         for (int i = 1; i <= target; ++i) {
-            for (int num : nums) {
-                if (i >= num && dp[i - num] < INT_MAX - dp[i]) {
-                    dp[i] += dp[i - num];
+            for (int x : nums) {
+                if (i >= x && f[i - x] < INT_MAX - f[i]) {
+                    f[i] += f[i - x];
                 }
             }
         }
-        return dp[target];
+        return f[target];
     }
 };
 ```
@@ -111,16 +111,74 @@ public:
 
 ```go
 func combinationSum4(nums []int, target int) int {
-	dp := make([]int, target+1)
-	dp[0] = 1
+	f := make([]int, target+1)
+	f[0] = 1
 	for i := 1; i <= target; i++ {
-		for _, num := range nums {
-			if i >= num {
-				dp[i] += dp[i-num]
+		for _, x := range nums {
+			if i >= x {
+				f[i] += f[i-x]
 			}
 		}
 	}
-	return dp[target]
+	return f[target]
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number}
+ */
+var combinationSum4 = function (nums, target) {
+    const f = new Array(target + 1).fill(0);
+    f[0] = 1;
+    for (let i = 1; i <= target; ++i) {
+        for (const x of nums) {
+            if (i >= x) {
+                f[i] += f[i - x];
+            }
+        }
+    }
+    return f[target];
+};
+```
+
+### **TypeScript**
+
+```ts
+function combinationSum4(nums: number[], target: number): number {
+    const f: number[] = new Array(target + 1).fill(0);
+    f[0] = 1;
+    for (let i = 1; i <= target; ++i) {
+        for (const x of nums) {
+            if (i >= x) {
+                f[i] += f[i - x];
+            }
+        }
+    }
+    return f[target];
+}
+```
+
+### **C#**
+
+```cs
+public class Solution {
+    public int CombinationSum4(int[] nums, int target) {
+        int[] f = new int[target + 1];
+        f[0] = 1;
+        for (int i = 1; i <= target; ++i) {
+            foreach (int x in nums) {
+                if (i >= x) {
+                    f[i] += f[i - x];
+                }
+            }
+        }
+        return f[target];
+    }
 }
 ```
 

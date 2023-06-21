@@ -36,7 +36,7 @@ Each row contains information about the score of one student from California Uni
 
 <p>There is a competition between New York University and California University. The competition is held between the same number of students from both universities. The university that has more <strong>excellent students</strong> wins the competition. If the two universities have the same number of <strong>excellent students</strong>, the competition ends in a draw.</p>
 
-<p>An excellent student is a student that scored <code>90%</code> or more in the exam.</p>
+<p>An <strong>excellent student</strong> is a student that scored <code>90%</code> or more in the exam.</p>
 
 <p>Write an SQL query to report:</p>
 
@@ -49,7 +49,7 @@ Each row contains information about the score of one student from California Uni
 <p>The query result format is in the following example.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> 
@@ -73,9 +73,11 @@ California table:
 +---------------------+
 | New York University |
 +---------------------+
+<strong>Explanation:</strong>
+New York University has 1 excellent student, and California University has 0 excellent students.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> 
@@ -99,9 +101,11 @@ California table:
 +-----------------------+
 | California University |
 +-----------------------+
+<strong>Explanation:</strong>
+New York University has 0 excellent students, and California University has 1 excellent student.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> 
@@ -125,6 +129,8 @@ California table:
 +-----------+
 | No Winner |
 +-----------+
+<strong>Explanation:</strong>
+Both New York University and California University have 1 excellent student.
 </pre>
 
 ## Solutions
@@ -142,8 +148,8 @@ SELECT
         ELSE 'No Winner'
     END AS winner
 FROM
-    (SELECT count(1) cnt FROM NewYork WHERE score >= 90) n1,
-    (SELECT COUNT(1) cnt FROM California WHERE score >= 90) n2;
+    (SELECT count(1) AS cnt FROM NewYork WHERE score >= 90) AS n1,
+    (SELECT COUNT(1) AS cnt FROM California WHERE score >= 90) AS n2;
 ```
 
 <!-- tabs:end -->

@@ -18,7 +18,7 @@
 <p>Given an integer array <code>nums</code> of <strong>distinct</strong> integers, return the <strong>largest</strong> subarray of <code>nums</code> of length <code>k</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,4,5,2,3], k = 3
@@ -26,7 +26,7 @@
 <strong>Explanation:</strong> The subarrays of size 3 are: [1,4,5], [4,5,2], and [5,2,3].
 Of these, [5,2,3] is the largest.</pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,4,5,2,3], k = 4
@@ -34,7 +34,7 @@ Of these, [5,2,3] is the largest.</pre>
 <strong>Explanation:</strong> The subarrays of size 4 are: [1,4,5,2], and [4,5,2,3].
 Of these, [4,5,2,3] is the largest.</pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,4,5,2,3], k = 1
@@ -60,13 +60,59 @@ Of these, [4,5,2,3] is the largest.</pre>
 ### **Python3**
 
 ```python
-
+class Solution:
+    def largestSubarray(self, nums: List[int], k: int) -> List[int]:
+        mx = max(nums[: len(nums) - k + 1])
+        i = nums.index(mx)
+        return nums[i : i + k]
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int[] largestSubarray(int[] nums, int k) {
+        int i = 0, mx = 0;
+        for (int j = 0; j < nums.length - k + 1; ++j) {
+            if (mx < nums[j]) {
+                mx = nums[j];
+                i = j;
+            }
+        }
+        int[] ans = new int[k];
+        for (int j = 0; j < k; ++j) {
+            ans[j] = nums[i + j];
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    vector<int> largestSubarray(vector<int>& nums, int k) {
+        auto pos = max_element(nums.begin(), nums.begin() + nums.size() - k + 1);
+        return {pos, pos + k};
+    }
+};
+```
+
+### **Go**
+
+```go
+func largestSubarray(nums []int, k int) []int {
+	i, mx := 0, 0
+	for j := 0; j < len(nums)-k+1; j++ {
+		if mx < nums[j] {
+			mx = nums[j]
+			i = j
+		}
+	}
+	return nums[i : i+k]
+}
 ```
 
 ### **...**

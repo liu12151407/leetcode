@@ -1,13 +1,11 @@
-# [16.05. Factorial Zeros](https://leetcode-cn.com/problems/factorial-zeros-lcci)
+# [16.05. Factorial Zeros](https://leetcode.cn/problems/factorial-zeros-lcci)
 
 [中文文档](/lcci/16.05.Factorial%20Zeros/README.md)
 
 ## Description
 
 <p>Write an algorithm which computes the number of trailing zeros in n factorial.</p>
-
 <p><strong>Example 1:</strong></p>
-
 <pre>
 
 <strong>Input:</strong> 3
@@ -17,7 +15,6 @@
 <strong>Explanation:</strong>&nbsp;3! = 6, no trailing zero.</pre>
 
 <p><strong>Example&nbsp;2:</strong></p>
-
 <pre>
 
 <strong>Input:</strong> 5

@@ -1,4 +1,4 @@
-# [剑指 Offer II 098. 路径的数目](https://leetcode-cn.com/problems/2AoeFn)
+# [剑指 Offer II 098. 路径的数目](https://leetcode.cn/problems/2AoeFn)
 
 ## 题目描述
 
@@ -14,7 +14,7 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><img src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20098.%20%E8%B7%AF%E5%BE%84%E7%9A%84%E6%95%B0%E7%9B%AE/images/robot_maze.png" /></p>
+<p><img src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20098.%20%E8%B7%AF%E5%BE%84%E7%9A%84%E6%95%B0%E7%9B%AE/images/robot_maze.png" /></p>
 
 <pre>
 <strong>输入：</strong>m = 3, n = 7
@@ -56,7 +56,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 62&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/unique-paths/">https://leetcode-cn.com/problems/unique-paths/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 62&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/unique-paths/">https://leetcode.cn/problems/unique-paths/</a></p>
 
 ## 解法
 
@@ -124,10 +124,8 @@ class Solution {
 public:
     int uniquePaths(int m, int n) {
         vector<vector<int>> dp(m, vector<int>(n, 1));
-        for (int i = 1; i < m; ++i)
-        {
-            for (int j = 1; j < n; ++j)
-            {
+        for (int i = 1; i < m; ++i) {
+            for (int j = 1; j < n; ++j) {
                 dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
             }
         }

@@ -13,7 +13,7 @@
 <p>Note that a string <code>x</code> is lexicographically smaller than string <code>y</code> if <code>x</code> comes before <code>y</code> in dictionary order, that is, either <code>x</code> is a prefix of <code>y</code>, or if <code>i</code> is the first position such that <code>x[i] != y[i]</code>, then <code>x[i]</code> comes before <code>y[i]</code> in alphabetic order.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 3, k = 27
@@ -21,7 +21,7 @@
 <strong>Explanation:</strong> The numeric value of the string is 1 + 1 + 25 = 27, and it is the smallest string with such a value and length equal to 3.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 5, k = 73
@@ -43,13 +43,67 @@
 ### **Python3**
 
 ```python
-
+class Solution:
+    def getSmallestString(self, n: int, k: int) -> str:
+        ans = ['a'] * n
+        i, d = n - 1, k - n
+        while d > 25:
+            ans[i] = 'z'
+            d -= 25
+            i -= 1
+        ans[i] = chr(ord(ans[i]) + d)
+        return ''.join(ans)
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public String getSmallestString(int n, int k) {
+        char[] ans = new char[n];
+        Arrays.fill(ans, 'a');
+        int i = n - 1, d = k - n;
+        for (; d > 25; d -= 25) {
+            ans[i--] = 'z';
+        }
+        ans[i] = (char) ('a' + d);
+        return String.valueOf(ans);
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    string getSmallestString(int n, int k) {
+        string ans(n, 'a');
+        int i = n - 1, d = k - n;
+        for (; d > 25; d -= 25) {
+            ans[i--] = 'z';
+        }
+        ans[i] += d;
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func getSmallestString(n int, k int) string {
+	ans := make([]byte, n)
+	for i := range ans {
+		ans[i] = 'a'
+	}
+	i, d := n-1, k-n
+	for ; d > 25; i, d = i-1, d-25 {
+		ans[i] = 'z'
+	}
+	ans[i] += byte(d)
+	return string(ans)
+}
 ```
 
 ### **...**

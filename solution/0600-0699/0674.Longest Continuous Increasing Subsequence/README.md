@@ -1,4 +1,4 @@
-# [674. 最长连续递增序列](https://leetcode-cn.com/problems/longest-continuous-increasing-subsequence)
+# [674. 最长连续递增序列](https://leetcode.cn/problems/longest-continuous-increasing-subsequence)
 
 [English Version](/solution/0600-0699/0674.Longest%20Continuous%20Increasing%20Subsequence/README_EN.md)
 
@@ -34,7 +34,7 @@
 <p><strong>提示：</strong></p>
 
 <ul>
-	<li><code>0 <= nums.length <= 10<sup>4</sup></code></li>
+	<li><code>1 <= nums.length <= 10<sup>4</sup></code></li>
 	<li><code>-10<sup>9</sup> <= nums[i] <= 10<sup>9</sup></code></li>
 </ul>
 
@@ -122,8 +122,7 @@ class Solution {
 public:
     int findLengthOfLCIS(vector<int>& nums) {
         int res = 1;
-        for (int i = 1, f = 1; i < nums.size(); ++i)
-        {
+        for (int i = 1, f = 1; i < nums.size(); ++i) {
             f = 1 + (nums[i - 1] < nums[i] ? f : 0);
             res = max(res, f);
         }
@@ -153,6 +152,46 @@ func max(a, b int) int {
 		return a
 	}
 	return b
+}
+```
+
+### **TypeScript**
+
+```ts
+function findLengthOfLCIS(nums: number[]): number {
+    const n = nums.length;
+    let res = 1;
+    let i = 0;
+    for (let j = 1; j < n; j++) {
+        if (nums[j - 1] >= nums[j]) {
+            res = Math.max(res, j - i);
+            i = j;
+        }
+    }
+    return Math.max(res, n - i);
+}
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param Integer[] $nums
+     * @return Integer
+     */
+    function findLengthOfLCIS($nums) {
+        $tmp = $max = 1;
+        for ($i = 0; $i < count($nums) - 1; $i++) {
+            if ($nums[$i] < $nums[$i + 1]) {
+                $tmp++;
+                $max = max($max, $tmp);
+            } else {
+                $tmp = 1;
+            }
+        }
+        return $max;
+    }
 }
 ```
 

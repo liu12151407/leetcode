@@ -1,4 +1,4 @@
-# [剑指 Offer II 118. 多余的边](https://leetcode-cn.com/problems/7LpjUW)
+# [剑指 Offer II 118. 多余的边](https://leetcode.cn/problems/7LpjUW)
 
 ## 题目描述
 
@@ -14,7 +14,7 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20118.%20%E5%A4%9A%E4%BD%99%E7%9A%84%E8%BE%B9/images/1626676174-hOEVUL-image.png" style="width: 152px; " /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20118.%20%E5%A4%9A%E4%BD%99%E7%9A%84%E8%BE%B9/images/1626676174-hOEVUL-image.png" style="width: 152px; " /></p>
 
 <pre>
 <strong>输入:</strong> edges = [[1,2],[1,3],[2,3]]
@@ -23,7 +23,7 @@
 
 <p><strong>示例 2：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20118.%20%E5%A4%9A%E4%BD%99%E7%9A%84%E8%BE%B9/images/1626676179-kGxcmu-image.png" style="width: 250px; " /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20118.%20%E5%A4%9A%E4%BD%99%E7%9A%84%E8%BE%B9/images/1626676179-kGxcmu-image.png" style="width: 250px; " /></p>
 
 <pre>
 <strong>输入:</strong> edges = [[1,2],[2,3],[3,4],[1,4],[1,5]]
@@ -46,7 +46,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 684&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/redundant-connection/">https://leetcode-cn.com/problems/redundant-connection/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 684&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/redundant-connection/">https://leetcode.cn/problems/redundant-connection/</a></p>
 
 ## 解法
 
@@ -60,12 +60,14 @@
 # 初始化，p存储每个点的父节点
 p = list(range(n))
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
         # 路径压缩
         p[x] = find(p[x])
     return p[x]
+
 
 # 合并a和b所在的两个集合
 p[find(a)] = find(b)
@@ -78,12 +80,14 @@ p[find(a)] = find(b)
 p = list(range(n))
 size = [1] * n
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
         # 路径压缩
         p[x] = find(p[x])
     return p[x]
+
 
 # 合并a和b所在的两个集合
 if find(a) != find(b):
@@ -98,6 +102,7 @@ if find(a) != find(b):
 p = list(range(n))
 d = [0] * n
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
@@ -105,6 +110,7 @@ def find(x):
         d[x] += d[p[x]]
         p[x] = t
     return p[x]
+
 
 # 合并a和b所在的两个集合
 p[find(a)] = find(b)
@@ -122,13 +128,12 @@ d[find(a)] = distance
 ```python
 class Solution:
     def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
-        p = list(range(1010))
-
         def find(x):
             if p[x] != x:
                 p[x] = find(p[x])
             return p[x]
 
+        p = list(range(1010))
         for a, b in edges:
             if find(a) == find(b):
                 return [a, b]
@@ -150,10 +155,11 @@ class Solution {
             p[i] = i;
         }
         for (int[] e : edges) {
-            if (find(e[0]) == find(e[1])) {
+            int a = e[0], b = e[1];
+            if (find(a) == find(b)) {
                 return e;
             }
-            p[find(e[0])] = find(e[1]);
+            p[find(a)] = find(b);
         }
         return null;
     }
@@ -174,28 +180,19 @@ class Solution {
 public:
     vector<int> p;
 
-    vector<int> findRedundantConnection(vector<vector<int>> &edges) {
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
         p.resize(1010);
-        for (int i = 0; i < p.size(); ++i)
-        {
-            p[i] = i;
-        }
-        for (auto e : edges)
-        {
-            if (find(e[0]) == find(e[1]))
-            {
-                return e;
-            }
-            p[find(e[0])] = find(e[1]);
+        for (int i = 0; i < p.size(); ++i) p[i] = i;
+        for (auto& e : edges) {
+            int a = e[0], b = e[1];
+            if (find(a) == find(b)) return e;
+            p[find(a)] = find(b);
         }
         return {};
     }
 
     int find(int x) {
-        if (p[x] != x)
-        {
-            p[x] = find(p[x]);
-        }
+        if (p[x] != x) p[x] = find(p[x]);
         return p[x];
     }
 };
@@ -204,27 +201,26 @@ public:
 ### **Go**
 
 ```go
-var p []int
-
 func findRedundantConnection(edges [][]int) []int {
-	p = make([]int, 1010)
-	for i := 0; i < len(p); i++ {
+	p := make([]int, 1010)
+	for i := range p {
 		p[i] = i
 	}
-	for _, e := range edges {
-		if find(e[0]) == find(e[1]) {
-			return e
+	var find func(x int) int
+	find = func(x int) int {
+		if p[x] != x {
+			p[x] = find(p[x])
 		}
-		p[find(e[0])] = find(e[1])
+		return p[x]
 	}
-	return nil
-}
-
-func find(x int) int {
-	if p[x] != x {
-		p[x] = find(p[x])
+	for _, e := range edges {
+		a, b := e[0], e[1]
+		if find(a) == find(b) {
+			return []int{a, b}
+		}
+		p[find(a)] = find(b)
 	}
-	return p[x]
+	return []int{}
 }
 ```
 

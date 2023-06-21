@@ -9,7 +9,7 @@
 <p><code>x mod y</code> denotes the <strong>remainder</strong> when <code>x</code> is divided by <code>y</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [0,1,2]
@@ -21,7 +21,7 @@ i=2: 2 mod 10 = 2 == nums[2].
 All indices have i mod 10 == nums[i], so we return the smallest index 0.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [4,3,2,1]
@@ -34,20 +34,12 @@ i=3: 3 mod 10 = 3 != nums[3].
 2 is the only index which has i mod 10 == nums[i].
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,2,3,4,5,6,7,8,9,0]
 <strong>Output:</strong> -1
 <strong>Explanation:</strong> No index satisfies i mod 10 == nums[i].
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> nums = [2,1,3,5,2]
-<strong>Output:</strong> 1
-<strong>Explanation:</strong> 1 is the only index with i mod 10 == nums[i].
 </pre>
 
 <p>&nbsp;</p>
@@ -65,13 +57,27 @@ i=3: 3 mod 10 = 3 != nums[3].
 ### **Python3**
 
 ```python
-
+class Solution:
+    def smallestEqual(self, nums: List[int]) -> int:
+        for i, v in enumerate(nums):
+            if i % 10 == v:
+                return i
+        return -1
 ```
 
 ### **Java**
 
 ```java
-
+class Solution {
+    public int smallestEqual(int[] nums) {
+        for (int i = 0; i < nums.length; ++i) {
+            if (i % 10 == nums[i]) {
+                return i;
+            }
+        }
+        return -1;
+    }
+}
 ```
 
 ### **TypeScript**
@@ -82,6 +88,33 @@ function smallestEqual(nums: number[]): number {
         if (i % 10 == nums[i]) return i;
     }
     return -1;
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int smallestEqual(vector<int>& nums) {
+        for (int i = 0; i < nums.size(); ++i)
+            if (i % 10 == nums[i])
+                return i;
+        return -1;
+    }
+};
+```
+
+### **Go**
+
+```go
+func smallestEqual(nums []int) int {
+	for i, v := range nums {
+		if i%10 == v {
+			return i
+		}
+	}
+	return -1
 }
 ```
 

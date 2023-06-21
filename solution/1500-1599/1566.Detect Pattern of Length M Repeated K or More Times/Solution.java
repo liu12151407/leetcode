@@ -1,17 +1,14 @@
 class Solution {
     public boolean containsPattern(int[] arr, int m, int k) {
-        if (arr.length < m * k) {
-            return false;
-        }
-        for (int i = 0; i <= arr.length - m * k; i++) {
-            boolean match = true;
-            for (int j = i + m; j < i + m * k; j++) {
-                if (arr[j] != arr[j - m]) {
-                    match = false;
+        int n = arr.length;
+        for (int i = 0; i <= n - m * k; ++i) {
+            int j = 0;
+            for (; j < m * k; ++j) {
+                if (arr[i + j] != arr[i + (j % m)]) {
                     break;
                 }
             }
-            if (match) {
+            if (j == m * k) {
                 return true;
             }
         }

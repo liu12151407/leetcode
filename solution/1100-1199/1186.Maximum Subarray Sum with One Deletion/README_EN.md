@@ -9,14 +9,14 @@
 <p>Note that the subarray needs to be <strong>non-empty</strong> after deleting one element.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> arr = [1,-2,0,3]
 <strong>Output:</strong> 4
 <strong>Explanation: </strong>Because we can choose [1, -2, 0, 3] and drop -2, thus the subarray [1, 0, 3] becomes the maximum value.</pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> arr = [1,-2,-2,3]
@@ -24,7 +24,7 @@
 <strong>Explanation: </strong>We just choose [3] and it&#39;s the maximum sum.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> arr = [-1,-1,-1,-1]
@@ -47,13 +47,129 @@
 ### **Python3**
 
 ```python
-
+class Solution:
+    def maximumSum(self, arr: List[int]) -> int:
+        n = len(arr)
+        left = [0] * n
+        right = [0] * n
+        s = 0
+        for i, x in enumerate(arr):
+            s = max(s, 0) + x
+            left[i] = s
+        s = 0
+        for i in range(n - 1, -1, -1):
+            s = max(s, 0) + arr[i]
+            right[i] = s
+        ans = max(left)
+        for i in range(1, n - 1):
+            ans = max(ans, left[i - 1] + right[i + 1])
+        return ans
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int maximumSum(int[] arr) {
+        int n = arr.length;
+        int[] left = new int[n];
+        int[] right = new int[n];
+        int ans = -(1 << 30);
+        for (int i = 0, s = 0; i < n; ++i) {
+            s = Math.max(s, 0) + arr[i];
+            left[i] = s;
+            ans = Math.max(ans, left[i]);
+        }
+        for (int i = n - 1, s = 0; i >= 0; --i) {
+            s = Math.max(s, 0) + arr[i];
+            right[i] = s;
+        }
+        for (int i = 1; i < n - 1; ++i) {
+            ans = Math.max(ans, left[i - 1] + right[i + 1]);
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int maximumSum(vector<int>& arr) {
+        int n = arr.size();
+        int left[n];
+        int right[n];
+        for (int i = 0, s = 0; i < n; ++i) {
+            s = max(s, 0) + arr[i];
+            left[i] = s;
+        }
+        for (int i = n - 1, s = 0; ~i; --i) {
+            s = max(s, 0) + arr[i];
+            right[i] = s;
+        }
+        int ans = *max_element(left, left + n);
+        for (int i = 1; i < n - 1; ++i) {
+            ans = max(ans, left[i - 1] + right[i + 1]);
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func maximumSum(arr []int) int {
+	n := len(arr)
+	left := make([]int, n)
+	right := make([]int, n)
+	ans := -(1 << 30)
+	for i, s := 0, 0; i < n; i++ {
+		s = max(s, 0) + arr[i]
+		left[i] = s
+		ans = max(ans, s)
+	}
+	for i, s := n-1, 0; i >= 0; i-- {
+		s = max(s, 0) + arr[i]
+		right[i] = s
+	}
+	for i := 1; i < n-1; i++ {
+		ans = max(ans, left[i-1]+right[i+1])
+	}
+	return ans
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+```
+
+### **TypeScript**
+
+```ts
+function maximumSum(arr: number[]): number {
+    const n = arr.length;
+    const left: number[] = new Array(n);
+    const right: number[] = new Array(n);
+    for (let i = 0, s = 0; i < n; ++i) {
+        s = Math.max(s, 0) + arr[i];
+        left[i] = s;
+    }
+    for (let i = n - 1, s = 0; i >= 0; --i) {
+        s = Math.max(s, 0) + arr[i];
+        right[i] = s;
+    }
+    let ans = Math.max(...left);
+    for (let i = 1; i < n - 1; ++i) {
+        ans = Math.max(ans, left[i - 1] + right[i + 1]);
+    }
+    return ans;
+}
 ```
 
 ### **...**

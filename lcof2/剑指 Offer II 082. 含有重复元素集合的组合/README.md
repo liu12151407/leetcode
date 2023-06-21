@@ -1,4 +1,4 @@
-# [剑指 Offer II 082. 含有重复元素集合的组合](https://leetcode-cn.com/problems/4sjJUc)
+# [剑指 Offer II 082. 含有重复元素集合的组合](https://leetcode.cn/problems/4sjJUc)
 
 ## 题目描述
 
@@ -44,7 +44,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 40&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/combination-sum-ii/">https://leetcode-cn.com/problems/combination-sum-ii/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 40&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/combination-sum-ii/">https://leetcode.cn/problems/combination-sum-ii/</a></p>
 
 ## 解法
 
@@ -147,13 +147,11 @@ public:
 
     void dfs(int u, int s, vector<int>& t) {
         if (s > target) return;
-        if (s == target)
-        {
+        if (s == target) {
             ans.push_back(t);
             return;
         }
-        for (int i = u; i < candidates.size(); ++i)
-        {
+        for (int i = u; i < candidates.size(); ++i) {
             if (i > u && candidates[i] == candidates[i - 1]) continue;
             t.push_back(candidates[i]);
             dfs(i + 1, s + candidates[i], t);

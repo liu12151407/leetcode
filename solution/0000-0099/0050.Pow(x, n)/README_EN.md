@@ -7,21 +7,21 @@
 <p>Implement <a href="http://www.cplusplus.com/reference/valarray/pow/" target="_blank">pow(x, n)</a>, which calculates <code>x</code> raised to the power <code>n</code> (i.e., <code>x<sup>n</sup></code>).</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> x = 2.00000, n = 10
 <strong>Output:</strong> 1024.00000
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> x = 2.10000, n = 3
 <strong>Output:</strong> 9.26100
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> x = 2.00000, n = -2
@@ -33,8 +33,10 @@
 <p><strong>Constraints:</strong></p>
 
 <ul>
-	<li><code>-100.0 &lt;&nbsp;x&nbsp;&lt; 100.0</code></li>
-	<li><code>-2<sup>31</sup>&nbsp;&lt;= n &lt;=&nbsp;2<sup>31</sup>-1</code></li>
+	<li><code>-100.0 &lt; x &lt; 100.0</code></li>
+	<li><code>-2<sup>31</sup> &lt;= n &lt;= 2<sup>31</sup>-1</code></li>
+	<li><code>n</code> is an integer.</li>
+	<li>Either <code>x</code> is not zero or <code>n &gt; 0</code>.</li>
 	<li><code>-10<sup>4</sup> &lt;= x<sup>n</sup> &lt;= 10<sup>4</sup></code></li>
 </ul>
 
@@ -47,12 +49,16 @@
 ```python
 class Solution:
     def myPow(self, x: float, n: int) -> float:
-        if n == 0:
-            return 1
-        if n < 0:
-            return 1 / self.myPow(x, -n)
-        y = self.myPow(x, n >> 1)
-        return y * y if (n & 1) == 0 else y * y * x
+        def qmi(a, k):
+            res = 1
+            while k:
+                if k & 1:
+                    res *= a
+                a *= a
+                k >>= 1
+            return res
+
+        return qmi(x, n) if n >= 0 else 1 / qmi(x, -n)
 ```
 
 ### **Java**
@@ -61,16 +67,92 @@ class Solution:
 class Solution {
     public double myPow(double x, int n) {
         long N = n;
-        return N >= 0 ? pow(x, N) : 1.0 / pow(x, -N);
+        return n >= 0 ? qmi(x, N) : 1.0 / qmi(x, -N);
     }
 
-    public double pow(double x, long N) {
-        if (N == 0) {
-            return 1.0;
+    private double qmi(double a, long k) {
+        double res = 1;
+        while (k != 0) {
+            if ((k & 1) != 0) {
+                res *= a;
+            }
+            a *= a;
+            k >>= 1;
         }
-        double y = pow(x, N >> 1);
-        return (N & 1) == 0 ? y * y : y * y * x;
+        return res;
     }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    double myPow(double x, int n) {
+        long long N = n;
+        return N >= 0 ? qmi(x, N) : 1.0 / qmi(x, -N);
+    }
+
+    double qmi(double a, long long k) {
+        double res = 1;
+        while (k) {
+            if (k & 1) {
+                res *= a;
+            }
+            a *= a;
+            k >>= 1;
+        }
+        return res;
+    }
+};
+```
+
+### **Go**
+
+```go
+func myPow(x float64, n int) float64 {
+	if n >= 0 {
+		return qmi(x, n)
+	}
+	return 1.0 / qmi(x, -n)
+}
+
+func qmi(a float64, k int) float64 {
+	var res float64 = 1
+	for k != 0 {
+		if k&1 == 1 {
+			res *= a
+		}
+		a *= a
+		k >>= 1
+	}
+	return res
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number} x
+ * @param {number} n
+ * @return {number}
+ */
+var myPow = function (x, n) {
+    return n >= 0 ? qmi(x, n) : 1 / qmi(x, -n);
+};
+
+function qmi(a, k) {
+    let res = 1;
+    while (k) {
+        if (k & 1) {
+            res *= a;
+        }
+        a *= a;
+        k >>>= 1;
+    }
+    return res;
 }
 ```
 
@@ -78,18 +160,42 @@ class Solution {
 
 ```ts
 function myPow(x: number, n: number): number {
+    return n >= 0 ? qmi(x, n) : 1 / qmi(x, -n);
+}
+
+function qmi(a: number, k: number): number {
     let res = 1;
-    if (n < 0) {
-        n = -n;
-        x = 1 / x;
-    }
-    for (let i = n; i != 0; i = Math.floor(i / 2)) {
-        if ((i & 1) == 1) {
-            res *= x;
+    while (k) {
+        if (k & 1) {
+            res *= a;
         }
-        x *= x;
+        a *= a;
+        k >>>= 1;
     }
     return res;
+}
+```
+
+### **C#**
+
+```cs
+public class Solution {
+    public double MyPow(double x, int n) {
+        long N = n;
+        return n >= 0 ? qmi(x, N) : 1.0 / qmi(x, -N);
+    }
+
+    private double qmi(double a, long k) {
+        double res = 1;
+        while (k != 0) {
+            if ((k & 1) != 0) {
+                res *= a;
+            }
+            a *= a;
+            k >>= 1;
+        }
+        return res;
+    }
 }
 ```
 

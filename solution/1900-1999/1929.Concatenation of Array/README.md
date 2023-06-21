@@ -1,4 +1,4 @@
-# [1929. 数组串联](https://leetcode-cn.com/problems/concatenation-of-array)
+# [1929. 数组串联](https://leetcode.cn/problems/concatenation-of-array)
 
 [English Version](/solution/1900-1999/1929.Concatenation%20of%20Array/README_EN.md)
 
@@ -81,20 +81,6 @@ class Solution {
 }
 ```
 
-### **JavaScript**
-
-```js
-/**
- * @param {number[]} nums
- * @return {number[]}
- */
-var getConcatenation = function (nums) {
-    let ans = nums.slice();
-    ans.splice(nums.length, 0, ...nums);
-    return ans;
-};
-```
-
 ### **C++**
 
 ```cpp
@@ -114,6 +100,54 @@ public:
 ```go
 func getConcatenation(nums []int) []int {
 	return append(nums, nums...)
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var getConcatenation = function (nums) {
+    let ans = nums.slice();
+    ans.splice(nums.length, 0, ...nums);
+    return ans;
+};
+```
+
+### **TypeScript**
+
+```ts
+function getConcatenation(nums: number[]): number[] {
+    return [...nums, ...nums];
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn get_concatenation(nums: Vec<i32>) -> Vec<i32> {
+        nums.repeat(2)
+    }
+}
+```
+
+### **C**
+
+```c
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* getConcatenation(int* nums, int numsSize, int* returnSize) {
+    int* ans = malloc(sizeof(int) * numsSize * 2);
+    for (int i = 0; i < numsSize; i++) {
+        ans[i] = ans[i + numsSize] = nums[i];
+    }
+    *returnSize = numsSize * 2;
+    return ans;
 }
 ```
 

@@ -1,4 +1,4 @@
-# [剑指 Offer II 073. 狒狒吃香蕉](https://leetcode-cn.com/problems/nZZqjQ)
+# [剑指 Offer II 073. 狒狒吃香蕉](https://leetcode.cn/problems/nZZqjQ)
 
 ## 题目描述
 
@@ -50,7 +50,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 875&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/koko-eating-bananas/">https://leetcode-cn.com/problems/koko-eating-bananas/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 875&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/koko-eating-bananas/">https://leetcode.cn/problems/koko-eating-bananas/</a></p>
 
 ## 解法
 
@@ -114,13 +114,14 @@ class Solution {
 public:
     int minEatingSpeed(vector<int>& piles, int h) {
         int left = 1, right = *max_element(piles.begin(), piles.end());
-        while (left < right)
-        {
+        while (left < right) {
             int mid = left + right >> 1;
             int s = 0;
             for (int pile : piles) s += (pile + mid - 1) / mid;
-            if (s <= h) right = mid;
-            else left = mid + 1;
+            if (s <= h)
+                right = mid;
+            else
+                left = mid + 1;
         }
         return left;
     }

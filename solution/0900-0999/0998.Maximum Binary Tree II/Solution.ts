@@ -14,9 +14,9 @@
 
 function insertIntoMaxTree(
     root: TreeNode | null,
-    val: number
+    val: number,
 ): TreeNode | null {
-    if (root == null || val > root.val) {
+    if (!root || root.val < val) {
         return new TreeNode(val, root);
     }
     root.right = insertIntoMaxTree(root.right, val);

@@ -1,4 +1,4 @@
-# [2042. 检查句子中的数字是否递增](https://leetcode-cn.com/problems/check-if-numbers-are-ascending-in-a-sentence)
+# [2042. 检查句子中的数字是否递增](https://leetcode.cn/problems/check-if-numbers-are-ascending-in-a-sentence)
 
 [English Version](/solution/2000-2099/2042.Check%20if%20Numbers%20Are%20Ascending%20in%20a%20Sentence/README_EN.md)
 
@@ -20,7 +20,7 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><img alt="example-1" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2042.Check%20if%20Numbers%20Are%20Ascending%20in%20a%20Sentence/images/example1.png" style="width: 637px; height: 48px;" /></p>
+<p><img alt="example-1" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2042.Check%20if%20Numbers%20Are%20Ascending%20in%20a%20Sentence/images/example1.png" style="width: 637px; height: 48px;" /></p>
 
 <pre>
 <strong>输入：</strong>s = "1 box has 3 blue 4 red 6 green and 12 yellow marbles"
@@ -39,7 +39,7 @@
 
 <p><strong>示例 3：</strong></p>
 
-<p><img alt="example-3" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2042.Check%20if%20Numbers%20Are%20Ascending%20in%20a%20Sentence/images/example3.png" style="width: 794px; height: 48px;" /></p>
+<p><img alt="example-3" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2042.Check%20if%20Numbers%20Are%20Ascending%20in%20a%20Sentence/images/example3.png" style="width: 794px; height: 48px;" /></p>
 
 <pre>
 <strong>输入：</strong>s = "sunset is at 7 51 pm overnight lows will be in the low 50 and 60 s"
@@ -74,6 +74,14 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：模拟**
+
+我们可以将字符串 $s$ 按空格分割成若干个单词。然后遍历每个单词，判断其是否为数字，若是数字，则将其转换为整数，与前一个数字比较，若不严格递增，返回 `false`，否则，将当前数字赋值给前一个数字，继续遍历。
+
+遍历结束，说明字符串中的数字严格递增，返回 `true`。
+
+时间复杂度 $O(n)$，空间复杂度 $O(n)$。其中 $n$ 为字符串 $s$ 的长度。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -83,12 +91,31 @@
 ```python
 class Solution:
     def areNumbersAscending(self, s: str) -> bool:
-        curr = 0
-        for t in s.split(' '):
+        pre = 0
+        for t in s.split():
             if t[0].isdigit():
-                if curr >= int(t):
+                if (cur := int(t)) <= pre:
                     return False
-                curr = int(t)
+                pre = cur
+        return True
+```
+
+```python
+class Solution:
+    def areNumbersAscending(self, s: str) -> bool:
+        pre = i = 0
+        n = len(s)
+        while i < n:
+            if s[i].isdigit():
+                cur = 0
+                while i < n and s[i].isdigit():
+                    cur = cur * 10 + int(s[i])
+                    i += 1
+                if pre >= cur:
+                    return False
+                pre = cur
+            else:
+                i += 1
         return True
 ```
 
@@ -99,36 +126,18 @@ class Solution:
 ```java
 class Solution {
     public boolean areNumbersAscending(String s) {
-        int curr = 0;
-        for (String t : s.split(" ")) {
-            char c = t.charAt(0);
-            if (Character.isDigit(c)) {
-                int x = Integer.parseInt(t);
-                if (curr >= x) {
+        int pre = 0;
+        for (var t : s.split(" ")) {
+            if (t.charAt(0) <= '9') {
+                int cur = Integer.parseInt(t);
+                if (pre >= cur) {
                     return false;
                 }
-                curr = x;
+                pre = cur;
             }
         }
         return true;
     }
-}
-```
-
-### **TypeScript**
-
-```ts
-function areNumbersAscending(s: string): boolean {
-    let strs = s.split(" ");
-    let prev = Number.MIN_SAFE_INTEGER;
-    for (let str of strs) {
-        let num = Number(str);
-        if (!isNaN(num)) {
-            if (num <= prev) return false;
-            prev = num;
-        }
-    }
-    return true;
 }
 ```
 
@@ -138,16 +147,16 @@ function areNumbersAscending(s: string): boolean {
 class Solution {
 public:
     bool areNumbersAscending(string s) {
-        int curr = 0;
+        int pre = 0;
         istringstream is(s);
         string t;
-        while (is >> t)
-        {
-            if (isdigit(t[0]))
-            {
-                int x = stoi(t);
-                if (curr >= x) return false;
-                curr = x;
+        while (is >> t) {
+            if (isdigit(t[0])) {
+                int cur = stoi(t);
+                if (pre >= cur) {
+                    return false;
+                }
+                pre = cur;
             }
         }
         return true;
@@ -159,17 +168,81 @@ public:
 
 ```go
 func areNumbersAscending(s string) bool {
-	curr := 0
+	pre := 0
 	for _, t := range strings.Split(s, " ") {
-		if unicode.IsDigit(rune(t[0])) {
-			x, _ := strconv.Atoi(t)
-			if curr >= x {
+		if t[0] <= '9' {
+			cur, _ := strconv.Atoi(t)
+			if pre >= cur {
 				return false
 			}
-			curr = x
+			pre = cur
 		}
 	}
 	return true
+}
+```
+
+### **TypeScript**
+
+```ts
+function areNumbersAscending(s: string): boolean {
+    let pre = -1;
+    for (const cur of s.split(' ')) {
+        if (cur[0] <= '9') {
+            const num = Number(cur);
+            if (num <= pre) {
+                return false;
+            }
+            pre = num;
+        }
+    }
+    return true;
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn are_numbers_ascending(s: String) -> bool {
+        let mut pre = -1;
+        for cur in s.split(' ') {
+            if cur.as_bytes()[0] <= b'9' {
+                let num = cur.parse::<i32>().unwrap();
+                if num <= pre {
+                    return false;
+                }
+                pre = num;
+            }
+        }
+        true
+    }
+}
+```
+
+### **C**
+
+```c
+bool areNumbersAscending(char* s) {
+    int pre = -1;
+    int cur = 0;
+    for (int i = 0; s[i]; i++) {
+        if (isdigit(s[i])) {
+            cur = cur * 10 + s[i] - '0';
+        } else {
+            if (cur != 0) {
+                if (cur <= pre) {
+                    return 0;
+                }
+                pre = cur;
+                cur = 0;
+            }
+        }
+    }
+    if (cur != 0 && cur <= pre) {
+        return 0;
+    }
+    return 1;
 }
 ```
 

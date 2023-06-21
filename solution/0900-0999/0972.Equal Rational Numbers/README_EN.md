@@ -10,7 +10,6 @@
 
 <ul>
 	<li><code>&lt;IntegerPart&gt;</code>
-
     <ul>
     	<li>For example, <code>12</code>, <code>0</code>, and <code>123</code>.</li>
     </ul>
@@ -25,7 +24,6 @@
     	<li>For example, <code>0.1(6)</code>, <code>1.(9)</code>, <code>123.00(1212)</code>.</li>
     </ul>
     </li>
-
 </ul>
 
 <p>The repeating portion of a decimal expansion is conventionally denoted within a pair of round brackets. For example:</p>
@@ -35,7 +33,7 @@
 </ul>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;0.(52)&quot;, t = &quot;0.5(25)&quot;
@@ -43,14 +41,14 @@
 <strong>Explanation:</strong> Because &quot;0.(52)&quot; represents 0.52525252..., and &quot;0.5(25)&quot; represents 0.52525252525..... , the strings represent the same number.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;0.1666(6)&quot;, t = &quot;0.166(66)&quot;
 <strong>Output:</strong> true
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;0.9(9)&quot;, t = &quot;1.&quot;

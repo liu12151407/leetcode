@@ -8,10 +8,10 @@
 
 <p>Each result of the division is rounded to the nearest integer greater than or equal to that element. (For example: <code>7/3 = 3</code> and <code>10/2 = 5</code>).</p>
 
-<p>It is guaranteed that there will be an answer.</p>
+<p>The test cases are generated so&nbsp;that there will be an answer.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,2,5,9], threshold = 6
@@ -20,25 +20,11 @@
 If the divisor is 4 we can get a sum of 7 (1+1+2+3) and if the divisor is 5 the sum will be 5 (1+1+1+2). 
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [44,22,33,11,1], threshold = 5
 <strong>Output:</strong> 44
-</pre>
-
-<p><strong>Example 3:</strong></p>
-
-<pre>
-<strong>Input:</strong> nums = [21212,10101,12121], threshold = 1000000
-<strong>Output:</strong> 1
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> nums = [2,3,5,7,11], threshold = 11
-<strong>Output:</strong> 3
 </pre>
 
 <p>&nbsp;</p>
@@ -59,12 +45,10 @@ If the divisor is 4 we can get a sum of 7 (1+1+2+3) and if the divisor is 5 the 
 ```python
 class Solution:
     def smallestDivisor(self, nums: List[int], threshold: int) -> int:
-        left, right = 1, 1000000
+        left, right = 1, 10**6
         while left < right:
             mid = (left + right) >> 1
-            s = 0
-            for num in nums:
-                s += (num + mid - 1) // mid
+            s = sum((v + mid - 1) // mid for v in nums)
             if s <= threshold:
                 right = mid
             else:
@@ -81,8 +65,8 @@ class Solution {
         while (left < right) {
             int mid = (left + right) >> 1;
             int s = 0;
-            for (int num : nums) {
-                s += (num + mid - 1) / mid;
+            for (int v : nums) {
+                s += (v + mid - 1) / mid;
             }
             if (s <= threshold) {
                 right = mid;
@@ -101,18 +85,15 @@ class Solution {
 class Solution {
 public:
     int smallestDivisor(vector<int>& nums, int threshold) {
-        int left = 1, right = 1000000;
+        int left = 1, right = 1e6;
         while (left < right) {
-            int mid = left + right >> 1;
+            int mid = (left + right) >> 1;
             int s = 0;
-            for (int& num : nums) {
-                s += (num + mid - 1) / mid;
-            }
-            if (s <= threshold) {
+            for (int& v : nums) s += (v + mid - 1) / mid;
+            if (s <= threshold)
                 right = mid;
-            } else {
+            else
                 left = mid + 1;
-            }
         }
         return left;
     }
@@ -127,8 +108,8 @@ func smallestDivisor(nums []int, threshold int) int {
 	for left < right {
 		mid := (left + right) >> 1
 		s := 0
-		for _, num := range nums {
-			s += (num + mid - 1) / mid
+		for _, v := range nums {
+			s += (v + mid - 1) / mid
 		}
 		if s <= threshold {
 			right = mid
@@ -137,6 +118,55 @@ func smallestDivisor(nums []int, threshold int) int {
 		}
 	}
 	return left
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number[]} nums
+ * @param {number} threshold
+ * @return {number}
+ */
+var smallestDivisor = function (nums, threshold) {
+    let left = 1,
+        right = 1000000;
+    while (left < right) {
+        const mid = (left + right) >> 1;
+        let s = 0;
+        for (let v of nums) {
+            s += Math.ceil(v / mid);
+        }
+        if (s <= threshold) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+    return left;
+};
+```
+
+### **TypeScript**
+
+```ts
+function smallestDivisor(nums: number[], threshold: number): number {
+    let left = 1,
+        right = 1000000;
+    while (left < right) {
+        const mid = (left + right) >> 1;
+        let s = 0;
+        for (let v of nums) {
+            s += Math.ceil(v / mid);
+        }
+        if (s <= threshold) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+    return left;
 }
 ```
 

@@ -14,7 +14,7 @@ F(n) = F(n - 1) + F(n - 2), for n &gt; 1.
 <p>Given <code>n</code>, calculate <code>F(n)</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 2
@@ -22,7 +22,7 @@ F(n) = F(n - 1) + F(n - 2), for n &gt; 1.
 <strong>Explanation:</strong> F(2) = F(1) + F(0) = 1 + 0 = 1.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 3
@@ -30,7 +30,7 @@ F(n) = F(n - 1) + F(n - 2), for n &gt; 1.
 <strong>Explanation:</strong> F(3) = F(2) + F(1) = 1 + 1 = 2.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 4
@@ -122,6 +122,77 @@ var fib = function (n) {
     }
     return a;
 };
+```
+
+### **TypeScript**
+
+```ts
+function fib(n: number): number {
+    let a = 0;
+    let b = 1;
+    for (let i = 0; i < n; i++) {
+        [a, b] = [b, a + b];
+    }
+    return a;
+}
+```
+
+```ts
+function fib(n: number): number {
+    if (n < 2) {
+        return n;
+    }
+    return fib(n - 1) + fib(n - 2);
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn fib(n: i32) -> i32 {
+        let mut a = 0;
+        let mut b = 1;
+        for _ in 0..n {
+            let t = b;
+            b = a + b;
+            a = t
+        }
+        a
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn fib(n: i32) -> i32 {
+        if n < 2 {
+            return n;
+        }
+        Self::fib(n - 1) + Self::fib(n - 2)
+    }
+}
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param Integer $n
+     * @return Integer
+     */
+    function fib($n) {
+        if ($n == 0 || $n == 1) {
+            return $n;
+        }
+        $dp = [0, 1];
+        for ($i = 2; $i <= $n; $i++) {
+            $dp[$i] = $dp[$i - 2] + $dp[$i - 1];
+        }
+        return $dp[$n];
+    }
+}
 ```
 
 ### **...**

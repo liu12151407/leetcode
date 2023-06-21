@@ -6,24 +6,22 @@
 
 <p>Given the <code>head</code> of a linked list, return <em>the list after sorting it in <strong>ascending order</strong></em>.</p>
 
-<p><strong>Follow up:</strong> Can you sort the linked list in <code>O(n logn)</code> time and <code>O(1)</code>&nbsp;memory (i.e. constant space)?</p>
-
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0148.Sort%20List/images/sort_list_1.jpg" style="width: 450px; height: 194px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0148.Sort%20List/images/sort_list_1.jpg" style="width: 450px; height: 194px;" />
 <pre>
 <strong>Input:</strong> head = [4,2,1,3]
 <strong>Output:</strong> [1,2,3,4]
 </pre>
 
-<p><strong>Example 2:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0148.Sort%20List/images/sort_list_2.jpg" style="width: 550px; height: 184px;" />
+<p><strong class="example">Example 2:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0148.Sort%20List/images/sort_list_2.jpg" style="width: 550px; height: 184px;" />
 <pre>
 <strong>Input:</strong> head = [-1,5,3,4,0]
 <strong>Output:</strong> [-1,0,3,4,5]
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> head = []
@@ -37,6 +35,9 @@
 	<li>The number of nodes in the list is in the range <code>[0, 5 * 10<sup>4</sup>]</code>.</li>
 	<li><code>-10<sup>5</sup> &lt;= Node.val &lt;= 10<sup>5</sup></code></li>
 </ul>
+
+<p>&nbsp;</p>
+<p><strong>Follow up:</strong> Can you sort the linked list in <code>O(n logn)</code> time and <code>O(1)</code> memory (i.e. constant space)?</p>
 
 ## Solutions
 
@@ -138,8 +139,7 @@ public:
         if (!head || !head->next) return head;
         auto* slow = head;
         auto* fast = head->next;
-        while (fast && fast->next)
-        {
+        while (fast && fast->next) {
             slow = slow->next;
             fast = fast->next->next;
         }
@@ -149,15 +149,11 @@ public:
         auto* l2 = sortList(t);
         auto* dummy = new ListNode();
         auto* cur = dummy;
-        while (l1 && l2)
-        {
-            if (l1->val <= l2->val)
-            {
+        while (l1 && l2) {
+            if (l1->val <= l2->val) {
                 cur->next = l1;
                 l1 = l1->next;
-            }
-            else
-            {
+            } else {
                 cur->next = l2;
                 l2 = l2->next;
             }

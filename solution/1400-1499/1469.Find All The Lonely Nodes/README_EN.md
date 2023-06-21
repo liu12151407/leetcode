@@ -9,8 +9,8 @@
 <p>Given the <code>root</code> of a binary tree, return <em>an array containing the values of all lonely nodes</em> in the tree. Return the list <strong>in any order</strong>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1400-1499/1469.Find%20All%20The%20Lonely%20Nodes/images/e1.png" style="width: 203px; height: 202px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1400-1499/1469.Find%20All%20The%20Lonely%20Nodes/images/e1.png" style="width: 203px; height: 202px;" />
 <pre>
 <strong>Input:</strong> root = [1,2,3,null,4]
 <strong>Output:</strong> [4]
@@ -19,8 +19,8 @@ Node 1 is the root and is not lonely.
 Nodes 2 and 3 have the same parent and are not lonely.
 </pre>
 
-<p><strong>Example 2:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1400-1499/1469.Find%20All%20The%20Lonely%20Nodes/images/e2.png" style="width: 442px; height: 282px;" />
+<p><strong class="example">Example 2:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1400-1499/1469.Find%20All%20The%20Lonely%20Nodes/images/e2.png" style="width: 442px; height: 282px;" />
 <pre>
 <strong>Input:</strong> root = [7,1,4,6,null,5,3,null,null,null,null,null,2]
 <strong>Output:</strong> [6,2]
@@ -28,9 +28,8 @@ Nodes 2 and 3 have the same parent and are not lonely.
 Please remember that order doesn&#39;t matter, [2,6] is also an acceptable answer.
 </pre>
 
-<p><strong>Example 3:</strong></p>
-<strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1400-1499/1469.Find%20All%20The%20Lonely%20Nodes/images/tree.png" style="width: 363px; height: 202px;" /> </strong>
-
+<p><strong class="example">Example 3:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1400-1499/1469.Find%20All%20The%20Lonely%20Nodes/images/tree.png" style="width: 363px; height: 202px;" />
 <pre>
 <strong>
 Input:</strong> root = [11,99,88,77,null,null,66,55,null,null,44,33,null,null,22]
@@ -39,26 +38,12 @@ Input:</strong> root = [11,99,88,77,null,null,66,55,null,null,44,33,null,null,22
 All other nodes are lonely.
 </pre>
 
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> root = [197]
-<strong>Output:</strong> []
-</pre>
-
-<p><strong>Example 5:</strong></p>
-
-<pre>
-<strong>Input:</strong> root = [31,null,78,null,28]
-<strong>Output:</strong> [78,28]
-</pre>
-
 <p>&nbsp;</p>
 <p><strong>Constraints:</strong></p>
 
 <ul>
-	<li>The number of nodes in the&nbsp;<code>tree</code>&nbsp;is in the range&nbsp;<code>[1, 1000].</code></li>
-	<li>Each node&#39;s value is between&nbsp;<code>[1, 10^6]</code>.</li>
+	<li>The number of nodes in the <code>tree</code> is in the range <code>[1, 1000].</code></li>
+	<li><code>1 &lt;= Node.val &lt;= 10<sup>6</sup></code></li>
 </ul>
 
 ## Solutions
@@ -75,19 +60,20 @@ All other nodes are lonely.
 #         self.left = left
 #         self.right = right
 class Solution:
-    def getLonelyNodes(self, root: TreeNode) -> List[int]:
-        def traverse(root):
-            if root is None:
+    def getLonelyNodes(self, root: Optional[TreeNode]) -> List[int]:
+        def dfs(root):
+            if root is None or (root.left is None and root.right is None):
                 return
-            if root.left is None and root.right is not None:
-                self.res.append(root.right.val)
-            if root.left is not None and root.right is None:
-                self.res.append(root.left.val)
-            traverse(root.left)
-            traverse(root.right)
-        self.res = []
-        traverse(root)
-        return self.res
+            if root.left is None:
+                ans.append(root.right.val)
+            if root.right is None:
+                ans.append(root.left.val)
+            dfs(root.left)
+            dfs(root.right)
+
+        ans = []
+        dfs(root)
+        return ans
 ```
 
 ### **Java**
@@ -109,27 +95,90 @@ class Solution:
  * }
  */
 class Solution {
-    private List<Integer> res;
+    private List<Integer> ans = new ArrayList<>();
 
     public List<Integer> getLonelyNodes(TreeNode root) {
-        res = new ArrayList<>();
-        traverse(root);
-        return res;
+        dfs(root);
+        return ans;
     }
 
-    private void traverse(TreeNode root) {
-        if (root == null) {
+    private void dfs(TreeNode root) {
+        if (root == null || (root.left == null && root.right == null)) {
             return;
         }
-        if (root.left == null && root.right != null) {
-            res.add(root.right.val);
+        if (root.left == null) {
+            ans.add(root.right.val);
         }
-        if (root.left != null && root.right == null) {
-            res.add(root.left.val);
+        if (root.right == null) {
+            ans.add(root.left.val);
         }
-        traverse(root.left);
-        traverse(root.right);
+        dfs(root.left);
+        dfs(root.right);
     }
+}
+```
+
+### **C++**
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> getLonelyNodes(TreeNode* root) {
+        vector<int> ans;
+        function<void(TreeNode * root)> dfs;
+        dfs = [&](TreeNode* root) {
+            if (!root || (!root->left && !root->right)) return;
+            if (!root->left) ans.push_back(root->right->val);
+            if (!root->right) ans.push_back(root->left->val);
+            dfs(root->left);
+            dfs(root->right);
+        };
+        dfs(root);
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func getLonelyNodes(root *TreeNode) []int {
+	ans := []int{}
+	var dfs func(*TreeNode)
+	dfs = func(root *TreeNode) {
+		if root == nil || (root.Left == nil && root.Right == nil) {
+			return
+		}
+		if root.Left == nil {
+			ans = append(ans, root.Right.Val)
+		}
+		if root.Right == nil {
+			ans = append(ans, root.Left.Val)
+		}
+		dfs(root.Left)
+		dfs(root.Right)
+	}
+	dfs(root)
+	return ans
 }
 ```
 

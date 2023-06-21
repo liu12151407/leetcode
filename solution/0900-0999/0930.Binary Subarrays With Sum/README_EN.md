@@ -4,41 +4,38 @@
 
 ## Description
 
-<p>In an array <code>A</code> of <code>0</code>s and <code>1</code>s, how many <strong>non-empty</strong> subarrays have sum <code>S</code>?</p>
+<p>Given a binary array <code>nums</code> and an integer <code>goal</code>, return <em>the number of non-empty <strong>subarrays</strong> with a sum</em> <code>goal</code>.</p>
+
+<p>A <strong>subarray</strong> is a contiguous part of the array.</p>
 
 <p>&nbsp;</p>
-
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
+<strong>Input:</strong> nums = [1,0,1,0,1], goal = 2
+<strong>Output:</strong> 4
+<strong>Explanation:</strong> The 4 subarrays are bolded and underlined below:
+[<u><strong>1,0,1</strong></u>,0,1]
+[<u><strong>1,0,1,0</strong></u>,1]
+[1,<u><strong>0,1,0,1</strong></u>]
+[1,0,<u><strong>1,0,1</strong></u>]
+</pre>
 
-<strong>Input: </strong>A = <span id="example-input-1-1">[1,0,1,0,1]</span>, S = <span id="example-input-1-2">2</span>
+<p><strong class="example">Example 2:</strong></p>
 
-<strong>Output: </strong><span id="example-output-1">4</span>
-
-<strong>Explanation: </strong>
-
-The 4 subarrays are bolded below:
-
-[<strong>1,0,1</strong>,0,1]
-
-[<strong>1,0,1,0</strong>,1]
-
-[1,<strong>0,1,0,1</strong>]
-
-[1,0,<strong>1,0,1</strong>]
-
+<pre>
+<strong>Input:</strong> nums = [0,0,0,0,0], goal = 0
+<strong>Output:</strong> 15
 </pre>
 
 <p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
 
-<p><strong>Note:</strong></p>
-
-<ol>
-	<li><code>A.length &lt;= 30000</code></li>
-	<li><code>0 &lt;= S &lt;= A.length</code></li>
-	<li><code>A[i]</code>&nbsp;is either <code>0</code>&nbsp;or <code>1</code>.</li>
-</ol>
+<ul>
+	<li><code>1 &lt;= nums.length &lt;= 3 * 10<sup>4</sup></code></li>
+	<li><code>nums[i]</code> is either <code>0</code> or <code>1</code>.</li>
+	<li><code>0 &lt;= goal &lt;= nums.length</code></li>
+</ul>
 
 ## Solutions
 
@@ -49,12 +46,12 @@ The 4 subarrays are bolded below:
 ```python
 class Solution:
     def numSubarraysWithSum(self, nums: List[int], goal: int) -> int:
-        counter = Counter({0: 1})
-        s = ans = 0
-        for num in nums:
-            s += num
-            ans += counter[s - goal]
-            counter[s] += 1
+        cnt = Counter({0: 1})
+        ans = s = 0
+        for v in nums:
+            s += v
+            ans += cnt[s - goal]
+            cnt[s] += 1
         return ans
 ```
 
@@ -82,15 +79,15 @@ class Solution:
 ```java
 class Solution {
     public int numSubarraysWithSum(int[] nums, int goal) {
-        int[] counter = new int[nums.length + 1];
-        counter[0] = 1;
-        int s = 0, ans = 0;
-        for (int num : nums) {
-            s += num;
-            if (s >= goal) {
-                ans += counter[s - goal];
+        int[] cnt = new int[nums.length + 1];
+        cnt[0] = 1;
+        int ans = 0, s = 0;
+        for (int v : nums) {
+            s += v;
+            if (s - goal >= 0) {
+                ans += cnt[s - goal];
             }
-            ++counter[s];
+            ++cnt[s];
         }
         return ans;
     }
@@ -125,14 +122,16 @@ class Solution {
 class Solution {
 public:
     int numSubarraysWithSum(vector<int>& nums, int goal) {
-        vector<int> counter(nums.size() + 1);
-        counter[0] = 1;
-        int s = 0, ans = 0;
-        for (int& num : nums)
-        {
-            s += num;
-            if (s >= goal) ans += counter[s - goal];
-            ++counter[s];
+        int cnt[nums.size() + 1];
+        memset(cnt, 0, sizeof cnt);
+        cnt[0] = 1;
+        int ans = 0, s = 0;
+        for (int& v : nums) {
+            s += v;
+            if (s - goal >= 0) {
+                ans += cnt[s - goal];
+            }
+            ++cnt[s];
         }
         return ans;
     }
@@ -145,8 +144,7 @@ public:
     int numSubarraysWithSum(vector<int>& nums, int goal) {
         int i1 = 0, i2 = 0, s1 = 0, s2 = 0, j = 0, ans = 0;
         int n = nums.size();
-        while (j < n)
-        {
+        while (j < n) {
             s1 += nums[j];
             s2 += nums[j];
             while (i1 <= j && s1 > goal) s1 -= nums[i1++];
@@ -162,18 +160,15 @@ public:
 ### **Go**
 
 ```go
-func numSubarraysWithSum(nums []int, goal int) int {
-	counter := make([]int, len(nums)+1)
-	counter[0] = 1
-	s, ans := 0, 0
-	for _, num := range nums {
-		s += num
-		if s >= goal {
-			ans += counter[s-goal]
-		}
-		counter[s]++
+func numSubarraysWithSum(nums []int, goal int) (ans int) {
+	cnt := map[int]int{0: 1}
+	s := 0
+	for _, v := range nums {
+		s += v
+		ans += cnt[s-goal]
+		cnt[s]++
 	}
-	return ans
+	return
 }
 ```
 
@@ -199,6 +194,28 @@ func numSubarraysWithSum(nums []int, goal int) int {
 ```
 
 ### **JavaScript**
+
+```js
+/**
+ * @param {number[]} nums
+ * @param {number} goal
+ * @return {number}
+ */
+var numSubarraysWithSum = function (nums, goal) {
+    const cnt = new Array(nums.length + 1).fill(0);
+    cnt[0] = 1;
+    let ans = 0;
+    let s = 0;
+    for (const v of nums) {
+        s += v;
+        if (s >= goal) {
+            ans += cnt[s - goal];
+        }
+        ++cnt[s];
+    }
+    return ans;
+};
+```
 
 ```js
 /**

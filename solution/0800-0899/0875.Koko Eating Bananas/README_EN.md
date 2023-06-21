@@ -13,21 +13,21 @@
 <p>Return <em>the minimum integer</em> <code>k</code> <em>such that she can eat all the bananas within</em> <code>h</code> <em>hours</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> piles = [3,6,7,11], h = 8
 <strong>Output:</strong> 4
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> piles = [30,11,23,4,20], h = 5
 <strong>Output:</strong> 30
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> piles = [30,11,23,4,20], h = 6
@@ -54,10 +54,10 @@ Binary search.
 ```python
 class Solution:
     def minEatingSpeed(self, piles: List[int], h: int) -> int:
-        left, right = 1, max(piles)
+        left, right = 1, int(1e9)
         while left < right:
             mid = (left + right) >> 1
-            s = sum([(pile + mid - 1) // mid for pile in piles])
+            s = sum((x + mid - 1) // mid for x in piles)
             if s <= h:
                 right = mid
             else:
@@ -70,16 +70,12 @@ class Solution:
 ```java
 class Solution {
     public int minEatingSpeed(int[] piles, int h) {
-        int mx = 0;
-        for (int pile : piles) {
-            mx = Math.max(mx, pile);
-        }
-        int left = 1, right = mx;
+        int left = 1, right = (int) 1e9;
         while (left < right) {
             int mid = (left + right) >>> 1;
             int s = 0;
-            for (int pile : piles) {
-                s += (pile + mid - 1) / mid;
+            for (int x : piles) {
+                s += (x + mid - 1) / mid;
             }
             if (s <= h) {
                 right = mid;
@@ -98,14 +94,15 @@ class Solution {
 class Solution {
 public:
     int minEatingSpeed(vector<int>& piles, int h) {
-        int left = 1, right = *max_element(piles.begin(), piles.end());
-        while (left < right)
-        {
-            int mid = left + right >> 1;
+        int left = 1, right = 1e9;
+        while (left < right) {
+            int mid = (left + right) >> 1;
             int s = 0;
-            for (int pile : piles) s += (pile + mid - 1) / mid;
-            if (s <= h) right = mid;
-            else left = mid + 1;
+            for (int& x : piles) s += (x + mid - 1) / mid;
+            if (s <= h)
+                right = mid;
+            else
+                left = mid + 1;
         }
         return left;
     }
@@ -116,31 +113,38 @@ public:
 
 ```go
 func minEatingSpeed(piles []int, h int) int {
-	mx := 0
-	for _, pile := range piles {
-		mx = max(mx, pile)
-	}
-	left, right := 1, mx
-	for left < right {
-		mid := (left + right) >> 1
+	return sort.Search(1e9, func(i int) bool {
+		if i == 0 {
+			return false
+		}
 		s := 0
-		for _, pile := range piles {
-			s += (pile + mid - 1) / mid
+		for _, x := range piles {
+			s += (x + i - 1) / i
 		}
-		if s <= h {
-			right = mid
-		} else {
-			left = mid + 1
-		}
-	}
-	return left
+		return s <= h
+	})
 }
+```
 
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
+### **TypeScript**
+
+```ts
+function minEatingSpeed(piles: number[], h: number): number {
+    let left = 1;
+    let right = Math.max(...piles);
+    while (left < right) {
+        const mid = (left + right) >> 1;
+        let s = 0;
+        for (const x of piles) {
+            s += Math.ceil(x / mid);
+        }
+        if (s <= h) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+    return left;
 }
 ```
 

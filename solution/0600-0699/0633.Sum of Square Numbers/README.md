@@ -1,4 +1,4 @@
-# [633. 平方数之和](https://leetcode-cn.com/problems/sum-of-square-numbers)
+# [633. 平方数之和](https://leetcode.cn/problems/sum-of-square-numbers)
 
 [English Version](/solution/0600-0699/0633.Sum%20of%20Square%20Numbers/README_EN.md)
 
@@ -12,33 +12,18 @@
 
 <p><strong>示例 1：</strong></p>
 
-<pre><strong>输入：</strong>c = 5
+<pre>
+<strong>输入：</strong>c = 5
 <strong>输出：</strong>true
 <strong>解释：</strong>1 * 1 + 2 * 2 = 5
 </pre>
 
 <p><strong>示例 2：</strong></p>
 
-<pre><strong>输入：</strong>c = 3
+<pre>
+<strong>输入：</strong>c = 3
 <strong>输出：</strong>false
 </pre>
-
-<p><strong>示例 3：</strong></p>
-
-<pre><strong>输入：</strong>c = 4
-<strong>输出：</strong>true
-</pre>
-
-<p><strong>示例 4：</strong></p>
-
-<pre><strong>输入：</strong>c = 2
-<strong>输出：</strong>true
-</pre>
-
-<p><strong>示例 5：</strong></p>
-
-<pre><strong>输入：</strong>c = 1
-<strong>输出：</strong>true</pre>
 
 <p>&nbsp;</p>
 
@@ -52,11 +37,11 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
-![](https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0600-0699/0633.Sum%20of%20Square%20Numbers/images/table.png)
+![](https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0600-0699/0633.Sum%20of%20Square%20Numbers/images/table.png)
 
-上图为 a，b，c 之间的关系，这题其实就是在这张“表”里查找 c
+上图为 a，b，c 之间的关系，这题其实就是在这张“表”里查找 c。
 
-从表的右上角看，不难发现它类似一棵二叉查找树，所以只需从右上角开始，按照二叉查找树的规律进行搜索
+从表的右上角看，不难发现它类似一棵二叉查找树，所以只需从右上角开始，按照二叉查找树的规律进行搜索。
 
 <!-- tabs:start -->
 
@@ -65,17 +50,17 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-class Solution(object):
-    def judgeSquareSum(self, c):
-        i, j = 0, int(math.sqrt(c))
-        while i <= j:
-            s = i * i + j * j
-            if s < c:
-                i += 1
-            elif s > c:
-                j -= 1
-            else:
+class Solution:
+    def judgeSquareSum(self, c: int) -> bool:
+        a, b = 0, int(sqrt(c))
+        while a <= b:
+            s = a**2 + b**2
+            if s == c:
                 return True
+            if s < c:
+                a += 1
+            else:
+                b -= 1
         return False
 ```
 
@@ -86,15 +71,16 @@ class Solution(object):
 ```java
 class Solution {
     public boolean judgeSquareSum(int c) {
-        int i = 0, j = (int) Math.sqrt(c);
-        while (i <= j) {
-            int s = i * i + j * j;
-            if (s < c) {
-                ++i;
-            } else if (s > c) {
-                --j;
-            } else {
+        long a = 0, b = (long) Math.sqrt(c);
+        while (a <= b) {
+            long s = a * a + b * b;
+            if (s == c) {
                 return true;
+            }
+            if (s < c) {
+                ++a;
+            } else {
+                --b;
             }
         }
         return false;
@@ -127,12 +113,14 @@ function judgeSquareSum(c: number): boolean {
 class Solution {
 public:
     bool judgeSquareSum(int c) {
-        long i = 0, j = (long) sqrt(c);
-        while (i <= j) {
-            long s = i * i + j * j;
-            if (s < c) ++i;
-            else if (s > c) --j;
-            else return true;
+        long a = 0, b = (long) sqrt(c);
+        while (a <= b) {
+            long s = a * a + b * b;
+            if (s == c) return true;
+            if (s < c)
+                ++a;
+            else
+                --b;
         }
         return false;
     }
@@ -143,18 +131,41 @@ public:
 
 ```go
 func judgeSquareSum(c int) bool {
-	i, j := 0, int(math.Sqrt(float64(c)))
-	for i <= j {
-		s := i*i + j*j
-		if s < c {
-			i++
-		} else if s > c {
-			j--
-		} else {
+	a, b := 0, int(math.Sqrt(float64(c)))
+	for a <= b {
+		s := a*a + b*b
+		if s == c {
 			return true
+		}
+		if s < c {
+			a++
+		} else {
+			b--
 		}
 	}
 	return false
+}
+```
+
+### **Rust**
+
+```rust
+use std::cmp::Ordering;
+impl Solution {
+    pub fn judge_square_sum(c: i32) -> bool {
+        let c = c as i64;
+        let mut left = 0;
+        let mut right = (c as f64).sqrt() as i64;
+        while left <= right {
+            let num = left * left + right * right;
+            match num.cmp(&c) {
+                Ordering::Less => left += 1,
+                Ordering::Greater => right -= 1,
+                Ordering::Equal => return true,
+            }
+        }
+        false
+    }
 }
 ```
 

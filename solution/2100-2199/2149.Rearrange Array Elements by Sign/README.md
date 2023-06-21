@@ -1,4 +1,4 @@
-# [2149. 按符号重排数组](https://leetcode-cn.com/problems/rearrange-array-elements-by-sign)
+# [2149. 按符号重排数组](https://leetcode.cn/problems/rearrange-array-elements-by-sign)
 
 [English Version](/solution/2100-2199/2149.Rearrange%20Array%20Elements%20by%20Sign/README_EN.md)
 
@@ -99,7 +99,6 @@ class Solution {
         return ans;
     }
 }
-
 ```
 
 ### **C++**
@@ -110,15 +109,11 @@ public:
     vector<int> rearrangeArray(vector<int>& nums) {
         vector<int> ans(nums.size());
         int i = 0, j = 1;
-        for (int num : nums)
-        {
-            if (num > 0)
-            {
+        for (int num : nums) {
+            if (num > 0) {
                 ans[i] = num;
                 i += 2;
-            }
-            else
-            {
+            } else {
                 ans[j] = num;
                 j += 2;
             }
@@ -152,7 +147,21 @@ func rearrangeArray(nums []int) []int {
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```ts
-
+function rearrangeArray(nums: number[]): number[] {
+    let ans = [];
+    let i = 0,
+        j = 1;
+    for (let num of nums) {
+        if (num > 0) {
+            ans[i] = num;
+            i += 2;
+        } else {
+            ans[j] = num;
+            j += 2;
+        }
+    }
+    return ans;
+}
 ```
 
 ### **...**

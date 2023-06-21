@@ -1,4 +1,4 @@
-# [面试题 01.01. 判定字符是否唯一](https://leetcode-cn.com/problems/is-unique-lcci)
+# [面试题 01.01. 判定字符是否唯一](https://leetcode.cn/problems/is-unique-lcci)
 
 [English Version](/lcci/01.01.Is%20Unique/README_EN.md)
 
@@ -9,13 +9,13 @@
 
 <p><strong>示例 1：</strong></p>
 
-<pre><strong>输入:</strong> <code>s</code> = &quot;leetcode&quot;
+<pre><strong>输入:</strong> s = &quot;leetcode&quot;
 <strong>输出:</strong> false 
 </pre>
 
 <p><strong>示例 2：</strong></p>
 
-<pre><strong>输入:</strong> <code>s</code> = &quot;abc&quot;
+<pre><strong>输入:</strong> s = &quot;abc&quot;
 <strong>输出:</strong> true
 </pre>
 
@@ -29,9 +29,13 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：位运算**
+
 根据示例，可以假定字符串中只包含小写字母（实际验证，也符合假设）。
 
-用 bitmap 标记小写字母是否出现过。
+因此，我们可以使用一个 $32$ 位整数 `mask` 的每一位来表示字符串中的每一个字符是否出现过。
+
+时间复杂度 $O(n)$，空间复杂度 $O(1)$。其中 $n$ 为字符串长度。
 
 <!-- tabs:start -->
 
@@ -42,12 +46,12 @@
 ```python
 class Solution:
     def isUnique(self, astr: str) -> bool:
-        bitmap = 0
+        mask = 0
         for c in astr:
-            pos = ord(c) - ord('a')
-            if (bitmap & (1 << pos)) != 0:
+            i = ord(c) - ord('a')
+            if (mask >> i) & 1:
                 return False
-            bitmap |= (1 << pos)
+            mask |= 1 << i
         return True
 ```
 
@@ -58,16 +62,51 @@ class Solution:
 ```java
 class Solution {
     public boolean isUnique(String astr) {
-        int bitmap = 0;
+        int mask = 0;
         for (char c : astr.toCharArray()) {
-            int pos = c - 'a';
-            if ((bitmap & (1 << pos)) != 0) {
+            int i = c - 'a';
+            if (((mask >> i) & 1) == 1) {
                 return false;
             }
-            bitmap |= (1 << pos);
+            mask |= 1 << i;
         }
         return true;
     }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool isUnique(string astr) {
+        int mask = 0;
+        for (char c : astr) {
+            int i = c - 'a';
+            if (mask >> i & 1) {
+                return false;
+            }
+            mask |= 1 << i;
+        }
+        return true;
+    }
+};
+```
+
+### **Go**
+
+```go
+func isUnique(astr string) bool {
+	mask := 0
+	for _, c := range astr {
+		i := c - 'a'
+		if mask>>i&1 == 1 {
+			return false
+		}
+		mask |= 1 << i
+	}
+	return true
 }
 ```
 
@@ -79,51 +118,32 @@ class Solution {
  * @return {boolean}
  */
 var isUnique = function (astr) {
-    let bitmap = 0;
-    for (let i = 0; i < astr.length; ++i) {
-        const pos = astr[i].charCodeAt() - "a".charCodeAt();
-        if ((bitmap & (1 << pos)) != 0) {
+    let mask = 0;
+    for (const c of astr) {
+        const i = c.charCodeAt() - 'a'.charCodeAt();
+        if ((mask >> i) & 1) {
             return false;
         }
-        bitmap |= 1 << pos;
+        mask |= 1 << i;
     }
     return true;
 };
 ```
 
-### **Go**
+### **TypeScript**
 
-```go
-func isUnique(astr string) bool {
-	bitmap := 0
-	for _, r := range astr {
-		pos := r - 'a'
-		if (bitmap & (1 << pos)) != 0 {
-			return false
-		}
-		bitmap |= (1 << pos)
-	}
-	return true
-}
-```
-
-### **C++**
-
-```cpp
-class Solution {
-public:
-    bool isUnique(string astr) {
-        int bitmap = 0;
-        for (char c : astr) {
-            int pos = c - 'a';
-            if ((bitmap & (1 << pos)) != 0) {
-                return false;
-            }
-            bitmap |= (1 << pos);
+```ts
+function isUnique(astr: string): boolean {
+    let mask = 0;
+    for (let j = 0; j < astr.length; ++j) {
+        const i = astr.charCodeAt(j) - 'a'.charCodeAt(0);
+        if ((mask >> i) & 1) {
+            return false;
         }
-        return true;
+        mask |= 1 << i;
     }
-};
+    return true;
+}
 ```
 
 ### **...**

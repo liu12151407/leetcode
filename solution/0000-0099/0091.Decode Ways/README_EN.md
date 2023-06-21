@@ -24,10 +24,10 @@
 
 <p>Given a string <code>s</code> containing only digits, return <em>the <strong>number</strong> of ways to <strong>decode</strong> it</em>.</p>
 
-<p>The answer is guaranteed to fit in a <strong>32-bit</strong> integer.</p>
+<p>The test cases are generated so that the answer fits in a <strong>32-bit</strong> integer.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;12&quot;
@@ -35,7 +35,7 @@
 <strong>Explanation:</strong> &quot;12&quot; could be decoded as &quot;AB&quot; (1 2) or &quot;L&quot; (12).
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;226&quot;
@@ -43,17 +43,7 @@
 <strong>Explanation:</strong> &quot;226&quot; could be decoded as &quot;BZ&quot; (2 26), &quot;VF&quot; (22 6), or &quot;BBF&quot; (2 2 6).
 </pre>
 
-<p><strong>Example 3:</strong></p>
-
-<pre>
-<strong>Input:</strong> s = &quot;0&quot;
-<strong>Output:</strong> 0
-<strong>Explanation:</strong> There is no character that is mapped to a number starting with 0.
-The only valid mappings with 0 are &#39;J&#39; -&gt; &quot;10&quot; and &#39;T&#39; -&gt; &quot;20&quot;, neither of which start with 0.
-Hence, there are no valid ways to decode this since all digits need to be mapped.
-</pre>
-
-<p><strong>Example 4:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;06&quot;
@@ -124,7 +114,8 @@ class Solution {
             if (s.charAt(i - 1) != '0') {
                 dp[i] += dp[i - 1];
             }
-            if (i > 1 && s.charAt(i - 2) != '0' && ((s.charAt(i - 2) - '0') * 10 + s.charAt(i - 1) - '0') <= 26) {
+            if (i > 1 && s.charAt(i - 2) != '0'
+                && ((s.charAt(i - 2) - '0') * 10 + s.charAt(i - 1) - '0') <= 26) {
                 dp[i] += dp[i - 2];
             }
         }
@@ -145,7 +136,8 @@ class Solution {
             if (s.charAt(i - 1) != '0') {
                 c += b;
             }
-            if (i > 1 && s.charAt(i - 2) != '0' && ((s.charAt(i - 2) - '0') * 10 + s.charAt(i - 1) - '0') <= 26) {
+            if (i > 1 && s.charAt(i - 2) != '0'
+                && ((s.charAt(i - 2) - '0') * 10 + s.charAt(i - 1) - '0') <= 26) {
                 c += a;
             }
             a = b;

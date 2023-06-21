@@ -1,4 +1,4 @@
-# [LCP 35. 电动车游城市](https://leetcode-cn.com/problems/DFPeFJ)
+# [LCP 35. 电动车游城市](https://leetcode.cn/problems/DFPeFJ)
 
 ## 题目描述
 
@@ -16,7 +16,7 @@
 > 在城市 1 仅充 3 单位电至城市 3，然后在城市 3 充 5 单位电，行驶至城市 5。
 > 充电用时共 3\*10 + 5\*1= 35
 > 行驶用时 3 + 5 = 8，此时总用时最短 43。
-> ![image.png](https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcp/LCP%2035.%20电动车游城市/images/1616125304-mzVxIV-image.png)
+> ![image.png](https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcp/LCP%2035.%20电动车游城市/images/1616125304-mzVxIV-image.png)
 
 **示例 2：**
 
@@ -31,14 +31,14 @@
 
 **提示：**
 
-- `1 <= paths.length <= 200`
-- `paths[i].length == 3`
-- `2 <= charge.length == n <= 100`
-- `0 <= path[i][0],path[i][1],start,end < n`
-- `1 <= cnt <= 100`
-- `1 <= path[i][2] <= cnt`
-- `1 <= charge[i] <= 100`
-- 题目保证所有城市相互可以到达
+-   `1 <= paths.length <= 200`
+-   `paths[i].length == 3`
+-   `2 <= charge.length == n <= 100`
+-   `0 <= path[i][0],path[i][1],start,end < n`
+-   `1 <= cnt <= 100`
+-   `1 <= path[i][2] <= cnt`
+-   `1 <= charge[i] <= 100`
+-   题目保证所有城市相互可以到达
 
 ## 解法
 

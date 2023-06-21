@@ -9,7 +9,7 @@
 <p>A <strong>continuous increasing subsequence</strong> is defined by two indices <code>l</code> and <code>r</code> (<code>l &lt; r</code>) such that it is <code>[nums[l], nums[l + 1], ..., nums[r - 1], nums[r]]</code> and for each <code>l &lt;= i &lt; r</code>, <code>nums[i] &lt; nums[i + 1]</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,3,5,4,7]
@@ -19,7 +19,7 @@ Even though [1,3,5,7] is an increasing subsequence, it is not continuous as elem
 4.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [2,2,2,2,2]
@@ -32,7 +32,7 @@ increasing.
 <p><strong>Constraints:</strong></p>
 
 <ul>
-	<li><code>0 &lt;= nums.length &lt;= 10<sup>4</sup></code></li>
+	<li><code>1 &lt;= nums.length &lt;= 10<sup>4</sup></code></li>
 	<li><code>-10<sup>9</sup> &lt;= nums[i] &lt;= 10<sup>9</sup></code></li>
 </ul>
 
@@ -106,8 +106,7 @@ class Solution {
 public:
     int findLengthOfLCIS(vector<int>& nums) {
         int res = 1;
-        for (int i = 1, f = 1; i < nums.size(); ++i)
-        {
+        for (int i = 1, f = 1; i < nums.size(); ++i) {
             f = 1 + (nums[i - 1] < nums[i] ? f : 0);
             res = max(res, f);
         }
@@ -137,6 +136,46 @@ func max(a, b int) int {
 		return a
 	}
 	return b
+}
+```
+
+### **TypeScript**
+
+```ts
+function findLengthOfLCIS(nums: number[]): number {
+    const n = nums.length;
+    let res = 1;
+    let i = 0;
+    for (let j = 1; j < n; j++) {
+        if (nums[j - 1] >= nums[j]) {
+            res = Math.max(res, j - i);
+            i = j;
+        }
+    }
+    return Math.max(res, n - i);
+}
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param Integer[] $nums
+     * @return Integer
+     */
+    function findLengthOfLCIS($nums) {
+        $tmp = $max = 1;
+        for ($i = 0; $i < count($nums) - 1; $i++) {
+            if ($nums[$i] < $nums[$i + 1]) {
+                $tmp++;
+                $max = max($max, $tmp);
+            } else {
+                $tmp = 1;
+            }
+        }
+        return $max;
+    }
 }
 ```
 

@@ -7,15 +7,15 @@
 <p>Given an array&nbsp;of <code>intervals</code>&nbsp;where <code>intervals[i] = [start<sub>i</sub>, end<sub>i</sub>]</code>, merge all overlapping intervals, and return <em>an array of the non-overlapping intervals that cover all the intervals in the input</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> intervals = [[1,3],[2,6],[8,10],[15,18]]
 <strong>Output:</strong> [[1,6],[8,10],[15,18]]
-<strong>Explanation:</strong> Since intervals [1,3] and [2,6] overlaps, merge them into [1,6].
+<strong>Explanation:</strong> Since intervals [1,3] and [2,6] overlap, merge them into [1,6].
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> intervals = [[1,4],[4,5]]
@@ -41,19 +41,17 @@
 ```python
 class Solution:
     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
-        intervals.sort(key=lambda x: x[0])
-        st = ed = -1
-        res = []
-        for s, e in intervals:
+        intervals.sort()
+        ans = []
+        st, ed = intervals[0]
+        for s, e in intervals[1:]:
             if ed < s:
-                if st != -1:
-                    res.append([st, ed])
+                ans.append([st, ed])
                 st, ed = s, e
             else:
                 ed = max(ed, e)
-        if st != -1:
-            res.append([st, ed])
-        return res
+        ans.append([st, ed])
+        return ans
 ```
 
 ### **Java**
@@ -62,23 +60,88 @@ class Solution:
 class Solution {
     public int[][] merge(int[][] intervals) {
         Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));
-        int st = -1, ed = -1;
-        List<int[]> res = new ArrayList<>();
-        for (int[] e : intervals) {
-            if (ed < e[0]) {
-                if (st != -1) {
-                    res.add(new int[]{st, ed});
-                }
-                st = e[0];
-                ed = e[1];
+        int st = intervals[0][0], ed = intervals[0][1];
+        List<int[]> ans = new ArrayList<>();
+        for (int i = 1; i < intervals.length; ++i) {
+            int s = intervals[i][0], e = intervals[i][1];
+            if (ed < s) {
+                ans.add(new int[] {st, ed});
+                st = s;
+                ed = e;
             } else {
-                ed = Math.max(ed, e[1]);
+                ed = Math.max(ed, e);
             }
         }
-        if (st != -1) {
-            res.add(new int[]{st, ed});
+        ans.add(new int[] {st, ed});
+        return ans.toArray(new int[ans.size()][]);
+    }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        sort(intervals.begin(), intervals.end());
+        int st = intervals[0][0], ed = intervals[0][1];
+        vector<vector<int>> ans;
+        for (int i = 1; i < intervals.size(); ++i) {
+            if (ed < intervals[i][0]) {
+                ans.push_back({st, ed});
+                st = intervals[i][0];
+                ed = intervals[i][1];
+            } else {
+                ed = max(ed, intervals[i][1]);
+            }
         }
-        return res.toArray(new int[res.size()][]);
+        ans.push_back({st, ed});
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func merge(intervals [][]int) (ans [][]int) {
+	sort.Slice(intervals, func(i, j int) bool {
+		return intervals[i][0] < intervals[j][0]
+	})
+	st, ed := intervals[0][0], intervals[0][1]
+	for _, e := range intervals[1:] {
+		if ed < e[0] {
+			ans = append(ans, []int{st, ed})
+			st, ed = e[0], e[1]
+		} else if ed < e[1] {
+			ed = e[1]
+		}
+	}
+	ans = append(ans, []int{st, ed})
+	return ans
+}
+```
+
+### **C#**
+
+```cs
+public class Solution {
+    public int[][] Merge(int[][] intervals) {
+        intervals = intervals.OrderBy(a => a[0]).ToArray();
+        int st = intervals[0][0], ed = intervals[0][1];
+        var ans = new List<int[]>();
+        for (int i = 1; i < intervals.Length; ++i) {
+            if (ed < intervals[i][0]) {
+                ans.Add(new int[] { st, ed });
+                st = intervals[i][0];
+                ed = intervals[i][1];
+            } else {
+                ed = Math.Max(ed, intervals[i][1]);
+            }
+        }
+        ans.Add(new int[] { st, ed });
+        return ans.ToArray();
     }
 }
 ```
@@ -88,117 +151,60 @@ class Solution {
 ```ts
 function merge(intervals: number[][]): number[][] {
     intervals.sort((a, b) => a[0] - b[0]);
-    let ans: number[][] = [];
-    let index: number = -1;
-    for (let interval of intervals) {
-        if (index == -1 || ans[index][1] < interval[0]) {
-            // 保留
-            ans.push(interval);
-            index++;
+    const ans: number[][] = [];
+    let [st, ed] = intervals[0];
+    for (const [s, e] of intervals.slice(1)) {
+        if (ed < s) {
+            ans.push([st, ed]);
+            [st, ed] = [s, e];
         } else {
-            // 求交集
-            ans[index][1] = Math.max(ans[index][1], interval[1]);
+            ed = Math.max(ed, e);
         }
     }
+    ans.push([st, ed]);
     return ans;
 }
 ```
 
-### **C++**
-
-```cpp
-class Solution {
-public:
-    vector<vector<int>> merge(vector<vector<int>> &intervals) {
-        sort(intervals.begin(), intervals.end());
-        vector<vector<int>> res;
-        int st = -1, ed = -1;
-        for (auto e : intervals)
-        {
-            if (ed < e[0])
-            {
-                if (st != -1)
-                {
-                    res.push_back({st, ed});
-                }
-                st = e[0];
-                ed = e[1];
-            }
-            else
-            {
-                ed = max(ed, e[1]);
-            }
+```ts
+function merge(intervals: number[][]): number[][] {
+    intervals.sort((a, b) => a[0] - b[0]);
+    const n = intervals.length;
+    const res = [];
+    let i = 0;
+    while (i < n) {
+        let [l, r] = intervals[i];
+        i++;
+        while (i < n && r >= intervals[i][0]) {
+            r = Math.max(r, intervals[i][1]);
+            i++;
         }
-        if (st != -1)
-        {
-            res.push_back({st, ed});
-        }
-        return res;
+        res.push([l, r]);
     }
-};
-```
-
-### **Go**
-
-```go
-func merge(intervals [][]int) [][]int {
-	var res [][]int
-	sort.Slice(intervals, func(i, j int) bool {
-		return intervals[i][0] < intervals[j][0]
-	})
-	st, ed := -1, -1
-	for _, e := range intervals {
-		if ed < e[0] {
-			if st != -1 {
-				res = append(res, []int{st, ed})
-			}
-			st, ed = e[0], e[1]
-		} else {
-			ed = max(ed, e[1])
-		}
-	}
-	if st != -1 {
-		res = append(res, []int{st, ed})
-	}
-	return res
-}
-
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
+    return res;
 }
 ```
 
-### **C#**
+### **Rust**
 
-```cpp
-public class Solution {
-    public int[][] Merge(int[][] intervals) {
-        var res = new List<int[]>();
-        int st = -1, ed = -1;
-        foreach (var e in intervals.OrderBy(a => a[0]))
-        {
-            if (ed < e[0])
-            {
-                if (st != -1)
-                {
-                    res.Add(new int[] { st, ed });
-                }
-                st = e[0];
-                ed = e[1];
+```rust
+impl Solution {
+    pub fn merge(mut intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
+        intervals.sort_unstable_by(|a, b| a[0].cmp(&b[0]));
+        let n = intervals.len();
+        let mut res = vec![];
+        let mut i = 0;
+        while i < n {
+            let l = intervals[i][0];
+            let mut r = intervals[i][1];
+            i += 1;
+            while i < n && r >= intervals[i][0] {
+                r = r.max(intervals[i][1]);
+                i += 1;
             }
-            else
-            {
-                ed = Math.Max(ed, e[1]);
-            }
+            res.push(vec![l, r]);
         }
-        if (st != -1)
-        {
-            res.Add(new int[] { st, ed });
-        }
-        return res.ToArray();
+        res
     }
 }
 ```

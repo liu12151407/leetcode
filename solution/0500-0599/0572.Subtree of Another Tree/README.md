@@ -1,4 +1,4 @@
-# [572. 另一个树的子树](https://leetcode-cn.com/problems/subtree-of-another-tree)
+# [572. 另一棵树的子树](https://leetcode.cn/problems/subtree-of-another-tree)
 
 [English Version](/solution/0500-0599/0572.Subtree%20of%20Another%20Tree/README_EN.md)
 
@@ -6,51 +6,40 @@
 
 <!-- 这里写题目描述 -->
 
-<p>给定两个非空二叉树 <strong>s</strong> 和 <strong>t</strong>，检验&nbsp;<strong>s</strong> 中是否包含和 <strong>t</strong> 具有相同结构和节点值的子树。<strong>s</strong> 的一个子树包括 <strong>s</strong> 的一个节点和这个节点的所有子孙。<strong>s</strong> 也可以看做它自身的一棵子树。</p>
+<div class="original__bRMd">
+<div>
+<p>给你两棵二叉树 <code>root</code> 和 <code>subRoot</code> 。检验 <code>root</code> 中是否包含和 <code>subRoot</code> 具有相同结构和节点值的子树。如果存在，返回 <code>true</code> ；否则，返回 <code>false</code> 。</p>
 
-<p><strong>示例 1:</strong><br />
-给定的树 s:</p>
+<p>二叉树 <code>tree</code> 的一棵子树包括 <code>tree</code> 的某个节点和这个节点的所有后代节点。<code>tree</code> 也可以看做它自身的一棵子树。</p>
 
+<p> </p>
+
+<p><strong>示例 1：</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0572.Subtree%20of%20Another%20Tree/images/subtree1-tree.jpg" style="width: 532px; height: 400px;" />
 <pre>
-     3
-    / \
-   4   5
-  / \
- 1   2
+<strong>输入：</strong>root = [3,4,5,1,2], subRoot = [4,1,2]
+<strong>输出：</strong>true
 </pre>
 
-<p>给定的树 t：</p>
-
+<p><strong>示例 2：</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0572.Subtree%20of%20Another%20Tree/images/subtree2-tree.jpg" style="width: 502px; height: 458px;" />
 <pre>
-   4 
-  / \
- 1   2
+<strong>输入：</strong>root = [3,4,5,1,2,null,null,null,null,0], subRoot = [4,1,2]
+<strong>输出：</strong>false
 </pre>
 
-<p>返回 <strong>true</strong>，因为 t 与 s 的一个子树拥有相同的结构和节点值。</p>
+<p> </p>
 
-<p><strong>示例 2:</strong><br />
-给定的树 s：</p>
+<p><strong>提示：</strong></p>
 
-<pre>
-     3
-    / \
-   4   5
-  / \
- 1   2
-    /
-   0
-</pre>
-
-<p>给定的树 t：</p>
-
-<pre>
-   4
-  / \
- 1   2
-</pre>
-
-<p>返回 <strong>false</strong>。</p>
+<ul>
+	<li><code>root</code> 树上的节点数量范围是 <code>[1, 2000]</code></li>
+	<li><code>subRoot</code> 树上的节点数量范围是 <code>[1, 1000]</code></li>
+	<li><code>-10<sup>4</sup> <= root.val <= 10<sup>4</sup></code></li>
+	<li><code>-10<sup>4</sup> <= subRoot.val <= 10<sup>4</sup></code></li>
+</ul>
+</div>
+</div>
 
 ## 解法
 
@@ -76,11 +65,19 @@ class Solution:
                 return True
             if root1 is None or root2 is None:
                 return False
-            return root1.val == root2.val and dfs(root1.left, root2.left) and dfs(root1.right, root2.right)
+            return (
+                root1.val == root2.val
+                and dfs(root1.left, root2.left)
+                and dfs(root1.right, root2.right)
+            )
 
         if root is None:
             return False
-        return dfs(root, subRoot) or self.isSubtree(root.left, subRoot) or self.isSubtree(root.right, subRoot)
+        return (
+            dfs(root, subRoot)
+            or self.isSubtree(root.left, subRoot)
+            or self.isSubtree(root.right, subRoot)
+        )
 ```
 
 ### **Java**
@@ -108,7 +105,8 @@ class Solution {
         if (root == null) {
             return false;
         }
-        return dfs(root, subRoot) || isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);
+        return dfs(root, subRoot) || isSubtree(root.left, subRoot)
+            || isSubtree(root.right, subRoot);
     }
 
     private boolean dfs(TreeNode root1, TreeNode root2) {
@@ -118,7 +116,8 @@ class Solution {
         if (root1 == null || root2 == null) {
             return false;
         }
-        return root1.val == root2.val && dfs(root1.left, root2.left) && dfs(root1.right, root2.right);
+        return root1.val == root2.val && dfs(root1.left, root2.left)
+            && dfs(root1.right, root2.right);
     }
 }
 ```
@@ -218,6 +217,104 @@ var isSubtree = function (root, subRoot) {
         isSubtree(root.right, subRoot)
     );
 };
+```
+
+### **TypeScript**
+
+```ts
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+const dfs = (root: TreeNode | null, subRoot: TreeNode | null) => {
+    if (root == null && subRoot == null) {
+        return true;
+    }
+    if (root == null || subRoot == null || root.val !== subRoot.val) {
+        return false;
+    }
+    return dfs(root.left, subRoot.left) && dfs(root.right, subRoot.right);
+};
+
+function isSubtree(root: TreeNode | null, subRoot: TreeNode | null): boolean {
+    if (root == null) {
+        return false;
+    }
+    return (
+        dfs(root, subRoot) ||
+        isSubtree(root.left, subRoot) ||
+        isSubtree(root.right, subRoot)
+    );
+}
+```
+
+### **Rust**
+
+```rust
+// Definition for a binary tree node.
+// #[derive(Debug, PartialEq, Eq)]
+// pub struct TreeNode {
+//   pub val: i32,
+//   pub left: Option<Rc<RefCell<TreeNode>>>,
+//   pub right: Option<Rc<RefCell<TreeNode>>>,
+// }
+//
+// impl TreeNode {
+//   #[inline]
+//   pub fn new(val: i32) -> Self {
+//     TreeNode {
+//       val,
+//       left: None,
+//       right: None
+//     }
+//   }
+// }
+use std::rc::Rc;
+use std::cell::RefCell;
+impl Solution {
+    fn dfs(root: &Option<Rc<RefCell<TreeNode>>>, sub_root: &Option<Rc<RefCell<TreeNode>>>) -> bool {
+        if root.is_none() && sub_root.is_none() {
+            return true;
+        }
+        if root.is_none() || sub_root.is_none() {
+            return false;
+        }
+        let root = root.as_ref().unwrap().borrow();
+        let sub_root = sub_root.as_ref().unwrap().borrow();
+        root.val == sub_root.val
+            && Self::dfs(&root.left, &sub_root.left)
+            && Self::dfs(&root.right, &sub_root.right)
+    }
+
+    fn help(
+        root: &Option<Rc<RefCell<TreeNode>>>,
+        sub_root: &Option<Rc<RefCell<TreeNode>>>,
+    ) -> bool {
+        if root.is_none() {
+            return false;
+        }
+        Self::dfs(root, sub_root)
+            || Self::help(&root.as_ref().unwrap().borrow().left, sub_root)
+            || Self::help(&root.as_ref().unwrap().borrow().right, sub_root)
+    }
+
+    pub fn is_subtree(
+        root: Option<Rc<RefCell<TreeNode>>>,
+        sub_root: Option<Rc<RefCell<TreeNode>>>,
+    ) -> bool {
+        Self::help(&root, &sub_root)
+    }
+}
 ```
 
 ### **...**

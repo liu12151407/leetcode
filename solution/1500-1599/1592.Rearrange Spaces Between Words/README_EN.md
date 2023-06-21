@@ -11,41 +11,20 @@
 <p>Return <em>the string after rearranging the spaces</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> text = &quot;  this   is  a sentence &quot;
 <strong>Output:</strong> &quot;this   is   a   sentence&quot;
-<strong>Explanation: </strong>There are a total of 9 spaces and 4 words. We can evenly divide the 9 spaces between the words: 9 / (4-1) = 3 spaces.
+<strong>Explanation:</strong> There are a total of 9 spaces and 4 words. We can evenly divide the 9 spaces between the words: 9 / (4-1) = 3 spaces.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> text = &quot; practice   makes   perfect&quot;
 <strong>Output:</strong> &quot;practice   makes   perfect &quot;
-<strong>Explanation:</strong>&nbsp;There are a total of 7 spaces and 3 words. 7 / (3-1) = 3 spaces plus 1 extra space. We place this extra space at the end of the string.
-</pre>
-
-<p><strong>Example 3:</strong></p>
-
-<pre>
-<strong>Input:</strong> text = &quot;hello   world&quot;
-<strong>Output:</strong> &quot;hello   world&quot;
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> text = &quot;  walks  udp package   into  bar a&quot;
-<strong>Output:</strong> &quot;walks  udp  package  into  bar  a &quot;
-</pre>
-
-<p><strong>Example 5:</strong></p>
-
-<pre>
-<strong>Input:</strong> text = &quot;a&quot;
-<strong>Output:</strong> &quot;a&quot;
+<strong>Explanation:</strong> There are a total of 7 spaces and 3 words. 7 / (3-1) = 3 spaces plus 1 extra space. We place this extra space at the end of the string.
 </pre>
 
 <p>&nbsp;</p>
@@ -53,8 +32,8 @@
 
 <ul>
 	<li><code>1 &lt;= text.length &lt;= 100</code></li>
-	<li><code>text</code>&nbsp;consists of lowercase English letters and&nbsp;<code>&#39; &#39;</code>.</li>
-	<li><code>text</code>&nbsp;contains at least one word.</li>
+	<li><code>text</code> consists of lowercase English letters and <code>&#39; &#39;</code>.</li>
+	<li><code>text</code> contains at least one word.</li>
 </ul>
 
 ## Solutions
@@ -64,13 +43,113 @@
 ### **Python3**
 
 ```python
-
+class Solution:
+    def reorderSpaces(self, text: str) -> str:
+        cnt = text.count(' ')
+        words = text.split()
+        m = len(words) - 1
+        if m == 0:
+            return words[0] + ' ' * cnt
+        return (' ' * (cnt // m)).join(words) + ' ' * (cnt % m)
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public String reorderSpaces(String text) {
+        int cnt = 0;
+        for (char c : text.toCharArray()) {
+            if (c == ' ') {
+                ++cnt;
+            }
+        }
+        String[] words = text.split("\\s+");
+        List<String> res = new ArrayList<>();
+        for (String w : words) {
+            if (!"".equals(w)) {
+                res.add(w);
+            }
+        }
+        int m = res.size() - 1;
+        if (m == 0) {
+            return res.get(0) + " ".repeat(cnt);
+        }
+        String ans = String.join(" ".repeat(cnt / m), res);
+        ans += " ".repeat(cnt % m);
+        return ans;
+    }
+}
+```
 
+### **Go**
+
+```go
+func reorderSpaces(text string) string {
+	cnt := strings.Count(text, " ")
+	words := strings.Fields(text)
+	m := len(words) - 1
+	if m == 0 {
+		return words[0] + strings.Repeat(" ", cnt)
+	}
+	return strings.Join(words, strings.Repeat(" ", cnt/m)) + strings.Repeat(" ", cnt%m)
+}
+```
+
+### **TypeScript**
+
+```ts
+function reorderSpaces(text: string): string {
+    let count = 0;
+    for (const c of text) {
+        if (c === ' ') {
+            count++;
+        }
+    }
+
+    const words = text.trim().split(/\s+/g);
+    const n = words.length;
+    if (n === 1) {
+        return words.join('') + ''.padStart(count);
+    }
+
+    const rest = count % (words.length - 1);
+    const per = (count - rest) / (words.length - 1);
+    return words.join(''.padStart(per)) + ''.padStart(rest);
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    fn create_spaces(n: usize) -> String {
+        let mut res = String::new();
+        for _ in 0..n {
+            res.push(' ');
+        }
+        res
+    }
+
+    pub fn reorder_spaces(text: String) -> String {
+        let count = {
+            let mut res = 0;
+            for c in text.as_bytes() {
+                if c == &b' ' {
+                    res += 1;
+                }
+            }
+            res
+        };
+
+        let works = text.split_whitespace().collect::<Vec<&str>>();
+        let n = works.len();
+        if n == 1 {
+            return works[0].to_string() + &Self::create_spaces(count);
+        }
+        works.join(&Self::create_spaces((count / (n - 1)))) + &Self::create_spaces(count % (n - 1))
+    }
+}
 ```
 
 ### **...**

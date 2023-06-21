@@ -9,7 +9,7 @@
 <p>Given a string <code>sentence</code> containing only lowercase English letters, return<em> </em><code>true</code><em> if </em><code>sentence</code><em> is a <strong>pangram</strong>, or </em><code>false</code><em> otherwise.</em></p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> sentence = &quot;thequickbrownfoxjumpsoverthelazydog&quot;
@@ -17,7 +17,7 @@
 <strong>Explanation:</strong> sentence contains at least one of every letter of the English alphabet.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> sentence = &quot;leetcode&quot;
@@ -38,59 +38,48 @@
 
 ### **Python3**
 
-Set:
-
 ```python
 class Solution:
     def checkIfPangram(self, sentence: str) -> bool:
         return len(set(sentence)) == 26
 ```
 
-Bit Manipulation:
-
 ```python
 class Solution:
     def checkIfPangram(self, sentence: str) -> bool:
-        res = 0
+        mask = 0
         for c in sentence:
-            res |= (1 << (ord(c) - ord('a')))
-            if res == 0x3ffffff:
-                return True
-        return False
+            mask |= 1 << (ord(c) - ord('a'))
+        return mask == (1 << 26) - 1
 ```
 
 ### **Java**
 
-HashSet:
-
 ```java
 class Solution {
     public boolean checkIfPangram(String sentence) {
-        Set<Character> s = new HashSet<>();
-        for (char c : sentence.toCharArray()) {
-            s.add(c);
-            if (s.size() == 26) {
-                return true;
+        boolean[] vis = new boolean[26];
+        for (int i = 0; i < sentence.length(); ++i) {
+            vis[sentence.charAt(i) - 'a'] = true;
+        }
+        for (boolean v : vis) {
+            if (!v) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 }
 ```
 
-Bit Manipulation:
-
 ```java
 class Solution {
     public boolean checkIfPangram(String sentence) {
-        int res = 0;
-        for (char c : sentence.toCharArray()) {
-            res |= (1 << (c - 'a'));
-            if (res == 0x3ffffff) {
-                return true;
-            }
+        int mask = 0;
+        for (int i = 0; i < sentence.length(); ++i) {
+            mask |= 1 << (sentence.charAt(i) - 'a');
         }
-        return false;
+        return mask == (1 << 26) - 1;
     }
 }
 ```
@@ -101,13 +90,22 @@ class Solution {
 class Solution {
 public:
     bool checkIfPangram(string sentence) {
-        int res = 0;
-        for (char c : sentence)
-        {
-            res |= (1 << (c - 'a'));
-            if (res == 0x3ffffff) return true;
-        }
-        return false;
+        int vis[26] = {0};
+        for (char& c : sentence) vis[c - 'a'] = 1;
+        for (int& v : vis)
+            if (!v) return false;
+        return true;
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    bool checkIfPangram(string sentence) {
+        int mask = 0;
+        for (char& c : sentence) mask |= 1 << (c - 'a');
+        return mask == (1 << 26) - 1;
     }
 };
 ```
@@ -116,14 +114,101 @@ public:
 
 ```go
 func checkIfPangram(sentence string) bool {
-	res := 0
+	vis := [26]bool{}
 	for _, c := range sentence {
-		res |= (1 << (c - 'a'))
-		if res == 0x3ffffff {
-			return true
+		vis[c-'a'] = true
+	}
+	for _, v := range vis {
+		if !v {
+			return false
 		}
 	}
-	return false
+	return true
+}
+```
+
+```go
+func checkIfPangram(sentence string) bool {
+	mask := 0
+	for _, c := range sentence {
+		mask |= 1 << int(c-'a')
+	}
+	return mask == 1<<26-1
+}
+```
+
+### **TypeScript**
+
+```ts
+function checkIfPangram(sentence: string): boolean {
+    const vis = new Array(26).fill(false);
+    for (const c of sentence) {
+        vis[c.charCodeAt(0) - 'a'.charCodeAt(0)] = true;
+    }
+    return vis.every(v => v);
+}
+```
+
+```ts
+function checkIfPangram(sentence: string): boolean {
+    let mark = 0;
+    for (const c of sentence) {
+        mark |= 1 << (c.charCodeAt(0) - 'a'.charCodeAt(0));
+    }
+    return mark === (1 << 26) - 1;
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn check_if_pangram(sentence: String) -> bool {
+        let mut vis = [false; 26];
+        for c in sentence.as_bytes() {
+            vis[(*c - b'a') as usize] = true;
+        }
+        vis.iter().all(|v| *v)
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn check_if_pangram(sentence: String) -> bool {
+        let mut mark = 0;
+        for c in sentence.as_bytes() {
+            mark |= 1 << *c - b'a';
+        }
+        mark == (1 << 26) - 1
+    }
+}
+```
+
+### **C**
+
+```c
+bool checkIfPangram(char* sentence) {
+    int vis[26] = {0};
+    for (int i = 0; sentence[i]; i++) {
+        vis[sentence[i] - 'a'] = 1;
+    }
+    for (int i = 0; i < 26; i++) {
+        if (!vis[i]) {
+            return 0;
+        }
+    }
+    return 1;
+}
+```
+
+```c
+bool checkIfPangram(char* sentence) {
+    int mark = 0;
+    for (int i = 0; sentence[i]; i++) {
+        mark |= 1 << (sentence[i] - 'a');
+    }
+    return mark == (1 << 26) - 1;
 }
 ```
 

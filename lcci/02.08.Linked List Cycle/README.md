@@ -1,4 +1,4 @@
-# [面试题 02.08. 环路检测](https://leetcode-cn.com/problems/linked-list-cycle-lcci)
+# [面试题 02.08. 环路检测](https://leetcode.cn/problems/linked-list-cycle-lcci)
 
 [English Version](/lcci/02.08.Linked%20List%20Cycle/README_EN.md)
 
@@ -37,6 +37,7 @@
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
+
 
 class Solution:
     def detectCycle(self, head: ListNode) -> ListNode:
@@ -104,7 +105,7 @@ public class Solution {
  */
 class Solution {
 public:
-    ListNode *detectCycle(ListNode *head) {
+    ListNode* detectCycle(ListNode* head) {
         ListNode* slow = head;
         ListNode* fast = head;
         bool hasCycle = false;
@@ -173,20 +174,20 @@ var detectCycle = function (head) {
  * }
  */
 func detectCycle(head *ListNode) *ListNode {
-    slow, fast := head, head
-    hasCycle := false
-    for !hasCycle && fast != nil && fast.Next != nil {
-        slow, fast = slow.Next, fast.Next.Next
-        hasCycle = slow == fast
-    }
-    if !hasCycle {
-        return nil
-    }
-    p := head
-    for p != slow {
-        p, slow = p.Next, slow.Next
-    }
-    return p
+	slow, fast := head, head
+	hasCycle := false
+	for !hasCycle && fast != nil && fast.Next != nil {
+		slow, fast = slow.Next, fast.Next.Next
+		hasCycle = slow == fast
+	}
+	if !hasCycle {
+		return nil
+	}
+	p := head
+	for p != slow {
+		p, slow = p.Next, slow.Next
+	}
+	return p
 }
 ```
 

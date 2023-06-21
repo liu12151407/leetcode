@@ -1,4 +1,4 @@
-# [990. 等式方程的可满足性](https://leetcode-cn.com/problems/satisfiability-of-equality-equations)
+# [990. 等式方程的可满足性](https://leetcode.cn/problems/satisfiability-of-equality-equations)
 
 [English Version](/solution/0900-0999/0990.Satisfiability%20of%20Equality%20Equations/README_EN.md)
 
@@ -63,7 +63,9 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
-并查集。
+并查集。对于本题，先遍历所有的等式，构造并查集。接着遍历所有不等式，如果不等式的两个变量处于同一个集合，说明发生矛盾，返回 false。否则遍历结束返回 true。
+
+以下是并查集的几个常用模板。
 
 模板 1——朴素并查集：
 
@@ -71,12 +73,14 @@
 # 初始化，p存储每个点的父节点
 p = list(range(n))
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
         # 路径压缩
         p[x] = find(p[x])
     return p[x]
+
 
 # 合并a和b所在的两个集合
 p[find(a)] = find(b)
@@ -89,12 +93,14 @@ p[find(a)] = find(b)
 p = list(range(n))
 size = [1] * n
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
         # 路径压缩
         p[x] = find(p[x])
     return p[x]
+
 
 # 合并a和b所在的两个集合
 if find(a) != find(b):
@@ -109,6 +115,7 @@ if find(a) != find(b):
 p = list(range(n))
 d = [0] * n
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
@@ -117,12 +124,11 @@ def find(x):
         p[x] = t
     return p[x]
 
+
 # 合并a和b所在的两个集合
 p[find(a)] = find(b)
 d[find(a)] = distance
 ```
-
-对于本题，先遍历所有的等式，构造并查集。接着遍历所有不等式，如果不等式的两个变量处于同一个集合，说明发生矛盾，返回 false。否则遍历结束返回 true。
 
 <!-- tabs:start -->
 
@@ -133,20 +139,19 @@ d[find(a)] = distance
 ```python
 class Solution:
     def equationsPossible(self, equations: List[str]) -> bool:
-        p = [i for i in range(26)]
-
         def find(x):
             if p[x] != x:
                 p[x] = find(p[x])
             return p[x]
 
+        p = list(range(26))
         for e in equations:
-            a, r, b = ord(e[0]) - ord('a'), e[1:3], ord(e[3]) - ord('a')
-            if r == '==':
+            a, b = ord(e[0]) - ord('a'), ord(e[-1]) - ord('a')
+            if e[1] == '=':
                 p[find(a)] = find(b)
         for e in equations:
-            a, r, b = ord(e[0]) - ord('a'), e[1:3], ord(e[3]) - ord('a')
-            if r == '!=' and find(a) == find(b):
+            a, b = ord(e[0]) - ord('a'), ord(e[-1]) - ord('a')
+            if e[1] == '!' and find(a) == find(b):
                 return False
         return True
 ```
@@ -166,15 +171,13 @@ class Solution {
         }
         for (String e : equations) {
             int a = e.charAt(0) - 'a', b = e.charAt(3) - 'a';
-            String r = e.substring(1, 3);
-            if ("==".equals(r)) {
+            if (e.charAt(1) == '=') {
                 p[find(a)] = find(b);
             }
         }
         for (String e : equations) {
             int a = e.charAt(0) - 'a', b = e.charAt(3) - 'a';
-            String r = e.substring(1, 3);
-            if ("!=".equals(r) && find(a) == find(b)) {
+            if (e.charAt(1) == '!' && find(a) == find(b)) {
                 return false;
             }
         }
@@ -199,28 +202,20 @@ public:
 
     bool equationsPossible(vector<string>& equations) {
         p.resize(26);
-        for (int i = 0; i < 26; ++i)
-            p[i] = i;
-        for (auto e : equations)
-        {
+        for (int i = 0; i < 26; ++i) p[i] = i;
+        for (auto& e : equations) {
             int a = e[0] - 'a', b = e[3] - 'a';
-            char r = e[1];
-            if (r == '=')
-                p[find(a)] = find(b);
+            if (e[1] == '=') p[find(a)] = find(b);
         }
-        for (auto e : equations)
-        {
+        for (auto& e : equations) {
             int a = e[0] - 'a', b = e[3] - 'a';
-            char r = e[1];
-            if (r == '!' && find(a) == find(b))
-                return false;
+            if (e[1] == '!' && find(a) == find(b)) return false;
         }
         return true;
     }
 
     int find(int x) {
-        if (p[x] != x)
-            p[x] = find(p[x]);
+        if (p[x] != x) p[x] = find(p[x]);
         return p[x];
     }
 };
@@ -229,35 +224,76 @@ public:
 ### **Go**
 
 ```go
-var p []int
-
 func equationsPossible(equations []string) bool {
-	p = make([]int, 26)
+	p := make([]int, 26)
 	for i := 1; i < 26; i++ {
 		p[i] = i
 	}
+	var find func(x int) int
+	find = func(x int) int {
+		if p[x] != x {
+			p[x] = find(p[x])
+		}
+		return p[x]
+	}
 	for _, e := range equations {
 		a, b := int(e[0]-'a'), int(e[3]-'a')
-		r := e[1]
-		if r == '=' {
+		if e[1] == '=' {
 			p[find(a)] = find(b)
 		}
 	}
 	for _, e := range equations {
 		a, b := int(e[0]-'a'), int(e[3]-'a')
-		r := e[1]
-		if r == '!' && find(a) == find(b) {
+		if e[1] == '!' && find(a) == find(b) {
 			return false
 		}
 	}
 	return true
 }
+```
 
-func find(x int) int {
-	if p[x] != x {
-		p[x] = find(p[x])
-	}
-	return p[x]
+### **TypeScript**
+
+```ts
+class UnionFind {
+    private parent: number[];
+
+    constructor() {
+        this.parent = Array.from({ length: 26 }).map((_, i) => i);
+    }
+
+    find(index: number) {
+        if (this.parent[index] === index) {
+            return index;
+        }
+        this.parent[index] = this.find(this.parent[index]);
+        return this.parent[index];
+    }
+
+    union(index1: number, index2: number) {
+        this.parent[this.find(index1)] = this.find(index2);
+    }
+}
+
+function equationsPossible(equations: string[]): boolean {
+    const uf = new UnionFind();
+    for (const [a, s, _, b] of equations) {
+        if (s === '=') {
+            const index1 = a.charCodeAt(0) - 'a'.charCodeAt(0);
+            const index2 = b.charCodeAt(0) - 'a'.charCodeAt(0);
+            uf.union(index1, index2);
+        }
+    }
+    for (const [a, s, _, b] of equations) {
+        if (s === '!') {
+            const index1 = a.charCodeAt(0) - 'a'.charCodeAt(0);
+            const index2 = b.charCodeAt(0) - 'a'.charCodeAt(0);
+            if (uf.find(index1) === uf.find(index2)) {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 ```
 

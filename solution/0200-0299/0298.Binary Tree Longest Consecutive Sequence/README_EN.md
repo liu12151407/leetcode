@@ -4,21 +4,23 @@
 
 ## Description
 
-<p>Given the <code>root</code> of a binary tree, return <em>the length of the longest consecutive sequence path</em>.</p>
+<p>Given the <code>root</code> of a binary tree, return <em>the length of the longest <strong>consecutive sequence path</strong></em>.</p>
 
-<p>The path refers to any sequence of nodes from some starting node to any node in the tree along the parent-child connections. The longest consecutive path needs to be from parent to child (cannot be the reverse).</p>
+<p>A <strong>consecutive sequence path</strong> is a path where the values <strong>increase by one</strong> along the path.</p>
+
+<p>Note that the path can start <strong>at any node</strong> in the tree, and you cannot go from a node to its parent in the path.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0200-0299/0298.Binary%20Tree%20Longest%20Consecutive%20Sequence/images/consec1-1-tree.jpg" style="width: 322px; height: 421px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0200-0299/0298.Binary%20Tree%20Longest%20Consecutive%20Sequence/images/consec1-1-tree.jpg" style="width: 306px; height: 400px;" />
 <pre>
 <strong>Input:</strong> root = [1,null,3,2,4,null,null,null,5]
 <strong>Output:</strong> 3
 <strong>Explanation:</strong> Longest consecutive sequence path is 3-4-5, so return 3.
 </pre>
 
-<p><strong>Example 2:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0200-0299/0298.Binary%20Tree%20Longest%20Consecutive%20Sequence/images/consec1-2-tree.jpg" style="width: 262px; height: 421px;" />
+<p><strong class="example">Example 2:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0200-0299/0298.Binary%20Tree%20Longest%20Consecutive%20Sequence/images/consec1-2-tree.jpg" style="width: 249px; height: 400px;" />
 <pre>
 <strong>Input:</strong> root = [2,null,3,2,null,1]
 <strong>Output:</strong> 2
@@ -129,7 +131,7 @@ public:
 
     void dfs(TreeNode* root, TreeNode* p, int t) {
         if (!root) return;
-        t = p != nullptr && p->val + 1 == root-> val ? t + 1 : 1;
+        t = p != nullptr && p->val + 1 == root->val ? t + 1 : 1;
         ans = max(ans, t);
         dfs(root->left, root, t);
         dfs(root->right, root, t);

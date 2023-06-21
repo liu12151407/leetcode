@@ -1,4 +1,4 @@
-# [2029. 石子游戏 IX](https://leetcode-cn.com/problems/stone-game-ix)
+# [2029. 石子游戏 IX](https://leetcode.cn/problems/stone-game-ix)
 
 [English Version](/solution/2000-2099/2029.Stone%20Game%20IX/README_EN.md)
 
@@ -117,7 +117,7 @@ class Solution {
         for (int s : stones) {
             ++c[s % 3];
         }
-        int[] t = new int[]{c[0], c[2], c[1]};
+        int[] t = new int[] {c[0], c[2], c[1]};
         return check(c) || check(t);
     }
 
@@ -152,8 +152,7 @@ public:
         if (c[1] == 0) return false;
         --c[1];
         int turn = 1 + min(c[1], c[2]) * 2 + c[0];
-        if (c[1] > c[2])
-        {
+        if (c[1] > c[2]) {
             --c[1];
             ++turn;
         }

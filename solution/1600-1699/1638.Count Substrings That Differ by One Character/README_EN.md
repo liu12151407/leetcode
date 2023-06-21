@@ -13,12 +13,12 @@
 <p>A <strong>substring</strong> is a contiguous sequence of characters within a string.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;aba&quot;, t = &quot;baba&quot;
 <strong>Output:</strong> 6
-<strong>Explanation: </strong>The following are the pairs of substrings from s and t that differ by exactly 1 character:
+<strong>Explanation:</strong> The following are the pairs of substrings from s and t that differ by exactly 1 character:
 (&quot;<u>a</u>ba&quot;, &quot;<u>b</u>aba&quot;)
 (&quot;<u>a</u>ba&quot;, &quot;ba<u>b</u>a&quot;)
 (&quot;ab<u>a</u>&quot;, &quot;<u>b</u>aba&quot;)
@@ -28,30 +28,16 @@
 The underlined portions are the substrings that are chosen from s and t.
 </pre>
 
-​​<strong>Example 2:</strong>
+​​<strong class="example">Example 2:</strong>
 
 <pre>
 <strong>Input:</strong> s = &quot;ab&quot;, t = &quot;bb&quot;
 <strong>Output:</strong> 3
-<strong>Explanation: </strong>The following are the pairs of substrings from s and t that differ by 1 character:
+<strong>Explanation:</strong> The following are the pairs of substrings from s and t that differ by 1 character:
 (&quot;<u>a</u>b&quot;, &quot;<u>b</u>b&quot;)
 (&quot;<u>a</u>b&quot;, &quot;b<u>b</u>&quot;)
 (&quot;<u>ab</u>&quot;, &quot;<u>bb</u>&quot;)
 ​​​​The underlined portions are the substrings that are chosen from s and t.
-</pre>
-
-<strong>Example 3:</strong>
-
-<pre>
-<strong>Input:</strong> s = &quot;a&quot;, t = &quot;a&quot;
-<strong>Output:</strong> 0
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> s = &quot;abe&quot;, t = &quot;bbc&quot;
-<strong>Output:</strong> 10
 </pre>
 
 <p>&nbsp;</p>
@@ -69,13 +55,207 @@ The underlined portions are the substrings that are chosen from s and t.
 ### **Python3**
 
 ```python
+class Solution:
+    def countSubstrings(self, s: str, t: str) -> int:
+        ans = 0
+        m, n = len(s), len(t)
+        for i, a in enumerate(s):
+            for j, b in enumerate(t):
+                if a != b:
+                    l = r = 0
+                    while i > l and j > l and s[i - l - 1] == t[j - l - 1]:
+                        l += 1
+                    while (
+                        i + r + 1 < m and j + r + 1 < n and s[i + r + 1] == t[j + r + 1]
+                    ):
+                        r += 1
+                    ans += (l + 1) * (r + 1)
+        return ans
+```
 
+```python
+class Solution:
+    def countSubstrings(self, s: str, t: str) -> int:
+        ans = 0
+        m, n = len(s), len(t)
+        f = [[0] * (n + 1) for _ in range(m + 1)]
+        g = [[0] * (n + 1) for _ in range(m + 1)]
+        for i, a in enumerate(s, 1):
+            for j, b in enumerate(t, 1):
+                if a == b:
+                    f[i][j] = f[i - 1][j - 1] + 1
+        for i in range(m - 1, -1, -1):
+            for j in range(n - 1, -1, -1):
+                if s[i] == t[j]:
+                    g[i][j] = g[i + 1][j + 1] + 1
+                else:
+                    ans += (f[i][j] + 1) * (g[i + 1][j + 1] + 1)
+        return ans
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int countSubstrings(String s, String t) {
+        int ans = 0;
+        int m = s.length(), n = t.length();
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (s.charAt(i) != t.charAt(j)) {
+                    int l = 0, r = 0;
+                    while (i - l > 0 && j - l > 0 && s.charAt(i - l - 1) == t.charAt(j - l - 1)) {
+                        ++l;
+                    }
+                    while (i + r + 1 < m && j + r + 1 < n
+                        && s.charAt(i + r + 1) == t.charAt(j + r + 1)) {
+                        ++r;
+                    }
+                    ans += (l + 1) * (r + 1);
+                }
+            }
+        }
+        return ans;
+    }
+}
+```
 
+```java
+class Solution {
+    public int countSubstrings(String s, String t) {
+        int ans = 0;
+        int m = s.length(), n = t.length();
+        int[][] f = new int[m + 1][n + 1];
+        int[][] g = new int[m + 1][n + 1];
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (s.charAt(i) == t.charAt(j)) {
+                    f[i + 1][j + 1] = f[i][j] + 1;
+                }
+            }
+        }
+        for (int i = m - 1; i >= 0; --i) {
+            for (int j = n - 1; j >= 0; --j) {
+                if (s.charAt(i) == t.charAt(j)) {
+                    g[i][j] = g[i + 1][j + 1] + 1;
+                } else {
+                    ans += (f[i][j] + 1) * (g[i + 1][j + 1] + 1);
+                }
+            }
+        }
+        return ans;
+    }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int countSubstrings(string s, string t) {
+        int ans = 0;
+        int m = s.size(), n = t.size();
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (s[i] != t[j]) {
+                    int l = 0, r = 0;
+                    while (i - l > 0 && j - l > 0 && s[i - l - 1] == t[j - l - 1]) {
+                        ++l;
+                    }
+                    while (i + r + 1 < m && j + r + 1 < n && s[i + r + 1] == t[j + r + 1]) {
+                        ++r;
+                    }
+                    ans += (l + 1) * (r + 1);
+                }
+            }
+        }
+        return ans;
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    int countSubstrings(string s, string t) {
+        int ans = 0;
+        int m = s.length(), n = t.length();
+        int f[m + 1][n + 1];
+        int g[m + 1][n + 1];
+        memset(f, 0, sizeof(f));
+        memset(g, 0, sizeof(g));
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (s[i] == t[j]) {
+                    f[i + 1][j + 1] = f[i][j] + 1;
+                }
+            }
+        }
+        for (int i = m - 1; i >= 0; --i) {
+            for (int j = n - 1; j >= 0; --j) {
+                if (s[i] == t[j]) {
+                    g[i][j] = g[i + 1][j + 1] + 1;
+                } else {
+                    ans += (f[i][j] + 1) * (g[i + 1][j + 1] + 1);
+                }
+            }
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func countSubstrings(s string, t string) (ans int) {
+	m, n := len(s), len(t)
+	for i, a := range s {
+		for j, b := range t {
+			if a != b {
+				l, r := 0, 0
+				for i > l && j > l && s[i-l-1] == t[j-l-1] {
+					l++
+				}
+				for i+r+1 < m && j+r+1 < n && s[i+r+1] == t[j+r+1] {
+					r++
+				}
+				ans += (l + 1) * (r + 1)
+			}
+		}
+	}
+	return
+}
+```
+
+```go
+func countSubstrings(s string, t string) (ans int) {
+	m, n := len(s), len(t)
+	f := make([][]int, m+1)
+	g := make([][]int, m+1)
+	for i := range f {
+		f[i] = make([]int, n+1)
+		g[i] = make([]int, n+1)
+	}
+	for i, a := range s {
+		for j, b := range t {
+			if a == b {
+				f[i+1][j+1] = f[i][j] + 1
+			}
+		}
+	}
+	for i := m - 1; i >= 0; i-- {
+		for j := n - 1; j >= 0; j-- {
+			if s[i] == t[j] {
+				g[i][j] = g[i+1][j+1] + 1
+			} else {
+				ans += (f[i][j] + 1) * (g[i+1][j+1] + 1)
+			}
+		}
+	}
+	return
+}
 ```
 
 ### **...**

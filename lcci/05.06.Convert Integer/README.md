@@ -1,4 +1,4 @@
-# [面试题 05.06. 整数转换](https://leetcode-cn.com/problems/convert-integer-lcci)
+# [面试题 05.06. 整数转换](https://leetcode.cn/problems/convert-integer-lcci)
 
 [English Version](/lcci/05.06.Convert%20Integer/README_EN.md)
 
@@ -31,6 +31,12 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：位运算**
+
+我们将 A 和 B 进行异或运算，得到的结果中 $1$ 的个数即为需要改变的位数。
+
+时间复杂度 $O(\log n)$，其中 $n$ 为 A 和 B 的最大值。空间复杂度 $O(1)$。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -38,7 +44,11 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def convertInteger(self, A: int, B: int) -> int:
+        A &= 0xFFFFFFFF
+        B &= 0xFFFFFFFF
+        return (A ^ B).bit_count()
 ```
 
 ### **Java**
@@ -53,9 +63,56 @@ class Solution {
 }
 ```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int convertInteger(int A, int B) {
+        unsigned int c = A ^ B;
+        return __builtin_popcount(c);
+    }
+};
+```
+
+### **Go**
+
+```go
+func convertInteger(A int, B int) int {
+	return bits.OnesCount32(uint32(A ^ B))
+}
+```
+
+### **TypeScript**
+
+```ts
+function convertInteger(A: number, B: number): number {
+    let res = 0;
+    while (A !== 0 || B !== 0) {
+        if ((A & 1) !== (B & 1)) {
+            res++;
+        }
+        A >>>= 1;
+        B >>>= 1;
+    }
+    return res;
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn convert_integer(a: i32, b: i32) -> i32 {
+        (a ^ b).count_ones() as i32
+    }
+}
+```
+
 ### **...**
 
 ```
+
 
 ```
 

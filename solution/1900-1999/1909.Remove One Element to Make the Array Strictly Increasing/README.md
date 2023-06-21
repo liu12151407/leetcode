@@ -1,4 +1,4 @@
-# [1909. 删除一个元素使数组严格递增](https://leetcode-cn.com/problems/remove-one-element-to-make-the-array-strictly-increasing)
+# [1909. 删除一个元素使数组严格递增](https://leetcode.cn/problems/remove-one-element-to-make-the-array-strictly-increasing)
 
 [English Version](/solution/1900-1999/1909.Remove%20One%20Element%20to%20Make%20the%20Array%20Strictly%20Increasing/README_EN.md)
 
@@ -69,7 +69,7 @@
 class Solution:
     def canBeIncreasing(self, nums: List[int]) -> bool:
         def check(nums, i):
-            prev = float('-inf')
+            prev = -inf
             for j, num in enumerate(nums):
                 if i == j:
                     continue
@@ -92,7 +92,8 @@ class Solution:
 class Solution {
     public boolean canBeIncreasing(int[] nums) {
         int i = 1, n = nums.length;
-        for (; i < n && nums[i - 1] < nums[i]; ++i);
+        for (; i < n && nums[i - 1] < nums[i]; ++i)
+            ;
         return check(nums, i - 1) || check(nums, i);
     }
 
@@ -119,7 +120,8 @@ class Solution {
 public:
     bool canBeIncreasing(vector<int>& nums) {
         int i = 1, n = nums.size();
-        for (; i < n && nums[i - 1] < nums[i]; ++i);
+        for (; i < n && nums[i - 1] < nums[i]; ++i)
+            ;
         return check(nums, i - 1) || check(nums, i);
     }
 

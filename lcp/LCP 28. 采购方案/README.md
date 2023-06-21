@@ -1,4 +1,4 @@
-# [LCP 28. 采购方案](https://leetcode-cn.com/problems/4xy4Wx)
+# [LCP 28. 采购方案](https://leetcode.cn/problems/4xy4Wx)
 
 ## 题目描述
 
@@ -30,8 +30,8 @@
 
 **提示：**
 
-- `2 <= nums.length <= 10^5`
-- `1 <= nums[i], target <= 10^5`
+-   `2 <= nums.length <= 10^5`
+-   `1 <= nums[i], target <= 10^5`
 
 ## 解法
 
@@ -53,7 +53,7 @@ class Solution:
             if nums[i] + nums[j] > target:
                 j -= 1
             else:
-                res += (j - i)
+                res += j - i
                 i += 1
         return res % 1000000007
 ```
@@ -89,12 +89,11 @@ public:
         const int MOD = 1000000007;
         sort(nums.begin(), nums.end());
         int res = 0;
-        for (int i = 0, j = nums.size() - 1; i < j; ++i)
-        {
+        for (int i = 0, j = nums.size() - 1; i < j; ++i) {
             while (i < j && nums[i] + nums[j] > target) --j;
-            if (i < j)  res = (res + j - i) % MOD;
+            if (i < j) res = (res + j - i) % MOD;
         }
-        return res;
+        return res % MOD;
     }
 };
 ```

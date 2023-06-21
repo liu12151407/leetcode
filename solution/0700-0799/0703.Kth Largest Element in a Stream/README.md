@@ -1,4 +1,4 @@
-# [703. 数据流中的第 K 大元素](https://leetcode-cn.com/problems/kth-largest-element-in-a-stream)
+# [703. 数据流中的第 K 大元素](https://leetcode.cn/problems/kth-largest-element-in-a-stream)
 
 [English Version](/solution/0700-0799/0703.Kth%20Largest%20Element%20in%20a%20Stream/README_EN.md)
 
@@ -61,7 +61,6 @@ kthLargest.add(4);   // return 8
 
 ```python
 class KthLargest:
-
     def __init__(self, k: int, nums: List[int]):
         self.q = []
         self.size = k
@@ -69,9 +68,9 @@ class KthLargest:
             self.add(num)
 
     def add(self, val: int) -> int:
-        heapq.heappush(self.q, val)
+        heappush(self.q, val)
         if len(self.q) > self.size:
-            heapq.heappop(self.q)
+            heappop(self.q)
         return self.q[0]
 
 
@@ -147,7 +146,7 @@ public:
  * @param {number} k
  * @param {number[]} nums
  */
-var KthLargest = function(k, nums) {
+var KthLargest = function (k, nums) {
     this.k = k;
     this.heap = new MinHeap();
     for (let num of nums) {
@@ -155,11 +154,11 @@ var KthLargest = function(k, nums) {
     }
 };
 
-/** 
+/**
  * @param {number} val
  * @return {number}
  */
-KthLargest.prototype.add = function(val) {
+KthLargest.prototype.add = function (val) {
     this.heap.offer(val);
     if (this.heap.size() > this.k) {
         this.heap.poll();
@@ -177,7 +176,7 @@ class MinHeap {
     heapify() {
         if (this.size() < 2) return;
         for (let i = 1; i < this.size(); i++) {
-        this.bubbleUp(i);
+            this.bubbleUp(i);
         }
     }
 
@@ -243,8 +242,11 @@ class MinHeap {
         }
     }
 
-  swap(index1, index2) {
-        [this.data[index1], this.data[index2]] = [this.data[index2], this.data[index1]];
+    swap(index1, index2) {
+        [this.data[index1], this.data[index2]] = [
+            this.data[index2],
+            this.data[index1],
+        ];
     }
 
     size() {

@@ -6,16 +6,16 @@
 
 <p>Given a <strong>non-empty</strong>&nbsp;array of integers <code>nums</code>, every element appears <em>twice</em> except for one. Find that single one.</p>
 
-<p><strong>Follow up:</strong>&nbsp;Could you implement a solution with a linear runtime complexity and without using extra memory?</p>
+<p>You must&nbsp;implement a solution with a linear runtime complexity and use&nbsp;only constant&nbsp;extra space.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 <pre><strong>Input:</strong> nums = [2,2,1]
 <strong>Output:</strong> 1
-</pre><p><strong>Example 2:</strong></p>
+</pre><p><strong class="example">Example 2:</strong></p>
 <pre><strong>Input:</strong> nums = [4,1,2,1,2]
 <strong>Output:</strong> 4
-</pre><p><strong>Example 3:</strong></p>
+</pre><p><strong class="example">Example 3:</strong></p>
 <pre><strong>Input:</strong> nums = [1]
 <strong>Output:</strong> 1
 </pre>
@@ -37,10 +37,7 @@
 ```python
 class Solution:
     def singleNumber(self, nums: List[int]) -> int:
-        res = 0
-        for num in nums:
-            res ^= num
-        return res
+        return reduce(xor, nums)
 ```
 
 ### **Java**
@@ -48,12 +45,46 @@ class Solution:
 ```java
 class Solution {
     public int singleNumber(int[] nums) {
-        int res = 0;
-        for (int num : nums) {
-            res ^= num;
+        int ans = 0;
+        for (int v : nums) {
+            ans ^= v;
         }
-        return res;
+        return ans;
     }
+}
+```
+
+```java
+class Solution {
+    public int singleNumber(int[] nums) {
+        return Arrays.stream(nums).reduce(0, (a, b) -> a ^ b);
+    }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int ans = 0;
+        for (int v : nums) {
+            ans ^= v;
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func singleNumber(nums []int) (ans int) {
+	for _, v := range nums {
+		ans ^= v
+	}
+	return
 }
 ```
 
@@ -65,51 +96,56 @@ class Solution {
  * @return {number}
  */
 var singleNumber = function (nums) {
-    let res = 0;
-    for (let num of nums) {
-        res ^= num;
-    }
-    return res;
+    return nums.reduce((a, b) => a ^ b);
 };
 ```
 
-### **Go**
+### **TypeScript**
 
-```go
-func singleNumber(nums []int) int {
-	res := 0
-	for _, v := range nums {
-		res ^= v
-	}
-	return res
+```ts
+function singleNumber(nums: number[]): number {
+    return nums.reduce((r, v) => r ^ v);
 }
-```
-
-### **C++**
-
-```cpp
-class Solution {
-public:
-    int singleNumber(vector<int>& nums) {
-        int res = 0;
-        for (auto num : nums) {
-            res ^= num;
-        }
-        return res;
-    }
-};
 ```
 
 ### **Rust**
 
-```Rust
+```rust
 impl Solution {
     pub fn single_number(nums: Vec<i32>) -> i32 {
-        let mut result = 0;
-        for num in nums {
-            result ^= num;
-        }
-        result
+        nums.into_iter().reduce(|r, v| r ^ v).unwrap()
+    }
+}
+```
+
+### **C**
+
+```c
+int singleNumber(int* nums, int numsSize) {
+    int ans = 0;
+    for (int i = 0; i < numsSize; i++) {
+        ans ^= nums[i];
+    }
+    return ans;
+}
+```
+
+### **Swift**
+
+```swift
+class Solution {
+    func singleNumber(_ nums: [Int]) -> Int {
+        return nums.reduce(0, ^)
+    }
+}
+```
+
+### **C#**
+
+```cs
+public class Solution {
+    public int SingleNumber(int[] nums) {
+        return nums.Aggregate(0, (a, b) => a ^ b);
     }
 }
 ```

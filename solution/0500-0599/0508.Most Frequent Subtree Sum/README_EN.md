@@ -4,53 +4,32 @@
 
 ## Description
 
-<p>
+<p>Given the <code>root</code> of a binary tree, return the most frequent <strong>subtree sum</strong>. If there is a tie, return all the values with the highest frequency in any order.</p>
 
-Given the root of a tree, you are asked to find the most frequent subtree sum. The subtree sum of a node is defined as the sum of all the node values formed by the subtree rooted at that node (including the node itself). So what is the most frequent subtree sum value? If there is a tie, return all the values with the highest frequency in any order.
+<p>The <strong>subtree sum</strong> of a node is defined as the sum of all the node values formed by the subtree rooted at that node (including the node itself).</p>
 
-</p>
-
-<p><b>Examples 1</b><br>
-
-Input:
-
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0508.Most%20Frequent%20Subtree%20Sum/images/freq1-tree.jpg" style="width: 207px; height: 183px;" />
 <pre>
-
-  5
-
- /  \
-
-2   -3
-
+<strong>Input:</strong> root = [5,2,-3]
+<strong>Output:</strong> [2,-3,4]
 </pre>
 
-return [2, -3, 4], since all the values happen only once, return all of them in any order.
-
-</p>
-
-<p><b>Examples 2</b><br>
-
-Input:
-
+<p><strong class="example">Example 2:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0508.Most%20Frequent%20Subtree%20Sum/images/freq2-tree.jpg" style="width: 207px; height: 183px;" />
 <pre>
-
-  5
-
- /  \
-
-2   -5
-
+<strong>Input:</strong> root = [5,2,-5]
+<strong>Output:</strong> [2]
 </pre>
 
-return [2], since 2 happens twice, however -5 only occur once.
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
 
-</p>
-
-<p><b>Note:</b>
-
-You may assume the sum of values in any subtree is in the range of 32-bit signed integer.
-
-</p>
+<ul>
+	<li>The number of nodes in the tree is in the range <code>[1, 10<sup>4</sup>]</code>.</li>
+	<li><code>-10<sup>5</sup> &lt;= Node.val &lt;= 10<sup>5</sup></code></li>
+</ul>
 
 ## Solutions
 
@@ -205,6 +184,102 @@ func findFrequentTreeSum(root *TreeNode) []int {
 		}
 	}
 	return ans
+}
+```
+
+### **TypeScript**
+
+```ts
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function findFrequentTreeSum(root: TreeNode | null): number[] {
+    const map = new Map<number, number>();
+    let max = 0;
+    const dfs = (root: TreeNode | null) => {
+        if (root == null) {
+            return 0;
+        }
+        const { val, left, right } = root;
+        const sum = val + dfs(left) + dfs(right);
+        map.set(sum, (map.get(sum) ?? 0) + 1);
+        max = Math.max(max, map.get(sum));
+        return sum;
+    };
+    dfs(root);
+    const res = [];
+    for (const [k, v] of map) {
+        if (v === max) {
+            res.push(k);
+        }
+    }
+    return res;
+}
+```
+
+### **Rust**
+
+```rust
+// Definition for a binary tree node.
+// #[derive(Debug, PartialEq, Eq)]
+// pub struct TreeNode {
+//   pub val: i32,
+//   pub left: Option<Rc<RefCell<TreeNode>>>,
+//   pub right: Option<Rc<RefCell<TreeNode>>>,
+// }
+//
+// impl TreeNode {
+//   #[inline]
+//   pub fn new(val: i32) -> Self {
+//     TreeNode {
+//       val,
+//       left: None,
+//       right: None
+//     }
+//   }
+// }
+use std::rc::Rc;
+use std::cell::RefCell;
+use std::collections::HashMap;
+impl Solution {
+    fn dfs(
+        root: &Option<Rc<RefCell<TreeNode>>>,
+        map: &mut HashMap<i32, i32>,
+        max: &mut i32,
+    ) -> i32 {
+        if root.is_none() {
+            return 0;
+        }
+        let node = root.as_ref().unwrap().borrow();
+        let sum = node.val + Self::dfs(&node.left, map, max) + Self::dfs(&node.right, map, max);
+        map.insert(sum, map.get(&sum).unwrap_or(&0) + 1);
+        *max = (*max).max(map[&sum]);
+        sum
+    }
+
+    pub fn find_frequent_tree_sum(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
+        let mut map = HashMap::new();
+        let mut max = 0;
+        let mut res = Vec::new();
+        Self::dfs(&root, &mut map, &mut max);
+        for (k, v) in map.into_iter() {
+            if v == max {
+                res.push(k);
+            }
+        }
+        res
+    }
 }
 ```
 

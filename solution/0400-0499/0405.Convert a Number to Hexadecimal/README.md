@@ -1,4 +1,4 @@
-# [405. 数字转换为十六进制数](https://leetcode-cn.com/problems/convert-a-number-to-hexadecimal)
+# [405. 数字转换为十六进制数](https://leetcode.cn/problems/convert-a-number-to-hexadecimal)
 
 [English Version](/solution/0400-0499/0405.Convert%20a%20Number%20to%20Hexadecimal/README_EN.md)
 
@@ -57,7 +57,7 @@ class Solution:
         chars = '0123456789abcdef'
         s = []
         for i in range(7, -1, -1):
-            x = (num >> (4 * i)) & 0xf
+            x = (num >> (4 * i)) & 0xF
             if s or x != 0:
                 s.append(chars[x])
         return ''.join(s)
@@ -115,11 +115,9 @@ public:
     string toHex(int num) {
         if (num == 0) return "0";
         string s = "";
-        for (int i = 7; i >= 0; --i)
-        {
+        for (int i = 7; i >= 0; --i) {
             int x = (num >> (4 * i)) & 0xf;
-            if (s.size() > 0 || x != 0)
-            {
+            if (s.size() > 0 || x != 0) {
                 char c = x < 10 ? (char) (x + '0') : (char) (x - 10 + 'a');
                 s += c;
             }

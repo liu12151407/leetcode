@@ -1,4 +1,4 @@
-# [LCP 02. 分式化简](https://leetcode-cn.com/problems/deep-dark-fraction)
+# [LCP 02. 分式化简](https://leetcode.cn/problems/deep-dark-fraction)
 
 ## 题目描述
 
@@ -6,7 +6,7 @@
 
 <p>有一个同学在学习分式。他需要将一个连分数化成最简分数，你能帮助他吗？</p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcp/LCP%2002.%20分式化简/images/fraction_example_1.jpg" style="height: 195px; width: 480px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcp/LCP%2002.%20分式化简/images/fraction_example_1.jpg" style="height: 195px; width: 480px;" /></p>
 
 <p>连分数是形如上图的分式。在本题中，所有系数都是大于等于0的整数。</p>
 
@@ -52,7 +52,15 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
+class Solution:
+    def fraction(self, cont: List[int]) -> List[int]:
+        def dfs(cont):
+            if len(cont) == 1:
+                return [cont[0], 1]
+            a, b = dfs(cont[1:])
+            return [a * cont[0] + b, a]
 
+        return dfs(cont)
 ```
 
 ### **Java**
@@ -60,7 +68,74 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public int[] fraction(int[] cont) {
+        return dfs(cont, 0);
+    }
 
+    private int[] dfs(int[] cont, int i) {
+        if (i == cont.length - 1) {
+            return new int[] {cont[i], 1};
+        }
+        int[] ans = dfs(cont, i + 1);
+        int a = ans[0], b = ans[1];
+        return new int[] {a * cont[i] + b, a};
+    }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    vector<int> fraction(vector<int>& cont) {
+        return dfs(cont, 0);
+    }
+
+    vector<int> dfs(vector<int>& cont, int i) {
+        if (i == cont.size() - 1) return {cont[i], 1};
+        vector<int> ans = dfs(cont, i + 1);
+        int a = ans[0], b = ans[1];
+        return {a * cont[i] + b, a};
+    }
+};
+```
+
+### **Go**
+
+```go
+func fraction(cont []int) []int {
+	var dfs func(i int) []int
+	dfs = func(i int) []int {
+		if i == len(cont)-1 {
+			return []int{cont[i], 1}
+		}
+		ans := dfs(i + 1)
+		a, b := ans[0], ans[1]
+		return []int{a*cont[i] + b, a}
+	}
+	return dfs(0)
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number[]} cont
+ * @return {number[]}
+ */
+var fraction = function (cont) {
+    function dfs(i) {
+        if (i === cont.length - 1) {
+            return [cont[i], 1];
+        }
+        const [a, b] = dfs(i + 1);
+        return [a * cont[i] + b, a];
+    }
+    return dfs(0);
+};
 ```
 
 ### **...**

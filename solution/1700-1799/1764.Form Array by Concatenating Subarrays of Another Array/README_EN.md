@@ -13,7 +13,7 @@
 <p>Note that the subarrays are <strong>disjoint</strong> if and only if there is no index <code>k</code> such that <code>nums[k]</code> belongs to more than one subarray. A subarray is a contiguous sequence of elements within an array.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> groups = [[1,-1,-1],[3,-2,0]], nums = [1,-1,0,1,-1,-1,3,-2,0]
@@ -22,7 +22,7 @@
 These subarrays are disjoint as they share no common nums[k] element.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> groups = [[10,-2],[1,2,3,4]], nums = [1,2,3,4,10,-2]
@@ -31,7 +31,7 @@ These subarrays are disjoint as they share no common nums[k] element.
 [10,-2] must come before [1,2,3,4].
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> groups = [[1,2,3],[3,4]], nums = [7,7,1,2,3,4,7,7]
@@ -58,13 +58,108 @@ They share a common elements nums[4] (0-indexed).
 ### **Python3**
 
 ```python
-
+class Solution:
+    def canChoose(self, groups: List[List[int]], nums: List[int]) -> bool:
+        n, m = len(groups), len(nums)
+        i = j = 0
+        while i < n and j < m:
+            g = groups[i]
+            if g == nums[j : j + len(g)]:
+                j += len(g)
+                i += 1
+            else:
+                j += 1
+        return i == n
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public boolean canChoose(int[][] groups, int[] nums) {
+        int n = groups.length, m = nums.length;
+        int i = 0;
+        for (int j = 0; i < n && j < m;) {
+            if (check(groups[i], nums, j)) {
+                j += groups[i].length;
+                ++i;
+            } else {
+                ++j;
+            }
+        }
+        return i == n;
+    }
 
+    private boolean check(int[] a, int[] b, int j) {
+        int m = a.length, n = b.length;
+        int i = 0;
+        for (; i < m && j < n; ++i, ++j) {
+            if (a[i] != b[j]) {
+                return false;
+            }
+        }
+        return i == m;
+    }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool canChoose(vector<vector<int>>& groups, vector<int>& nums) {
+        auto check = [&](vector<int>& a, vector<int>& b, int j) {
+            int m = a.size(), n = b.size();
+            int i = 0;
+            for (; i < m && j < n; ++i, ++j) {
+                if (a[i] != b[j]) {
+                    return false;
+                }
+            }
+            return i == m;
+        };
+        int n = groups.size(), m = nums.size();
+        int i = 0;
+        for (int j = 0; i < n && j < m;) {
+            if (check(groups[i], nums, j)) {
+                j += groups[i].size();
+                ++i;
+            } else {
+                ++j;
+            }
+        }
+        return i == n;
+    }
+};
+```
+
+### **Go**
+
+```go
+func canChoose(groups [][]int, nums []int) bool {
+	check := func(a, b []int, j int) bool {
+		m, n := len(a), len(b)
+		i := 0
+		for ; i < m && j < n; i, j = i+1, j+1 {
+			if a[i] != b[j] {
+				return false
+			}
+		}
+		return i == m
+	}
+	n, m := len(groups), len(nums)
+	i := 0
+	for j := 0; i < n && j < m; {
+		if check(groups[i], nums, j) {
+			j += len(groups[i])
+			i++
+		} else {
+			j++
+		}
+	}
+	return i == n
+}
 ```
 
 ### **...**

@@ -11,7 +11,7 @@
 <p>An integer <code>x</code> is covered by an interval <code>ranges[i] = [start<sub>i</sub>, end<sub>i</sub>]</code> if <code>start<sub>i</sub> &lt;= x &lt;= end<sub>i</sub></code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> ranges = [[1,2],[3,4],[5,6]], left = 2, right = 5
@@ -22,7 +22,7 @@
 - 5 is covered by the third range.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> ranges = [[1,10],[10,20]], left = 21, right = 21
@@ -55,8 +55,8 @@ class Solution:
             diff[l] += 1
             diff[r + 1] -= 1
         cur = 0
-        for i, df in enumerate(diff):
-            cur += df
+        for i, x in enumerate(diff):
+            cur += x
             if left <= i <= right and cur == 0:
                 return False
         return True
@@ -69,58 +69,19 @@ class Solution {
     public boolean isCovered(int[][] ranges, int left, int right) {
         int[] diff = new int[52];
         for (int[] range : ranges) {
-            diff[range[0]]++;
-            diff[range[1] + 1]--;
+            int l = range[0], r = range[1];
+            ++diff[l];
+            --diff[r + 1];
         }
         int cur = 0;
-        for (int i = 0; i < 52; i++) {
+        for (int i = 0; i < diff.length; ++i) {
             cur += diff[i];
-            if (left <= i && i <= right && cur == 0) {
+            if (i >= left && i <= right && cur == 0) {
                 return false;
             }
         }
         return true;
     }
-}
-```
-
-### **TypeScript**
-
-```ts
-function isCovered(ranges: number[][], left: number, right: number): boolean {
-    let diff = new Array(52).fill(0);
-    for (let [start, end] of ranges) {
-        ++diff[start];
-        --diff[end + 1];
-    }
-    let cur = 0;
-    for (let i = 1; i <= 50; i++) {
-        cur += diff[i];
-        if (i >= left && i <= right && cur <= 0) {
-            return false;
-        }
-    }
-    return true;
-}
-```
-
-### **Go**
-
-```go
-func isCovered(ranges [][]int, left int, right int) bool {
-	diff := make([]int, 52)
-	for _, rg := range ranges {
-		diff[rg[0]]++
-		diff[rg[1]+1]--
-	}
-	cur := 0
-	for i, df := range diff {
-		cur += df
-		if i >= left && i <= right && cur == 0 {
-			return false
-		}
-	}
-	return true
 }
 ```
 
@@ -130,20 +91,88 @@ func isCovered(ranges [][]int, left int, right int) bool {
 class Solution {
 public:
     bool isCovered(vector<vector<int>>& ranges, int left, int right) {
-        vector<int> d(52);
-        for (auto& e : ranges)
-        {
-            ++d[e[0]];
-            --d[e[1] + 1];
+        int diff[52]{};
+        for (auto& range : ranges) {
+            int l = range[0], r = range[1];
+            ++diff[l];
+            --diff[r + 1];
         }
-        int s = 0;
-        for (int i = 0; i < d.size(); ++i)
-        {
-            s += d[i];
-            if (left <= i && i <= right && s == 0) return false;
+        int cur = 0;
+        for (int i = 0; i < 52; ++i) {
+            cur += diff[i];
+            if (i >= left && i <= right && cur <= 0) {
+                return false;
+            }
         }
         return true;
     }
+};
+```
+
+### **Go**
+
+```go
+func isCovered(ranges [][]int, left int, right int) bool {
+	diff := [52]int{}
+	for _, rg := range ranges {
+		l, r := rg[0], rg[1]
+		diff[l]++
+		diff[r+1]--
+	}
+	cur := 0
+	for i, x := range diff {
+		cur += x
+		if i >= left && i <= right && cur <= 0 {
+			return false
+		}
+	}
+	return true
+}
+```
+
+### **TypeScript**
+
+```ts
+function isCovered(ranges: number[][], left: number, right: number): boolean {
+    const diff = new Array(52).fill(0);
+    for (const [l, r] of ranges) {
+        ++diff[l];
+        --diff[r + 1];
+    }
+    let cur = 0;
+    for (let i = 0; i < 52; ++i) {
+        cur += diff[i];
+        if (i >= left && i <= right && cur <= 0) {
+            return false;
+        }
+    }
+    return true;
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number[][]} ranges
+ * @param {number} left
+ * @param {number} right
+ * @return {boolean}
+ */
+var isCovered = function (ranges, left, right) {
+    const diff = new Array(52).fill(0);
+    for (const [l, r] of ranges) {
+        ++diff[l];
+        --diff[r + 1];
+    }
+    let cur = 0;
+    for (let i = 0; i < 52; ++i) {
+        cur += diff[i];
+        if (i >= left && i <= right && cur <= 0) {
+            return false;
+        }
+    }
+    return true;
 };
 ```
 

@@ -1,4 +1,4 @@
-# [145. 二叉树的后序遍历](https://leetcode-cn.com/problems/binary-tree-postorder-traversal)
+# [145. 二叉树的后序遍历](https://leetcode.cn/problems/binary-tree-postorder-traversal)
 
 [English Version](/solution/0100-0199/0145.Binary%20Tree%20Postorder%20Traversal/README_EN.md)
 
@@ -6,20 +6,43 @@
 
 <!-- 这里写题目描述 -->
 
-<p>给定一个二叉树，返回它的 <em>后序&nbsp;</em>遍历。</p>
+<p>给你一棵二叉树的根节点 <code>root</code> ，返回其节点值的 <strong>后序遍历 </strong>。</p>
 
-<p><strong>示例:</strong></p>
+<p>&nbsp;</p>
 
-<pre><strong>输入:</strong> [1,null,2,3]  
-   1
-    \
-     2
-    /
-   3 
+<p><strong>示例 1：</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0145.Binary%20Tree%20Postorder%20Traversal/images/pre1.jpg" style="width: 127px; height: 200px;" />
+<pre>
+<strong>输入：</strong>root = [1,null,2,3]
+<strong>输出：</strong>[3,2,1]
+</pre>
 
-<strong>输出:</strong> [3,2,1]</pre>
+<p><strong>示例 2：</strong></p>
 
-<p><strong>进阶:</strong>&nbsp;递归算法很简单，你可以通过迭代算法完成吗？</p>
+<pre>
+<strong>输入：</strong>root = []
+<strong>输出：</strong>[]
+</pre>
+
+<p><strong>示例 3：</strong></p>
+
+<pre>
+<strong>输入：</strong>root = [1]
+<strong>输出：</strong>[1]
+</pre>
+
+<p>&nbsp;</p>
+
+<p><strong>提示：</strong></p>
+
+<ul>
+	<li>树中节点的数目在范围 <code>[0, 100]</code> 内</li>
+	<li><code>-100 &lt;= Node.val &lt;= 100</code></li>
+</ul>
+
+<p>&nbsp;</p>
+
+<p><strong>进阶：</strong>递归算法很简单，你可以通过迭代算法完成吗？</p>
 
 ## 解法
 
@@ -306,6 +329,71 @@ function postorderTraversal(root: TreeNode | null): number[] {
 }
 ```
 
+```ts
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function postorderTraversal(root: TreeNode | null): number[] {
+    if (root == null) {
+        return [];
+    }
+    const { val, left, right } = root;
+    return [...postorderTraversal(left), ...postorderTraversal(right), val];
+}
+```
+
+```ts
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function postorderTraversal(root: TreeNode | null): number[] {
+    const res = [];
+    while (root != null) {
+        const { val, left, right } = root;
+        if (right == null) {
+            res.push(val);
+            root = left;
+        } else {
+            let next = right;
+            while (next.left != null && next.left != root) {
+                next = next.left;
+            }
+            if (next.left == null) {
+                res.push(val);
+                next.left = root;
+                root = right;
+            } else {
+                next.left = null;
+                root = left;
+            }
+        }
+    }
+    return res.reverse();
+}
+```
+
 ### **C++**
 
 ```cpp
@@ -324,28 +412,20 @@ class Solution {
 public:
     vector<int> postorderTraversal(TreeNode* root) {
         vector<int> ans;
-        while (root)
-        {
-            if (!root->right)
-            {
+        while (root) {
+            if (!root->right) {
                 ans.push_back(root->val);
                 root = root->left;
-            }
-            else
-            {
+            } else {
                 TreeNode* next = root->right;
-                while (next->left && next->left != root)
-                {
+                while (next->left && next->left != root) {
                     next = next->left;
                 }
-                if (!next->left)
-                {
+                if (!next->left) {
                     ans.push_back(root->val);
                     next->left = root;
                     root = root->right;
-                }
-                else
-                {
+                } else {
                     next->left = nullptr;
                     root = root->left;
                 }
@@ -390,6 +470,94 @@ func postorderTraversal(root *TreeNode) []int {
 		}
 	}
 	return ans
+}
+```
+
+### **Rust**
+
+```rust
+// Definition for a binary tree node.
+// #[derive(Debug, PartialEq, Eq)]
+// pub struct TreeNode {
+//   pub val: i32,
+//   pub left: Option<Rc<RefCell<TreeNode>>>,
+//   pub right: Option<Rc<RefCell<TreeNode>>>,
+// }
+//
+// impl TreeNode {
+//   #[inline]
+//   pub fn new(val: i32) -> Self {
+//     TreeNode {
+//       val,
+//       left: None,
+//       right: None
+//     }
+//   }
+// }
+use std::rc::Rc;
+use std::cell::RefCell;
+impl Solution {
+    fn dfs(root: &Option<Rc<RefCell<TreeNode>>>, res: &mut Vec<i32>) {
+        if root.is_none() {
+            return;
+        }
+        let node = root.as_ref().unwrap().borrow();
+        Self::dfs(&node.left, res);
+        Self::dfs(&node.right, res);
+        res.push(node.val);
+    }
+
+    pub fn postorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
+        let mut res = vec![];
+        Self::dfs(&root, &mut res);
+        res
+    }
+}
+```
+
+```rust
+// Definition for a binary tree node.
+// #[derive(Debug, PartialEq, Eq)]
+// pub struct TreeNode {
+//   pub val: i32,
+//   pub left: Option<Rc<RefCell<TreeNode>>>,
+//   pub right: Option<Rc<RefCell<TreeNode>>>,
+// }
+//
+// impl TreeNode {
+//   #[inline]
+//   pub fn new(val: i32) -> Self {
+//     TreeNode {
+//       val,
+//       left: None,
+//       right: None
+//     }
+//   }
+// }
+use std::rc::Rc;
+use std::cell::RefCell;
+impl Solution {
+    pub fn postorder_traversal(mut root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
+        let mut res = vec![];
+        let mut stack = vec![];
+        while root.is_some() || !stack.is_empty() {
+            if root.is_some() {
+                let next = root.as_mut().unwrap().borrow_mut().left.take();
+                stack.push(root);
+                root = next;
+            } else  {
+                root = stack.pop().unwrap();
+                let next = root.as_mut().unwrap().borrow_mut().right.take();
+                if next.is_some() {
+                    stack.push(root);
+                } else {
+                    res.push(root.as_ref().unwrap().borrow().val);
+                }
+                root = next;
+            }
+        }
+        res
+    }
 }
 ```
 

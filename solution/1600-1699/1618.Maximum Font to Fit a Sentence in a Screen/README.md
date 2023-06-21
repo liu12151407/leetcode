@@ -1,4 +1,4 @@
-# [1618. 找出适应屏幕的最大字号](https://leetcode-cn.com/problems/maximum-font-to-fit-a-sentence-in-a-screen)
+# [1618. 找出适应屏幕的最大字号](https://leetcode.cn/problems/maximum-font-to-fit-a-sentence-in-a-screen)
 
 [English Version](/solution/1600-1699/1618.Maximum%20Font%20to%20Fit%20a%20Sentence%20in%20a%20Screen/README_EN.md)
 
@@ -75,7 +75,13 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
-二分查找，见[整数二分算法模板 2](/basic/searching/BinarySearch/README.md)。
+**方法一：二分查找**
+
+根据题目描述，字体数组按升序排列。因此，我们可以二分枚举字体大小 `fontSize`，找到最大的并且能够在屏幕上显示文本字体大小即可。
+
+时间复杂度 $O(m\log n)$。其中 $m$, $n$ 为文本 `text` 的长度以及字体大小 `fonts` 个数。
+
+关于二分查找，见[整数二分算法模板 2](/basic/searching/BinarySearch/README.md)。
 
 <!-- tabs:start -->
 
@@ -88,7 +94,7 @@
 # This is FontInfo's API interface.
 # You should not implement it, or speculate about its implementation
 # """
-#class FontInfo(object):
+# class FontInfo(object):
 #    Return the width of char ch when fontSize is used.
 #    def getWidth(self, fontSize, ch):
 #        """
@@ -103,26 +109,23 @@
 #        :rtype int
 #        """
 class Solution:
-    def maxFont(self, text: str, w: int, h: int, fonts: List[int], fontInfo : 'FontInfo') -> int:
-        def check(text, fontSize, w, h, fontInfo) -> bool:
-            if fontInfo.getHeight(fontSize) > h:
+    def maxFont(
+        self, text: str, w: int, h: int, fonts: List[int], fontInfo: 'FontInfo'
+    ) -> int:
+        def check(size):
+            if fontInfo.getHeight(size) > h:
                 return False
-            width = 0
-            for ch in text:
-                width += fontInfo.getWidth(fontSize, ch)
-                if width > w:
-                    return False
-            return True
+            return sum(fontInfo.getWidth(size, c) for c in text) <= w
 
         left, right = 0, len(fonts) - 1
+        ans = -1
         while left < right:
             mid = (left + right + 1) >> 1
-            fontSize = fonts[mid]
-            if check(text, fontSize, w, h, fontInfo):
+            if check(fonts[mid]):
                 left = mid
             else:
                 right = mid - 1
-        return fonts[left] if check(text, fonts[left], w, h, fontInfo) else -1
+        return fonts[left] if check(fonts[left]) else -1
 ```
 
 ### **Java**
@@ -145,8 +148,7 @@ class Solution {
         int left = 0, right = fonts.length - 1;
         while (left < right) {
             int mid = (left + right + 1) >> 1;
-            int fontSize = fonts[mid];
-            if (check(text, fontSize, w, h, fontInfo)) {
+            if (check(text, fonts[mid], w, h, fontInfo)) {
                 left = mid;
             } else {
                 right = mid - 1;
@@ -155,19 +157,15 @@ class Solution {
         return check(text, fonts[left], w, h, fontInfo) ? fonts[left] : -1;
     }
 
-    private boolean check(String s, int fontSize, int w, int h, FontInfo fontInfo) {
-        if (fontInfo.getHeight(fontSize) > h) {
+    private boolean check(String text, int size, int w, int h, FontInfo fontInfo) {
+        if (fontInfo.getHeight(size) > h) {
             return false;
         }
         int width = 0;
-        for (int i = 0; i < s.length(); ++i) {
-            char ch = s.charAt(i);
-            width += fontInfo.getWidth(fontSize, ch);
-            if (width > w) {
-                return false;
-            }
+        for (char c : text.toCharArray()) {
+            width += fontInfo.getWidth(size, c);
         }
-        return true;
+        return width <= w;
     }
 }
 ```
@@ -190,33 +188,80 @@ class Solution {
 class Solution {
 public:
     int maxFont(string text, int w, int h, vector<int>& fonts, FontInfo fontInfo) {
+        auto check = [&](int size) {
+            if (fontInfo.getHeight(size) > h) return false;
+            int width = 0;
+            for (char& c : text) {
+                width += fontInfo.getWidth(size, c);
+            }
+            return width <= w;
+        };
         int left = 0, right = fonts.size() - 1;
         while (left < right) {
-            int mid = left + right + 1 >> 1;
-            int fontSize = fonts[mid];
-            if (check(text, fontSize, w, h, fontInfo)) {
+            int mid = (left + right + 1) >> 1;
+            if (check(fonts[mid])) {
                 left = mid;
             } else {
                 right = mid - 1;
             }
         }
-        return check(text, fonts[left], w, h, fontInfo) ? fonts[left] : -1;
+        return check(fonts[left]) ? fonts[left] : -1;
     }
+};
+```
 
-private:
-    bool check(string s, int fontSize, int w, int h, FontInfo fontInfo) {
-        if (fontInfo.getHeight(fontSize) > h) {
+### **JavaScript**
+
+```js
+/**
+ * // This is the FontInfo's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * function FontInfo() {
+ *
+ *		@param {number} fontSize
+ *		@param {char} ch
+ *     	@return {number}
+ *     	this.getWidth = function(fontSize, ch) {
+ *      	...
+ *     	};
+ *
+ *		@param {number} fontSize
+ *     	@return {number}
+ *     	this.getHeight = function(fontSize) {
+ *      	...
+ *     	};
+ * };
+ */
+/**
+ * @param {string} text
+ * @param {number} w
+ * @param {number} h
+ * @param {number[]} fonts
+ * @param {FontInfo} fontInfo
+ * @return {number}
+ */
+var maxFont = function (text, w, h, fonts, fontInfo) {
+    const check = function (size) {
+        if (fontInfo.getHeight(size) > h) {
             return false;
         }
-        int width = 0;
-        for (auto ch : s) {
-            width += fontInfo.getWidth(fontSize, ch);
-            if (width > w) {
-                return false;
-            }
+        let width = 0;
+        for (const c of text) {
+            width += fontInfo.getWidth(size, c);
         }
-        return true;
+        return width <= w;
+    };
+    let left = 0;
+    let right = fonts.length - 1;
+    while (left < right) {
+        const mid = (left + right + 1) >> 1;
+        if (check(fonts[mid])) {
+            left = mid;
+        } else {
+            right = mid - 1;
+        }
     }
+    return check(fonts[left]) ? fonts[left] : -1;
 };
 ```
 

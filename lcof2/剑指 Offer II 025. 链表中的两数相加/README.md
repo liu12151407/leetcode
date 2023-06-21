@@ -1,4 +1,4 @@
-# [剑指 Offer II 025. 链表中的两数相加](https://leetcode-cn.com/problems/lMSNwu)
+# [剑指 Offer II 025. 链表中的两数相加](https://leetcode.cn/problems/lMSNwu)
 
 ## 题目描述
 
@@ -12,7 +12,7 @@
 
 <p><strong>示例1：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20025.%20%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/images/1626420025-fZfzMX-image.png" style="width: 302px; " /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20025.%20%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/images/1626420025-fZfzMX-image.png" style="width: 302px; " /></p>
 
 <pre>
 <strong>输入：</strong>l1 = [7,2,4,3], l2 = [5,6,4]
@@ -49,7 +49,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 445&nbsp;题相同：<a href="https://leetcode-cn.com/problems/add-two-numbers-ii/">https://leetcode-cn.com/problems/add-two-numbers-ii/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 445&nbsp;题相同：<a href="https://leetcode.cn/problems/add-two-numbers-ii/">https://leetcode.cn/problems/add-two-numbers-ii/</a></p>
 
 ## 解法
 
@@ -148,15 +148,12 @@ public:
         for (; l2; l2 = l2->next) s2.push(l2->val);
         int carry = 0;
         ListNode* dummy = new ListNode();
-        while (!s1.empty() || !s2.empty() || carry)
-        {
-            if (!s1.empty())
-            {
+        while (!s1.empty() || !s2.empty() || carry) {
+            if (!s1.empty()) {
                 carry += s1.top();
                 s1.pop();
             }
-            if (!s2.empty())
-            {
+            if (!s2.empty()) {
                 carry += s2.top();
                 s2.pop();
             }

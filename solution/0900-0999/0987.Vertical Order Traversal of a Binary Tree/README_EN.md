@@ -13,8 +13,8 @@
 <p>Return <em>the <strong>vertical order traversal</strong> of the binary tree</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0987.Vertical%20Order%20Traversal%20of%20a%20Binary%20Tree/images/vtree1.jpg" style="width: 431px; height: 304px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0987.Vertical%20Order%20Traversal%20of%20a%20Binary%20Tree/images/vtree1.jpg" style="width: 431px; height: 304px;" />
 <pre>
 <strong>Input:</strong> root = [3,9,20,null,null,15,7]
 <strong>Output:</strong> [[9],[3,15],[20],[7]]
@@ -24,8 +24,8 @@ Column 0: Nodes 3 and 15 are in this column in that order from top to bottom.
 Column 1: Only node 20 is in this column.
 Column 2: Only node 7 is in this column.</pre>
 
-<p><strong>Example 2:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0987.Vertical%20Order%20Traversal%20of%20a%20Binary%20Tree/images/vtree2.jpg" style="width: 512px; height: 304px;" />
+<p><strong class="example">Example 2:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0987.Vertical%20Order%20Traversal%20of%20a%20Binary%20Tree/images/vtree2.jpg" style="width: 512px; height: 304px;" />
 <pre>
 <strong>Input:</strong> root = [1,2,3,4,5,6,7]
 <strong>Output:</strong> [[4],[2],[1,5,6],[3],[7]]
@@ -39,8 +39,8 @@ Column 1: Only node 3 is in this column.
 Column 2: Only node 7 is in this column.
 </pre>
 
-<p><strong>Example 3:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0987.Vertical%20Order%20Traversal%20of%20a%20Binary%20Tree/images/vtree3.jpg" style="width: 512px; height: 304px;" />
+<p><strong class="example">Example 3:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0987.Vertical%20Order%20Traversal%20of%20a%20Binary%20Tree/images/vtree3.jpg" style="width: 512px; height: 304px;" />
 <pre>
 <strong>Input:</strong> root = [1,2,3,4,6,5,7]
 <strong>Output:</strong> [[4],[2],[1,5,6],[3],[7]]
@@ -123,7 +123,7 @@ class Solution {
         if (root == null) {
             return;
         }
-        list.add(new int[]{x, y, root.val});
+        list.add(new int[] {x, y, root.val});
         dfs(root.left, x - 1, y - 1, list);
         dfs(root.right, x + 1, y - 1, list);
     }
@@ -180,7 +180,7 @@ function dfs(
     root: TreeNode | null,
     depth: number,
     idx: number,
-    solution: Array<Array<number>>
+    solution: Array<Array<number>>,
 ) {
     if (!root) return;
     solution.push([root.val, depth, idx]);

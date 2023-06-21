@@ -7,13 +7,13 @@
 <p>Table: <code>Department</code></p>
 
 <pre>
-+---------------+---------+
-| Column Name   | Type    |
-+---------------+---------+
-| id            | int     |
-| revenue       | int     |
-| month         | varchar |
-+---------------+---------+
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| id          | int     |
+| revenue     | int     |
+| month       | varchar |
++-------------+---------+
 (id, month) is the primary key of this table.
 The table has information about the revenue of each department per month.
 The month has values in [&quot;Jan&quot;,&quot;Feb&quot;,&quot;Mar&quot;,&quot;Apr&quot;,&quot;May&quot;,&quot;Jun&quot;,&quot;Jul&quot;,&quot;Aug&quot;,&quot;Sep&quot;,&quot;Oct&quot;,&quot;Nov&quot;,&quot;Dec&quot;].
@@ -21,11 +21,17 @@ The month has values in [&quot;Jan&quot;,&quot;Feb&quot;,&quot;Mar&quot;,&quot;A
 
 <p>&nbsp;</p>
 
-<p>Write an SQL query to reformat the table such that there is a department id column&nbsp;and a revenue column <strong>for each month</strong>.</p>
+<p>Write an SQL query to reformat the table such that there is a department id column and a revenue column <strong>for each month</strong>.</p>
 
-<p>The query result format is in the following example:</p>
+<p>Return the result table in <strong>any order</strong>.</p>
+
+<p>The query result format is in the following example.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
+<strong>Input:</strong> 
 Department table:
 +------+---------+-------+
 | id   | revenue | month |
@@ -36,8 +42,7 @@ Department table:
 | 1    | 7000    | Feb   |
 | 1    | 6000    | Mar   |
 +------+---------+-------+
-
-Result table:
+<strong>Output:</strong> 
 +------+-------------+-------------+-------------+-----+-------------+
 | id   | Jan_Revenue | Feb_Revenue | Mar_Revenue | ... | Dec_Revenue |
 +------+-------------+-------------+-------------+-----+-------------+
@@ -45,7 +50,7 @@ Result table:
 | 2    | 9000        | null        | null        | ... | null        |
 | 3    | null        | 10000       | null        | ... | null        |
 +------+-------------+-------------+-------------+-----+-------------+
-
+<strong>Explanation:</strong> The revenue from Apr to Dec is null.
 Note that the result table has 13 columns (1 for the department id + 12 for the months).
 </pre>
 
@@ -53,22 +58,74 @@ Note that the result table has 13 columns (1 for the department id + 12 for the 
 
 <!-- tabs:start -->
 
-### **Python3**
+### **SQL**
 
-```python
-
-```
-
-### **Java**
-
-```java
-
-```
-
-### **...**
-
-```
-
+```sql
+# Write your MySQL query statement below
+SELECT
+    id,
+    sum(
+        CASE month
+            WHEN 'Jan' THEN revenue
+        END
+    ) AS Jan_Revenue,
+    sum(
+        CASE month
+            WHEN 'Feb' THEN revenue
+        END
+    ) AS Feb_Revenue,
+    sum(
+        CASE month
+            WHEN 'Mar' THEN revenue
+        END
+    ) AS Mar_Revenue,
+    sum(
+        CASE month
+            WHEN 'Apr' THEN revenue
+        END
+    ) AS Apr_Revenue,
+    sum(
+        CASE month
+            WHEN 'May' THEN revenue
+        END
+    ) AS May_Revenue,
+    sum(
+        CASE month
+            WHEN 'Jun' THEN revenue
+        END
+    ) AS Jun_Revenue,
+    sum(
+        CASE month
+            WHEN 'Jul' THEN revenue
+        END
+    ) AS Jul_Revenue,
+    sum(
+        CASE month
+            WHEN 'Aug' THEN revenue
+        END
+    ) AS Aug_Revenue,
+    sum(
+        CASE month
+            WHEN 'Sep' THEN revenue
+        END
+    ) AS Sep_Revenue,
+    sum(
+        CASE month
+            WHEN 'Oct' THEN revenue
+        END
+    ) AS Oct_Revenue,
+    sum(
+        CASE month
+            WHEN 'Nov' THEN revenue
+        END
+    ) AS Nov_Revenue,
+    sum(
+        CASE month
+            WHEN 'Dec' THEN revenue
+        END
+    ) AS Dec_Revenue
+FROM Department
+GROUP BY id;
 ```
 
 <!-- tabs:end -->

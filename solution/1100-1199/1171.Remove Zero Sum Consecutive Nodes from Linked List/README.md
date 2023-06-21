@@ -1,4 +1,4 @@
-# [1171. 从链表中删去总和值为零的连续节点](https://leetcode-cn.com/problems/remove-zero-sum-consecutive-nodes-from-linked-list)
+# [1171. 从链表中删去总和值为零的连续节点](https://leetcode.cn/problems/remove-zero-sum-consecutive-nodes-from-linked-list)
 
 [English Version](/solution/1100-1199/1171.Remove%20Zero%20Sum%20Consecutive%20Nodes%20from%20Linked%20List/README_EN.md)
 
@@ -48,13 +48,17 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
-“前缀和 + 哈希表”实现。
+**方法一：前缀和 + 哈希表**
 
-若链表节点的两个前缀和相等，说明两个前缀和之间的连续节点序列的和为 0，那么可以消去这部分连续节点。
+若链表节点的两个前缀和相等，说明两个前缀和之间的连续节点序列的和为 $0$，那么可以消去这部分连续节点。
 
-第一次遍历链表，用哈希表 `pre_sum_node` 记录前缀和以及对应的链表节点，同一前缀和 s，**后者的链表节点覆盖前者**。
+我们第一次遍历链表，用哈希表 $last$ 记录前缀和以及对应的链表节点，对于同一前缀和 $s$，后面出现的节点覆盖前面的节点。
 
-第二次遍历链表，若当前节点 cur 的前缀和 s 在 `pre_sum_node` 出现，说明 cur 与 pre_sum_node[s] 之间的所有节点和为 0，直接修改 cur 的指向，`cur.next = pre_sum_node[s].next`，就删去了这部分和为 0 的连续节点。
+接下来，我们再次遍历链表，若当前节点 $cur$ 的前缀和 $s$ 在 $last$ 出现，说明 $cur$ 与 $last[s]$ 之间的所有节点和为 $0$，我们直接修改 $cur$ 的指向，即 $cur.next = last[s].next$，这样就删去了这部分和为 $0$ 的连续节点。继续往后遍历，删除所有和为 $0$ 的连续节点。
+
+最后返回链表的头节点 $dummy.next$。
+
+时间复杂度 $O(n)$，空间复杂度 $O(n)$。其中 $n$ 为链表的长度。
 
 <!-- tabs:start -->
 
@@ -65,24 +69,22 @@
 ```python
 # Definition for singly-linked list.
 # class ListNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.next = None
-
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
 class Solution:
-    def removeZeroSumSublists(self, head: ListNode) -> ListNode:
-        dummy = ListNode(0)
-        dummy.next = head
+    def removeZeroSumSublists(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        dummy = ListNode(next=head)
+        last = {}
         s, cur = 0, dummy
-        pre_sum_node = {}
         while cur:
             s += cur.val
-            pre_sum_node[s] = cur
+            last[s] = cur
             cur = cur.next
         s, cur = 0, dummy
         while cur:
             s += cur.val
-            cur.next = pre_sum_node[s].next
+            cur.next = last[s].next
             cur = cur.next
         return dummy.next
 ```
@@ -97,26 +99,131 @@ class Solution:
  * public class ListNode {
  *     int val;
  *     ListNode next;
- *     ListNode(int x) { val = x; }
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
 class Solution {
     public ListNode removeZeroSumSublists(ListNode head) {
-        ListNode dummy = new ListNode(0);
-        dummy.next = head;
-        Map<Integer, ListNode> preSumNode = new HashMap<>();
+        ListNode dummy = new ListNode(0, head);
+        Map<Integer, ListNode> last = new HashMap<>();
         int s = 0;
-        for (ListNode cur = dummy; cur != null; cur = cur.next) {
+        ListNode cur = dummy;
+        while (cur != null) {
             s += cur.val;
-            preSumNode.put(s, cur);
+            last.put(s, cur);
+            cur = cur.next;
         }
         s = 0;
-        for (ListNode cur = dummy; cur != null; cur = cur.next) {
+        cur = dummy;
+        while (cur != null) {
             s += cur.val;
-            cur.next = preSumNode.get(s).next;
+            cur.next = last.get(s).next;
+            cur = cur.next;
         }
         return dummy.next;
     }
+}
+```
+
+### **C++**
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeZeroSumSublists(ListNode* head) {
+        ListNode* dummy = new ListNode(0, head);
+        unordered_map<int, ListNode*> last;
+        ListNode* cur = dummy;
+        int s = 0;
+        while (cur) {
+            s += cur->val;
+            last[s] = cur;
+            cur = cur->next;
+        }
+        s = 0;
+        cur = dummy;
+        while (cur) {
+            s += cur->val;
+            cur->next = last[s]->next;
+            cur = cur->next;
+        }
+        return dummy->next;
+    }
+};
+```
+
+### **Go**
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func removeZeroSumSublists(head *ListNode) *ListNode {
+	dummy := &ListNode{0, head}
+	last := map[int]*ListNode{}
+	cur := dummy
+	s := 0
+	for cur != nil {
+		s += cur.Val
+		last[s] = cur
+		cur = cur.Next
+	}
+	s = 0
+	cur = dummy
+	for cur != nil {
+		s += cur.Val
+		cur.Next = last[s].Next
+		cur = cur.Next
+	}
+	return dummy.Next
+}
+```
+
+### **TypeScript**
+
+```ts
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+function removeZeroSumSublists(head: ListNode | null): ListNode | null {
+    const dummy = new ListNode(0, head);
+    const last = new Map<number, ListNode>();
+    let s = 0;
+    for (let cur = dummy; cur; cur = cur.next) {
+        s += cur.val;
+        last.set(s, cur);
+    }
+    s = 0;
+    for (let cur = dummy; cur; cur = cur.next) {
+        s += cur.val;
+        cur.next = last.get(s)!.next;
+    }
+    return dummy.next;
 }
 ```
 

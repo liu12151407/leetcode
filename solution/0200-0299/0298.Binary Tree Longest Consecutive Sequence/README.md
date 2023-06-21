@@ -1,4 +1,4 @@
-# [298. 二叉树最长连续序列](https://leetcode-cn.com/problems/binary-tree-longest-consecutive-sequence)
+# [298. 二叉树最长连续序列](https://leetcode.cn/problems/binary-tree-longest-consecutive-sequence)
 
 [English Version](/solution/0200-0299/0298.Binary%20Tree%20Longest%20Consecutive%20Sequence/README_EN.md)
 
@@ -12,7 +12,7 @@
 &nbsp;
 
 <p><strong>示例 1：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0200-0299/0298.Binary%20Tree%20Longest%20Consecutive%20Sequence/images/consec1-1-tree.jpg" style="width: 322px; height: 421px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0200-0299/0298.Binary%20Tree%20Longest%20Consecutive%20Sequence/images/consec1-1-tree.jpg" style="width: 306px; height: 400px;" />
 <pre>
 <strong>输入：</strong>root = [1,null,3,2,4,null,null,null,5]
 <strong>输出：</strong>3
@@ -20,7 +20,7 @@
 </pre>
 
 <p><strong>示例 2：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0200-0299/0298.Binary%20Tree%20Longest%20Consecutive%20Sequence/images/consec1-2-tree.jpg" style="width: 262px; height: 421px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0200-0299/0298.Binary%20Tree%20Longest%20Consecutive%20Sequence/images/consec1-2-tree.jpg" style="width: 249px; height: 400px;" />
 <pre>
 <strong>输入：</strong>root = [2,null,3,2,null,1]
 <strong>输出：</strong>2
@@ -138,7 +138,7 @@ public:
 
     void dfs(TreeNode* root, TreeNode* p, int t) {
         if (!root) return;
-        t = p != nullptr && p->val + 1 == root-> val ? t + 1 : 1;
+        t = p != nullptr && p->val + 1 == root->val ? t + 1 : 1;
         ans = max(ans, t);
         dfs(root->left, root, t);
         dfs(root->right, root, t);

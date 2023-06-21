@@ -1,4 +1,4 @@
-# [1337. 矩阵中战斗力最弱的 K 行](https://leetcode-cn.com/problems/the-k-weakest-rows-in-a-matrix)
+# [1337. 矩阵中战斗力最弱的 K 行](https://leetcode.cn/problems/the-k-weakest-rows-in-a-matrix)
 
 [English Version](/solution/1300-1399/1337.The%20K%20Weakest%20Rows%20in%20a%20Matrix/README_EN.md)
 
@@ -84,18 +84,9 @@ k = 2
 class Solution:
     def kWeakestRows(self, mat: List[List[int]], k: int) -> List[int]:
         m, n = len(mat), len(mat[0])
-        res = []
-        for row in mat:
-            left, right = 0, n
-            while left < right:
-                mid = (left + right) >> 1
-                if row[mid] == 0:
-                    right = mid
-                else:
-                    left = mid + 1
-            res.append(left)
+        ans = [n - bisect_right(row[::-1], 0) for row in mat]
         idx = list(range(m))
-        idx.sort(key=lambda x: res[x])
+        idx.sort(key=lambda i: ans[i])
         return idx[:k]
 ```
 
@@ -153,6 +144,67 @@ function kWeakestRows(mat: number[][], k: number): number[] {
         ans.push(sumMap[i][1]);
     }
     return ans;
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int search(vector<int>& m) {
+        int l = 0;
+        int h = m.size() - 1;
+        while (l <= h) {
+            int mid = l + (h - l) / 2;
+            if (m[mid] == 0)
+                h = mid - 1;
+            else
+                l = mid + 1;
+        }
+        return l;
+    }
+
+    vector<int> kWeakestRows(vector<vector<int>>& mat, int k) {
+        vector<pair<int, int>> p;
+        vector<int> res;
+        for (int i = 0; i < mat.size(); i++) {
+            int count = search(mat[i]);
+            p.push_back({count, i});
+        }
+        sort(p.begin(), p.end());
+        for (int i = 0; i < k; i++) {
+            res.push_back(p[i].second);
+        }
+        return res;
+    }
+};
+```
+
+### **Go**
+
+```go
+func kWeakestRows(mat [][]int, k int) []int {
+	m, n := len(mat), len(mat[0])
+	res := make([]int, m)
+	var idx []int
+	for i, row := range mat {
+		idx = append(idx, i)
+		left, right := 0, n
+		for left < right {
+			mid := (left + right) >> 1
+			if row[mid] == 0 {
+				right = mid
+			} else {
+				left = mid + 1
+			}
+		}
+		res[i] = left
+	}
+	sort.Slice(idx, func(i, j int) bool {
+		return res[idx[i]] < res[idx[j]] || (res[idx[i]] == res[idx[j]] && idx[i] < idx[j])
+	})
+	return idx[:k]
 }
 ```
 

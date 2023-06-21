@@ -1,4 +1,4 @@
-# [剑指 Offer II 034. 外星语言是否排序](https://leetcode-cn.com/problems/lwyVBB)
+# [剑指 Offer II 034. 外星语言是否排序](https://leetcode.cn/problems/lwyVBB)
 
 ## 题目描述
 
@@ -45,7 +45,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 953&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/verifying-an-alien-dictionary/">https://leetcode-cn.com/problems/verifying-an-alien-dictionary/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 953&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/verifying-an-alien-dictionary/">https://leetcode.cn/problems/verifying-an-alien-dictionary/</a></p>
 
 ## 解法
 
@@ -68,7 +68,10 @@ class Solution:
             l1, l2 = len(w1), len(w2)
             flag = False
             for j in range(max(l1, l2)):
-                i1, i2 = -1 if j >= l1 else index[w1[j]], -1 if j >= l2 else index[w2[j]]
+                i1, i2 = (
+                    -1 if j >= l1 else index[w1[j]],
+                    -1 if j >= l2 else index[w2[j]],
+                )
                 if i1 > i2:
                     # 说明不是按字典序排序，直接返回False
                     return False
@@ -111,22 +114,44 @@ class Solution {
 }
 ```
 
+### **TypeScript**
+
+```ts
+function isAlienSorted(words: string[], order: string): boolean {
+    let charMap = new Map();
+    for (let i = 0; i < order.length; i++) {
+        charMap.set(order[i], i);
+    }
+    function compare(str1: string, str2: string): boolean {
+        const n = Math.min(str1.length, str2.length);
+        for (let i = 0; i < n; i++) {
+            let k1 = str1[i],
+                k2 = str2[i];
+            if (k1 != k2) return charMap.get(k1) < charMap.get(k2);
+        }
+        return n == str1.length;
+    }
+    for (let i = 1; i < words.length; i++) {
+        if (!compare(words[i - 1], words[i])) return false;
+    }
+    return true;
+}
+```
+
 ### **C++**
 
 ```cpp
 class Solution {
 public:
-    bool isAlienSorted(vector<string> &words, string order) {
+    bool isAlienSorted(vector<string>& words, string order) {
         vector<int> index(26);
         for (int i = 0; i < index.size(); ++i)
             index[order[i] - 'a'] = i;
-        for (int i = 0; i < words.size() - 1; ++i)
-        {
+        for (int i = 0; i < words.size() - 1; ++i) {
             string w1 = words[i];
             string w2 = words[i + 1];
             int l1 = w1.size(), l2 = w2.size();
-            for (int j = 0; j < max(l1, l2); ++j)
-            {
+            for (int j = 0; j < max(l1, l2); ++j) {
                 int i1 = j >= l1 ? -1 : index[w1[j] - 'a'];
                 int i2 = j >= l2 ? -1 : index[w2[j] - 'a'];
                 if (i1 > i2)

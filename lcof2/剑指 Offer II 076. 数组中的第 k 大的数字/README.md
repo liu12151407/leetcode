@@ -1,4 +1,4 @@
-# [剑指 Offer II 076. 数组中的第 k 大的数字](https://leetcode-cn.com/problems/xx4gT2)
+# [剑指 Offer II 076. 数组中的第 k 大的数字](https://leetcode.cn/problems/xx4gT2)
 
 ## 题目描述
 
@@ -34,7 +34,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 215&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/kth-largest-element-in-an-array/">https://leetcode-cn.com/problems/kth-largest-element-in-an-array/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 215&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/kth-largest-element-in-an-array/">https://leetcode.cn/problems/kth-largest-element-in-an-array/</a></p>
 
 ## 解法
 
@@ -93,8 +93,10 @@ class Solution {
         int i = left - 1, j = right + 1;
         int x = nums[(left + right) >>> 1];
         while (i < j) {
-            while (nums[++i] < x);
-            while (nums[--j] > x);
+            while (nums[++i] < x)
+                ;
+            while (nums[--j] > x)
+                ;
             if (i < j) {
                 int t = nums[i];
                 nums[i] = nums[j];
@@ -105,7 +107,6 @@ class Solution {
             return quickSort(nums, j + 1, right, k);
         }
         return quickSort(nums, left, j, k);
-
     }
 }
 ```
@@ -124,10 +125,11 @@ public:
         if (left == right) return nums[left];
         int i = left - 1, j = right + 1;
         int x = nums[left + right >> 1];
-        while (i < j)
-        {
-            while (nums[++i] < x);
-            while (nums[--j] > x);
+        while (i < j) {
+            while (nums[++i] < x)
+                ;
+            while (nums[--j] > x)
+                ;
             if (i < j) swap(nums[i], nums[j]);
         }
         return j < k ? quickSort(nums, j + 1, right, k) : quickSort(nums, left, j, k);

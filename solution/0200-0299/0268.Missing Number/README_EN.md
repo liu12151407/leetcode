@@ -6,39 +6,29 @@
 
 <p>Given an array <code>nums</code> containing <code>n</code> distinct numbers in the range <code>[0, n]</code>, return <em>the only number in the range that is missing from the array.</em></p>
 
-<p><b>Follow up:</b> Could you implement a solution using only <code>O(1)</code> extra space complexity and <code>O(n)</code> runtime complexity?</p>
-
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [3,0,1]
 <strong>Output:</strong> 2
-<b>Explanation</b><strong>:</strong> n = 3 since there are 3 numbers, so all numbers are in the range [0,3]. 2 is the missing number in the range since it does not appear in nums.
+<strong>Explanation:</strong> n = 3 since there are 3 numbers, so all numbers are in the range [0,3]. 2 is the missing number in the range since it does not appear in nums.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [0,1]
 <strong>Output:</strong> 2
-<b>Explanation</b><strong>:</strong> n = 2 since there are 2 numbers, so all numbers are in the range [0,2]. 2 is the missing number in the range since it does not appear in nums.
+<strong>Explanation:</strong> n = 2 since there are 2 numbers, so all numbers are in the range [0,2]. 2 is the missing number in the range since it does not appear in nums.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [9,6,4,2,3,5,7,0,1]
 <strong>Output:</strong> 8
-<b>Explanation</b><strong>:</strong> n = 9 since there are 9 numbers, so all numbers are in the range [0,9]. 8 is the missing number in the range since it does not appear in nums.
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> nums = [0]
-<strong>Output:</strong> 1
-<b>Explanation</b><strong>:</strong> n = 1 since there is 1 number, so all numbers are in the range [0,1]. 1 is the missing number in the range since it does not appear in nums.
+<strong>Explanation:</strong> n = 9 since there are 9 numbers, so all numbers are in the range [0,9]. 8 is the missing number in the range since it does not appear in nums.
 </pre>
 
 <p>&nbsp;</p>
@@ -51,6 +41,9 @@
 	<li>All the numbers of <code>nums</code> are <strong>unique</strong>.</li>
 </ul>
 
+<p>&nbsp;</p>
+<p><strong>Follow up:</strong> Could you implement a solution using only <code>O(1)</code> extra space complexity and <code>O(n)</code> runtime complexity?</p>
+
 ## Solutions
 
 <!-- tabs:start -->
@@ -60,38 +53,40 @@
 ```python
 class Solution:
     def missingNumber(self, nums: List[int]) -> int:
-        res = len(nums)
-        for i, v in enumerate(nums):
-            res ^= (i ^ v)
-        return res
+        return reduce(xor, (i ^ v for i, v in enumerate(nums, 1)))
+```
+
+```python
+class Solution:
+    def missingNumber(self, nums: List[int]) -> int:
+        n = len(nums)
+        return (1 + n) * n // 2 - sum(nums)
 ```
 
 ### **Java**
 
-- XOR
-
 ```java
 class Solution {
     public int missingNumber(int[] nums) {
-        int res = nums.length;
-        for (int i = 0, n = res; i < n; ++i) {
-            res ^= (i ^ nums[i]);
+        int n = nums.length;
+        int ans = n;
+        for (int i = 0; i < n; ++i) {
+            ans ^= (i ^ nums[i]);
         }
-        return res;
+        return ans;
     }
 }
 ```
 
-- Math
-
 ```java
 class Solution {
     public int missingNumber(int[] nums) {
-        int res = nums.length;
-        for (int i = 0, n = res; i < n; ++i) {
-            res += (i - nums[i]);
+        int n = nums.length;
+        int ans = n;
+        for (int i = 0; i < n; ++i) {
+            ans += i - nums[i];
         }
-        return res;
+        return ans;
     }
 }
 ```
@@ -103,11 +98,21 @@ class Solution {
 public:
     int missingNumber(vector<int>& nums) {
         int n = nums.size();
-        int res = n;
+        int ans = n;
         for (int i = 0; i < n; ++i) {
-            res ^= (i ^ nums[i]);
+            ans ^= (i ^ nums[i]);
         }
-        return res;
+        return ans;
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        int n = nums.size();
+        return (1 + n) * n / 2 - accumulate(nums.begin(), nums.end(), 0);
     }
 };
 ```
@@ -115,13 +120,75 @@ public:
 ### **Go**
 
 ```go
-func missingNumber(nums []int) int {
+func missingNumber(nums []int) (ans int) {
 	n := len(nums)
-	res := n
-	for i := 0; i < n; i++ {
-		res ^= (i ^ nums[i])
+	ans = n
+	for i, v := range nums {
+		ans ^= (i ^ v)
 	}
-	return res
+	return
+}
+```
+
+```go
+func missingNumber(nums []int) (ans int) {
+	n := len(nums)
+	ans = n
+	for i, v := range nums {
+		ans += i - v
+	}
+	return
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var missingNumber = function (nums) {
+    const n = nums.length;
+    let ans = n;
+    for (let i = 0; i < n; ++i) {
+        ans ^= i ^ nums[i];
+    }
+    return ans;
+};
+```
+
+```js
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var missingNumber = function (nums) {
+    const n = nums.length;
+    let ans = n;
+    for (let i = 0; i < n; ++i) {
+        ans += i - nums[i];
+    }
+    return ans;
+};
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param Integer[] $nums
+     * @return Integer
+     */
+    function missingNumber($nums) {
+        $n = count($nums);
+        $sumN = (($n + 1) * $n) / 2;
+        for ($i = 0; $i < $n; $i++) {
+            $sumN -= $nums[$i];
+        }
+        return $sumN;
+    }
 }
 ```
 

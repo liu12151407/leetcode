@@ -4,20 +4,21 @@
  * @return {boolean}
  */
 var isMatch = function (s, p) {
-    // 回溯大法好
-    let memo = {};
-    function recursive(i, j) {
-        if (memo[[i, j]] !== undefined) return memo[[i, j]];
-        if (j === p.length) return i === s.length;
-        let tmp = i < s.length && (s[i] === p[j] || p[j] === ".");
-        let ans = false;
-        if (p[j + 1] === "*") {
-            ans = recursive(i, j + 2) || (tmp && recursive(i + 1, j));
-        } else {
-            ans = tmp && recursive(i + 1, j + 1);
+    const m = s.length;
+    const n = p.length;
+    const f = Array.from({ length: m + 1 }, () => Array(n + 1).fill(false));
+    f[0][0] = true;
+    for (let i = 0; i <= m; ++i) {
+        for (let j = 1; j <= n; ++j) {
+            if (p[j - 1] === '*') {
+                f[i][j] = f[i][j - 2];
+                if (i && (p[j - 2] === '.' || p[j - 2] == s[i - 1])) {
+                    f[i][j] |= f[i - 1][j];
+                }
+            } else if (i && (p[j - 1] === '.' || p[j - 1] == s[i - 1])) {
+                f[i][j] = f[i - 1][j - 1];
+            }
         }
-        memo[[i, j]] = ans;
-        return ans;
     }
-    return recursive(0, 0);
+    return f[m][n];
 };

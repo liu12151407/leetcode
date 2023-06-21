@@ -4,18 +4,18 @@
 
 ## Description
 
-<p>Given the <code>head</code> of a singly linked list, return <code>true</code> if it is a palindrome.</p>
+<p>Given the <code>head</code> of a singly linked list, return <code>true</code><em> if it is a </em><span data-keyword="palindrome-sequence"><em>palindrome</em></span><em> or </em><code>false</code><em> otherwise</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0200-0299/0234.Palindrome%20Linked%20List/images/pal1linked-list.jpg" style="width: 422px; height: 62px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0200-0299/0234.Palindrome%20Linked%20List/images/pal1linked-list.jpg" style="width: 422px; height: 62px;" />
 <pre>
 <strong>Input:</strong> head = [1,2,2,1]
 <strong>Output:</strong> true
 </pre>
 
-<p><strong>Example 2:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0200-0299/0234.Palindrome%20Linked%20List/images/pal2linked-list.jpg" style="width: 182px; height: 62px;" />
+<p><strong class="example">Example 2:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0200-0299/0234.Palindrome%20Linked%20List/images/pal2linked-list.jpg" style="width: 182px; height: 62px;" />
 <pre>
 <strong>Input:</strong> head = [1,2]
 <strong>Output:</strong> false
@@ -45,9 +45,7 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    def isPalindrome(self, head: ListNode) -> bool:
-        if head is None or head.next is None:
-            return True
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
         slow, fast = head, head.next
         while fast and fast.next:
             slow, fast = slow.next, fast.next.next
@@ -78,9 +76,6 @@ class Solution:
  */
 class Solution {
     public boolean isPalindrome(ListNode head) {
-        if (head == null || head.next == null) {
-            return true;
-        }
         ListNode slow = head;
         ListNode fast = head.next;
         while (fast != null && fast.next != null) {
@@ -124,25 +119,21 @@ class Solution {
 class Solution {
 public:
     bool isPalindrome(ListNode* head) {
-        if (!head || !head->next) return true;
         ListNode* slow = head;
         ListNode* fast = head->next;
-        while (fast && fast->next)
-        {
+        while (fast && fast->next) {
             slow = slow->next;
             fast = fast->next->next;
         }
         ListNode* pre = nullptr;
         ListNode* cur = slow->next;
-        while (cur)
-        {
+        while (cur) {
             ListNode* t = cur->next;
             cur->next = pre;
             pre = cur;
             cur = t;
         }
-        while (pre)
-        {
+        while (pre) {
             if (pre->val != head->val) return false;
             pre = pre->next;
             head = head->next;
@@ -163,9 +154,6 @@ public:
  * }
  */
 func isPalindrome(head *ListNode) bool {
-	if head == nil || head.Next == nil {
-		return true
-	}
 	slow, fast := head, head.Next
 	for fast != nil && fast.Next != nil {
 		slow, fast = slow.Next, fast.Next.Next
@@ -203,9 +191,6 @@ func isPalindrome(head *ListNode) bool {
  * @return {boolean}
  */
 var isPalindrome = function (head) {
-    if (!head || !head.next) {
-        return true;
-    }
     let slow = head;
     let fast = head.next;
     while (fast && fast.next) {
@@ -248,31 +233,23 @@ var isPalindrome = function (head) {
  */
 public class Solution {
     public bool IsPalindrome(ListNode head) {
-        if (head == null || head.next == null)
-        {
-            return true;
-        }
         ListNode slow = head;
         ListNode fast = head.next;
-        while (fast != null && fast.next != null)
-        {
+        while (fast != null && fast.next != null) {
             slow = slow.next;
             fast = fast.next.next;
         }
         ListNode cur = slow.next;
         slow.next = null;
         ListNode pre = null;
-        while (cur != null)
-        {
+        while (cur != null) {
             ListNode t = cur.next;
             cur.next = pre;
             pre = cur;
             cur = t;
         }
-        while (pre != null)
-        {
-            if (pre.val != head.val)
-            {
+        while (pre != null) {
+            if (pre.val != head.val) {
                 return false;
             }
             pre = pre.next;
@@ -299,15 +276,12 @@ public class Solution {
  */
 
 function isPalindrome(head: ListNode | null): boolean {
-    if (head == null || head.next == null) return true;
-    // 快慢指针定位到中点
     let slow: ListNode = head,
         fast: ListNode = head.next;
     while (fast != null && fast.next != null) {
         slow = slow.next;
         fast = fast.next.next;
     }
-    // 翻转链表
     let cur: ListNode = slow.next;
     slow.next = null;
     let prev: ListNode = null;
@@ -317,7 +291,6 @@ function isPalindrome(head: ListNode | null): boolean {
         prev = cur;
         cur = t;
     }
-    // 判断回文
     while (prev != null) {
         if (prev.val != head.val) return false;
         prev = prev.next;

@@ -1,4 +1,4 @@
-# [1844. 将所有数字用字符替换](https://leetcode-cn.com/problems/replace-all-digits-with-characters)
+# [1844. 将所有数字用字符替换](https://leetcode.cn/problems/replace-all-digits-with-characters)
 
 [English Version](/solution/1800-1899/1844.Replace%20All%20Digits%20with%20Characters/README_EN.md)
 
@@ -53,6 +53,14 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：模拟**
+
+遍历字符串，对于奇数下标的字符，将其替换为前一个字符后移对应位数的字符。
+
+最后返回替换后的字符串。
+
+时间复杂度 $(n)$，其中 $n$ 为字符串 $s$ 的长度。忽略答案的空间消耗，空间复杂度 $O(1)$。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -75,12 +83,81 @@ class Solution:
 ```java
 class Solution {
     public String replaceDigits(String s) {
-        char[] chars = s.toCharArray();
-        for (int i = 1; i < chars.length; i += 2) {
-            chars[i] = (char) (chars[i - 1] + (chars[i] - '0'));
+        char[] cs = s.toCharArray();
+        for (int i = 1; i < cs.length; i += 2) {
+            cs[i] = (char) (cs[i - 1] + (cs[i] - '0'));
         }
-        return new String(chars);
+        return String.valueOf(cs);
     }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    string replaceDigits(string s) {
+        int n = s.size();
+        for (int i = 1; i < n; i += 2) {
+            s[i] = s[i - 1] + s[i] - '0';
+        }
+        return s;
+    }
+};
+```
+
+### **Go**
+
+```go
+func replaceDigits(s string) string {
+	cs := []byte(s)
+	for i := 1; i < len(s); i += 2 {
+		cs[i] = cs[i-1] + cs[i] - '0'
+	}
+	return string(cs)
+}
+```
+
+### **TypeScript**
+
+```ts
+function replaceDigits(s: string): string {
+    const n = s.length;
+    const ans = [...s];
+    for (let i = 1; i < n; i += 2) {
+        ans[i] = String.fromCharCode(ans[i - 1].charCodeAt(0) + Number(ans[i]));
+    }
+    return ans.join('');
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn replace_digits(s: String) -> String {
+        let n = s.len();
+        let mut ans = s.into_bytes();
+        let mut i = 1;
+        while i < n {
+            ans[i] = ans[i - 1] + (ans[i] - b'0');
+            i += 2;
+        }
+        ans.into_iter().map(char::from).collect()
+    }
+}
+```
+
+### **C**
+
+```c
+char* replaceDigits(char* s) {
+    int n = strlen(s);
+    for (int i = 1; i < n; i += 2) {
+        s[i] = s[i - 1] + s[i] - '0';
+    }
+    return s;
 }
 ```
 

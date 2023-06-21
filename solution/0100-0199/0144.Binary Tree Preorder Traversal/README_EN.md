@@ -7,39 +7,25 @@
 <p>Given the <code>root</code> of a binary tree, return <em>the preorder traversal of its nodes&#39; values</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0144.Binary%20Tree%20Preorder%20Traversal/images/inorder_1.jpg" style="width: 202px; height: 324px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0144.Binary%20Tree%20Preorder%20Traversal/images/inorder_1.jpg" style="width: 125px; height: 200px;" />
 <pre>
 <strong>Input:</strong> root = [1,null,2,3]
 <strong>Output:</strong> [1,2,3]
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> root = []
 <strong>Output:</strong> []
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> root = [1]
 <strong>Output:</strong> [1]
-</pre>
-
-<p><strong>Example 4:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0144.Binary%20Tree%20Preorder%20Traversal/images/inorder_5.jpg" style="width: 202px; height: 202px;" />
-<pre>
-<strong>Input:</strong> root = [1,2]
-<strong>Output:</strong> [1,2]
-</pre>
-
-<p><strong>Example 5:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0144.Binary%20Tree%20Preorder%20Traversal/images/inorder_4.jpg" style="width: 202px; height: 202px;" />
-<pre>
-<strong>Input:</strong> root = [1,null,2]
-<strong>Output:</strong> [1,2]
 </pre>
 
 <p>&nbsp;</p>
@@ -359,28 +345,20 @@ class Solution {
 public:
     vector<int> preorderTraversal(TreeNode* root) {
         vector<int> ans;
-        while (root)
-        {
-            if (!root->left)
-            {
+        while (root) {
+            if (!root->left) {
                 ans.push_back(root->val);
                 root = root->right;
-            }
-            else
-            {
+            } else {
                 TreeNode* prev = root->left;
-                while (prev->right && prev->right != root)
-                {
+                while (prev->right && prev->right != root) {
                     prev = prev->right;
                 }
-                if (!prev->right)
-                {
+                if (!prev->right) {
                     ans.push_back(root->val);
                     prev->right = root;
                     root = root->left;
-                }
-                else
-                {
+                } else {
                     prev->right = nullptr;
                     root = root->right;
                 }
@@ -424,6 +402,92 @@ func preorderTraversal(root *TreeNode) []int {
 		}
 	}
 	return ans
+}
+```
+
+### **Rust**
+
+```rust
+// Definition for a binary tree node.
+// #[derive(Debug, PartialEq, Eq)]
+// pub struct TreeNode {
+//   pub val: i32,
+//   pub left: Option<Rc<RefCell<TreeNode>>>,
+//   pub right: Option<Rc<RefCell<TreeNode>>>,
+// }
+//
+// impl TreeNode {
+//   #[inline]
+//   pub fn new(val: i32) -> Self {
+//     TreeNode {
+//       val,
+//       left: None,
+//       right: None
+//     }
+//   }
+// }
+use std::rc::Rc;
+use std::cell::RefCell;
+impl Solution {
+    fn dfs(root: &Option<Rc<RefCell<TreeNode>>>, res: &mut Vec<i32>) {
+        if root.is_none() {
+            return;
+        }
+        let node = root.as_ref().unwrap().borrow();
+        res.push(node.val);
+        Self::dfs(&node.left, res);
+        Self::dfs(&node.right, res);
+    }
+
+    pub fn preorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
+        let mut res = vec![];
+        Self::dfs(&root, &mut res);
+        res
+    }
+}
+```
+
+```rust
+// Definition for a binary tree node.
+// #[derive(Debug, PartialEq, Eq)]
+// pub struct TreeNode {
+//   pub val: i32,
+//   pub left: Option<Rc<RefCell<TreeNode>>>,
+//   pub right: Option<Rc<RefCell<TreeNode>>>,
+// }
+//
+// impl TreeNode {
+//   #[inline]
+//   pub fn new(val: i32) -> Self {
+//     TreeNode {
+//       val,
+//       left: None,
+//       right: None
+//     }
+//   }
+// }
+use std::rc::Rc;
+use std::cell::RefCell;
+impl Solution {
+    pub fn preorder_traversal(mut root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
+        let mut res = vec![];
+        if root.is_none() {
+            return res;
+        }
+        let mut stack = vec![];
+        while root.is_some() || stack.len() != 0 {
+            if root.is_some() {
+                let val = root.as_ref().unwrap().as_ref().borrow().val;
+                let left = root.as_ref().unwrap().as_ref().borrow_mut().left.take();
+                res.push(val);
+                stack.push(root);
+                root = left;
+            } else {
+                root = stack.pop().unwrap().as_ref().unwrap().as_ref().borrow_mut().right.take();
+            }
+        }
+        res
+    }
 }
 ```
 

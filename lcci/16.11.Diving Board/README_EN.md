@@ -1,4 +1,4 @@
-# [16.11. Diving Board](https://leetcode-cn.com/problems/diving-board-lcci)
+# [16.11. Diving Board](https://leetcode.cn/problems/diving-board-lcci)
 
 [中文文档](/lcci/16.11.Diving%20Board/README.md)
 
@@ -59,7 +59,7 @@ class Solution {
             return new int[0];
         }
         if (longer == shorter) {
-            return new int[]{longer * k};
+            return new int[] {longer * k};
         }
         int[] ans = new int[k + 1];
         for (int i = 0; i < k + 1; ++i) {

@@ -1,4 +1,4 @@
-# [剑指 Offer II 099. 最小路径之和](https://leetcode-cn.com/problems/0i0mDW)
+# [剑指 Offer II 099. 最小路径之和](https://leetcode.cn/problems/0i0mDW)
 
 ## 题目描述
 
@@ -12,7 +12,7 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20099.%20%E6%9C%80%E5%B0%8F%E8%B7%AF%E5%BE%84%E4%B9%8B%E5%92%8C/images/minpath.jpg" style="width: 242px; height: 242px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20099.%20%E6%9C%80%E5%B0%8F%E8%B7%AF%E5%BE%84%E4%B9%8B%E5%92%8C/images/minpath.jpg" style="width: 242px; height: 242px;" /></p>
 
 <pre>
 <strong>输入：</strong>grid = [[1,3,1],[1,5,1],[4,2,1]]
@@ -40,7 +40,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 64&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/minimum-path-sum/">https://leetcode-cn.com/problems/minimum-path-sum/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 64&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/minimum-path-sum/">https://leetcode.cn/problems/minimum-path-sum/</a></p>
 
 ## 解法
 
@@ -127,21 +127,17 @@ function minPathSum(grid: number[][]): number {
 ```cpp
 class Solution {
 public:
-    int minPathSum(vector<vector<int>> &grid) {
+    int minPathSum(vector<vector<int>>& grid) {
         int m = grid.size(), n = grid[0].size();
         vector<vector<int>> dp(m, vector<int>(n, grid[0][0]));
-        for (int i = 1; i < m; ++i)
-        {
+        for (int i = 1; i < m; ++i) {
             dp[i][0] = dp[i - 1][0] + grid[i][0];
         }
-        for (int j = 1; j < n; ++j)
-        {
+        for (int j = 1; j < n; ++j) {
             dp[0][j] = dp[0][j - 1] + grid[0][j];
         }
-        for (int i = 1; i < m; ++i)
-        {
-            for (int j = 1; j < n; ++j)
-            {
+        for (int i = 1; i < m; ++i) {
+            for (int j = 1; j < n; ++j) {
                 dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j];
             }
         }

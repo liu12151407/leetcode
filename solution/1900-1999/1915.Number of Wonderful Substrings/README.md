@@ -1,4 +1,4 @@
-# [1915. 最美子字符串的数目](https://leetcode-cn.com/problems/number-of-wonderful-substrings)
+# [1915. 最美子字符串的数目](https://leetcode.cn/problems/number-of-wonderful-substrings)
 
 [English Version](/solution/1900-1999/1915.Number%20of%20Wonderful%20Substrings/README_EN.md)
 
@@ -72,7 +72,7 @@
 
 状态压缩 + 前缀和。
 
-类似题目：[1371. 每个元音包含偶数次的最长子字符串](/solution/1300-1399/1371.Find%20the%20Longest%20Substring%20Containing%20Vowels%20in%20Even%20Counts/README.md)
+相似题目：[1371. 每个元音包含偶数次的最长子字符串](/solution/1300-1399/1371.Find%20the%20Longest%20Substring%20Containing%20Vowels%20in%20Even%20Counts/README.md)
 
 <!-- tabs:start -->
 
@@ -87,7 +87,7 @@ class Solution:
         state = 0
         ans = 0
         for c in word:
-            state ^= (1 << (ord(c) - ord('a')))
+            state ^= 1 << (ord(c) - ord('a'))
             ans += counter[state]
             for i in range(10):
                 ans += counter[state ^ (1 << i)]
@@ -153,8 +153,7 @@ public:
         counter[0] = 1;
         long long ans = 0;
         int state = 0;
-        for (char c : word)
-        {
+        for (char c : word) {
             state ^= (1 << (c - 'a'));
             ans += counter[state];
             for (int i = 0; i < 10; ++i) ans += counter[state ^ (1 << i)];

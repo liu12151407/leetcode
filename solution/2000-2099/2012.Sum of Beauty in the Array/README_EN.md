@@ -15,7 +15,7 @@
 <p>Return<em> the <strong>sum of beauty</strong> of all </em><code>nums[i]</code><em> where </em><code>1 &lt;= i &lt;= nums.length - 2</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,2,3]
@@ -24,7 +24,7 @@
 - The beauty of nums[1] equals 2.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [2,4,6,4]
@@ -34,7 +34,7 @@
 - The beauty of nums[2] equals 0.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [3,2,1]
@@ -141,10 +141,11 @@ public:
         for (int i = 1; i < n; ++i) lmx[i] = max(lmx[i - 1], nums[i - 1]);
         for (int i = n - 2; i >= 0; --i) rmi[i] = min(rmi[i + 1], nums[i + 1]);
         int ans = 0;
-        for (int i = 1; i < n - 1; ++i)
-        {
-            if (lmx[i] < nums[i] && nums[i] < rmi[i]) ans += 2;
-            else if (nums[i - 1] < nums[i] && nums[i] < nums[i + 1]) ans += 1;
+        for (int i = 1; i < n - 1; ++i) {
+            if (lmx[i] < nums[i] && nums[i] < rmi[i])
+                ans += 2;
+            else if (nums[i - 1] < nums[i] && nums[i] < nums[i + 1])
+                ans += 1;
         }
         return ans;
     }

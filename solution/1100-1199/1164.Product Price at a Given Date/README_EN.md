@@ -19,12 +19,18 @@ Each row of this table indicates that the price of some product was changed to a
 
 <p>&nbsp;</p>
 
-<p>Write an SQL query to find the prices of all products on <strong>2019-08-16</strong>. Assume the price of all products before any change is <strong>10</strong>.</p>
+<p>Write an SQL query to find the prices of all products on <code>2019-08-16</code>. Assume the price of all products before any change is <code>10</code>.</p>
 
-<p>The query result format is in the following example:</p>
+<p>Return the result table in <strong>any order</strong>.</p>
+
+<p>The query result format is in the following example.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
-<code>Products</code> table:
+<strong>Input:</strong> 
+Products table:
 +------------+-----------+-------------+
 | product_id | new_price | change_date |
 +------------+-----------+-------------+
@@ -35,8 +41,7 @@ Each row of this table indicates that the price of some product was changed to a
 | 2          | 65        | 2019-08-17  |
 | 3          | 20        | 2019-08-18  |
 +------------+-----------+-------------+
-
-Result table:
+<strong>Output:</strong> 
 +------------+-------+
 | product_id | price |
 +------------+-------+
@@ -53,7 +58,34 @@ Result table:
 ### **SQL**
 
 ```sql
-
+# Write your MySQL query statement below
+SELECT
+    p1.product_id AS product_id,
+    ifnull(p2.price, 10) AS price
+FROM
+    (
+        SELECT DISTINCT
+            (product_id) AS product_id
+        FROM Products
+    ) AS p1
+    LEFT JOIN (
+        SELECT
+            t1.product_id,
+            t1.new_price AS price
+        FROM
+            Products AS t1
+            JOIN (
+                SELECT
+                    product_id,
+                    max(change_date) AS change_date
+                FROM Products
+                WHERE change_date <= '2019-08-16'
+                GROUP BY product_id
+            ) AS t2
+                ON t1.product_id = t2.product_id
+                AND t1.change_date = t2.change_date
+    ) AS p2
+        ON p1.product_id = p2.product_id;
 ```
 
 <!-- tabs:end -->

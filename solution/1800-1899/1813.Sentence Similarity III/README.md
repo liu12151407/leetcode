@@ -1,4 +1,4 @@
-# [1813. 句子相似性 III](https://leetcode-cn.com/problems/sentence-similarity-iii)
+# [1813. 句子相似性 III](https://leetcode.cn/problems/sentence-similarity-iii)
 
 [English Version](/solution/1800-1899/1813.Sentence%20Similarity%20III/README_EN.md)
 
@@ -55,6 +55,16 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：双指针**
+
+我们将两个句子按照空格分割成两个单词数组 `words1` 和 `words2`，假设 `words1` 和 `words2` 的长度分别为 $m$ 和 $n$，不妨设 $m \geq n$。
+
+我们使用双指针 $i$ 和 $j$，初始时 $i = j = 0$。接下来，我们循环判断 `words1[i]` 是否等于 `words2[i]`，是则指针 $i$ 继续右移；然后我们循环判断 `words1[m - 1 - j]` 是否等于 `words2[n - 1 - j]`，是则指针 $j$ 继续右移。
+
+循环结束后，如果 $i + j \geq n$，说明两个句子相似，返回 `true`，否则返回 `false`。
+
+时间复杂度 $O(L)$，空间复杂度 $O(L)$。其中 $L$ 为两个句子的长度之和。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -64,24 +74,17 @@
 ```python
 class Solution:
     def areSentencesSimilar(self, sentence1: str, sentence2: str) -> bool:
-        if sentence1 == sentence2:
-            return True
-        n1, n2 = len(sentence1), len(sentence2)
-        if n1 == n2:
-            return False
-        if n1 < n2:
-            sentence1, sentence2 = sentence2, sentence1
         words1, words2 = sentence1.split(), sentence2.split()
+        m, n = len(words1), len(words2)
+        if m < n:
+            words1, words2 = words2, words1
+            m, n = n, m
         i = j = 0
-        while i < len(words2) and words1[i] == words2[i]:
+        while i < n and words1[i] == words2[i]:
             i += 1
-        if i == len(words2):
-            return True
-        while j < len(words2) and words1[len(words1) - 1 - j] == words2[len(words2) - 1 - j]:
+        while j < n and words1[m - 1 - j] == words2[n - 1 - j]:
             j += 1
-        if j == len(words2):
-            return True
-        return i + j == len(words2)
+        return i + j >= n
 ```
 
 ### **Java**
@@ -91,35 +94,77 @@ class Solution:
 ```java
 class Solution {
     public boolean areSentencesSimilar(String sentence1, String sentence2) {
-        if (Objects.equals(sentence1, sentence2)) {
-            return true;
+        var words1 = sentence1.split(" ");
+        var words2 = sentence2.split(" ");
+        if (words1.length < words2.length) {
+            var t = words1;
+            words1 = words2;
+            words2 = t;
         }
-        int n1 = sentence1.length(), n2 = sentence2.length();
-        if (n1 == n2) {
-            return false;
-        }
-        if (n1 < n2) {
-            String t = sentence1;
-            sentence1 = sentence2;
-            sentence2 = t;
-        }
-        String[] words1 = sentence1.split(" ");
-        String[] words2 = sentence2.split(" ");
+        int m = words1.length, n = words2.length;
         int i = 0, j = 0;
-        while (i < words2.length &&  Objects.equals(words1[i], words2[i])) {
+        while (i < n && words1[i].equals(words2[i])) {
             ++i;
         }
-        if (i == words2.length) {
-            return true;
-        }
-        while (j < words2.length && Objects.equals(words1[words1.length - 1 - j], words2[words2.length - 1 - j])) {
+        while (j < n && words1[m - 1 - j].equals(words2[n - 1 - j])) {
             ++j;
         }
-        if (j == words2.length) {
-            return true;
-        }
-        return i + j == words2.length;
+        return i + j >= n;
     }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool areSentencesSimilar(string sentence1, string sentence2) {
+        auto words1 = split(sentence1, ' ');
+        auto words2 = split(sentence2, ' ');
+        if (words1.size() < words2.size()) {
+            swap(words1, words2);
+        }
+        int m = words1.size(), n = words2.size();
+        int i = 0, j = 0;
+        while (i < n && words1[i] == words2[i]) {
+            ++i;
+        }
+        while (j < n && words1[m - 1 - j] == words2[n - 1 - j]) {
+            ++j;
+        }
+        return i + j >= n;
+    }
+
+    vector<string> split(string& s, char delim) {
+        stringstream ss(s);
+        string item;
+        vector<string> res;
+        while (getline(ss, item, delim)) {
+            res.emplace_back(item);
+        }
+        return res;
+    }
+};
+```
+
+### **Go**
+
+```go
+func areSentencesSimilar(sentence1 string, sentence2 string) bool {
+	words1, words2 := strings.Fields(sentence1), strings.Fields(sentence2)
+	if len(words1) < len(words2) {
+		words1, words2 = words2, words1
+	}
+	m, n := len(words1), len(words2)
+	i, j := 0, 0
+	for i < n && words1[i] == words2[i] {
+		i++
+	}
+	for j < n && words1[m-1-j] == words2[n-1-j] {
+		j++
+	}
+	return i+j >= n
 }
 ```
 

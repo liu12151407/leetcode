@@ -11,7 +11,7 @@
 <p>Return <em>the maximum coins you can collect by bursting the balloons wisely</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [3,1,5,8]
@@ -20,7 +20,7 @@
 nums = [3,1,5,8] --&gt; [3,5,8] --&gt; [3,8] --&gt; [8] --&gt; []
 coins =  3*1*5    +   3*5*8   +  1*3*8  + 1*8*1 = 167</pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,5]
@@ -32,7 +32,7 @@ coins =  3*1*5    +   3*5*8   +  1*3*8  + 1*8*1 = 167</pre>
 
 <ul>
 	<li><code>n == nums.length</code></li>
-	<li><code>1 &lt;= n &lt;= 500</code></li>
+	<li><code>1 &lt;= n &lt;= 300</code></li>
 	<li><code>0 &lt;= nums[i] &lt;= 100</code></li>
 </ul>
 
@@ -52,7 +52,9 @@ class Solution:
             for i in range(n - l):
                 j = i + l
                 for k in range(i + 1, j):
-                    dp[i][j] = max(dp[i][j], dp[i][k] + dp[k][j] + nums[i] * nums[k] * nums[j])
+                    dp[i][j] = max(
+                        dp[i][j], dp[i][k] + dp[k][j] + nums[i] * nums[k] * nums[j]
+                    )
         return dp[0][-1]
 ```
 
@@ -71,7 +73,8 @@ class Solution {
             for (int i = 0; i + l < n; ++i) {
                 int j = i + l;
                 for (int k = i + 1; k < j; ++k) {
-                    dp[i][j] = Math.max(dp[i][j], dp[i][k] + dp[k][j] + vals[i] * vals[k] * vals[j]);
+                    dp[i][j]
+                        = Math.max(dp[i][j], dp[i][k] + dp[k][j] + vals[i] * vals[k] * vals[j]);
                 }
             }
         }
@@ -93,7 +96,7 @@ function maxCoins(nums: number[]): number {
             for (let k = i + 1; k < j; ++k) {
                 dp[i][j] = Math.max(
                     nums[i] * nums[k] * nums[j] + dp[i][k] + dp[k][j],
-                    dp[i][j]
+                    dp[i][j],
                 );
             }
         }
@@ -112,13 +115,10 @@ public:
         nums.push_back(1);
         int n = nums.size();
         vector<vector<int>> dp(n, vector<int>(n));
-        for (int l = 2; l < n; ++l)
-        {
-            for (int i = 0; i + l < n; ++i)
-            {
+        for (int l = 2; l < n; ++l) {
+            for (int i = 0; i + l < n; ++i) {
                 int j = i + l;
-                for (int k = i + 1; k < j; ++k)
-                {
+                for (int k = i + 1; k < j; ++k) {
                     dp[i][j] = max(dp[i][j], dp[i][k] + dp[k][j] + nums[i] * nums[k] * nums[j]);
                 }
             }

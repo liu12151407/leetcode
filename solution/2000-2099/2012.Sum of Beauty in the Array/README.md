@@ -1,4 +1,4 @@
-# [2012. 数组美丽值求和](https://leetcode-cn.com/problems/sum-of-beauty-in-the-array)
+# [2012. 数组美丽值求和](https://leetcode.cn/problems/sum-of-beauty-in-the-array)
 
 [English Version](/solution/2000-2099/2012.Sum%20of%20Beauty%20in%20the%20Array/README_EN.md)
 
@@ -148,10 +148,11 @@ public:
         for (int i = 1; i < n; ++i) lmx[i] = max(lmx[i - 1], nums[i - 1]);
         for (int i = n - 2; i >= 0; --i) rmi[i] = min(rmi[i + 1], nums[i + 1]);
         int ans = 0;
-        for (int i = 1; i < n - 1; ++i)
-        {
-            if (lmx[i] < nums[i] && nums[i] < rmi[i]) ans += 2;
-            else if (nums[i - 1] < nums[i] && nums[i] < nums[i + 1]) ans += 1;
+        for (int i = 1; i < n - 1; ++i) {
+            if (lmx[i] < nums[i] && nums[i] < rmi[i])
+                ans += 2;
+            else if (nums[i - 1] < nums[i] && nums[i] < nums[i + 1])
+                ans += 1;
         }
         return ans;
     }

@@ -1,4 +1,4 @@
-# [剑指 Offer II 095. 最长公共子序列](https://leetcode-cn.com/problems/qJnOS7)
+# [剑指 Offer II 095. 最长公共子序列](https://leetcode.cn/problems/qJnOS7)
 
 ## 题目描述
 
@@ -51,19 +51,21 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 1143&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/longest-common-subsequence/">https://leetcode-cn.com/problems/longest-common-subsequence/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 1143&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/longest-common-subsequence/">https://leetcode.cn/problems/longest-common-subsequence/</a></p>
 
 ## 解法
 
 <!-- 这里可写通用的实现逻辑 -->
 
-动态规划法。
+**方法一：动态规划**
 
 定义 `dp[i][j]` 表示 `text1[0:i-1]` 和 `text2[0:j-1]` 的最长公共子序列（闭区间）。
 
 递推公式如下：
 
-![](https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/剑指%20Offer%20II%20095.%20最长公共子序列/images/gif.gif)
+![](https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/剑指%20Offer%20II%20095.%20最长公共子序列/images/gif.gif)
+
+时间复杂度 O(mn)。
 
 <!-- tabs:start -->
 
@@ -116,16 +118,11 @@ public:
     int longestCommonSubsequence(string text1, string text2) {
         int m = text1.size(), n = text2.size();
         vector<vector<int>> dp(m + 1, vector<int>(n + 1));
-        for (int i = 1; i <= m; ++i)
-        {
-            for (int j = 1; j <= n; ++j)
-            {
-                if (text1[i - 1] == text2[j - 1])
-                {
+        for (int i = 1; i <= m; ++i) {
+            for (int j = 1; j <= n; ++j) {
+                if (text1[i - 1] == text2[j - 1]) {
                     dp[i][j] = dp[i - 1][j - 1] + 1;
-                }
-                else
-                {
+                } else {
                     dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
                 }
             }
@@ -162,6 +159,31 @@ func max(a, b int) int {
 	}
 	return b
 }
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {string} text1
+ * @param {string} text2
+ * @return {number}
+ */
+var longestCommonSubsequence = function (text1, text2) {
+    const m = text1.length;
+    const n = text2.length;
+    const dp = new Array(m + 1).fill(0).map(() => new Array(n + 1).fill(0));
+    for (let i = 1; i <= m; ++i) {
+        for (let j = 1; j <= n; ++j) {
+            if (text1[i - 1] == text2[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+            } else {
+                dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+            }
+        }
+    }
+    return dp[m][n];
+};
 ```
 
 ### **...**

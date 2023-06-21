@@ -1,25 +1,24 @@
-var p []int
-
 func isBipartite(graph [][]int) bool {
 	n := len(graph)
-	p = make([]int, n)
-	for i := 0; i < n; i++ {
-		p[i] = i
-	}
-	for u, g := range graph {
-		for _, v := range g {
-			if find(u) == find(v) {
+	color := make([]int, n)
+	var dfs func(u, c int) bool
+	dfs = func(u, c int) bool {
+		color[u] = c
+		for _, v := range graph[u] {
+			if color[v] == 0 {
+				if !dfs(v, 3-c) {
+					return false
+				}
+			} else if color[v] == c {
 				return false
 			}
-			p[find(v)] = find(g[0])
+		}
+		return true
+	}
+	for i := range graph {
+		if color[i] == 0 && !dfs(i, 1) {
+			return false
 		}
 	}
 	return true
-}
-
-func find(x int) int {
-	if p[x] != x {
-		p[x] = find(p[x])
-	}
-	return p[x]
 }

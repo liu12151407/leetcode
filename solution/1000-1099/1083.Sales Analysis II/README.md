@@ -1,4 +1,4 @@
-# [1083. 销售分析 II](https://leetcode-cn.com/problems/sales-analysis-ii)
+# [1083. 销售分析 II](https://leetcode.cn/problems/sales-analysis-ii)
 
 [English Version](/solution/1000-1099/1083.Sales%20Analysis%20II/README_EN.md)
 
@@ -76,7 +76,26 @@ id 为 1 的买家购买了一部 S8，但是却没有购买 iPhone，而 id 为
 ### **SQL**
 
 ```sql
-
+# Write your MySQL query statement below
+SELECT buyer_id
+FROM
+    (
+        SELECT
+            buyer_id,
+            CASE
+                WHEN p.product_name = 'S8' THEN 1
+                ELSE 0
+            END AS s8,
+            CASE
+                WHEN p.product_name = 'iPhone' THEN 1
+                ELSE 0
+            END AS iPhone
+        FROM
+            Product AS p
+            JOIN Sales AS s ON p.product_id = s.product_id
+    ) AS t
+GROUP BY buyer_id
+HAVING SUM(S8) > 0 AND SUM(iPhone) = 0;
 ```
 
 <!-- tabs:end -->

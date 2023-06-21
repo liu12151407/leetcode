@@ -1,4 +1,4 @@
-# [1732. 找到最高海拔](https://leetcode-cn.com/problems/find-the-highest-altitude)
+# [1732. 找到最高海拔](https://leetcode.cn/problems/find-the-highest-altitude)
 
 [English Version](/solution/1700-1799/1732.Find%20the%20Highest%20Altitude/README_EN.md)
 
@@ -42,7 +42,25 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
-求前 N 项和的最大值即可。
+**方法一：前缀和（差分数组）**
+
+我们假设每个点的海拔为 $h_i$，由于 $gain[i]$ 表示第 $i$ 个点和第 $i + 1$ 个点的海拔差，因此 $gain[i] = h_{i + 1} - h_i$。那么：
+
+$$
+\sum_{i = 0}^{n-1} gain[i] = h_1 - h_0 + h_2 - h_1 + \cdots + h_n - h_{n - 1} = h_n - h_0 = h_n
+$$
+
+即：
+
+$$
+h_{i+1} = \sum_{j = 0}^{i} gain[j]
+$$
+
+可以发现，每个点的海拔都可以通过前缀和的方式计算出来。因此，我们只需要遍历一遍数组，求出前缀和的最大值，即为最高点的海拔。
+
+> 实际上题目中的 $gain$ 数组是一个差分数组，对差分数组求前缀和即可得到原海拔数组。然后求出原海拔数组的最大值即可。
+
+时间复杂度 $O(n)$，空间复杂度 $O(1)$。其中 $n$ 为数组 $gain$ 的长度。
 
 <!-- tabs:start -->
 
@@ -53,11 +71,17 @@
 ```python
 class Solution:
     def largestAltitude(self, gain: List[int]) -> int:
-        res = t = 0
-        for h in gain:
-            t += h
-            res = max(res, t)
-        return res
+        return max(accumulate(gain, initial=0))
+```
+
+```python
+class Solution:
+    def largestAltitude(self, gain: List[int]) -> int:
+        ans = h = 0
+        for v in gain:
+            h += v
+            ans = max(ans, h)
+        return ans
 ```
 
 ### **Java**
@@ -67,13 +91,12 @@ class Solution:
 ```java
 class Solution {
     public int largestAltitude(int[] gain) {
-        int res = 0;
-        int t = 0;
-        for (int h : gain) {
-            t += h;
-            res = Math.max(res, t);
+        int ans = 0, h = 0;
+        for (int v : gain) {
+            h += v;
+            ans = Math.max(ans, h);
         }
-        return res;
+        return ans;
     }
 }
 ```
@@ -84,13 +107,9 @@ class Solution {
 class Solution {
 public:
     int largestAltitude(vector<int>& gain) {
-        int res = 0, t = 0;
-        for (int h : gain)
-        {
-            t += h;
-            res = max(res, t);
-        }
-        return res;
+        int ans = 0, h = 0;
+        for (int v : gain) h += v, ans = max(ans, h);
+        return ans;
     }
 };
 ```
@@ -98,20 +117,86 @@ public:
 ### **Go**
 
 ```go
-func largestAltitude(gain []int) int {
-	res, t := 0, 0
-	for _, h := range gain {
-		t += h
-		res = max(res, t)
+func largestAltitude(gain []int) (ans int) {
+	h := 0
+	for _, v := range gain {
+		h += v
+		if ans < h {
+			ans = h
+		}
 	}
-	return res
+	return
 }
+```
 
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
+### **JavaScript**
+
+```js
+/**
+ * @param {number[]} gain
+ * @return {number}
+ */
+var largestAltitude = function (gain) {
+    let ans = 0;
+    let h = 0;
+    for (const v of gain) {
+        h += v;
+        ans = Math.max(ans, h);
+    }
+    return ans;
+};
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn largest_altitude(gain: Vec<i32>) -> i32 {
+        let mut ans = 0;
+        let mut h = 0;
+        for v in gain.iter() {
+            h += v;
+            ans = ans.max(h);
+        }
+        ans
+    }
+}
+```
+
+### **C**
+
+```c
+#define max(a, b) (((a) > (b)) ? (a) : (b))
+
+int largestAltitude(int* gain, int gainSize) {
+    int ans = 0;
+    int h = 0;
+    for (int i = 0; i < gainSize; i++) {
+        h += gain[i];
+        ans = max(ans, h);
+    }
+    return ans;
+}
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param Integer[] $gain
+     * @return Integer
+     */
+    function largestAltitude($gain) {
+        $max = 0;
+        for ($i = 0; $i < count($gain); $i++) {
+            $tmp += $gain[$i];
+            if ($tmp > $max) {
+                $max = $tmp;
+            }
+        }
+        return $max;
+    }
 }
 ```
 

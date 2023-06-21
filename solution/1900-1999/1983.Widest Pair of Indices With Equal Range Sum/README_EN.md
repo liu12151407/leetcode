@@ -11,7 +11,7 @@
 <p>Return <em>the <strong>distance</strong> of the <strong>widest</strong> pair of indices. If no pair of indices meets the conditions, return </em><code>0</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums1 = [1,1,0,1], nums2 = [0,1,1,0]
@@ -23,7 +23,7 @@ nums2[1] + nums2[2] + nums2[3] = 1 + 1 + 0 = 2.
 The distance between i and j is j - i + 1 = 3 - 1 + 1 = 3.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums1 = [0,1], nums2 = [1,1]
@@ -35,7 +35,7 @@ nums2[1] = 1.
 The distance between i and j is j - i + 1 = 1 - 1 + 1 = 1.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums1 = [0], nums2 = [1]
@@ -61,13 +61,88 @@ There are no pairs of indices that meet the requirements.
 ### **Python3**
 
 ```python
-
+class Solution:
+    def widestPairOfIndices(self, nums1: List[int], nums2: List[int]) -> int:
+        d = {0: -1}
+        ans = s = 0
+        for i, (a, b) in enumerate(zip(nums1, nums2)):
+            s += a - b
+            if s in d:
+                ans = max(ans, i - d[s])
+            else:
+                d[s] = i
+        return ans
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int widestPairOfIndices(int[] nums1, int[] nums2) {
+        Map<Integer, Integer> d = new HashMap<>();
+        d.put(0, -1);
+        int n = nums1.length;
+        int s = 0;
+        int ans = 0;
+        for (int i = 0; i < n; ++i) {
+            s += nums1[i] - nums2[i];
+            if (d.containsKey(s)) {
+                ans = Math.max(ans, i - d.get(s));
+            } else {
+                d.put(s, i);
+            }
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int widestPairOfIndices(vector<int>& nums1, vector<int>& nums2) {
+        unordered_map<int, int> d;
+        d[0] = -1;
+        int ans = 0, s = 0;
+        int n = nums1.size();
+        for (int i = 0; i < n; ++i) {
+            s += nums1[i] - nums2[i];
+            if (d.count(s)) {
+                ans = max(ans, i - d[s]);
+            } else {
+                d[s] = i;
+            }
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func widestPairOfIndices(nums1 []int, nums2 []int) (ans int) {
+	d := map[int]int{0: -1}
+	s := 0
+	for i := range nums1 {
+		s += nums1[i] - nums2[i]
+		if j, ok := d[s]; ok {
+			ans = max(ans, i-j)
+		} else {
+			d[s] = i
+		}
+	}
+	return
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
 ```
 
 ### **...**

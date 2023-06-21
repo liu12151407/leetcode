@@ -1,4 +1,4 @@
-# [510. 二叉搜索树中的中序后继 II](https://leetcode-cn.com/problems/inorder-successor-in-bst-ii)
+# [510. 二叉搜索树中的中序后继 II](https://leetcode.cn/problems/inorder-successor-in-bst-ii)
 
 [English Version](/solution/0500-0599/0510.Inorder%20Successor%20in%20BST%20II/README_EN.md)
 
@@ -24,7 +24,7 @@ class Node {
 
 <p><strong>示例 1：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0510.Inorder%20Successor%20in%20BST%20II/images/285_example_1.png" style="height: 117px; width: 122px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0510.Inorder%20Successor%20in%20BST%20II/images/285_example_1.png" style="height: 117px; width: 122px;" /></p>
 
 <pre>
 <strong>输入：</strong>tree = [2,1,3], node = 1
@@ -34,7 +34,7 @@ class Node {
 
 <p><strong>示例 2：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0510.Inorder%20Successor%20in%20BST%20II/images/285_example_2.png" style="height: 229px; width: 246px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0510.Inorder%20Successor%20in%20BST%20II/images/285_example_2.png" style="height: 229px; width: 246px;" /></p>
 
 <pre>
 <strong>输入：</strong>tree = [5,3,6,2,4,null,null,1], node = 6
@@ -44,7 +44,7 @@ class Node {
 
 <p><strong>示例 3：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0510.Inorder%20Successor%20in%20BST%20II/images/285_example_34.png" style="height: 335px; width: 438px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0510.Inorder%20Successor%20in%20BST%20II/images/285_example_34.png" style="height: 335px; width: 438px;" /></p>
 
 <pre>
 <strong>输入：</strong>tree = [15,6,18,3,7,17,20,2,4,null,13,null,null,null,null,null,null,null,null,9], node = 15
@@ -53,7 +53,7 @@ class Node {
 
 <p><strong>示例 4：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0510.Inorder%20Successor%20in%20BST%20II/images/285_example_34.png" style="height: 335px; width: 438px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0510.Inorder%20Successor%20in%20BST%20II/images/285_example_34.png" style="height: 335px; width: 438px;" /></p>
 
 <pre>
 <strong>输入：</strong>tree = [15,6,18,3,7,17,20,2,4,null,13,null,null,null,null,null,null,null,null,9], node = 13
@@ -151,7 +151,6 @@ class Solution {
         return node.parent;
     }
 }
-
 ```
 
 ### **C++**
@@ -171,8 +170,7 @@ public:
 class Solution {
 public:
     Node* inorderSuccessor(Node* node) {
-        if (node->right)
-        {
+        if (node->right) {
             node = node->right;
             while (node->left) node = node->left;
             return node;
@@ -197,17 +195,17 @@ public:
  */
 
 func inorderSuccessor(node *Node) *Node {
-    if node.Right != nil {
-        node = node.Right
-        for node.Left != nil {
-            node = node.Left
-        }
-        return node
-    }
-    for node.Parent != nil && node == node.Parent.Right {
-        node = node.Parent
-    }
-    return node.Parent
+	if node.Right != nil {
+		node = node.Right
+		for node.Left != nil {
+			node = node.Left
+		}
+		return node
+	}
+	for node.Parent != nil && node == node.Parent.Right {
+		node = node.Parent
+	}
+	return node.Parent
 }
 ```
 

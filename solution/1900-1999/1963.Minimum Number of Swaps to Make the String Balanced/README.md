@@ -1,4 +1,4 @@
-# [1963. 使字符串平衡的最小交换次数](https://leetcode-cn.com/problems/minimum-number-of-swaps-to-make-the-string-balanced)
+# [1963. 使字符串平衡的最小交换次数](https://leetcode.cn/problems/minimum-number-of-swaps-to-make-the-string-balanced)
 
 [English Version](/solution/1900-1999/1963.Minimum%20Number%20of%20Swaps%20to%20Make%20the%20String%20Balanced/README_EN.md)
 
@@ -24,7 +24,8 @@
 
 <p><strong>示例 1：</strong></p>
 
-<pre><strong>输入：</strong>s = "][]["
+<pre>
+<strong>输入：</strong>s = "][]["
 <strong>输出：</strong>1
 <strong>解释：</strong>交换下标 0 和下标 3 对应的括号，可以使字符串变成平衡字符串。
 最终字符串变成 "[[]]" 。
@@ -32,17 +33,19 @@
 
 <p><strong>示例 2：</strong></p>
 
-<pre><strong>输入：</strong>s = "]]][[["
+<pre>
+<strong>输入：</strong>s = "]]][[["
 <strong>输出：</strong>2
 <strong>解释：</strong>执行下述操作可以使字符串变成平衡字符串：
-- 交换下标 0 和下标 4 对应的括号，s = "[]][[]" 。
+- 交换下标 0 和下标 4 对应的括号，s = "[]][][" 。
 - 交换下标 1 和下标 5 对应的括号，s = "[[][]]" 。
 最终字符串变成 "[[][]]" 。
 </pre>
 
 <p><strong>示例 3：</strong></p>
 
-<pre><strong>输入：</strong>s = "[]"
+<pre>
+<strong>输入：</strong>s = "[]"
 <strong>输出：</strong>0
 <strong>解释：</strong>这个字符串已经是平衡字符串。
 </pre>
@@ -70,7 +73,15 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def minSwaps(self, s: str) -> int:
+        ans = 0
+        for c in s:
+            if c == '[':
+                ans += 1
+            elif ans:
+                ans -= 1
+        return (ans + 1) >> 1
 ```
 
 ### **Java**
@@ -78,7 +89,53 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public int minSwaps(String s) {
+        int ans = 0;
+        for (char c : s.toCharArray()) {
+            if (c == '[') {
+                ++ans;
+            } else if (ans > 0) {
+                --ans;
+            }
+        }
+        return (ans + 1) >> 1;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int minSwaps(string s) {
+        int ans = 0;
+        for (char& c : s) {
+            if (c == '[')
+                ++ans;
+            else if (ans)
+                --ans;
+        }
+        return (ans + 1) >> 1;
+    }
+};
+```
+
+### **Go**
+
+```go
+func minSwaps(s string) int {
+	ans := 0
+	for _, c := range s {
+		if c == '[' {
+			ans++
+		} else if ans > 0 {
+			ans--
+		}
+	}
+	return (ans + 1) >> 1
+}
 ```
 
 ### **...**

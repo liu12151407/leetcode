@@ -9,18 +9,18 @@
 <p>Nary-Tree input serialization is represented in their level order traversal. Each group of children is separated by the null value (See examples)</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
-<p><img src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0589.N-ary%20Tree%20Preorder%20Traversal/images/narytreeexample.png" style="width: 100%; max-width: 300px;" /></p>
+<p><img src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0589.N-ary%20Tree%20Preorder%20Traversal/images/narytreeexample.png" style="width: 100%; max-width: 300px;" /></p>
 
 <pre>
 <strong>Input:</strong> root = [1,null,3,2,4,null,5,6]
 <strong>Output:</strong> [1,3,5,6,2,4]
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0589.N-ary%20Tree%20Preorder%20Traversal/images/sample_4_964.png" style="width: 296px; height: 241px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0589.N-ary%20Tree%20Preorder%20Traversal/images/sample_4_964.png" style="width: 296px; height: 241px;" /></p>
 
 <pre>
 <strong>Input:</strong> root = [1,null,2,3,4,5,null,null,6,7,null,8,null,9,10,null,null,11,null,12,null,13,null,null,14]
@@ -142,8 +142,7 @@ public:
         vector<int> ans;
         stack<Node*> stk;
         stk.push(root);
-        while (!stk.empty())
-        {
+        while (!stk.empty()) {
             Node* node = stk.top();
             ans.push_back(node->val);
             stk.pop();
@@ -182,6 +181,102 @@ func preorder(root *Node) []int {
 		}
 	}
 	return ans
+}
+```
+
+### **TypeScript**
+
+```ts
+/**
+ * Definition for node.
+ * class Node {
+ *     val: number
+ *     children: Node[]
+ *     constructor(val?: number) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.children = []
+ *     }
+ * }
+ */
+
+function preorder(root: Node | null): number[] {
+    const res = [];
+    if (root == null) {
+        return res;
+    }
+    const stack = [root];
+    while (stack.length !== 0) {
+        const { val, children } = stack.pop();
+        res.push(val);
+        const n = children.length;
+        for (let i = n - 1; i >= 0; i--) {
+            stack.push(children[i]);
+        }
+    }
+    return res;
+}
+```
+
+```ts
+/**
+ * Definition for node.
+ * class Node {
+ *     val: number
+ *     children: Node[]
+ *     constructor(val?: number) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.children = []
+ *     }
+ * }
+ */
+
+function preorder(root: Node | null): number[] {
+    const ans = [];
+    const dfs = (root: Node | null) => {
+        if (root == null) {
+            return;
+        }
+        ans.push(root.val);
+        for (const node of root.children) {
+            dfs(node);
+        }
+    };
+    dfs(root);
+    return ans;
+}
+```
+
+### **C**
+
+```c
+/**
+ * Definition for a Node.
+ * struct Node {
+ *     int val;
+ *     int numChildren;
+ *     struct Node** children;
+ * };
+ */
+
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+
+void dfs(struct Node* root, int* ans, int* i) {
+    if (!root) {
+        return;
+    }
+    ans[(*i)++] = root->val;
+    for (int j = 0; j < root->numChildren; j++) {
+        dfs(root->children[j], ans, i);
+    }
+}
+
+int* preorder(struct Node* root, int* returnSize) {
+    int* ans = malloc(sizeof(int) * 10000);
+    *returnSize = 0;
+    dfs(root, ans, returnSize);
+    return ans;
 }
 ```
 

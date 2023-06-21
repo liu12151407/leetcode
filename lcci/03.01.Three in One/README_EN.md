@@ -1,4 +1,4 @@
-# [03.01. Three in One](https://leetcode-cn.com/problems/three-in-one-lcci)
+# [03.01. Three in One](https://leetcode.cn/problems/three-in-one-lcci)
 
 [中文文档](/lcci/03.01.Three%20in%20One/README.md)
 
@@ -52,7 +52,6 @@
 
 ```python
 class TripleInOne:
-
     def __init__(self, stackSize: int):
         self._capacity = stackSize
         self._s = [[], [], []]

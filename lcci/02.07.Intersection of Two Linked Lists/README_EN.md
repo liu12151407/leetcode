@@ -1,4 +1,4 @@
-# [02.07. Intersection of Two Linked Lists](https://leetcode-cn.com/problems/intersection-of-two-linked-lists-lcci)
+# [02.07. Intersection of Two Linked Lists](https://leetcode.cn/problems/intersection-of-two-linked-lists-lcci)
 
 [中文文档](/lcci/02.07.Intersection%20of%20Two%20Linked%20Lists/README.md)
 
@@ -40,10 +40,10 @@
 
 <p><b>Notes:</b></p>
 
-- If the two linked lists have no intersection at all, return&nbsp;<code>null</code>.
-- The linked lists must retain their original structure after the function returns.
-- You may assume there are no cycles anywhere in the entire linked structure.
-- Your code should preferably run in O(n) time and use only O(1) memory.
+-   If the two linked lists have no intersection at all, return&nbsp;<code>null</code>.
+-   The linked lists must retain their original structure after the function returns.
+-   You may assume there are no cycles anywhere in the entire linked structure.
+-   Your code should preferably run in O(n) time and use only O(1) memory.
 
 ## Solutions
 
@@ -57,6 +57,7 @@
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
+
 
 class Solution:
     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
@@ -106,7 +107,7 @@ public class Solution {
  */
 class Solution {
 public:
-    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+    ListNode* getIntersectionNode(ListNode* headA, ListNode* headB) {
         ListNode* cur1 = headA;
         ListNode* cur2 = headB;
         while (cur1 != cur2) {
@@ -155,21 +156,21 @@ var getIntersectionNode = function (headA, headB) {
  *     Next *ListNode
  * }
  */
- func getIntersectionNode(headA, headB *ListNode) *ListNode {
-    cur1, cur2 := headA, headB
-    for cur1 != cur2 {
-        if cur1 == nil {
-            cur1 = headB
-        } else {
-            cur1 = cur1.Next
-        }
-        if cur2 == nil {
-            cur2 = headA
-        } else {
-            cur2 = cur2.Next
-        }
-    }
-    return cur1
+func getIntersectionNode(headA, headB *ListNode) *ListNode {
+	cur1, cur2 := headA, headB
+	for cur1 != cur2 {
+		if cur1 == nil {
+			cur1 = headB
+		} else {
+			cur1 = cur1.Next
+		}
+		if cur2 == nil {
+			cur2 = headA
+		} else {
+			cur2 = cur2.Next
+		}
+	}
+	return cur1
 }
 ```
 

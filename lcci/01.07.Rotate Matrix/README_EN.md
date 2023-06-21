@@ -1,4 +1,4 @@
-# [01.07. Rotate Matrix](https://leetcode-cn.com/problems/rotate-matrix-lcci)
+# [01.07. Rotate Matrix](https://leetcode.cn/problems/rotate-matrix-lcci)
 
 [中文文档](/lcci/01.07.Rotate%20Matrix/README.md)
 
@@ -96,7 +96,6 @@ class Solution:
                 matrix[n - j - 1][i] = matrix[n - i - 1][n - j - 1]
                 matrix[n - i - 1][n - j - 1] = matrix[j][n - i - 1]
                 matrix[j][n - i - 1] = t
-
 ```
 
 ### **Java**

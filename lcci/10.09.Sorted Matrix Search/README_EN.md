@@ -1,4 +1,4 @@
-# [10.09. Sorted Matrix Search](https://leetcode-cn.com/problems/sorted-matrix-search-lcci)
+# [10.09. Sorted Matrix Search](https://leetcode.cn/problems/sorted-matrix-search-lcci)
 
 [中文文档](/lcci/10.09.Sorted%20Matrix%20Search/README.md)
 
@@ -89,11 +89,12 @@ public:
         if (matrix.size() == 0 || matrix[0].size() == 0) return false;
         int m = matrix.size(), n = matrix[0].size();
         int i = m - 1, j = 0;
-        while (i >= 0 && j < n)
-        {
+        while (i >= 0 && j < n) {
             if (matrix[i][j] == target) return true;
-            if (matrix[i][j] > target) --i;
-            else ++j;
+            if (matrix[i][j] > target)
+                --i;
+            else
+                ++j;
         }
         return false;
     }

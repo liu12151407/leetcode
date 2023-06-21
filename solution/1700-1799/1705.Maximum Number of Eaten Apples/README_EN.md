@@ -11,7 +11,7 @@
 <p>Given two integer arrays <code>days</code> and <code>apples</code> of length <code>n</code>, return <em>the maximum number of apples you can eat.</em></p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> apples = [1,2,3,5,2], days = [3,2,1,4,2]
@@ -23,7 +23,7 @@
 - On the fourth to the seventh days, you eat apples that grew on the fourth day.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> apples = [3,0,0,0,0,2], days = [3,0,0,0,0,2]
@@ -38,8 +38,7 @@
 <p><strong>Constraints:</strong></p>
 
 <ul>
-	<li><code>apples.length == n</code></li>
-	<li><code>days.length == n</code></li>
+	<li><code>n == apples.length == days.length</code></li>
 	<li><code>1 &lt;= n &lt;= 2 * 10<sup>4</sup></code></li>
 	<li><code>0 &lt;= apples[i], days[i] &lt;= 2 * 10<sup>4</sup></code></li>
 	<li><code>days[i] = 0</code> if and only if <code>apples[i] = 0</code>.</li>
@@ -54,20 +53,20 @@
 ```python
 class Solution:
     def eatenApples(self, apples: List[int], days: List[int]) -> int:
-        q = []
-        n = len(apples)
+        n = len(days)
         i = ans = 0
+        q = []
         while i < n or q:
-            if i < n and apples[i] > 0:
-                heappush(q, [i + days[i] - 1, apples[i]])
+            if i < n and apples[i]:
+                heappush(q, (i + days[i] - 1, apples[i]))
             while q and q[0][0] < i:
                 heappop(q)
             if q:
-                end, num = heappop(q)
-                num -= 1
+                t, v = heappop(q)
+                v -= 1
                 ans += 1
-                if num > 0 and end > i:
-                    heappush(q, [end, num])
+                if v and t > i:
+                    heappush(q, (t, v))
             i += 1
         return ans
 ```
@@ -78,20 +77,21 @@ class Solution:
 class Solution {
     public int eatenApples(int[] apples, int[] days) {
         PriorityQueue<int[]> q = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
-        int ans = 0, i = 0, n = apples.length;
+        int n = days.length;
+        int ans = 0, i = 0;
         while (i < n || !q.isEmpty()) {
             if (i < n && apples[i] > 0) {
-                q.offer(new int[]{i + days[i] - 1, apples[i]});
+                q.offer(new int[] {i + days[i] - 1, apples[i]});
             }
             while (!q.isEmpty() && q.peek()[0] < i) {
                 q.poll();
             }
             if (!q.isEmpty()) {
-                int[] t = q.poll();
-                if (--t[1] > 0 && t[0] > i) {
-                    q.offer(t);
-                }
+                var p = q.poll();
                 ++ans;
+                if (--p[1] > 0 && p[0] > i) {
+                    q.offer(p);
+                }
             }
             ++i;
         }
@@ -103,24 +103,23 @@ class Solution {
 ### **C++**
 
 ```cpp
-typedef pair<int, int> PII;
+using pii = pair<int, int>;
 
 class Solution {
 public:
     int eatenApples(vector<int>& apples, vector<int>& days) {
-        priority_queue<PII, vector<PII>, greater<PII>> q;
-        int i = 0, n = apples.size(), ans = 0;
-        while (i < n || !q.empty())
-        {
-            if (i < n && apples[i] > 0) q.emplace(i + days[i] - 1, apples[i]);
+        priority_queue<pii, vector<pii>, greater<pii>> q;
+        int n = days.size();
+        int ans = 0, i = 0;
+        while (i < n || !q.empty()) {
+            if (i < n && apples[i]) q.emplace(i + days[i] - 1, apples[i]);
             while (!q.empty() && q.top().first < i) q.pop();
-            if (!q.empty())
-            {
-                PII t = q.top();
+            if (!q.empty()) {
+                auto [t, v] = q.top();
                 q.pop();
-                --t.second;
+                --v;
                 ++ans;
-                if (t.second > 0 && t.first > i) q.emplace(t);
+                if (v && t > i) q.emplace(t, v);
             }
             ++i;
         }

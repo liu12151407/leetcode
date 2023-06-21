@@ -11,7 +11,7 @@
 <p><strong>Note:</strong> Due to the large constraints, the answer may not fit in a signed 32-bit integer. Please be careful during the calculations.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> word = &quot;aba&quot;
@@ -24,7 +24,7 @@ All possible substrings are: &quot;a&quot;, &quot;ab&quot;, &quot;aba&quot;, &qu
 Hence, the total sum of vowels = 0 + 1 + 1 + 1 + 1 + 2 = 6. 
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> word = &quot;abc&quot;
@@ -33,21 +33,15 @@ Hence, the total sum of vowels = 0 + 1 + 1 + 1 + 1 + 2 = 6.
 All possible substrings are: &quot;a&quot;, &quot;ab&quot;, &quot;abc&quot;, &quot;b&quot;, &quot;bc&quot;, and &quot;c&quot;.
 - &quot;a&quot;, &quot;ab&quot;, and &quot;abc&quot; have 1 vowel each
 - &quot;b&quot;, &quot;bc&quot;, and &quot;c&quot; have 0 vowels each
-Hence, the total sum of vowels = 1 + 1 + 1 + 0 + 0 + 0 = 3. </pre>
+Hence, the total sum of vowels = 1 + 1 + 1 + 0 + 0 + 0 = 3.
+</pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> word = &quot;ltcd&quot;
 <strong>Output:</strong> 0
-<strong>Explanation:</strong> There are no vowels in any substring of &quot;ltcd&quot;.</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> word = &quot;noosabasboosa&quot;
-<strong>Output:</strong> 237
-<strong>Explanation:</strong> There are a total of 237 vowels in all the substrings.
+<strong>Explanation:</strong> There are no vowels in any substring of &quot;ltcd&quot;.
 </pre>
 
 <p>&nbsp;</p>
@@ -67,11 +61,8 @@ Hence, the total sum of vowels = 1 + 1 + 1 + 0 + 0 + 0 = 3. </pre>
 ```python
 class Solution:
     def countVowels(self, word: str) -> int:
-        ans, n = 0, len(word)
-        for i, c in enumerate(word):
-            if c in ['a', 'e', 'i', 'o', 'u']:
-                ans += (i + 1) * (n - i)
-        return ans
+        n = len(word)
+        return sum((i + 1) * (n - i) for i, c in enumerate(word) if c in 'aeiou')
 ```
 
 ### **Java**
@@ -83,27 +74,11 @@ class Solution {
         for (int i = 0, n = word.length(); i < n; ++i) {
             char c = word.charAt(i);
             if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') {
-                ans += (long) (i + 1) * (n - i);
+                ans += (i + 1L) * (n - i);
             }
         }
         return ans;
     }
-}
-```
-
-### **TypeScript**
-
-```ts
-function countVowels(word: string): number {
-    const n = word.length;
-    let ans = 0;
-    for (let i = 0; i < n; i++) {
-        let char = word.charAt(i);
-        if (["a", "e", "i", "o", "u"].includes(char)) {
-            ans += (i + 1) * (n - i);
-        }
-    }
-    return ans;
 }
 ```
 
@@ -114,10 +89,11 @@ class Solution {
 public:
     long long countVowels(string word) {
         long long ans = 0;
-        for (int i = 0, n = word.size(); i < n; ++i)
-        {
+        for (int i = 0, n = word.size(); i < n; ++i) {
             char c = word[i];
-            if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') ans += (long long) (i + 1) * (n - i);
+            if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') {
+                ans += (i + 1LL) * (n - i);
+            }
         }
         return ans;
     }
@@ -127,15 +103,28 @@ public:
 ### **Go**
 
 ```go
-func countVowels(word string) int64 {
-	var ans int64
-	n := len(word)
+func countVowels(word string) (ans int64) {
 	for i, c := range word {
 		if c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' {
-			ans += int64((i + 1) * (n - i))
+			ans += int64((i + 1) * (len(word) - i))
 		}
 	}
-	return ans
+	return
+}
+```
+
+### **TypeScript**
+
+```ts
+function countVowels(word: string): number {
+    const n = word.length;
+    let ans = 0;
+    for (let i = 0; i < n; ++i) {
+        if (['a', 'e', 'i', 'o', 'u'].includes(word[i])) {
+            ans += (i + 1) * (n - i);
+        }
+    }
+    return ans;
 }
 ```
 

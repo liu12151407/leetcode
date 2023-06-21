@@ -16,7 +16,7 @@
 <p>Return the minimum number of moves to transform the given array <code>nums</code> into a zigzag array.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,2,3]
@@ -24,7 +24,7 @@
 <strong>Explanation:</strong> We can decrease 2 to 0 or 3 to 1.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [9,6,1,6,2]
@@ -46,13 +46,146 @@
 ### **Python3**
 
 ```python
-
+class Solution:
+    def movesToMakeZigzag(self, nums: List[int]) -> int:
+        ans = [0, 0]
+        n = len(nums)
+        for i in range(2):
+            for j in range(i, n, 2):
+                d = 0
+                if j:
+                    d = max(d, nums[j] - nums[j - 1] + 1)
+                if j < n - 1:
+                    d = max(d, nums[j] - nums[j + 1] + 1)
+                ans[i] += d
+        return min(ans)
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int movesToMakeZigzag(int[] nums) {
+        int[] ans = new int[2];
+        int n = nums.length;
+        for (int i = 0; i < 2; ++i) {
+            for (int j = i; j < n; j += 2) {
+                int d = 0;
+                if (j > 0) {
+                    d = Math.max(d, nums[j] - nums[j - 1] + 1);
+                }
+                if (j < n - 1) {
+                    d = Math.max(d, nums[j] - nums[j + 1] + 1);
+                }
+                ans[i] += d;
+            }
+        }
+        return Math.min(ans[0], ans[1]);
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int movesToMakeZigzag(vector<int>& nums) {
+        vector<int> ans(2);
+        int n = nums.size();
+        for (int i = 0; i < 2; ++i) {
+            for (int j = i; j < n; j += 2) {
+                int d = 0;
+                if (j) d = max(d, nums[j] - nums[j - 1] + 1);
+                if (j < n - 1) d = max(d, nums[j] - nums[j + 1] + 1);
+                ans[i] += d;
+            }
+        }
+        return min(ans[0], ans[1]);
+    }
+};
+```
+
+### **Go**
+
+```go
+func movesToMakeZigzag(nums []int) int {
+	ans := [2]int{}
+	n := len(nums)
+	for i := 0; i < 2; i++ {
+		for j := i; j < n; j += 2 {
+			d := 0
+			if j > 0 {
+				d = max(d, nums[j]-nums[j-1]+1)
+			}
+			if j < n-1 {
+				d = max(d, nums[j]-nums[j+1]+1)
+			}
+			ans[i] += d
+		}
+	}
+	return min(ans[0], ans[1])
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+```
+
+### **C#**
+
+```cs
+public class Solution {
+    public int MovesToMakeZigzag(int[] nums) {
+        int[] ans = new int[2];
+        int n = nums.Length;
+        for (int i = 0; i < 2; ++i) {
+            for (int j = i; j < n; j += 2) {
+                int d = 0;
+                if (j > 0) {
+                    d = Math.Max(d, nums[j] - nums[j - 1] + 1);
+                }
+                if (j < n - 1) {
+                    d = Math.Max(d, nums[j] - nums[j + 1] + 1);
+                }
+                ans[i] += d;
+            }
+        }
+        return Math.Min(ans[0], ans[1]);
+    }
+}
+```
+
+### **TypeScript**
+
+```ts
+function movesToMakeZigzag(nums: number[]): number {
+    const ans: number[] = Array(2).fill(0);
+    const n = nums.length;
+    for (let i = 0; i < 2; ++i) {
+        for (let j = i; j < n; j += 2) {
+            let d = 0;
+            if (j > 0) {
+                d = Math.max(d, nums[j] - nums[j - 1] + 1);
+            }
+            if (j < n - 1) {
+                d = Math.max(d, nums[j] - nums[j + 1] + 1);
+            }
+            ans[i] += d;
+        }
+    }
+    return Math.min(...ans);
+}
 ```
 
 ### **...**

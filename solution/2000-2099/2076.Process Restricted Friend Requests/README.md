@@ -1,4 +1,4 @@
-# [2076. 处理含限制条件的好友请求](https://leetcode-cn.com/problems/process-restricted-friend-requests)
+# [2076. 处理含限制条件的好友请求](https://leetcode.cn/problems/process-restricted-friend-requests)
 
 [English Version](/solution/2000-2099/2076.Process%20Restricted%20Friend%20Requests/README_EN.md)
 
@@ -82,7 +82,9 @@
 
 ```python
 class Solution:
-    def friendRequests(self, n: int, restrictions: List[List[int]], requests: List[List[int]]) -> List[bool]:
+    def friendRequests(
+        self, n: int, restrictions: List[List[int]], requests: List[List[int]]
+    ) -> List[bool]:
         p = list(range(n))
 
         def find(x):
@@ -98,7 +100,9 @@ class Solution:
             else:
                 valid = True
                 for x, y in restrictions:
-                    if (find(u) == find(x) and find(v) == find(y)) or (find(u) == find(y) and find(v) == find(x)):
+                    if (find(u) == find(x) and find(v) == find(y)) or (
+                        find(u) == find(y) and find(v) == find(x)
+                    ):
                         valid = False
                         break
                 ans.append(valid)
@@ -130,7 +134,8 @@ class Solution {
                 boolean valid = true;
                 for (int[] res : restrictions) {
                     int x = res[0], y = res[1];
-                    if ((find(u) == find(x) && find(v) == find(y)) || (find(u) == find(y) && find(v) == find(x))) {
+                    if ((find(u) == find(x) && find(v) == find(y))
+                        || (find(u) == find(y) && find(v) == find(x))) {
                         valid = false;
                         break;
                     }
@@ -166,18 +171,15 @@ public:
         p.resize(n);
         for (int i = 0; i < n; ++i) p[i] = i;
         vector<bool> ans;
-        for (auto& req : requests)
-        {
+        for (auto& req : requests) {
             int u = req[0], v = req[1];
-            if (find(u) == find(v)) ans.push_back(true);
-            else
-            {
+            if (find(u) == find(v))
+                ans.push_back(true);
+            else {
                 bool valid = true;
-                for (auto& res : restrictions)
-                {
+                for (auto& res : restrictions) {
                     int x = res[0], y = res[1];
-                    if ((find(u) == find(x) && find(v) == find(y)) || (find(u) == find(y) && find(v) == find(x)))
-                    {
+                    if ((find(u) == find(x) && find(v) == find(y)) || (find(u) == find(y) && find(v) == find(x))) {
                         valid = false;
                         break;
                     }

@@ -15,7 +15,7 @@
 <p><em>Return the key of the keypress that had the <strong>longest duration</strong>. If there are multiple such keypresses, return the lexicographically largest key of the keypresses.</em></p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> releaseTimes = [9,29,49,50], keysPressed = &quot;cbcd&quot;
@@ -29,7 +29,7 @@ The longest of these was the keypress for &#39;b&#39; and the second keypress fo
 &#39;c&#39; is lexicographically larger than &#39;b&#39;, so the answer is &#39;c&#39;.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> releaseTimes = [12,23,36,46,62], keysPressed = &quot;spuda&quot;
@@ -100,11 +100,9 @@ public:
     char slowestKey(vector<int>& releaseTimes, string keysPressed) {
         char ans = keysPressed[0];
         int mx = releaseTimes[0];
-        for (int i = 1, n = releaseTimes.size(); i < n; ++i)
-        {
+        for (int i = 1, n = releaseTimes.size(); i < n; ++i) {
             int d = releaseTimes[i] - releaseTimes[i - 1];
-            if (d > mx || (d == mx && keysPressed[i] > ans))
-            {
+            if (d > mx || (d == mx && keysPressed[i] > ans)) {
                 mx = d;
                 ans = keysPressed[i];
             }

@@ -13,9 +13,9 @@
 <p>Given two integers, <code>n</code> and <code>k</code>, return <em>the <strong>number</strong> of different ways to distribute the candies</em>. As the answer may be too large, return it <strong>modulo</strong> <code>10<sup>9</sup> + 7</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1600-1699/1692.Count%20Ways%20to%20Distribute%20Candies/images/candies-1.png" style="height: 248px; width: 600px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1600-1699/1692.Count%20Ways%20to%20Distribute%20Candies/images/candies-1.png" style="height: 248px; width: 600px;" /></p>
 
 <pre>
 <strong>Input:</strong> n = 3, k = 2
@@ -26,7 +26,7 @@
 (1,3), (2)
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 4, k = 2
@@ -41,7 +41,7 @@
 (1,3,4), (2)
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 20, k = 5
@@ -63,13 +63,72 @@
 ### **Python3**
 
 ```python
-
+class Solution:
+    def waysToDistribute(self, n: int, k: int) -> int:
+        mod = 10**9 + 7
+        f = [[0] * (k + 1) for _ in range(n + 1)]
+        f[0][0] = 1
+        for i in range(1, n + 1):
+            for j in range(1, k + 1):
+                f[i][j] = (f[i - 1][j] * j + f[i - 1][j - 1]) % mod
+        return f[n][k]
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int waysToDistribute(int n, int k) {
+        final int mod = (int) 1e9 + 7;
+        int[][] f = new int[n + 1][k + 1];
+        f[0][0] = 1;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= k; j++) {
+                f[i][j] = (int) ((long) f[i - 1][j] * j % mod + f[i - 1][j - 1]) % mod;
+            }
+        }
+        return f[n][k];
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int waysToDistribute(int n, int k) {
+        const int mod = 1e9 + 7;
+        int f[n + 1][k + 1];
+        memset(f, 0, sizeof(f));
+        f[0][0] = 1;
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 1; j <= k; ++j) {
+                f[i][j] = (1LL * f[i - 1][j] * j + f[i - 1][j - 1]) % mod;
+            }
+        }
+        return f[n][k];
+    }
+};
+```
+
+### **Go**
+
+```go
+func waysToDistribute(n int, k int) int {
+	f := make([][]int, n+1)
+	for i := range f {
+		f[i] = make([]int, k+1)
+	}
+	f[0][0] = 1
+	const mod = 1e9 + 7
+	for i := 1; i <= n; i++ {
+		for j := 1; j <= k; j++ {
+			f[i][j] = (f[i-1][j]*j + f[i-1][j-1]) % mod
+		}
+	}
+	return f[n][k]
+}
 ```
 
 ### **...**

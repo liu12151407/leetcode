@@ -1,4 +1,4 @@
-# [213. 打家劫舍 II](https://leetcode-cn.com/problems/house-robber-ii)
+# [213. 打家劫舍 II](https://leetcode.cn/problems/house-robber-ii)
 
 [English Version](/solution/0200-0299/0213.House%20Robber%20II/README_EN.md)
 
@@ -10,9 +10,9 @@
 
 <p>给定一个代表每个房屋存放金额的非负整数数组，计算你 <strong>在不触动警报装置的情况下</strong> ，今晚能够偷窃到的最高金额。</p>
 
-<p> </p>
+<p>&nbsp;</p>
 
-<p><strong>示例 1：</strong></p>
+<p><strong>示例&nbsp;1：</strong></p>
 
 <pre>
 <strong>输入：</strong>nums = [2,3,2]
@@ -26,22 +26,22 @@
 <strong>输入：</strong>nums = [1,2,3,1]
 <strong>输出：</strong>4
 <strong>解释：</strong>你可以先偷窃 1 号房屋（金额 = 1），然后偷窃 3 号房屋（金额 = 3）。
-     偷窃到的最高金额 = 1 + 3 = 4 。</pre>
+&nbsp;    偷窃到的最高金额 = 1 + 3 = 4 。</pre>
 
 <p><strong>示例 3：</strong></p>
 
 <pre>
-<strong>输入：</strong>nums = [0]
-<strong>输出：</strong>0
+<strong>输入：</strong>nums = [1,2,3]
+<strong>输出：</strong>3
 </pre>
 
-<p> </p>
+<p>&nbsp;</p>
 
 <p><strong>提示：</strong></p>
 
 <ul>
-	<li><code>1 <= nums.length <= 100</code></li>
-	<li><code>0 <= nums[i] <= 1000</code></li>
+	<li><code>1 &lt;= nums.length &lt;= 100</code></li>
+	<li><code>0 &lt;= nums[i] &lt;= 1000</code></li>
 </ul>
 
 ## 解法
@@ -61,7 +61,7 @@ class Solution:
     def rob(self, nums: List[int]) -> int:
         def robRange(nums, l, r):
             a, b = 0, nums[l]
-            for num in nums[l + 1: r + 1]:
+            for num in nums[l + 1 : r + 1]:
                 a, b = b, max(num + a, b)
             return b
 
@@ -150,6 +150,46 @@ func max(a, b int) int {
 		return a
 	}
 	return b
+}
+```
+
+### **TypeScript**
+
+```ts
+function rob(nums: number[]): number {
+    const n = nums.length;
+    if (n === 1) {
+        return nums[0];
+    }
+    const robRange = (left: number, right: number) => {
+        const dp = [0, 0];
+        for (let i = left; i < right; i++) {
+            [dp[0], dp[1]] = [dp[1], Math.max(dp[1], dp[0] + nums[i])];
+        }
+        return dp[1];
+    };
+    return Math.max(robRange(0, n - 1), robRange(1, n));
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn rob(nums: Vec<i32>) -> i32 {
+        let n = nums.len();
+        if n == 1 {
+            return nums[0];
+        }
+        let rob_range = |left, right| {
+            let mut dp = [0, 0];
+            for i in left..right {
+                dp = [dp[1], dp[1].max(dp[0] + nums[i])];
+            }
+            dp[1]
+        };
+        rob_range(0, n - 1).max(rob_range(1, n))
+    }
 }
 ```
 

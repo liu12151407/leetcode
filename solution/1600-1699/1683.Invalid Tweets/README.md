@@ -1,4 +1,4 @@
-# [1683. 无效的推文](https://leetcode-cn.com/problems/invalid-tweets)
+# [1683. 无效的推文](https://leetcode.cn/problems/invalid-tweets)
 
 [English Version](/solution/1600-1699/1683.Invalid%20Tweets/README_EN.md)
 
@@ -49,10 +49,10 @@ tweet_id 是这个表的主键。
 
 <!-- 这里可写通用的实现逻辑 -->
 
-- `CHAR_LENGTH(str)`: 中文、数字、字母都是 1 字节
-- `LENGTH(str)`:
-    - utf8: 中文 3 字节，数字、字母 1 字节
-    - gbk: 中文 2 字节，数字、字母 1 字节
+-   `CHAR_LENGTH(str)`: 中文、数字、字母都是 1 字节
+-   `LENGTH(str)`:
+    -   utf8: 中文 3 字节，数字、字母 1 字节
+    -   gbk: 中文 2 字节，数字、字母 1 字节
 
 <!-- tabs:start -->
 
@@ -62,10 +62,8 @@ tweet_id 是这个表的主键。
 # Write your MySQL query statement below
 SELECT
     tweet_id
-FROM
-    Tweets
-WHERE
-    CHAR_LENGTH(content) > 15;
+FROM Tweets
+WHERE CHAR_LENGTH(content) > 15;
 ```
 
 <!-- tabs:end -->

@@ -14,7 +14,7 @@
 <p>Return <em>the <strong>capitalized</strong> </em><code>title</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> title = &quot;capiTalIze tHe titLe&quot;
@@ -23,7 +23,7 @@
 Since all the words have a length of at least 3, the first letter of each word is uppercase, and the remaining letters are lowercase.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> title = &quot;First leTTeR of EACH Word&quot;
@@ -33,7 +33,7 @@ The word &quot;of&quot; has length 2, so it is all lowercase.
 The remaining words have a length of at least 3, so the first letter of each remaining word is uppercase, and the remaining letters are lowercase.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> title = &quot;i lOve leetcode&quot;
@@ -59,13 +59,63 @@ The remaining words have a length of at least 3, so the first letter of each rem
 ### **Python3**
 
 ```python
-
+class Solution:
+    def capitalizeTitle(self, title: str) -> str:
+        words = [w.lower() if len(w) < 3 else w.capitalize() for w in title.split()]
+        return " ".join(words)
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public String capitalizeTitle(String title) {
+        List<String> ans = new ArrayList<>();
+        for (String s : title.split(" ")) {
+            if (s.length() < 3) {
+                ans.add(s.toLowerCase());
+            } else {
+                ans.add(s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase());
+            }
+        }
+        return String.join(" ", ans);
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    string capitalizeTitle(string title) {
+        transform(title.begin(), title.end(), title.begin(), ::tolower);
+        istringstream ss(title);
+        string ans;
+        while (ss >> title) {
+            if (title.size() > 2) title[0] = toupper(title[0]);
+            ans += title;
+            ans += " ";
+        }
+        ans.pop_back();
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func capitalizeTitle(title string) string {
+	title = strings.ToLower(title)
+	words := strings.Split(title, " ")
+	for i, s := range words {
+		if len(s) > 2 {
+			words[i] = strings.Title(s)
+		}
+	}
+	return strings.Join(words, " ")
+}
 ```
 
 ### **TypeScript**

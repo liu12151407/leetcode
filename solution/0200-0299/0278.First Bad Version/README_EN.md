@@ -11,7 +11,7 @@
 <p>You are given an API <code>bool isBadVersion(version)</code> which returns whether <code>version</code> is bad. Implement a function to find the first bad version. You should minimize the number of calls to the API.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 5, bad = 4
@@ -23,7 +23,7 @@ call isBadVersion(4)&nbsp;-&gt; true
 Then 4 is the first bad version.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 1, bad = 1
@@ -49,6 +49,7 @@ Then 4 is the first bad version.
 # @return an integer
 # def isBadVersion(version):
 
+
 class Solution:
     def firstBadVersion(self, n):
         """
@@ -57,7 +58,7 @@ class Solution:
         """
         left, right = 1, n
         while left < right:
-            mid  = (left + right) >> 1
+            mid = (left + right) >> 1
             if isBadVersion(mid):
                 right = mid
             else:
@@ -170,6 +171,30 @@ func firstBadVersion(n int) int {
 		}
 	}
 	return left
+}
+```
+
+### **Rust**
+
+```rust
+// The API isBadVersion is defined for you.
+// isBadVersion(version:i32)-> bool;
+// to call it use self.isBadVersion(version)
+
+impl Solution {
+    pub fn first_bad_version(&self, n: i32) -> i32 {
+        let mut left = 1;
+        let mut right = n;
+        while left < right {
+            let mid = left + (right - left) / 2;
+            if self.isBadVersion(mid) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        left
+    }
 }
 ```
 

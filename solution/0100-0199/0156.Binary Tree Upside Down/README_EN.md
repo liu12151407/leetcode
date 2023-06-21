@@ -11,29 +11,27 @@
 <ol>
 	<li>The original left child becomes the new root.</li>
 	<li>The original root becomes the new right child.</li>
-	<li>The original right child&nbsp;becomes the new left child.</li>
+	<li>The original right child becomes the new left child.</li>
 </ol>
-
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0156.Binary%20Tree%20Upside%20Down/images/main.jpg" style="width: 100%; height: 100%;" /></p>
-
-<p>The mentioned steps are done level by level, it is <strong>guaranteed</strong> that every node in the given tree has either <strong>0 or 2 children</strong>.</p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0156.Binary%20Tree%20Upside%20Down/images/main.jpg" style="width: 600px; height: 95px;" />
+<p>The mentioned steps are done level by level. It is <strong>guaranteed</strong> that every right node has a sibling (a left node with the same parent) and has no children.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0156.Binary%20Tree%20Upside%20Down/images/updown.jpg" style="width: 800px; height: 161px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0156.Binary%20Tree%20Upside%20Down/images/updown.jpg" style="width: 800px; height: 161px;" />
 <pre>
 <strong>Input:</strong> root = [1,2,3,4,5]
 <strong>Output:</strong> [4,5,2,null,null,3,1]
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> root = []
 <strong>Output:</strong> []
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> root = [1]
@@ -46,7 +44,8 @@
 <ul>
 	<li>The number of nodes in the tree will be in the range <code>[0, 10]</code>.</li>
 	<li><code>1 &lt;= Node.val &lt;= 10</code></li>
-	<li><code>Every node has either 0 or 2 children.</code></li>
+	<li>Every right node in the tree has a sibling (a left node that shares the same parent).</li>
+	<li>Every right node in the tree has no children.</li>
 </ul>
 
 ## Solutions

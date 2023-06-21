@@ -9,7 +9,7 @@
 <p><em>Merge all the linked-lists into one sorted linked-list and return it.</em></p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> lists = [[1,4,5],[1,3,4],[2,6]]
@@ -24,14 +24,14 @@ merging them into one sorted list:
 1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4-&gt;5-&gt;6
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> lists = []
 <strong>Output:</strong> []
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> lists = [[]]
@@ -43,11 +43,11 @@ merging them into one sorted list:
 
 <ul>
 	<li><code>k == lists.length</code></li>
-	<li><code>0 &lt;= k &lt;= 10^4</code></li>
+	<li><code>0 &lt;= k &lt;= 10<sup>4</sup></code></li>
 	<li><code>0 &lt;= lists[i].length &lt;= 500</code></li>
-	<li><code>-10^4 &lt;= lists[i][j] &lt;= 10^4</code></li>
+	<li><code>-10<sup>4</sup> &lt;= lists[i][j] &lt;= 10<sup>4</sup></code></li>
 	<li><code>lists[i]</code> is sorted in <strong>ascending order</strong>.</li>
-	<li>The sum of <code>lists[i].length</code> won&#39;t exceed <code>10^4</code>.</li>
+	<li>The sum of <code>lists[i].length</code> will not exceed <code>10<sup>4</sup></code>.</li>
 </ul>
 
 ## Solutions
@@ -156,15 +156,11 @@ private:
     ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
         ListNode* dummy = new ListNode();
         ListNode* cur = dummy;
-        while (l1 && l2)
-        {
-            if (l1->val <= l2->val)
-            {
+        while (l1 && l2) {
+            if (l1->val <= l2->val) {
                 cur->next = l1;
                 l1 = l1->next;
-            }
-            else
-            {
+            } else {
                 cur->next = l2;
                 l2 = l2->next;
             }
@@ -187,35 +183,35 @@ private:
  * }
  */
 func mergeKLists(lists []*ListNode) *ListNode {
-    n := len(lists)
-    if n == 0 {
-        return nil
-    }
-    for i := 1; i < n; i++ {
-        lists[i] = mergeTwoLists(lists[i-1], lists[i])
-    }
-    return lists[n-1]
+	n := len(lists)
+	if n == 0 {
+		return nil
+	}
+	for i := 1; i < n; i++ {
+		lists[i] = mergeTwoLists(lists[i-1], lists[i])
+	}
+	return lists[n-1]
 }
 
- func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
-    dummy := &ListNode{}
-    cur := dummy
-    for l1 != nil && l2 != nil {
-        if l1.Val <= l2.Val {
-            cur.Next = l1
-            l1 = l1.Next
-        } else {
-            cur.Next = l2
-            l2 = l2.Next
-        }
-        cur = cur.Next
-    }
-    if l1 != nil {
-        cur.Next = l1
-    } else if l2 != nil {
-        cur.Next = l2
-    }
-    return dummy.Next
+func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
+	dummy := &ListNode{}
+	cur := dummy
+	for l1 != nil && l2 != nil {
+		if l1.Val <= l2.Val {
+			cur.Next = l1
+			l1 = l1.Next
+		} else {
+			cur.Next = l2
+			l2 = l2.Next
+		}
+		cur = cur.Next
+	}
+	if l1 != nil {
+		cur.Next = l1
+	} else if l2 != nil {
+		cur.Next = l2
+	}
+	return dummy.Next
 }
 ```
 
@@ -344,6 +340,117 @@ public class Solution {
         }
         cur.next = l1 == null ? l2 : l1;
         return dummy.next;
+    }
+}
+```
+
+### **TypeScript**
+
+```ts
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+function mergeKLists(lists: Array<ListNode | null>): ListNode | null {
+    const n = lists.length;
+    const dfs = (start: number, end: number) => {
+        if (end - start <= 1) {
+            return lists[start] ?? null;
+        }
+
+        const mid = (start + end) >> 1;
+        let left = dfs(start, mid);
+        let right = dfs(mid, end);
+
+        const dummy = new ListNode();
+        let cur = dummy;
+        while (left || right) {
+            let next: ListNode;
+            if (
+                (left ?? { val: Infinity }).val <
+                (right ?? { val: Infinity }).val
+            ) {
+                next = left;
+                left = left.next;
+            } else {
+                next = right;
+                right = right.next;
+            }
+            cur.next = next;
+            cur = next;
+        }
+        return dummy.next;
+    };
+    return dfs(0, n);
+}
+```
+
+### **Rust**
+
+```rust
+// Definition for singly-linked list.
+// #[derive(PartialEq, Eq, Clone, Debug)]
+// pub struct ListNode {
+//   pub val: i32,
+//   pub next: Option<Box<ListNode>>
+// }
+//
+// impl ListNode {
+//   #[inline]
+//   fn new(val: i32) -> Self {
+//     ListNode {
+//       next: None,
+//       val
+//     }
+//   }
+// }
+impl Solution {
+    pub fn merge_k_lists(mut lists: Vec<Option<Box<ListNode>>>) -> Option<Box<ListNode>> {
+        let n = lists.len();
+        Self::dfs(&mut lists, 0, n)
+    }
+
+    fn dfs(
+        lists: &mut Vec<Option<Box<ListNode>>>,
+        start: usize,
+        end: usize,
+    ) -> Option<Box<ListNode>> {
+        if end - start <= 1 {
+            if lists.get(start).is_some() {
+                return lists[start].take();
+            }
+            return None;
+        }
+        let mid = start + (end - start) / 2;
+        let mut left = Self::dfs(lists, start, mid);
+        let mut right = Self::dfs(lists, mid, end);
+        let mut dummy = Box::new(ListNode::new(0));
+        let mut cur = &mut dummy;
+        while left.is_some() || right.is_some() {
+            let mut next = None;
+            if left.is_some()
+                && (right.is_none() || left.as_ref().unwrap().val < right.as_ref().unwrap().val)
+            {
+                let t = left.as_mut().unwrap().next.take();
+                next = left.take();
+                left = t;
+            } else {
+                let t = right.as_mut().unwrap().next.take();
+                next = right.take();
+                right = t;
+            }
+            cur.next = next;
+            cur = cur.next.as_mut().unwrap();
+        }
+        dummy.next
     }
 }
 ```

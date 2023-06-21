@@ -4,29 +4,26 @@
 
 ## Description
 
-<p>Given an array <code>nums</code> sorted in <strong>non-decreasing</strong> order, and a number <code>target</code>, return <code>True</code> if and only if <code>target</code> is a majority element.</p>
+<p>Given an integer array <code>nums</code> sorted in non-decreasing order and an integer <code>target</code>, return <code>true</code> <em>if</em> <code>target</code> <em>is a <strong>majority</strong> element, or </em><code>false</code><em> otherwise</em>.</p>
 
-<p>A <em>majority element</em> is an element that appears <strong>more than <code>N/2</code></strong> times in an array of length <code>N</code>.</p>
+<p>A <strong>majority</strong> element in an array <code>nums</code> is an element that appears more than <code>nums.length / 2</code> times in the array.</p>
 
 <p>&nbsp;</p>
-
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
-<strong>Input: </strong>nums = <span id="example-input-1-1">[2,4,5,5,5,5,5,6,6]</span>, target = <span id="example-input-1-2">5</span>
-<strong>Output: </strong><span id="example-output-1">true</span>
-<strong>Explanation: </strong>
-The value 5 appears 5 times and the length of the array is 9.
+<strong>Input:</strong> nums = [2,4,5,5,5,5,5,6,6], target = 5
+<strong>Output:</strong> true
+<strong>Explanation:</strong> The value 5 appears 5 times and the length of the array is 9.
 Thus, 5 is a majority element because 5 &gt; 9/2 is true.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
-<strong>Input: </strong>nums = <span id="example-input-2-1">[10,100,101,101]</span>, target = <span id="example-input-2-2">101</span>
-<strong>Output: </strong><span id="example-output-2">false</span>
-<strong>Explanation: </strong>
-The value 101 appears 2 times and the length of the array is 4.
+<strong>Input:</strong> nums = [10,100,101,101], target = 101
+<strong>Output:</strong> false
+<strong>Explanation:</strong> The value 101 appears 2 times and the length of the array is 4.
 Thus, 101 is not a majority element because 2 &gt; 4/2 is false.
 </pre>
 
@@ -35,8 +32,8 @@ Thus, 101 is not a majority element because 2 &gt; 4/2 is false.
 
 <ul>
 	<li><code>1 &lt;= nums.length &lt;= 1000</code></li>
-	<li><code>1 &lt;= nums[i] &lt;= 10^9</code></li>
-	<li><code>1 &lt;= target &lt;= 10^9</code></li>
+	<li><code>1 &lt;= nums[i], target &lt;= 10<sup>9</sup></code></li>
+	<li><code>nums</code> is sorted in non-decreasing order.</li>
 </ul>
 
 ## Solutions
@@ -48,39 +45,17 @@ Thus, 101 is not a majority element because 2 &gt; 4/2 is false.
 ```python
 class Solution:
     def isMajorityElement(self, nums: List[int], target: int) -> bool:
-        def bsearch_left(nums, target, left, right):
-            while left < right:
-                mid = (left + right) >> 1
-                if nums[mid] >= target:
-                    right = mid
-                else:
-                    left = mid + 1
-            return left if nums[left] == target else -1
-
-        def bsearch_right(nums, target, left, right):
-            while left < right:
-                mid = (left + right + 1) >> 1
-                if nums[mid] <= target:
-                    left = mid
-                else:
-                    right = mid - 1
-            return left if nums[left] == target else -1
-
-        n = len(nums)
-        left = bsearch_left(nums, target, 0, n - 1)
-        if left == -1:
-            return False
-        right = bsearch_right(nums, target, left, n - 1)
-        if right == -1:
-            return False
-        return right - left + 1 > n >> 1
+        left = bisect_left(nums, target)
+        right = bisect_right(nums, target)
+        return right - left > len(nums) // 2
 ```
 
 ```python
 class Solution:
     def isMajorityElement(self, nums: List[int], target: int) -> bool:
-        left, right = bisect.bisect_left(nums, target), bisect.bisect_right(nums, target)
-        return right - left > (len(nums) >> 1)
+        left = bisect_left(nums, target)
+        right = left + len(nums) // 2
+        return right < len(nums) and nums[right] == target
 ```
 
 ### **Java**
@@ -88,41 +63,137 @@ class Solution:
 ```java
 class Solution {
     public boolean isMajorityElement(int[] nums, int target) {
-        int n = nums.length;
-        int left = bsearchLeft(nums, target, 0, n - 1);
-        if (left == -1) {
-            return false;
-        }
-        int right = bsearchRight(nums, target, left, n - 1);
-        if (right == -1) {
-            return false;
-        }
-        return right - left + 1 > (n >> 1);
+        int left = search(nums, target);
+        int right = search(nums, target + 1);
+        return right - left > nums.length / 2;
     }
 
-    private int bsearchLeft(int[] nums, int target, int left, int right) {
+    private int search(int[] nums, int x) {
+        int left = 0, right = nums.length;
         while (left < right) {
             int mid = (left + right) >> 1;
-            if (nums[mid] >= target) {
+            if (nums[mid] >= x) {
                 right = mid;
             } else {
                 left = mid + 1;
             }
         }
-        return nums[left] == target ? left : -1;
+        return left;
+    }
+}
+```
+
+```java
+class Solution {
+    public boolean isMajorityElement(int[] nums, int target) {
+        int n = nums.length;
+        int left = search(nums, target);
+        int right = left + n / 2;
+        return right < n && nums[right] == target;
     }
 
-    private int bsearchRight(int[] nums, int target, int left, int right) {
+    private int search(int[] nums, int x) {
+        int left = 0, right = nums.length;
         while (left < right) {
-            int mid = (left + right + 1) >> 1;
-            if (nums[mid] <= target) {
-                left = mid;
+            int mid = (left + right) >> 1;
+            if (nums[mid] >= x) {
+                right = mid;
             } else {
-                right = mid - 1;
+                left = mid + 1;
             }
         }
-        return nums[left] == target ? left : -1;
+        return left;
     }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool isMajorityElement(vector<int>& nums, int target) {
+        auto left = lower_bound(nums.begin(), nums.end(), target);
+        auto right = upper_bound(nums.begin(), nums.end(), target);
+        return right - left > nums.size() / 2;
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    bool isMajorityElement(vector<int>& nums, int target) {
+        int n = nums.size();
+        int left = lower_bound(nums.begin(), nums.end(), target) - nums.begin();
+        int right = left + n / 2;
+        return right < n && nums[right] == target;
+    }
+};
+```
+
+### **Go**
+
+```go
+func isMajorityElement(nums []int, target int) bool {
+	n := len(nums)
+	left := sort.Search(n, func(i int) bool { return nums[i] >= target })
+	right := sort.Search(n, func(i int) bool { return nums[i] > target })
+	return right-left > n/2
+}
+```
+
+```go
+func isMajorityElement(nums []int, target int) bool {
+	n := len(nums)
+	left := sort.Search(n, func(i int) bool { return nums[i] >= target })
+	right := left + n/2
+	return right < n && nums[right] == target
+}
+```
+
+### **TypeScript**
+
+```ts
+function isMajorityElement(nums: number[], target: number): boolean {
+    const search = (x: number) => {
+        let left = 0;
+        let right = nums.length;
+        while (left < right) {
+            const mid = (left + right) >> 1;
+            if (nums[mid] >= x) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    };
+    const left = search(target);
+    const right = search(target + 1);
+    return right - left > nums.length >> 1;
+}
+```
+
+```ts
+function isMajorityElement(nums: number[], target: number): boolean {
+    const search = (x: number) => {
+        let left = 0;
+        let right = n;
+        while (left < right) {
+            const mid = (left + right) >> 1;
+            if (nums[mid] >= x) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    };
+    const n = nums.length;
+    const left = search(target);
+    const right = left + (n >> 1);
+    return right < n && nums[right] === target;
 }
 ```
 

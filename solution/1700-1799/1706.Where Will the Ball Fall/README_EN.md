@@ -18,9 +18,9 @@
 <p>Return <em>an array </em><code>answer</code><em> of size </em><code>n</code><em> where </em><code>answer[i]</code><em> is the column that the ball falls out of at the bottom after dropping the ball from the </em><code>i<sup>th</sup></code><em> column at the top, or <code>-1</code><em> if the ball gets stuck in the box</em>.</em></p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1700-1799/1706.Where%20Will%20the%20Ball%20Fall/images/ball.jpg" style="width: 500px; height: 385px;" /></strong></p>
+<p><strong><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1700-1799/1706.Where%20Will%20the%20Ball%20Fall/images/ball.jpg" style="width: 500px; height: 385px;" /></strong></p>
 
 <pre>
 <strong>Input:</strong> grid = [[1,1,1,-1,-1],[1,1,1,-1,-1],[-1,-1,-1,1,1],[1,1,1,1,-1],[-1,-1,-1,-1,-1]]
@@ -33,7 +33,7 @@ Ball b3 is dropped at column 3 and will get stuck on the box between column 2 an
 Ball b4 is dropped at column 4 and will get stuck on the box between column 2 and 3 and row 1.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> grid = [[-1]]
@@ -41,7 +41,7 @@ Ball b4 is dropped at column 4 and will get stuck on the box between column 2 an
 <strong>Explanation:</strong> The ball gets stuck against the left wall.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> grid = [[1,1,1,1,1,1],[-1,-1,-1,-1,-1,-1],[1,1,1,1,1,1],[-1,-1,-1,-1,-1,-1]]
@@ -146,7 +146,7 @@ public:
     int dfs(int i, int j) {
         if (i == m) return j;
         if (j == 0 && grid[i][j] == -1) return -1;
-        if (j == n - 1 && grid[i][j] == 1)  return -1;
+        if (j == n - 1 && grid[i][j] == 1) return -1;
         if (grid[i][j] == 1 && grid[i][j + 1] == -1) return -1;
         if (grid[i][j] == -1 && grid[i][j - 1] == 1) return -1;
         return grid[i][j] == 1 ? dfs(i + 1, j + 1) : dfs(i + 1, j - 1);
@@ -188,6 +188,69 @@ func findBall(grid [][]int) []int {
 		ans = append(ans, dfs(0, j))
 	}
 	return ans
+}
+```
+
+### **TypeScript**
+
+```ts
+function findBall(grid: number[][]): number[] {
+    const m = grid.length;
+    const n = grid[0].length;
+    const res = new Array(n).fill(0);
+    const dfs = (i: number, j: number) => {
+        if (i === m) {
+            return j;
+        }
+        if (grid[i][j] === 1) {
+            if (j === n - 1 || grid[i][j + 1] === -1) {
+                return -1;
+            }
+            return dfs(i + 1, j + 1);
+        } else {
+            if (j === 0 || grid[i][j - 1] === 1) {
+                return -1;
+            }
+            return dfs(i + 1, j - 1);
+        }
+    };
+    for (let i = 0; i < n; i++) {
+        res[i] = dfs(0, i);
+    }
+    return res;
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    fn dfs(grid: &Vec<Vec<i32>>, i: usize, j: usize) -> i32 {
+        if i == grid.len() {
+            return j as i32;
+        }
+        if grid[i][j] == 1 {
+            if j == grid[0].len() - 1 || grid[i][j + 1] == -1 {
+                return -1;
+            }
+            Self::dfs(grid, i + 1, j + 1)
+        } else {
+            if j == 0 || grid[i][j - 1] == 1 {
+                return -1;
+            }
+            Self::dfs(grid, i + 1, j - 1)
+        }
+    }
+
+    pub fn find_ball(grid: Vec<Vec<i32>>) -> Vec<i32> {
+        let m = grid.len();
+        let n = grid[0].len();
+        let mut res = vec![0; n];
+        for i in 0..n {
+            res[i] = Self::dfs(&grid, 0, i);
+        }
+        res
+    }
 }
 ```
 

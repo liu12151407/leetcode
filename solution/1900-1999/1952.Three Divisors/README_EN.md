@@ -9,7 +9,7 @@
 <p>An integer <code>m</code> is a <strong>divisor</strong> of <code>n</code> if there exists an integer <code>k</code> such that <code>n = k * m</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 2
@@ -17,7 +17,7 @@
 <strong>Explantion:</strong> 2 has only two divisors: 1 and 2.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 4
@@ -41,11 +41,19 @@
 ```python
 class Solution:
     def isThree(self, n: int) -> bool:
+        return sum(n % i == 0 for i in range(2, n)) == 1
+```
+
+```python
+class Solution:
+    def isThree(self, n: int) -> bool:
         cnt = 0
-        for i in range(2, n):
+        i = 1
+        while i <= n // i:
             if n % i == 0:
-                cnt += 1
-        return cnt == 1
+                cnt += 1 if i == n // i else 2
+            i += 1
+        return cnt == 3
 ```
 
 ### **Java**
@@ -64,6 +72,20 @@ class Solution {
 }
 ```
 
+```java
+class Solution {
+    public boolean isThree(int n) {
+        int cnt = 0;
+        for (int i = 1; i <= n / i; ++i) {
+            if (n % i == 0) {
+                cnt += n / i == i ? 1 : 2;
+            }
+        }
+        return cnt == 3;
+    }
+}
+```
+
 ### **C++**
 
 ```cpp
@@ -72,9 +94,24 @@ public:
     bool isThree(int n) {
         int cnt = 0;
         for (int i = 2; i < n; ++i) {
-            if (n % i == 0) ++cnt;
+            cnt += n % i == 0;
         }
         return cnt == 1;
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    bool isThree(int n) {
+        int cnt = 0;
+        for (int i = 1; i <= n / i; ++i) {
+            if (n % i == 0) {
+                cnt += n / i == i ? 1 : 2;
+            }
+        }
+        return cnt == 3;
     }
 };
 ```
@@ -91,6 +128,56 @@ func isThree(n int) bool {
 	}
 	return cnt == 1
 }
+```
+
+```go
+func isThree(n int) bool {
+	cnt := 0
+	for i := 1; i <= n/i; i++ {
+		if n%i == 0 {
+			if n/i == i {
+				cnt++
+			} else {
+				cnt += 2
+			}
+		}
+	}
+	return cnt == 3
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number} n
+ * @return {boolean}
+ */
+var isThree = function (n) {
+    let cnt = 0;
+    for (let i = 2; i < n; ++i) {
+        if (n % i == 0) {
+            ++cnt;
+        }
+    }
+    return cnt == 1;
+};
+```
+
+```js
+/**
+ * @param {number} n
+ * @return {boolean}
+ */
+var isThree = function (n) {
+    let cnt = 0;
+    for (let i = 1; i <= n / i; ++i) {
+        if (n % i == 0) {
+            cnt += ~~(n / i) == i ? 1 : 2;
+        }
+    }
+    return cnt == 3;
+};
 ```
 
 ### **...**

@@ -1,39 +1,48 @@
-# [面试题 10- I. 斐波那契数列](https://leetcode-cn.com/problems/fei-bo-na-qi-shu-lie-lcof/)
+# [面试题 10- I. 斐波那契数列](https://leetcode.cn/problems/fei-bo-na-qi-shu-lie-lcof/)
 
 ## 题目描述
 
-写一个函数，输入 `n` ，求斐波那契（Fibonacci）数列的第 `n` 项。斐波那契数列的定义如下：
+<p>写一个函数，输入 <code>n</code> ，求斐波那契（Fibonacci）数列的第 <code>n</code> 项（即 <code>F(N)</code>）。斐波那契数列的定义如下：</p>
 
-```
+<pre>
 F(0) = 0,   F(1) = 1
-F(N) = F(N - 1) + F(N - 2), 其中 N > 1.
-```
+F(N) = F(N - 1) + F(N - 2), 其中 N > 1.</pre>
 
-斐波那契数列由 0 和 1 开始，之后的斐波那契数就是由之前的两数相加而得出。
+<p>斐波那契数列由 0 和 1 开始，之后的斐波那契数就是由之前的两数相加而得出。</p>
 
-答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。
+<p>答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。</p>
 
-**示例 1：**
+<p> </p>
 
-```
-输入：n = 2
-输出：1
-```
+<p><strong>示例 1：</strong></p>
 
-**示例 2：**
+<pre>
+<strong>输入：</strong>n = 2
+<strong>输出：</strong>1
+</pre>
 
-```
-输入：n = 5
-输出：5
-```
+<p><strong>示例 2：</strong></p>
 
-**提示：**
+<pre>
+<strong>输入：</strong>n = 5
+<strong>输出：</strong>5
+</pre>
 
-- `0 <= n <= 100`
+<p> </p>
+
+<p><strong>提示：</strong></p>
+
+<ul>
+	<li><code>0 <= n <= 100</code></li>
+</ul>
 
 ## 解法
 
-递推求解。
+**方法一：递推**
+
+我们定义初始项 $a=0$, $b=1$，接下来执行 $n$ 次循环，每次循环中，计算 $c=a+b$，并更新 $a=b$, $b=c$，循环 $n$ 次后，答案即为 $a$。
+
+时间复杂度 $O(n)$，空间复杂度 $O(1)$。其中 $n$ 为输入的整数。
 
 <!-- tabs:start -->
 
@@ -44,8 +53,8 @@ class Solution:
     def fib(self, n: int) -> int:
         a, b = 0, 1
         for _ in range(n):
-            a, b = b, a + b
-        return a % 1000000007
+            a, b = b, (a + b) % 1000000007
+        return a
 ```
 
 ### **Java**
@@ -54,7 +63,7 @@ class Solution:
 class Solution {
     public int fib(int n) {
         int a = 0, b = 1;
-        for (int i = 0; i < n; ++i) {
+        while (n-- > 0) {
             int c = (a + b) % 1000000007;
             a = b;
             b = c;
@@ -71,7 +80,7 @@ class Solution {
 public:
     int fib(int n) {
         int a = 0, b = 1;
-        for (int i = 0; i < n; ++i) {
+        while (n--) {
             int c = (a + b) % 1000000007;
             a = b;
             b = c;
@@ -79,6 +88,18 @@ public:
         return a;
     }
 };
+```
+
+### **Go**
+
+```go
+func fib(n int) int {
+	a, b := 0, 1
+	for i := 0; i < n; i++ {
+		a, b = b, (a+b)%1000000007
+	}
+	return a
+}
 ```
 
 ### **JavaScript**
@@ -89,27 +110,13 @@ public:
  * @return {number}
  */
 var fib = function (n) {
-    let a = 0,
-        b = 1;
-    for (let i = 0; i < n; ++i) {
-        const c = (a + b) % (1e9 + 7);
-        a = b;
-        b = c;
+    let a = 0;
+    let b = 1;
+    while (n--) {
+        [a, b] = [b, (a + b) % (1e9 + 7)];
     }
     return a;
 };
-```
-
-### **Go**
-
-```go
-func fib(n int) int {
-    a, b := 0, 1
-    for i := 0; i < n; i++ {
-        a, b = b, (a + b) % 1000000007
-    }
-    return a
-}
 ```
 
 ### **TypeScript**
@@ -136,6 +143,22 @@ impl Solution {
             tup = (tup.1, (tup.0 + tup.1) % 1000000007);
         }
         return tup.0;
+    }
+}
+```
+
+### **C#**
+
+```cs
+public class Solution {
+    public int Fib(int n) {
+        int a = 0, b = 1, tmp;
+        for (int i = 0; i < n; i++) {
+            tmp = a;
+            a = b;
+            b = (tmp + b) % 1000000007;
+        }
+        return a % 1000000007;
     }
 }
 ```

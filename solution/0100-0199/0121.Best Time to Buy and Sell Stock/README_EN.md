@@ -11,7 +11,7 @@
 <p>Return <em>the maximum profit you can achieve from this transaction</em>. If you cannot achieve any profit, return <code>0</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> prices = [7,1,5,3,6,4]
@@ -20,7 +20,7 @@
 Note that buying on day 2 and selling on day 1 is not allowed because you must buy before you sell.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> prices = [7,6,4,3,1]
@@ -38,6 +38,16 @@ Note that buying on day 2 and selling on day 1 is not allowed because you must b
 
 ## Solutions
 
+**Approach 1: Enumerate + Maintain the Minimum Value of the Prefix**
+
+We can enumerate each element of the array $nums$ as the selling price. Then we need to find a minimum value in front of it as the purchase price to maximize the profit.
+
+Therefore, we use a variable $mi$ to maintain the prefix minimum value of the array $nums$. Then we traverse the array $nums$ and for each element $v$, calculate the difference between it and the minimum value $mi$ in front of it, and update the answer to the maximum of the difference. Then update $mi = min(mi, v)$. Continue to traverse the array $nums$ until the traversal ends.
+
+Finally, return the answer.
+
+The time complexity is $O(n)$, where $n$ is the length of the array $nums$. The space complexity is $O(1)$.
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -45,11 +55,11 @@ Note that buying on day 2 and selling on day 1 is not allowed because you must b
 ```python
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
-        res, mi = 0, prices[0]
-        for price in prices[1:]:
-            res = max(res, price - mi)
-            mi = min(mi, price)
-        return res
+        ans, mi = 0, inf
+        for v in prices:
+            ans = max(ans, v - mi)
+            mi = min(mi, v)
+        return ans
 ```
 
 ### **Java**
@@ -57,12 +67,12 @@ class Solution:
 ```java
 class Solution {
     public int maxProfit(int[] prices) {
-        int res = 0, mi = prices[0];
-        for (int i = 1; i < prices.length; ++i) {
-            res = Math.max(res, prices[i] - mi);
-            mi = Math.min(mi, prices[i]);
+        int ans = 0, mi = prices[0];
+        for (int v : prices) {
+            ans = Math.max(ans, v - mi);
+            mi = Math.min(mi, v);
         }
-        return res;
+        return ans;
     }
 }
 ```
@@ -73,12 +83,12 @@ class Solution {
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
-        int res = 0, mi = prices[0];
-        for (int i = 1; i < prices.size(); ++i) {
-            res = max(res, prices[i] - mi);
-            mi = min(mi, prices[i]);
+        int ans = 0, mi = prices[0];
+        for (int& v : prices) {
+            ans = max(ans, v - mi);
+            mi = min(mi, v);
         }
-        return res;
+        return ans;
     }
 };
 ```
@@ -86,13 +96,13 @@ public:
 ### **Go**
 
 ```go
-func maxProfit(prices []int) int {
-	res, mi := 0, prices[0]
-	for i := 1; i < len(prices); i++ {
-		res = max(res, prices[i]-mi)
-		mi = min(min, prices[i])
+func maxProfit(prices []int) (ans int) {
+	mi := prices[0]
+	for _, v := range prices {
+		ans = max(ans, v-mi)
+		mi = min(mi, v)
 	}
-	return res
+	return
 }
 
 func max(a, b int) int {
@@ -118,13 +128,13 @@ func min(a, b int) int {
  * @return {number}
  */
 var maxProfit = function (prices) {
-    let res = 0;
+    let ans = 0;
     let mi = prices[0];
-    for (let i = 1; i < prices.length; ++i) {
-        res = Math.max(res, prices[i] - mi);
-        mi = Math.min(mi, prices[i]);
+    for (const v of prices) {
+        ans = Math.max(ans, v - mi);
+        mi = Math.min(mi, v);
     }
-    return res;
+    return ans;
 };
 ```
 
@@ -133,13 +143,63 @@ var maxProfit = function (prices) {
 ```cs
 public class Solution {
     public int MaxProfit(int[] prices) {
-        int res = 0, mi = prices[0];
-        for (int i = 1; i < prices.Length; ++i)
-        {
-            res = Math.Max(res, prices[i] - mi);
-            mi = Math.Min(mi, prices[i]);
+        int ans = 0, mi = prices[0];
+        foreach (int v in prices) {
+            ans = Math.Max(ans, v - mi);
+            mi = Math.Min(mi, v);
         }
-        return res;
+        return ans;
+    }
+}
+```
+
+### **TypeScript**
+
+```ts
+function maxProfit(prices: number[]): number {
+    let ans = 0;
+    let mi = prices[0];
+    for (const v of prices) {
+        ans = Math.max(ans, v - mi);
+        mi = Math.min(mi, v);
+    }
+    return ans;
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn max_profit(prices: Vec<i32>) -> i32 {
+        let mut res = 0;
+        let mut min = i32::MAX;
+        for price in prices {
+            res = res.max(price - min);
+            min = min.min(price);
+        }
+        res
+    }
+}
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param Integer[] $prices
+     * @return Integer
+     */
+    function maxProfit($prices) {
+        $win = 0;
+        $minPrice = $prices[0];
+        $len = count($prices);
+        for ($i = 1; $i < $len; $i++) {
+            $minPrice = min($minPrice, $prices[$i]);
+            $win = max($win, $prices[$i] - $minPrice);
+        }
+        return $win;
     }
 }
 ```

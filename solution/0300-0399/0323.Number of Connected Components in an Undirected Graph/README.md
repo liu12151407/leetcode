@@ -1,4 +1,4 @@
-# [323. 无向图中连通分量的数目](https://leetcode-cn.com/problems/number-of-connected-components-in-an-undirected-graph)
+# [323. 无向图中连通分量的数目](https://leetcode.cn/problems/number-of-connected-components-in-an-undirected-graph)
 
 [English Version](/solution/0300-0399/0323.Number%20of%20Connected%20Components%20in%20an%20Undirected%20Graph/README_EN.md)
 
@@ -6,32 +6,41 @@
 
 <!-- 这里写题目描述 -->
 
-<p>给定编号从 <code>0</code> 到 <code>n-1</code> 的 <code>n</code> 个节点和一个无向边列表（每条边都是一对节点），请编写一个函数来计算无向图中连通分量的数目。</p>
+<p>你有一个包含&nbsp;<code>n</code> 个节点的图。给定一个整数 <code>n</code> 和一个数组&nbsp;<code>edges</code>&nbsp;，其中&nbsp;<code>edges[i] = [a<sub>i</sub>, b<sub>i</sub>]</code>&nbsp;表示图中&nbsp;<code>a<sub>i</sub></code>&nbsp;和&nbsp;<code>b<sub>i</sub></code>&nbsp;之间有一条边。</p>
+
+<p>返回 <em>图中已连接分量的数目</em>&nbsp;。</p>
+
+<p>&nbsp;</p>
 
 <p><strong>示例 1:</strong></p>
 
-<pre><strong>输入: </strong><code>n = 5</code> 和 <code>edges = [[0, 1], [1, 2], [3, 4]]</code>
+<p><img src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0300-0399/0323.Number%20of%20Connected%20Components%20in%20an%20Undirected%20Graph/images/conn1-graph.jpg" /></p>
 
-     0          3
-     |          |
-     1 --- 2    4 
-
+<pre>
+<strong>输入: </strong><code>n = 5</code>, <code>edges = [[0, 1], [1, 2], [3, 4]]</code>
 <strong>输出: </strong>2
 </pre>
 
 <p><strong>示例 2:</strong></p>
 
-<pre><strong>输入: </strong><code>n = 5</code> 和 <code>edges = [[0, 1], [1, 2], [2, 3], [3, 4]]</code>
+<p><img src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0300-0399/0323.Number%20of%20Connected%20Components%20in%20an%20Undirected%20Graph/images/conn2-graph.jpg" /></p>
 
-     0           4
-     |           |
-     1 --- 2 --- 3
+<pre>
+<strong>输入: </strong><code>n = 5,</code> <code>edges = [[0,1], [1,2], [2,3], [3,4]]</code>
+<strong>输出:&nbsp;&nbsp;</strong>1</pre>
 
-<strong>输出:&nbsp;&nbsp;</strong>1
-</pre>
+<p>&nbsp;</p>
 
-<p><strong>注意:</strong><br>
-你可以假设在 <code>edges</code> 中不会出现重复的边。而且由于所以的边都是无向边，<code>[0, 1]</code> 与 <code>[1, 0]</code>&nbsp; 相同，所以它们不会同时在 <code>edges</code> 中出现。</p>
+<p><strong>提示：</strong></p>
+
+<ul>
+	<li><code>1 &lt;= n &lt;= 2000</code></li>
+	<li><code>1 &lt;= edges.length &lt;= 5000</code></li>
+	<li><code>edges[i].length == 2</code></li>
+	<li><code>0 &lt;= a<sub>i</sub>&nbsp;&lt;= b<sub>i</sub>&nbsp;&lt; n</code></li>
+	<li><code>a<sub>i</sub>&nbsp;!= b<sub>i</sub></code></li>
+	<li><code>edges</code> 中不会出现重复的边</li>
+</ul>
 
 ## 解法
 
@@ -44,6 +53,7 @@
 ```python
 # 初始化，p存储每个点的父节点
 p = list(range(n))
+
 
 # 返回x的祖宗节点
 def find(x):
@@ -64,12 +74,14 @@ p[find(a)] = find(b)
 p = list(range(n))
 size = [1] * n
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
         # 路径压缩
         p[x] = find(p[x])
     return p[x]
+
 
 # 合并a和b所在的两个集合
 if find(a) != find(b):
@@ -83,6 +95,7 @@ if find(a) != find(b):
 # 初始化，p存储每个点的父节点，d[x]存储x到p[x]的距离
 p = list(range(n))
 d = [0] * n
+
 
 # 返回x的祖宗节点
 def find(x):
@@ -107,13 +120,12 @@ d[find(a)] = distance
 ```python
 class Solution:
     def countComponents(self, n: int, edges: List[List[int]]) -> int:
-        p = list(range(n))
-
         def find(x):
             if p[x] != x:
                 p[x] = find(p[x])
             return p[x]
 
+        p = list(range(n))
         for a, b in edges:
             p[find(a)] = find(b)
         return sum(i == find(i) for i in range(n))
@@ -133,16 +145,16 @@ class Solution {
             p[i] = i;
         }
         for (int[] e : edges) {
-            p[find(e[0])] = find(e[1]);
+            int a = e[0], b = e[1];
+            p[find(a)] = find(b);
         }
-
-        int cnt = 0;
+        int ans = 0;
         for (int i = 0; i < n; ++i) {
             if (i == find(i)) {
-                ++cnt;
+                ++ans;
             }
         }
-        return cnt;
+        return ans;
     }
 
     private int find(int x) {
@@ -159,23 +171,21 @@ class Solution {
 ```cpp
 class Solution {
 public:
-    vector<int> p;
-
     int countComponents(int n, vector<vector<int>>& edges) {
-        p.resize(n);
+        vector<int> p(n);
+        iota(p.begin(), p.end(), 0);
         for (int i = 0; i < n; ++i) p[i] = i;
-        for (auto e : edges) p[find(e[0])] = find(e[1]);
-        int cnt = 0;
-        for (int i = 0; i < n; ++i)
-        {
-            if (i == find(i)) ++cnt;
+        function<int(int)> find = [&](int x) -> int {
+            if (p[x] != x) p[x] = find(p[x]);
+            return p[x];
+        };
+        for (auto& e : edges) {
+            int a = e[0], b = e[1];
+            p[find(a)] = find(b);
         }
-        return cnt;
-    }
-
-    int find(int x) {
-        if (p[x] != x) p[x] = find(p[x]);
-        return p[x];
+        int ans = 0;
+        for (int i = 0; i < n; ++i) ans += i == find(i);
+        return ans;
     }
 };
 ```
@@ -183,31 +193,61 @@ public:
 ### **Go**
 
 ```go
-var p []int
-
-func countComponents(n int, edges [][]int) int {
-	p = make([]int, n)
-	for i := 1; i < n; i++ {
+func countComponents(n int, edges [][]int) (ans int) {
+	p := make([]int, n)
+	for i := range p {
 		p[i] = i
 	}
-	for _, e := range edges {
-		p[find(e[0])] = find(e[1])
+	var find func(int) int
+	find = func(x int) int {
+		if p[x] != x {
+			p[x] = find(p[x])
+		}
+		return p[x]
 	}
-	cnt := 0
+	for _, e := range edges {
+		a, b := e[0], e[1]
+		p[find(a)] = find(b)
+	}
 	for i := 0; i < n; i++ {
 		if i == find(i) {
-			cnt++
+			ans++
 		}
 	}
-	return cnt
+	return
 }
+```
 
-func find(x int) int {
-	if p[x] != x {
-		p[x] = find(p[x])
-	}
-	return p[x]
-}
+### **JavaScript**
+
+```js
+/**
+ * @param {number} n
+ * @param {number[][]} edges
+ * @return {number}
+ */
+var countComponents = function (n, edges) {
+    let p = new Array(n);
+    for (let i = 0; i < n; ++i) {
+        p[i] = i;
+    }
+    function find(x) {
+        if (p[x] != x) {
+            p[x] = find(p[x]);
+        }
+        return p[x];
+    }
+    for (const [a, b] of edges) {
+        p[find(a)] = find(b);
+    }
+    let ans = 0;
+    for (let i = 0; i < n; ++i) {
+        if (i == find(i)) {
+            ++ans;
+        }
+    }
+    return ans;
+};
 ```
 
 ### **...**

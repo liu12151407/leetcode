@@ -1,4 +1,4 @@
-# [1345. 跳跃游戏 IV](https://leetcode-cn.com/problems/jump-game-iv)
+# [1345. 跳跃游戏 IV](https://leetcode.cn/problems/jump-game-iv)
 
 [English Version](/solution/1300-1399/1345.Jump%20Game%20IV/README_EN.md)
 
@@ -8,12 +8,12 @@
 
 <p>给你一个整数数组&nbsp;<code>arr</code>&nbsp;，你一开始在数组的第一个元素处（下标为 0）。</p>
 
-<p>每一步，你可以从下标&nbsp;<code>i</code>&nbsp;跳到下标：</p>
+<p>每一步，你可以从下标&nbsp;<code>i</code>&nbsp;跳到下标&nbsp;<code>i + 1</code> 、<code>i - 1</code> 或者 <code>j</code> ：</p>
 
 <ul>
-	<li><code>i + 1</code>&nbsp;满足：<code>i + 1 &lt; arr.length</code></li>
-	<li><code>i - 1</code>&nbsp;满足：<code>i - 1 &gt;= 0</code></li>
-	<li><code>j</code>&nbsp;满足：<code>arr[i] == arr[j]</code>&nbsp;且&nbsp;<code>i != j</code></li>
+	<li><code>i + 1</code> 需满足：<code>i + 1 &lt; arr.length</code></li>
+	<li><code>i - 1</code>&nbsp;需满足：<code>i - 1 &gt;= 0</code></li>
+	<li><code>j</code>&nbsp;需满足：<code>arr[i] == arr[j]</code>&nbsp;且&nbsp;<code>i != j</code></li>
 </ul>
 
 <p>请你返回到达数组最后一个元素的下标处所需的&nbsp;<strong>最少操作次数</strong>&nbsp;。</p>
@@ -24,44 +24,36 @@
 
 <p><strong>示例 1：</strong></p>
 
-<pre><strong>输入：</strong>arr = [100,-23,-23,404,100,23,23,23,3,404]
+<pre>
+<strong>输入：</strong>arr = [100,-23,-23,404,100,23,23,23,3,404]
 <strong>输出：</strong>3
 <strong>解释：</strong>那你需要跳跃 3 次，下标依次为 0 --&gt; 4 --&gt; 3 --&gt; 9 。下标 9 为数组的最后一个元素的下标。
 </pre>
 
 <p><strong>示例 2：</strong></p>
 
-<pre><strong>输入：</strong>arr = [7]
+<pre>
+<strong>输入：</strong>arr = [7]
 <strong>输出：</strong>0
 <strong>解释：</strong>一开始就在最后一个元素处，所以你不需要跳跃。
 </pre>
 
 <p><strong>示例 3：</strong></p>
 
-<pre><strong>输入：</strong>arr = [7,6,9,6,9,6,9,7]
+<pre>
+<strong>输入：</strong>arr = [7,6,9,6,9,6,9,7]
 <strong>输出：</strong>1
 <strong>解释：</strong>你可以直接从下标 0 处跳到下标 7 处，也就是数组的最后一个元素处。
-</pre>
-
-<p><strong>示例 4：</strong></p>
-
-<pre><strong>输入：</strong>arr = [6,1,9]
-<strong>输出：</strong>2
-</pre>
-
-<p><strong>示例 5：</strong></p>
-
-<pre><strong>输入：</strong>arr = [11,22,7,7,7,7,7,7,7,22,13]
-<strong>输出：</strong>3
 </pre>
 
 <p>&nbsp;</p>
 
 <p><strong>提示：</strong></p>
+<meta charset="UTF-8" />
 
 <ul>
-	<li><code>1 &lt;= arr.length &lt;= 5 * 10^4</code></li>
-	<li><code>-10^8 &lt;= arr[i] &lt;= 10^8</code></li>
+	<li><code>1 &lt;= arr.length &lt;= 5 * 10<sup>4</sup></code></li>
+	<li><code>-10<sup>8</sup>&nbsp;&lt;= arr[i] &lt;= 10<sup>8</sup></code></li>
 </ul>
 
 ## 解法
@@ -116,7 +108,7 @@ class Solution {
         Deque<int[]> q = new LinkedList<>();
         Set<Integer> vis = new HashSet<>();
         vis.add(0);
-        q.offer(new int[]{0, 0});
+        q.offer(new int[] {0, 0});
         while (!q.isEmpty()) {
             int[] e = q.pollFirst();
             int i = e[0], step = e[1];
@@ -128,17 +120,17 @@ class Solution {
             for (int j : idx.getOrDefault(v, new ArrayList<>())) {
                 if (!vis.contains(j)) {
                     vis.add(j);
-                    q.offer(new int[]{j, step});
+                    q.offer(new int[] {j, step});
                 }
             }
             idx.remove(v);
             if (i + 1 < n && !vis.contains(i + 1)) {
                 vis.add(i + 1);
-                q.offer(new int[]{i + 1, step});
+                q.offer(new int[] {i + 1, step});
             }
             if (i - 1 >= 0 && !vis.contains(i - 1)) {
                 vis.add(i - 1);
-                q.offer(new int[]{i - 1, step});
+                q.offer(new int[] {i - 1, step});
             }
         }
         return -1;
@@ -159,33 +151,27 @@ public:
         q.emplace(0, 0);
         unordered_set<int> vis;
         vis.insert(0);
-        while (!q.empty())
-        {
+        while (!q.empty()) {
             auto e = q.front();
             q.pop();
             int i = e.first, step = e.second;
             if (i == n - 1) return step;
             int v = arr[i];
             ++step;
-            if (idx.count(v))
-            {
-                for (int j : idx[v])
-                {
-                    if (!vis.count(j))
-                    {
+            if (idx.count(v)) {
+                for (int j : idx[v]) {
+                    if (!vis.count(j)) {
                         vis.insert(j);
                         q.emplace(j, step);
                     }
                 }
                 idx.erase(v);
             }
-            if (i + 1 < n && !vis.count(i + 1))
-            {
+            if (i + 1 < n && !vis.count(i + 1)) {
                 vis.insert(i + 1);
                 q.emplace(i + 1, step);
             }
-            if (i - 1 >= 0 && !vis.count(i - 1))
-            {
+            if (i - 1 >= 0 && !vis.count(i - 1)) {
                 vis.insert(i - 1);
                 q.emplace(i - 1, step);
             }

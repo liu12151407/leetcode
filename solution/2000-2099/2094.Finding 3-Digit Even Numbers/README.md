@@ -1,4 +1,4 @@
-# [2094. 找出 3 位偶数](https://leetcode-cn.com/problems/finding-3-digit-even-numbers)
+# [2094. 找出 3 位偶数](https://leetcode.cn/problems/finding-3-digit-even-numbers)
 
 [English Version](/solution/2000-2099/2094.Finding%203-Digit%20Even%20Numbers/README_EN.md)
 
@@ -48,24 +48,6 @@
 <strong>输出：</strong>[]
 <strong>解释：</strong>
 使用给定的 digits 无法构造偶数。
-</pre>
-
-<p><strong>示例 4：</strong></p>
-
-<pre>
-<strong>输入：</strong>digits = [0,2,0,0]
-<strong>输出：</strong>[200]
-<strong>解释：</strong>
-唯一一个不含 <strong>前导零</strong> 且满足全部条件的整数是 200 。
-</pre>
-
-<p><strong>示例 5：</strong></p>
-
-<pre>
-<strong>输入：</strong>digits = [0,0,0]
-<strong>输出：</strong>[]
-<strong>解释：</strong>
-构造的所有整数都会有 <strong>前导零</strong> 。因此，不存在满足题目条件的整数。
 </pre>
 
 <p>&nbsp;</p>
@@ -186,11 +168,9 @@ public:
     vector<int> findEvenNumbers(vector<int>& digits) {
         vector<int> counter = count(digits);
         vector<int> ans;
-        for (int i = 100; i < 1000; i += 2)
-        {
+        for (int i = 100; i < 1000; i += 2) {
             vector<int> t(3);
-            for (int j = 0, k = i; k > 0; ++j)
-            {
+            for (int j = 0, k = i; k > 0; ++j) {
                 t[j] = k % 10;
                 k /= 10;
             }

@@ -4,46 +4,42 @@
 
 ## Description
 
-<p>Implement a <code>MyCalendar</code> class to store your events. A new event can be added if adding the event will not cause a double booking.</p>
+<p>You are implementing a program to use as your calendar. We can add a new event if adding the event will not cause a <strong>double booking</strong>.</p>
 
-<p>Your class will have the method, <code>book(int start, int end)</code>. Formally, this represents a booking on the half open interval <code>[start, end)</code>, the range of real numbers <code>x</code> such that <code>start &lt;= x &lt; end</code>.</p>
+<p>A <strong>double booking</strong> happens when two events have some non-empty intersection (i.e., some moment is common to both events.).</p>
 
-<p>A <i>double booking</i> happens when two events have some non-empty intersection (ie., there is some time that is common to both events.)</p>
+<p>The event can be represented as a pair of integers <code>start</code> and <code>end</code> that represents a booking on the half-open interval <code>[start, end)</code>, the range of real numbers <code>x</code> such that <code>start &lt;= x &lt; end</code>.</p>
 
-<p>For each call to the method <code>MyCalendar.book</code>, return <code>true</code> if the event can be added to the calendar successfully without causing a double booking. Otherwise, return <code>false</code> and do not add the event to the calendar.</p>
-
-Your class will be called like this: <code>MyCalendar cal = new MyCalendar();</code> <code>MyCalendar.book(start, end)</code>
-
-<p><b>Example 1:</b></p>
-
-<pre>
-
-MyCalendar();
-
-MyCalendar.book(10, 20); // returns true
-
-MyCalendar.book(15, 25); // returns false
-
-MyCalendar.book(20, 30); // returns true
-
-<b>Explanation:</b>
-
-The first event can be booked.  The second can&#39;t because time 15 is already booked by another event.
-
-The third event can be booked, as the first event takes every time less than 20, but not including 20.
-
-</pre>
-
-<p>&nbsp;</p>
-
-<p><b>Note:</b></p>
+<p>Implement the <code>MyCalendar</code> class:</p>
 
 <ul>
-	<li>The number of calls to <code>MyCalendar.book</code> per test case will be at most <code>1000</code>.</li>
-	<li>In calls to <code>MyCalendar.book(start, end)</code>, <code>start</code> and <code>end</code> are integers in the range <code>[0, 10^9]</code>.</li>
+	<li><code>MyCalendar()</code> Initializes the calendar object.</li>
+	<li><code>boolean book(int start, int end)</code> Returns <code>true</code> if the event can be added to the calendar successfully without causing a <strong>double booking</strong>. Otherwise, return <code>false</code> and do not add the event to the calendar.</li>
 </ul>
 
 <p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
+
+<pre>
+<strong>Input</strong>
+[&quot;MyCalendar&quot;, &quot;book&quot;, &quot;book&quot;, &quot;book&quot;]
+[[], [10, 20], [15, 25], [20, 30]]
+<strong>Output</strong>
+[null, true, false, true]
+
+<strong>Explanation</strong>
+MyCalendar myCalendar = new MyCalendar();
+myCalendar.book(10, 20); // return True
+myCalendar.book(15, 25); // return False, It can not be booked because time 15 is already booked by another event.
+myCalendar.book(20, 30); // return True, The event can be booked, as the first event takes every time less than 20, but not including 20.</pre>
+
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+
+<ul>
+	<li><code>0 &lt;= start &lt; end &lt;= 10<sup>9</sup></code></li>
+	<li>At most <code>1000</code> calls will be made to <code>book</code>.</li>
+</ul>
 
 ## Solutions
 
@@ -56,15 +52,13 @@ from sortedcontainers import SortedDict
 
 
 class MyCalendar:
-
     def __init__(self):
         self.sd = SortedDict()
 
     def book(self, start: int, end: int) -> bool:
         idx = self.sd.bisect_right(start)
-        if 0 <= idx < len(self.sd):
-            if end > self.sd.values()[idx]:
-                return False
+        if idx < len(self.sd) and end > self.sd.values()[idx]:
+            return False
         self.sd[end] = start
         return True
 
@@ -131,11 +125,116 @@ func (this *MyCalendar) Book(start int, end int) bool {
 	return true
 }
 
-
 /**
  * Your MyCalendar object will be instantiated and called as such:
  * obj := Constructor();
  * param_1 := obj.Book(start,end);
+ */
+```
+
+### **C++**
+
+```cpp
+class MyCalendar {
+public:
+    map<int, int> m;
+
+    MyCalendar() {
+    }
+
+    bool book(int start, int end) {
+        ++m[start];
+        --m[end];
+        int s = 0;
+        for (auto& [k, v] : m) {
+            s += v;
+            if (s > 1) {
+                --m[start];
+                ++m[end];
+                return false;
+            }
+        }
+        return true;
+    }
+};
+
+/**
+ * Your MyCalendar object will be instantiated and called as such:
+ * MyCalendar* obj = new MyCalendar();
+ * bool param_1 = obj->book(start,end);
+ */
+```
+
+### **TypeScript**
+
+```ts
+class MyCalendar {
+    private calendar: number[][];
+
+    constructor() {
+        this.calendar = [];
+    }
+
+    book(start: number, end: number): boolean {
+        for (const item of this.calendar) {
+            if (end <= item[0] || item[1] <= start) {
+                continue;
+            }
+            return false;
+        }
+        this.calendar.push([start, end]);
+        return true;
+    }
+}
+
+/**
+ * Your MyCalendar object will be instantiated and called as such:
+ * var obj = new MyCalendar()
+ * var param_1 = obj.book(start,end)
+ */
+```
+
+### **Rust**
+
+```rust
+use std::collections::BTreeMap;
+
+struct MyCalendar {
+    bt: BTreeMap<i32, i32>,
+}
+
+/**
+ * `&self` means the method takes an immutable reference.
+ * If you need a mutable reference, change it to `&mut self` instead.
+ */
+impl MyCalendar {
+    fn new() -> Self {
+        MyCalendar {
+            bt: BTreeMap::new(),
+        }
+    }
+
+    fn book(&mut self, start: i32, end: i32) -> bool {
+        if let Some((_, &val)) = self.bt.range(..=start).last() {
+            println!("{} {} {}", start, end, val);
+            if val > start {
+                return false;
+            }
+        }
+        if let Some((&key, _)) = self.bt.range(start..).next() {
+            if key < end {
+                return false;
+            }
+        }
+        self.bt.insert(start, end);
+        true
+    }
+}
+
+/**
+ * Your MyCalendar object will be instantiated and called as such:
+ * let obj = MyCalendar::new();
+ * let ret_1: bool = obj.book(start, end);
  */
 ```
 

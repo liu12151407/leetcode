@@ -1,4 +1,4 @@
-# [剑指 Offer II 085. 生成匹配的括号](https://leetcode-cn.com/problems/IDBivT)
+# [剑指 Offer II 085. 生成匹配的括号](https://leetcode.cn/problems/IDBivT)
 
 ## 题目描述
 
@@ -32,7 +32,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 22&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/generate-parentheses/">https://leetcode-cn.com/problems/generate-parentheses/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 22&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/generate-parentheses/">https://leetcode.cn/problems/generate-parentheses/</a></p>
 
 ## 解法
 
@@ -49,8 +49,6 @@
 ```python
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
-        ans = []
-
         def dfs(left, right, t):
             if left == n and right == n:
                 ans.append(t)
@@ -60,6 +58,7 @@ class Solution:
             if right < left:
                 dfs(left, right + 1, t + ')')
 
+        ans = []
         dfs(0, 0, '')
         return ans
 ```
@@ -96,21 +95,20 @@ class Solution {
 ```ts
 function generateParenthesis(n: number): string[] {
     let ans = [];
-    dfs(0, 0, n, "", ans);
+    let dfs = function (left, right, t) {
+        if (left == n && right == n) {
+            ans.push(t);
+            return;
+        }
+        if (left < n) {
+            dfs(left + 1, right, t + '(');
+        }
+        if (right < left) {
+            dfs(left, right + 1, t + ')');
+        }
+    };
+    dfs(0, 0, '');
     return ans;
-}
-
-function dfs(left: number, right: number, n: number, t: string, ans: string[]) {
-    if (left == n && right == n) {
-        ans.push(t);
-        return;
-    }
-    if (left < n) {
-        dfs(left + 1, right, n, t + "(", ans);
-    }
-    if (right < left) {
-        dfs(left, right + 1, n, t + ")", ans);
-    }
 }
 ```
 
@@ -126,8 +124,7 @@ public:
     }
 
     void dfs(int left, int right, int n, string t, vector<string>& ans) {
-        if (left == n && right == n)
-        {
+        if (left == n && right == n) {
             ans.push_back(t);
             return;
         }
@@ -142,21 +139,21 @@ public:
 ```go
 func generateParenthesis(n int) []string {
 	var ans []string
-	dfs(0, 0, n, "", &ans)
+	var dfs func(left, right int, t string)
+	dfs = func(left, right int, t string) {
+		if left == n && right == n {
+			ans = append(ans, t)
+			return
+		}
+		if left < n {
+			dfs(left+1, right, t+"(")
+		}
+		if right < left {
+			dfs(left, right+1, t+")")
+		}
+	}
+	dfs(0, 0, "")
 	return ans
-}
-
-func dfs(left, right, n int, t string, ans *[]string) {
-	if left == n && right == n {
-		*ans = append(*ans, t)
-		return
-	}
-	if left < n {
-		dfs(left+1, right, n, t+"(", ans)
-	}
-	if right < left {
-		dfs(left, right+1, n, t+")", ans)
-	}
 }
 ```
 
@@ -168,23 +165,22 @@ func dfs(left, right, n int, t string, ans *[]string) {
  * @return {string[]}
  */
 var generateParenthesis = function (n) {
-    let res = [];
-    dfs(n, 0, 0, "", res);
-    return res;
+    let ans = [];
+    let dfs = function (left, right, t) {
+        if (left == n && right == n) {
+            ans.push(t);
+            return;
+        }
+        if (left < n) {
+            dfs(left + 1, right, t + '(');
+        }
+        if (right < left) {
+            dfs(left, right + 1, t + ')');
+        }
+    };
+    dfs(0, 0, '');
+    return ans;
 };
-
-function dfs(n, left, right, prev, res) {
-    if (left == n && right == n) {
-        res.push(prev);
-        return;
-    }
-    if (left < n) {
-        dfs(n, left + 1, right, prev + "(", res);
-    }
-    if (right < left) {
-        dfs(n, left, right + 1, prev + ")", res);
-    }
-}
 ```
 
 ### **...**

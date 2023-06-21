@@ -9,7 +9,7 @@
 <p>Return <em>the minimum number of boats to carry every given person</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> people = [1,2], limit = 3
@@ -17,7 +17,7 @@
 <strong>Explanation:</strong> 1 boat (1, 2)
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> people = [3,2,2,1], limit = 3
@@ -25,7 +25,7 @@
 <strong>Explanation:</strong> 3 boats (1, 2), (2) and (3)
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> people = [3,5,3,4], limit = 5
@@ -51,13 +51,14 @@
 class Solution:
     def numRescueBoats(self, people: List[int], limit: int) -> int:
         people.sort()
-        num, i, j = 0, 0, len(people) - 1
+        ans = 0
+        i, j = 0, len(people) - 1
         while i <= j:
             if people[i] + people[j] <= limit:
                 i += 1
             j -= 1
-            num += 1
-        return num
+            ans += 1
+        return ans
 ```
 
 ### **Java**
@@ -66,17 +67,50 @@ class Solution:
 class Solution {
     public int numRescueBoats(int[] people, int limit) {
         Arrays.sort(people);
-        int num = 0;
-        int i = 0, j = people.length - 1;
-        while (i <= j) {
+        int ans = 0;
+        for (int i = 0, j = people.length - 1; i <= j; --j) {
             if (people[i] + people[j] <= limit) {
                 ++i;
             }
-            --j;
-            ++num;
+            ++ans;
         }
-        return num;
+        return ans;
     }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int numRescueBoats(vector<int>& people, int limit) {
+        sort(people.begin(), people.end());
+        int ans = 0;
+        for (int i = 0, j = people.size() - 1; i <= j; --j) {
+            if (people[i] + people[j] <= limit) {
+                ++i;
+            }
+            ++ans;
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func numRescueBoats(people []int, limit int) int {
+	sort.Ints(people)
+	ans := 0
+	for i, j := 0, len(people)-1; i <= j; j-- {
+		if people[i]+people[j] <= limit {
+			i++
+		}
+		ans++
+	}
+	return ans
 }
 ```
 

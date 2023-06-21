@@ -8,13 +8,13 @@
  */
 class Solution {
     public ListNode deleteNode(ListNode head, int val) {
-        ListNode dummy = new ListNode(0);
-        dummy.next = head;
-        ListNode pre = dummy;
-        while (pre.next != null && pre.next.val != val) {
-            pre = pre.next;
+        ListNode dummy = new ListNode(0, head);
+        for (ListNode cur = dummy; cur.next != null; cur = cur.next) {
+            if (cur.next.val == val) {
+                cur.next = cur.next.next;
+                break;
+            }
         }
-        pre.next = pre.next == null ? null : pre.next.next;
         return dummy.next;
     }
 }

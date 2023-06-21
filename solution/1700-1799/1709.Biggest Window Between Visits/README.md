@@ -1,4 +1,4 @@
-# [1709. 访问日期之间最大的空档期](https://leetcode-cn.com/problems/biggest-window-between-visits)
+# [1709. 访问日期之间最大的空档期](https://leetcode.cn/problems/biggest-window-between-visits)
 
 [English Version](/solution/1700-1799/1709.Biggest%20Window%20Between%20Visits/README_EN.md)
 
@@ -68,7 +68,23 @@
 ### **SQL**
 
 ```sql
-
+# Write your MySQL query statement below
+SELECT
+    user_id,
+    max(datediff(nxt_day, visit_date)) AS biggest_window
+FROM
+    (
+        SELECT
+            user_id,
+            visit_date,
+            lead(visit_date, 1, '2021-1-1') OVER (
+                PARTITION BY user_id
+                ORDER BY visit_date
+            ) AS nxt_day
+        FROM UserVisits
+    ) AS t
+GROUP BY user_id
+ORDER BY user_id;
 ```
 
 <!-- tabs:end -->

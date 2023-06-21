@@ -9,10 +9,10 @@
 <p><strong>Note</strong> that you must do this in-place without making a copy of the array.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 <pre><strong>Input:</strong> nums = [0,1,0,3,12]
 <strong>Output:</strong> [1,3,12,0,0]
-</pre><p><strong>Example 2:</strong></p>
+</pre><p><strong class="example">Example 2:</strong></p>
 <pre><strong>Input:</strong> nums = [0]
 <strong>Output:</strong> [0]
 </pre>
@@ -36,14 +36,11 @@
 ```python
 class Solution:
     def moveZeroes(self, nums: List[int]) -> None:
-        """
-        Do not return anything, modify nums in-place instead.
-        """
-        left, n = 0, len(nums)
-        for right in range(n):
-            if nums[right] != 0:
-                nums[left], nums[right] = nums[right], nums[left]
-                left += 1
+        i = -1
+        for j, x in enumerate(nums):
+            if x:
+                i += 1
+                nums[i], nums[j] = nums[j], nums[i]
 ```
 
 ### **Java**
@@ -51,13 +48,12 @@ class Solution:
 ```java
 class Solution {
     public void moveZeroes(int[] nums) {
-        int left = 0, n = nums.length;
-        for (int right = 0; right < n; ++right) {
-            if (nums[right] != 0) {
-                int t = nums[left];
-                nums[left] = nums[right];
-                nums[right] = t;
-                ++left;
+        int i = -1, n = nums.length;
+        for (int j = 0; j < n; ++j) {
+            if (nums[j] != 0) {
+                int t = nums[++i];
+                nums[i] = nums[j];
+                nums[j] = t;
             }
         }
     }
@@ -70,12 +66,10 @@ class Solution {
 class Solution {
 public:
     void moveZeroes(vector<int>& nums) {
-        int left = 0, n = nums.size();
-        for (int right = 0; right < n; ++right) {
-            if (nums[right] != 0)
-            {
-                swap(nums[left], nums[right]);
-                ++left;
+        int i = -1, n = nums.size();
+        for (int j = 0; j < n; ++j) {
+            if (nums[j]) {
+                swap(nums[++i], nums[j]);
             }
         }
     }
@@ -86,12 +80,11 @@ public:
 
 ```go
 func moveZeroes(nums []int) {
-	n := len(nums)
-	left := 0
-	for right := 0; right < n; right++ {
-		if nums[right] != 0 {
-			nums[left], nums[right] = nums[right], nums[left]
-			left++
+	i := -1
+	for j, x := range nums {
+		if x != 0 {
+			i++
+			nums[i], nums[j] = nums[j], nums[i]
 		}
 	}
 }
@@ -105,15 +98,35 @@ func moveZeroes(nums []int) {
  * @return {void} Do not return anything, modify nums in-place instead.
  */
 var moveZeroes = function (nums) {
-    let left = 0,
-        n = nums.length;
-    for (let right = 0; right < n; ++right) {
-        if (nums[right]) {
-            [nums[left], nums[right]] = [nums[right], nums[left]];
-            ++left;
+    let i = -1;
+    for (let j = 0; j < nums.length; ++j) {
+        if (nums[j]) {
+            const t = nums[++i];
+            nums[i] = nums[j];
+            nums[j] = t;
         }
     }
 };
+```
+
+### **TypeScript**
+
+```ts
+/**
+ Do not return anything, modify nums in-place instead.
+ */
+function moveZeroes(nums: number[]): void {
+    const n = nums.length;
+    let i = 0;
+    for (let j = 0; j < n; j++) {
+        if (nums[j]) {
+            if (j > i) {
+                [nums[i], nums[j]] = [nums[j], 0];
+            }
+            i++;
+        }
+    }
+}
 ```
 
 ### **Rust**
@@ -124,12 +137,29 @@ impl Solution {
         let mut i = 0;
         for j in 0..nums.len() {
             if nums[j] != 0 {
-                if i != j {
+                if j > i {
                     nums[i] = nums[j];
                     nums[j] = 0;
                 }
                 i += 1;
             }
+        }
+    }
+}
+```
+
+### **C**
+
+```c
+void moveZeroes(int* nums, int numsSize) {
+    int i = 0;
+    for (int j = 0; j < numsSize; j++) {
+        if (nums[j] != 0) {
+            if (j > i) {
+                nums[i] = nums[j];
+                nums[j] = 0;
+            }
+            i++;
         }
     }
 }

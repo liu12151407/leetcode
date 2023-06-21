@@ -1,4 +1,4 @@
-# [1439. 有序矩阵中的第 k 个最小数组和](https://leetcode-cn.com/problems/find-the-kth-smallest-sum-of-a-matrix-with-sorted-rows)
+# [1439. 有序矩阵中的第 k 个最小数组和](https://leetcode.cn/problems/find-the-kth-smallest-sum-of-a-matrix-with-sorted-rows)
 
 [English Version](/solution/1400-1499/1439.Find%20the%20Kth%20Smallest%20Sum%20of%20a%20Matrix%20With%20Sorted%20Rows/README_EN.md)
 
@@ -56,6 +56,20 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：逐行遍历 + 排序**
+
+根据题目描述，我们需要找出前 $m$ 行的所有可能数组中的第 $k$ 个最小数组和。
+
+如果我们能够找出前 $m - 1$ 行的所有可能数组中的前 $k$ 个最小数组和，那么我们可以将第 $m$ 行的每个元素与前 $m - 1$ 行的前 $k$ 个最小数组和相加，将得到的所有结果排序后，取前 $k$ 个最小值，即为前 $m$ 行的所有可能数组中的前 $k$ 个最小值。
+
+因此，我们可以定义一个数组 $pre$，用于存储此前遍历到的行的前 $k$ 个最小数组和，初始时 $pre$ 只有一个元素 $0$。
+
+然后，我们遍历 $mat$ 的每一行 $cur$，将 $cur$ 中的每个元素与 $pre$ 中的每个元素相加，将得到的所有结果排序后，取前 $k$ 个最小值作为新的 $pre$。继续遍历下一行，直到遍历完所有行。
+
+最后返回 $pre$ 中的第 $k$ 个数（下标 $k-1$）即可。
+
+时间复杂度 $O(m \times n \times k \times \log (n \times k))$，空间复杂度 $O(n \times k)$。其中 $m$ 和 $n$ 分别是矩阵的行数和列数。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -63,7 +77,12 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def kthSmallest(self, mat: List[List[int]], k: int) -> int:
+        pre = [0]
+        for cur in mat:
+            pre = sorted(a + b for a in pre for b in cur[:k])[:k]
+        return pre[-1]
 ```
 
 ### **Java**
@@ -71,7 +90,100 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public int kthSmallest(int[][] mat, int k) {
+        int m = mat.length, n = mat[0].length;
+        List<Integer> pre = new ArrayList<>(k);
+        List<Integer> cur = new ArrayList<>(n * k);
+        pre.add(0);
+        for (int[] row : mat) {
+            cur.clear();
+            for (int a : pre) {
+                for (int b : row) {
+                    cur.add(a + b);
+                }
+            }
+            Collections.sort(cur);
+            pre.clear();
+            for (int i = 0; i < Math.min(k, cur.size()); ++i) {
+                pre.add(cur.get(i));
+            }
+        }
+        return pre.get(k - 1);
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int kthSmallest(vector<vector<int>>& mat, int k) {
+        int pre[k];
+        int cur[mat[0].size() * k];
+        memset(pre, 0, sizeof pre);
+        int size = 1;
+        for (auto& row : mat) {
+            int i = 0;
+            for (int j = 0; j < size; ++j) {
+                for (int& v : row) {
+                    cur[i++] = pre[j] + v;
+                }
+            }
+            sort(cur, cur + i);
+            size = min(i, k);
+            for (int j = 0; j < size; ++j) {
+                pre[j] = cur[j];
+            }
+        }
+        return pre[k - 1];
+    }
+};
+```
+
+### **Go**
+
+```go
+func kthSmallest(mat [][]int, k int) int {
+	pre := []int{0}
+	for _, row := range mat {
+		cur := []int{}
+		for _, a := range pre {
+			for _, b := range row {
+				cur = append(cur, a+b)
+			}
+		}
+		sort.Ints(cur)
+		pre = cur[:min(k, len(cur))]
+	}
+	return pre[k-1]
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+```
+
+### **TypeScript**
+
+```ts
+function kthSmallest(mat: number[][], k: number): number {
+    let pre: number[] = [0];
+    for (const cur of mat) {
+        const next: number[] = [];
+        for (const a of pre) {
+            for (const b of cur) {
+                next.push(a + b);
+            }
+        }
+        pre = next.sort((a, b) => a - b).slice(0, k);
+    }
+    return pre[k - 1];
+}
 ```
 
 ### **...**

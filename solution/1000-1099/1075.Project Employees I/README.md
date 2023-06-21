@@ -1,4 +1,4 @@
-# [1075. 项目员工 I](https://leetcode-cn.com/problems/project-employees-i)
+# [1075. 项目员工 I](https://leetcode.cn/problems/project-employees-i)
 
 [English Version](/solution/1000-1099/1075.Project%20Employees%20I/README_EN.md)
 
@@ -79,7 +79,14 @@ Result 表：
 ### **SQL**
 
 ```sql
-
+# Write your MySQL query statement below
+SELECT
+    project_id,
+    round(AVG(experience_years), 2) AS average_years
+FROM
+    Project AS p
+    LEFT JOIN Employee AS e ON p.employee_id = e.employee_id
+GROUP BY project_id;
 ```
 
 <!-- tabs:end -->

@@ -1,4 +1,4 @@
-# [面试题 02.02. 返回倒数第 k 个节点](https://leetcode-cn.com/problems/kth-node-from-end-of-list-lcci)
+# [面试题 02.02. 返回倒数第 k 个节点](https://leetcode.cn/problems/kth-node-from-end-of-list-lcci)
 
 [English Version](/lcci/02.02.Kth%20Node%20From%20End%20of%20List/README_EN.md)
 
@@ -38,6 +38,7 @@
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
+
 
 class Solution:
     def kthToLast(self, head: ListNode, k: int) -> int:
@@ -147,6 +148,41 @@ func kthToLast(head *ListNode, k int) int {
 		fast = fast.Next
 	}
 	return slow.Val
+}
+```
+
+### **Rust**
+
+```rust
+// Definition for singly-linked list.
+// #[derive(PartialEq, Eq, Clone, Debug)]
+// pub struct ListNode {
+//   pub val: i32,
+//   pub next: Option<Box<ListNode>>
+// }
+//
+// impl ListNode {
+//   #[inline]
+//   fn new(val: i32) -> Self {
+//     ListNode {
+//       next: None,
+//       val
+//     }
+//   }
+// }
+impl Solution {
+    pub fn kth_to_last(head: Option<Box<ListNode>>, k: i32) -> i32 {
+        let mut fast = &head;
+        for _ in 0..k {
+            fast = &fast.as_ref().unwrap().next;
+        }
+        let mut slow = &head;
+        while let (Some(f), Some(s)) = (fast, slow) {
+            fast = &f.next;
+            slow = &s.next;
+        }
+        slow.as_ref().unwrap().val
+    }
 }
 ```
 

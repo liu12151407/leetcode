@@ -1,4 +1,4 @@
-# [1009. 十进制整数的反码](https://leetcode-cn.com/problems/complement-of-base-10-integer)
+# [1009. 十进制整数的反码](https://leetcode.cn/problems/complement-of-base-10-integer)
 
 [English Version](/solution/1000-1099/1009.Complement%20of%20Base%2010%20Integer/README_EN.md)
 
@@ -44,7 +44,7 @@
 
 <ol>
 	<li><code>0 &lt;= N &lt; 10^9</code></li>
-	<li>本题与 476：<a href="https://leetcode-cn.com/problems/number-complement/">https://leetcode-cn.com/problems/number-complement/</a> 相同</li>
+	<li>本题与 476：<a href="https://leetcode.cn/problems/number-complement/">https://leetcode.cn/problems/number-complement/</a> 相同</li>
 </ol>
 
 ## 解法
@@ -70,7 +70,7 @@ class Solution:
                 continue
             find = True
             if b == 0:
-                ans |= (1 << i)
+                ans |= 1 << i
         return ans
 ```
 
@@ -110,8 +110,7 @@ public:
         if (n == 0) return 1;
         int ans = 0;
         bool find = false;
-        for (int i = 30; i >= 0; --i)
-        {
+        for (int i = 30; i >= 0; --i) {
             int b = n & (1 << i);
             if (!find && b == 0) continue;
             find = true;
@@ -151,5 +150,4 @@ func bitwiseComplement(n int) int {
 
 ```
 
-<!-- tabs:end -->
 <!-- tabs:end -->

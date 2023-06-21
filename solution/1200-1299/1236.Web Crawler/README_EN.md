@@ -17,7 +17,7 @@
 	<li>Explore only the links that are under the <strong>same hostname</strong> as <code>startUrl</code>.</li>
 </ul>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1200-1299/1236.Web%20Crawler/images/urlhostname.png" style="width: 600px; height: 164px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1200-1299/1236.Web%20Crawler/images/urlhostname.png" style="width: 600px; height: 164px;" /></p>
 
 <p>As shown in the example url above, the hostname is <code>example.org</code>. For simplicity sake, you may assume all&nbsp;urls use <strong>http protocol</strong> without any&nbsp;<strong>port</strong> specified. For example, the urls&nbsp;<code>http://leetcode.com/problems</code> and&nbsp;<code>http://leetcode.com/contest</code> are under the same hostname, while urls <code>http://example.org/test</code> and <code>http://example.com/abc</code> are not under the same hostname.</p>
 
@@ -31,10 +31,12 @@ interface HtmlParser {
 
 <p>Below&nbsp;are two examples explaining the functionality of the problem, for custom testing purposes you&#39;ll have three&nbsp;variables&nbsp;<code data-stringify-type="code">urls</code>,&nbsp;<code data-stringify-type="code">edges</code>&nbsp;and&nbsp;<code data-stringify-type="code">startUrl</code>. Notice that you will only have access to&nbsp;<code data-stringify-type="code">startUrl</code>&nbsp;in your code, while&nbsp;<code data-stringify-type="code">urls</code>&nbsp;and&nbsp;<code data-stringify-type="code">edges</code>&nbsp;are not directly accessible to you in code.</p>
 
-<p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p>Note: Consider the same URL with the trailing slash &quot;/&quot; as a different URL. For example, &quot;http://news.yahoo.com&quot;, and &quot;http://news.yahoo.com/&quot; are different urls.</p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1200-1299/1236.Web%20Crawler/images/sample_2_1497.png" style="width: 610px; height: 300px;" /></p>
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
+
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1200-1299/1236.Web%20Crawler/images/sample_2_1497.png" style="width: 610px; height: 300px;" /></p>
 
 <pre>
 <strong>Input:
@@ -55,9 +57,9 @@ startUrl = &quot;http://news.yahoo.com/news/topics/&quot;
 ]
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1200-1299/1236.Web%20Crawler/images/sample_3_1497.png" style="width: 540px; height: 270px;" /></strong></p>
+<p><strong><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1200-1299/1236.Web%20Crawler/images/sample_3_1497.png" style="width: 540px; height: 270px;" /></strong></p>
 
 <pre>
 <strong>Input:</strong> 
@@ -104,6 +106,7 @@ DFS.
 #        :type url: str
 #        :rtype List[str]
 #        """
+
 
 class Solution:
     def crawl(self, startUrl: str, htmlParser: 'HtmlParser') -> List[str]:
@@ -197,8 +200,7 @@ public:
     string host(string url) {
         int i = 7;
         string res;
-        for (; i < url.size(); ++i)
-        {
+        for (; i < url.size(); ++i) {
             if (url[i] == '/') break;
             res += url[i];
         }

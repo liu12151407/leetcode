@@ -1,4 +1,4 @@
-# [剑指 Offer II 026. 重排链表](https://leetcode-cn.com/problems/LGjMqU)
+# [剑指 Offer II 026. 重排链表](https://leetcode.cn/problems/LGjMqU)
 
 ## 题目描述
 
@@ -17,7 +17,7 @@
 
 <p><strong>示例 1:</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20026.%20%E9%87%8D%E6%8E%92%E9%93%BE%E8%A1%A8/images/1626420311-PkUiGI-image.png" style="width: 240px; " /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20026.%20%E9%87%8D%E6%8E%92%E9%93%BE%E8%A1%A8/images/1626420311-PkUiGI-image.png" style="width: 240px; " /></p>
 
 <pre>
 <strong>输入: </strong>head = [1,2,3,4]
@@ -25,7 +25,7 @@
 
 <p><strong>示例 2:</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20026.%20%E9%87%8D%E6%8E%92%E9%93%BE%E8%A1%A8/images/1626420320-YUiulT-image.png" style="width: 320px; " /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20026.%20%E9%87%8D%E6%8E%92%E9%93%BE%E8%A1%A8/images/1626420320-YUiulT-image.png" style="width: 320px; " /></p>
 
 <pre>
 <strong>输入: </strong>head = [1,2,3,4,5]
@@ -42,7 +42,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 143&nbsp;题相同：<a href="https://leetcode-cn.com/problems/reorder-list/">https://leetcode-cn.com/problems/reorder-list/</a>&nbsp;</p>
+<p><meta charset="UTF-8" />注意：本题与主站 143&nbsp;题相同：<a href="https://leetcode.cn/problems/reorder-list/">https://leetcode.cn/problems/reorder-list/</a>&nbsp;</p>
 
 ## 解法
 
@@ -50,9 +50,9 @@
 
 相当于这 3 道问题，只需要 5 行代码将它们组合：
 
-- [链表的中间结点](/solution/0800-0899/0876.Middle%20of%20the%20Linked%20List/README.md)
-- [反转链表](/solution/0200-0299/0206.Reverse%20Linked%20List/README.md)
-- 合并两个链表
+-   [链表的中间结点](/solution/0800-0899/0876.Middle%20of%20the%20Linked%20List/README.md)
+-   [反转链表](/solution/0200-0299/0206.Reverse%20Linked%20List/README.md)
+-   合并两个链表
 
 <!-- tabs:start -->
 
@@ -191,8 +191,7 @@ public:
     ListNode* middleNode(ListNode* head) {
         ListNode* slow = head;
         ListNode* fast = head;
-        while (fast && fast->next)
-        {
+        while (fast && fast->next) {
             slow = slow->next;
             fast = fast->next->next;
         }
@@ -202,8 +201,7 @@ public:
     ListNode* reverseList(ListNode* head) {
         ListNode* pre = nullptr;
         ListNode* cur = head;
-        while (cur)
-        {
+        while (cur) {
             ListNode* tmp = cur->next;
             cur->next = pre;
             pre = cur;
@@ -215,8 +213,7 @@ public:
     ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
         ListNode* dummy = new ListNode();
         ListNode* cur = dummy;
-        while (l1 && l2)
-        {
+        while (l1 && l2) {
             cur->next = l1;
             l1 = l1->next;
             cur = cur->next;

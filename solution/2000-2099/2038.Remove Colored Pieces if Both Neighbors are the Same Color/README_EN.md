@@ -18,7 +18,7 @@
 <p>Assuming Alice and Bob play optimally, return <code>true</code><em> if Alice wins, or return </em><code>false</code><em> if Bob wins</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> colors = &quot;AAABABB&quot;
@@ -33,7 +33,7 @@ Bob cannot make a move on his turn since there are no &#39;B&#39;s whose neighbo
 Thus, Alice wins, so return true.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> colors = &quot;AA&quot;
@@ -44,7 +44,7 @@ There are only two &#39;A&#39;s and both are on the edge of the line, so she can
 Thus, Bob wins, so return false.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> colors = &quot;ABBBBBBBAAA&quot;
@@ -77,13 +77,90 @@ Thus, Bob wins, so return false.
 ### **Python3**
 
 ```python
-
+class Solution:
+    def winnerOfGame(self, colors: str) -> bool:
+        a = b = 0
+        for c, v in groupby(colors):
+            m = len(list(v)) - 2
+            if m > 0 and c == 'A':
+                a += m
+            elif m > 0 and c == 'B':
+                b += m
+        return a > b
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public boolean winnerOfGame(String colors) {
+        int n = colors.length();
+        int a = 0, b = 0;
+        for (int i = 0, j = 0; i < n; i = j) {
+            while (j < n && colors.charAt(j) == colors.charAt(i)) {
+                ++j;
+            }
+            int m = j - i - 2;
+            if (m > 0) {
+                if (colors.charAt(i) == 'A') {
+                    a += m;
+                } else {
+                    b += m;
+                }
+            }
+        }
+        return a > b;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool winnerOfGame(string colors) {
+        int n = colors.size();
+        int a = 0, b = 0;
+        for (int i = 0, j = 0; i < n; i = j) {
+            while (j < n && colors[j] == colors[i]) {
+                ++j;
+            }
+            int m = j - i - 2;
+            if (m > 0) {
+                if (colors[i] == 'A') {
+                    a += m;
+                } else {
+                    b += m;
+                }
+            }
+        }
+        return a > b;
+    }
+};
+```
+
+### **Go**
+
+```go
+func winnerOfGame(colors string) bool {
+	n := len(colors)
+	a, b := 0, 0
+	for i, j := 0, 0; i < n; i = j {
+		for j < n && colors[j] == colors[i] {
+			j++
+		}
+		m := j - i - 2
+		if m > 0 {
+			if colors[i] == 'A' {
+				a += m
+			} else {
+				b += m
+			}
+		}
+	}
+	return a > b
+}
 ```
 
 ### **...**

@@ -1,4 +1,4 @@
-# [687. 最长同值路径](https://leetcode-cn.com/problems/longest-univalue-path)
+# [687. 最长同值路径](https://leetcode.cn/problems/longest-univalue-path)
 
 [English Version](/solution/0600-0699/0687.Longest%20Univalue%20Path/README_EN.md)
 
@@ -6,53 +6,47 @@
 
 <!-- 这里写题目描述 -->
 
-<p>给定一个二叉树，找到最长的路径，这个路径中的每个节点具有相同值。 这条路径可以经过也可以不经过根节点。</p>
+<p>给定一个二叉树的<meta charset="UTF-8" />&nbsp;<code>root</code>&nbsp;，返回&nbsp;<em>最长的路径的长度</em> ，这个路径中的&nbsp;<em>每个节点具有相同值</em>&nbsp;。 这条路径可以经过也可以不经过根节点。</p>
 
-<p><strong>注意</strong>：两个节点之间的路径长度由它们之间的边数表示。</p>
+<p><strong>两个节点之间的路径长度</strong>&nbsp;由它们之间的边数表示。</p>
+
+<p>&nbsp;</p>
 
 <p><strong>示例 1:</strong></p>
 
-<p>输入:</p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0600-0699/0687.Longest%20Univalue%20Path/images/ex1.jpg" /></p>
 
 <pre>
-              5
-             / \
-            4   5
-           / \   \
-          1   1   5
-</pre>
-
-<p>输出:</p>
-
-<pre>
-2
+<strong>输入：</strong>root = [5,4,5,1,1,5]
+<strong>输出：</strong>2
 </pre>
 
 <p><strong>示例 2:</strong></p>
 
-<p>输入:</p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0600-0699/0687.Longest%20Univalue%20Path/images/ex2.jpg" /></p>
 
 <pre>
-              1
-             / \
-            4   5
-           / \   \
-          4   4   5
+<strong>输入：</strong>root = [1,4,5,4,4,5]
+<strong>输出：</strong>2
 </pre>
 
-<p>输出:</p>
+<p>&nbsp;</p>
 
-<pre>
-2
-</pre>
+<p><strong>提示:</strong></p>
 
-<p><strong>注意:</strong> 给定的二叉树不超过10000个结点。&nbsp;树的高度不超过1000。</p>
+<ul>
+	<li>树的节点数的范围是<meta charset="UTF-8" />&nbsp;<code>[0, 10<sup>4</sup>]</code>&nbsp;</li>
+	<li><code>-1000 &lt;= Node.val &lt;= 1000</code></li>
+	<li>树的深度将不超过 <code>1000</code>&nbsp;</li>
+</ul>
 
 ## 解法
 
 <!-- 这里可写通用的实现逻辑 -->
 
-类似题目：[543. 二叉树的直径](/solution/0500-0599/0543.Diameter%20of%20Binary%20Tree/README.md)
+**方法一：DFS**
+
+相似题目：[543. 二叉树的直径](/solution/0500-0599/0543.Diameter%20of%20Binary%20Tree/README.md)
 
 <!-- tabs:start -->
 
@@ -206,6 +200,43 @@ func max(a, b int) int {
 }
 ```
 
+### **C**
+
+```c
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+
+#define max(a, b) (((a) > (b)) ? (a) : (b))
+
+int dfs(struct TreeNode* root, int target, int* res) {
+    if (!root) {
+        return 0;
+    }
+    int left = dfs(root->left, root->val, res);
+    int right = dfs(root->right, root->val, res);
+    *res = max(*res, left + right);
+    if (root->val == target) {
+        return max(left, right) + 1;
+    }
+    return 0;
+}
+
+int longestUnivaluePath(struct TreeNode* root) {
+    if (!root) {
+        return 0;
+    }
+    int res = 0;
+    dfs(root, root->val, &res);
+    return res;
+}
+```
+
 ### **JavaScript**
 
 ```js
@@ -237,6 +268,104 @@ var longestUnivaluePath = function (root) {
     dfs(root);
     return ans;
 };
+```
+
+### **TypeScript**
+
+```ts
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function longestUnivaluePath(root: TreeNode | null): number {
+    if (root == null) {
+        return 0;
+    }
+
+    let res = 0;
+    const dfs = (root: TreeNode | null, target: number) => {
+        if (root == null) {
+            return 0;
+        }
+
+        const { val, left, right } = root;
+
+        let l = dfs(left, val);
+        let r = dfs(right, val);
+        res = Math.max(res, l + r);
+        if (val === target) {
+            return Math.max(l, r) + 1;
+        }
+        return 0;
+    };
+    dfs(root, root.val);
+    return res;
+}
+```
+
+### **Rust**
+
+```rust
+// Definition for a binary tree node.
+// #[derive(Debug, PartialEq, Eq)]
+// pub struct TreeNode {
+//   pub val: i32,
+//   pub left: Option<Rc<RefCell<TreeNode>>>,
+//   pub right: Option<Rc<RefCell<TreeNode>>>,
+// }
+//
+// impl TreeNode {
+//   #[inline]
+//   pub fn new(val: i32) -> Self {
+//     TreeNode {
+//       val,
+//       left: None,
+//       right: None
+//     }
+//   }
+// }
+use std::rc::Rc;
+use std::cell::RefCell;
+impl Solution {
+    fn dfs(root: &Option<Rc<RefCell<TreeNode>>>, target: i32, res: &mut i32) -> i32 {
+        if root.is_none() {
+            return 0;
+        }
+
+        let root = root.as_ref().unwrap().as_ref().borrow();
+        let left = Self::dfs(&root.left, root.val, res);
+        let right = Self::dfs(&root.right, root.val, res);
+        *res = (*res).max(left + right);
+        if root.val == target {
+            return left.max(right) + 1;
+        }
+        0
+    }
+
+    pub fn longest_univalue_path(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
+        if root.is_none() {
+            return 0;
+        }
+
+        let mut res = 0;
+        Self::dfs(
+            &root,
+            root.as_ref().unwrap().as_ref().borrow().val,
+            &mut res,
+        );
+        res
+    }
+}
 ```
 
 ### **...**

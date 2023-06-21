@@ -1,4 +1,4 @@
-# [183. 从不订购的客户](https://leetcode-cn.com/problems/customers-who-never-order)
+# [183. 从不订购的客户](https://leetcode.cn/problems/customers-who-never-order)
 
 [English Version](/solution/0100-0199/0183.Customers%20Who%20Never%20Order/README_EN.md)
 
@@ -44,13 +44,35 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：NOT IN**
+
+列举所有已存在订单的客户 ID，使用 `NOT IN` 找到不存在其中的客户。
+
+**方法二：LEFT JOIN**
+
+使用 `LEFT JOIN` 连接表格，返回 `CustomerId` 为 `NULL` 的数据。
+
 <!-- tabs:start -->
 
 ### **SQL**
 
+```sql
+SELECT Name AS Customers
+FROM Customers
+WHERE
+    id NOT IN (
+        SELECT CustomerId
+        FROM Orders
+    );
 ```
-select Name as Customers from Customers
-    where id not in (select CustomerId from Orders)
+
+```sql
+SELECT
+    c.Name AS Customers
+FROM
+    customers AS c
+    LEFT JOIN orders AS o ON c.Id = o.CustomerId
+WHERE o.CustomerId IS NULL;
 ```
 
 <!-- tabs:end -->

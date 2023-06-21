@@ -1,4 +1,4 @@
-# [1426. 数元素](https://leetcode-cn.com/problems/counting-elements)
+# [1426. 数元素](https://leetcode.cn/problems/counting-elements)
 
 [English Version](/solution/1400-1499/1426.Counting%20Elements/README_EN.md)
 
@@ -14,29 +14,17 @@
 
 <p><strong>示例 1：</strong></p>
 
-<pre><strong>输入：</strong>arr = [1,2,3]
+<pre>
+<strong>输入：</strong>arr = [1,2,3]
 <strong>输出：</strong>2
 <strong>解释：</strong>1 和 2 被计算次数因为 2 和 3 在数组 arr 里。</pre>
 
 <p><strong>示例 2：</strong></p>
 
-<pre><strong>输入：</strong>arr = [1,1,3,3,5,5,7,7]
+<pre>
+<strong>输入：</strong>arr = [1,1,3,3,5,5,7,7]
 <strong>输出：</strong>0
 <strong>解释：</strong>所有的数都不算, 因为数组里没有 2、4、6、8。
-</pre>
-
-<p><strong>示例 3：</strong></p>
-
-<pre><strong>输入：</strong>arr = [1,3,2,3,5,0]
-<strong>输出：</strong>3
-<strong>解释：</strong>0、1、2 被计算了因为 1、2、3 在数组里。
-</pre>
-
-<p><strong>示例 4：</strong></p>
-
-<pre><strong>输入：</strong>arr = [1,1,2,2]
-<strong>输出：</strong>2
-<strong>解释：</strong>两个 1 被计算了因为有 2 在数组里。
 </pre>
 
 <p>&nbsp;</p>
@@ -52,6 +40,18 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：暴力枚举**
+
+枚举 `arr` 的每个元素 `x`，判断 `x+1` 是否在 `arr` 中，是则累加答案。
+
+时间复杂度 $O(n^2)$，空间复杂度 $O(1)$。
+
+**方法二：哈希表**
+
+将 `arr` 所有元素放入哈希表 `s` 中。然后遍历 `arr` 的每个元素 `x`，判断 `x+1` 是否在 `s` 中，是则累加答案。
+
+时间复杂度 $O(n)$，空间复杂度 $O(n)$。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -61,17 +61,36 @@
 ```python
 class Solution:
     def countElements(self, arr: List[int]) -> int:
+        return sum(x + 1 in arr for x in arr)
+```
+
+```python
+class Solution:
+    def countElements(self, arr: List[int]) -> int:
         s = set(arr)
-        res = 0
-        for num in arr:
-            if num + 1 in s:
-                res += 1
-        return res
+        return sum(x + 1 in s for x in arr)
 ```
 
 ### **Java**
 
 <!-- 这里可写当前语言的特殊实现逻辑 -->
+
+```java
+class Solution {
+    public int countElements(int[] arr) {
+        int ans = 0;
+        for (int x : arr) {
+            for (int v : arr) {
+                if (x + 1 == v) {
+                    ++ans;
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+}
+```
 
 ```java
 class Solution {
@@ -97,12 +116,30 @@ class Solution {
 class Solution {
 public:
     int countElements(vector<int>& arr) {
-        unordered_set<int> s;
-        for (int num : arr) s.insert(num);
-        int res = 0;
-        for (int num : arr)
-            if (s.count(num + 1)) ++res;
-        return res;
+        int ans = 0;
+        for (int x : arr) {
+            for (int v : arr) {
+                if (x + 1 == v) {
+                    ++ans;
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    int countElements(vector<int>& arr) {
+        unordered_set<int> s(arr.begin(), arr.end());
+        int ans = 0;
+        for (int x : arr) {
+            ans += s.count(x + 1);
+        }
+        return ans;
     }
 };
 ```
@@ -111,17 +148,88 @@ public:
 
 ```go
 func countElements(arr []int) int {
-	s := make(map[int]bool)
-	for _, num := range arr {
-		s[num] = true
-	}
-	res := 0
-	for _, num := range arr {
-		if s[num+1] {
-			res++
+	ans := 0
+	for _, x := range arr {
+		for _, v := range arr {
+			if x+1 == v {
+				ans++
+				break
+			}
 		}
 	}
-	return res
+	return ans
+}
+```
+
+```go
+func countElements(arr []int) int {
+	s := map[int]bool{}
+	for _, x := range arr {
+		s[x] = true
+	}
+	ans := 0
+	for _, x := range arr {
+		if s[x+1] {
+			ans++
+		}
+	}
+	return ans
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number[]} arr
+ * @return {number}
+ */
+var countElements = function (arr) {
+    let ans = 0;
+    for (const x of arr) {
+        ans += arr.includes(x + 1);
+    }
+    return ans;
+};
+```
+
+```js
+/**
+ * @param {number[]} arr
+ * @return {number}
+ */
+var countElements = function (arr) {
+    const s = new Set();
+    for (const x of arr) {
+        s.add(x);
+    }
+    let ans = 0;
+    for (const x of arr) {
+        if (s.has(x + 1)) {
+            ++ans;
+        }
+    }
+    return ans;
+};
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param Integer[] $arr
+     * @return Integer
+     */
+    function countElements($arr) {
+        $cnt = 0;
+        for ($i = 0; $i < count($arr); $i++) {
+            if (in_array($arr[$i] + 1, $arr)) {
+                $cnt++;
+            }
+        }
+        return $cnt++;
+    }
 }
 ```
 

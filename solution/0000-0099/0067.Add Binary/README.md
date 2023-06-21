@@ -1,4 +1,4 @@
-# [67. 二进制求和](https://leetcode-cn.com/problems/add-binary)
+# [67. 二进制求和](https://leetcode.cn/problems/add-binary)
 
 [English Version](/solution/0000-0099/0067.Add%20Binary/README_EN.md)
 
@@ -6,30 +6,30 @@
 
 <!-- 这里写题目描述 -->
 
-<p>给你两个二进制字符串，返回它们的和（用二进制表示）。</p>
-
-<p>输入为 <strong>非空 </strong>字符串且只包含数字&nbsp;<code>1</code>&nbsp;和&nbsp;<code>0</code>。</p>
+<p>给你两个二进制字符串 <code>a</code> 和 <code>b</code> ，以二进制字符串的形式返回它们的和。</p>
 
 <p>&nbsp;</p>
 
-<p><strong>示例&nbsp;1:</strong></p>
+<p><strong>示例&nbsp;1：</strong></p>
 
-<pre><strong>输入:</strong> a = &quot;11&quot;, b = &quot;1&quot;
-<strong>输出:</strong> &quot;100&quot;</pre>
+<pre>
+<strong>输入:</strong>a = "11", b = "1"
+<strong>输出：</strong>"100"</pre>
 
-<p><strong>示例&nbsp;2:</strong></p>
+<p><strong>示例&nbsp;2：</strong></p>
 
-<pre><strong>输入:</strong> a = &quot;1010&quot;, b = &quot;1011&quot;
-<strong>输出:</strong> &quot;10101&quot;</pre>
+<pre>
+<strong>输入：</strong>a = "1010", b = "1011"
+<strong>输出：</strong>"10101"</pre>
 
 <p>&nbsp;</p>
 
 <p><strong>提示：</strong></p>
 
 <ul>
-	<li>每个字符串仅由字符 <code>&#39;0&#39;</code> 或 <code>&#39;1&#39;</code> 组成。</li>
-	<li><code>1 &lt;= a.length, b.length &lt;= 10^4</code></li>
-	<li>字符串如果不是 <code>&quot;0&quot;</code> ，就都不含前导零。</li>
+	<li><code>1 &lt;= a.length, b.length &lt;= 10<sup>4</sup></code></li>
+	<li><code>a</code> 和 <code>b</code> 仅由字符 <code>'0'</code> 或 <code>'1'</code> 组成</li>
+	<li>字符串如果不是 <code>"0"</code> ，就不含前导零</li>
 </ul>
 
 ## 解法
@@ -48,6 +48,19 @@ class Solution:
         return bin(int(a, 2) + int(b, 2))[2:]
 ```
 
+```python
+class Solution:
+    def addBinary(self, a: str, b: str) -> str:
+        ans = []
+        i, j, carry = len(a) - 1, len(b) - 1, 0
+        while i >= 0 or j >= 0 or carry:
+            carry += (0 if i < 0 else int(a[i])) + (0 if j < 0 else int(b[j]))
+            carry, v = divmod(carry, 2)
+            ans.append(str(v))
+            i, j = i - 1, j - 1
+        return ''.join(ans[::-1])
+```
+
 ### **Java**
 
 <!-- 这里可写当前语言的特殊实现逻辑 -->
@@ -56,13 +69,11 @@ class Solution:
 class Solution {
     public String addBinary(String a, String b) {
         StringBuilder sb = new StringBuilder();
-        int i = a.length() - 1, j = b.length() - 1, carry = 0;
-        while (i >= 0 || j >= 0 || carry != 0) {
-            int s = carry + (i >= 0 ? a.charAt(i) - '0' : 0) + (j >= 0 ? b.charAt(j) - '0' : 0);
-            sb.append(s % 2);
-            carry = s / 2;
-            --i;
-            --j;
+        for (int i = a.length() - 1, j = b.length() - 1, carry = 0; i >= 0 || j >= 0 || carry > 0;
+             --i, --j) {
+            carry += (i >= 0 ? a.charAt(i) - '0' : 0) + (j >= 0 ? b.charAt(j) - '0' : 0);
+            sb.append(carry % 2);
+            carry /= 2;
         }
         return sb.reverse().toString();
     }
@@ -157,6 +168,63 @@ func addBinary(a string, b string) string {
 	}
 
 	return string(ret)
+}
+```
+
+### **TypeScript**
+
+```ts
+function addBinary(a: string, b: string): string {
+    const n = Math.max(a.length, b.length);
+    const res = [];
+    let isOver = false;
+    for (let i = 0; i < n || isOver; i++) {
+        let val = isOver ? 1 : 0;
+        isOver = false;
+        if (a[a.length - i - 1] === '1') {
+            val++;
+        }
+        if (b[b.length - i - 1] === '1') {
+            val++;
+        }
+        if (val > 1) {
+            isOver = true;
+            val -= 2;
+        }
+        res.push(val);
+    }
+    return res.reverse().join('');
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn add_binary(a: String, b: String) -> String {
+        let n = a.len().max(b.len());
+        let (a, b) = (a.as_bytes(), b.as_bytes());
+        let mut res = vec![];
+        let mut is_over = false;
+        let mut i = 0;
+        while i < n || is_over {
+            let mut val = if is_over { 1 } else { 0 };
+            is_over = false;
+            if a.get(a.len() - i - 1).unwrap_or(&b'0') == &b'1' {
+                val += 1;
+            }
+            if b.get(b.len() - i - 1).unwrap_or(&b'0') == &b'1' {
+                val += 1;
+            }
+            if val > 1 {
+                is_over = true;
+                val -= 2;
+            }
+            i += 1;
+            res.push(char::from(b'0' + val));
+        }
+        res.iter().rev().collect()
+    }
 }
 ```
 

@@ -1,4 +1,4 @@
-# [面试题 01.06. 字符串压缩](https://leetcode-cn.com/problems/compress-string-lcci)
+# [面试题 01.06. 字符串压缩](https://leetcode.cn/problems/compress-string-lcci)
 
 [English Version](/lcci/01.06.Compress%20String/README_EN.md)
 
@@ -49,10 +49,10 @@ class Solution:
         res = ''
         while q < len(S):
             if S[p] != S[q]:
-                res += (S[p] + str(q - p))
+                res += S[p] + str(q - p)
                 p = q
             q += 1
-        res += (S[p] + str(q - p))
+        res += S[p] + str(q - p)
         return res if len(res) < len(S) else S
 ```
 
@@ -94,7 +94,7 @@ var compressString = function (S) {
     if (!S) return S;
     let p = 0,
         q = 1;
-    let res = "";
+    let res = '';
     while (q < S.length) {
         if (S[p] != S[q]) {
             res += S[p] + (q - p);
@@ -133,6 +133,36 @@ func compressString(S string) string {
 		return S
 	}
 	return builder.String()
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn compress_string(s: String) -> String {
+        let mut cs: Vec<char> = s.chars().collect();
+        cs.push(' ');
+        let mut res = vec![];
+        let mut l = 0;
+        let mut cur = cs[0];
+        for i in 1..cs.len() {
+            if cs[i] != cur {
+                let count = (i - l).to_string();
+                l = i;
+                res.push(cur);
+                cur = cs[i];
+                for c in count.chars() {
+                    res.push(c);
+                }
+            }
+        }
+        if res.len() >= cs.len() - 1 {
+            s
+        } else {
+            res.iter().collect()
+        }
+    }
 }
 ```
 

@@ -1,4 +1,4 @@
-# [面试题 01.03. URL 化](https://leetcode-cn.com/problems/string-to-url-lcci)
+# [面试题 01.03. URL 化](https://leetcode.cn/problems/string-to-url-lcci)
 
 [English Version](/lcci/01.03.String%20to%20URL/README_EN.md)
 
@@ -29,11 +29,21 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：使用 `replace()` 函数**
+
+直接利用 `replace` 将所有 ` ` 替换为 `%20`：
+
+时间复杂度 $O(n)$，空间复杂度 $O(n)$。
+
+**方法二：模拟**
+
+遍历字符串每个字符 $c$，遇到空格则将 `%20` 添加到结果中，否则添加 $c$。
+
+时间复杂度 $O(n)$，空间复杂度 $O(n)$。
+
 <!-- tabs:start -->
 
 ### **Python3**
-
-直接利用 `replace` 将所有 ` ` 替换为 `%20`：
 
 ```python
 class Solution:
@@ -41,15 +51,10 @@ class Solution:
         return S[:length].replace(' ', '%20')
 ```
 
-初始化一个空列表 `chars`，遍历字符串中每个字符 `c`，遇到空格字符时，往 `chars` 中追加元素 `%20`，否则追加 `c`。最后返回 `''.join(chars)` 即可。
-
 ```python
 class Solution:
     def replaceSpaces(self, S: str, length: int) -> str:
-        chars = []
-        for c in S[:length]:
-            chars.append('%20' if c == ' ' else c)
-        return ''.join(chars)
+        return ''.join(['%20' if c == ' ' else c for c in S[:length]])
 ```
 
 ### **Java**
@@ -59,18 +64,18 @@ class Solution:
 ```java
 class Solution {
     public String replaceSpaces(String S, int length) {
-        char[] chars = S.toCharArray();
-        int j = chars.length;
+        char[] cs = S.toCharArray();
+        int j = cs.length;
         for (int i = length - 1; i >= 0; --i) {
-            if (chars[i] == ' ') {
-                chars[--j] = '0';
-                chars[--j] = '2';
-                chars[--j] = '%';
+            if (cs[i] == ' ') {
+                cs[--j] = '0';
+                cs[--j] = '2';
+                cs[--j] = '%';
             } else {
-                chars[--j] = chars[i];
+                cs[--j] = cs[i];
             }
         }
-        return new String(chars, j, chars.length - j);
+        return new String(cs, j, cs.length - j);
     }
 }
 ```
@@ -107,6 +112,41 @@ func replaceSpaces(S string, length int) string {
 		}
 	}
 	return string(b[j:])
+}
+```
+
+### **TypeScript**
+
+```ts
+function replaceSpaces(S: string, length: number): string {
+    return S.slice(0, length).replace(/\s/g, '%20');
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn replace_spaces(s: String, length: i32) -> String {
+        s[..length as usize].replace(' ', "%20")
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn replace_spaces(s: String, length: i32) -> String {
+        s.chars()
+            .take(length as usize)
+            .map(|c| {
+                if c == ' ' {
+                    "%20".to_string()
+                } else {
+                    c.to_string()
+                }
+            })
+            .collect()
+    }
 }
 ```
 

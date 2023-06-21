@@ -1,4 +1,4 @@
-# [1904. 你完成的完整对局数](https://leetcode-cn.com/problems/the-number-of-full-rounds-you-have-played)
+# [1904. 你完成的完整对局数](https://leetcode.cn/problems/the-number-of-full-rounds-you-have-played)
 
 [English Version](/solution/1900-1999/1904.The%20Number%20of%20Full%20Rounds%20You%20Have%20Played/README_EN.md)
 
@@ -109,16 +109,17 @@ class Solution {
 
 ```ts
 function numberOfRounds(startTime: string, finishTime: string): number {
-    let m1 = toMinutes(startTime), m2 = toMinutes(finishTime);
+    let m1 = toMinutes(startTime),
+        m2 = toMinutes(finishTime);
     if (m1 > m2) {
         m2 += 24 * 60;
     }
     let ans = Math.floor(m2 / 15) - Math.ceil(m1 / 15);
     return ans > 0 ? ans : 0;
-};
+}
 
 function toMinutes(time: string): number {
-    let [h, m] = time.split(":").map(Number);
+    let [h, m] = time.split(':').map(Number);
     return h * 60 + m;
 }
 ```

@@ -1,4 +1,4 @@
-# [剑指 Offer II 030. 插入、删除和随机访问都是 O(1) 的容器](https://leetcode-cn.com/problems/FortPu)
+# [剑指 Offer II 030. 插入、删除和随机访问都是 O(1) 的容器](https://leetcode.cn/problems/FortPu)
 
 ## 题目描述
 
@@ -49,7 +49,7 @@ randomSet.getRandom(); // 由于 2 是集合中唯一的数字，getRandom 总�
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 380&nbsp;题相同：<a href="https://leetcode-cn.com/problems/insert-delete-getrandom-o1/">https://leetcode-cn.com/problems/insert-delete-getrandom-o1/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 380&nbsp;题相同：<a href="https://leetcode.cn/problems/insert-delete-getrandom-o1/">https://leetcode.cn/problems/insert-delete-getrandom-o1/</a></p>
 
 ## 解法
 
@@ -128,7 +128,10 @@ class RandomizedSet {
         this.a = new ArrayList<>();
     }
 
-    /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
+    /**
+     * Inserts a value to the set. Returns true if the set did not already contain the specified
+     * element.
+     */
     public boolean insert(int val) {
         if (this.m.containsKey(val)) {
             return false;
@@ -184,9 +187,9 @@ class RandomizedSet {
 class RandomizedSet {
     unordered_map<int, int> mp;
     vector<int> nums;
+
 public:
     RandomizedSet() {
-
     }
 
     bool insert(int val) {

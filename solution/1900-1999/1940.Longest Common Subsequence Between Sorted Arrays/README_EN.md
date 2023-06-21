@@ -9,7 +9,7 @@
 <p>A <strong>subsequence</strong> is a sequence that can be derived from another sequence by deleting some elements (possibly none) without changing the order of the remaining elements.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> arrays = [[<u>1</u>,3,<u>4</u>],
@@ -18,7 +18,7 @@
 <strong>Explanation:</strong> The longest common subsequence in the two arrays is [1,4].
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> arrays = [[<u>2</u>,<u>3</u>,<u>6</u>,8],
@@ -28,7 +28,7 @@
 <strong>Explanation:</strong> The longest common subsequence in all three arrays is [2,3,6].
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> arrays = [[1,2,3,4,5],
@@ -136,19 +136,40 @@ public:
 
 ```go
 func longestCommomSubsequence(arrays [][]int) []int {
-    counter := make(map[int]int)
-    n := len(arrays)
-    var res []int
-    for _, array := range arrays {
-        for _, e := range array {
-            counter[e]++
-            if counter[e] == n {
-                res = append(res, e)
-            }
+	counter := make(map[int]int)
+	n := len(arrays)
+	var res []int
+	for _, array := range arrays {
+		for _, e := range array {
+			counter[e]++
+			if counter[e] == n {
+				res = append(res, e)
+			}
+		}
+	}
+	return res
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number[][]} arrays
+ * @return {number[]}
+ */
+var longestCommonSubsequence = function (arrays) {
+    const m = new Map();
+    const rs = [];
+    const len = arrays.length;
+    for (let i = 0; i < len; i++) {
+        for (let j = 0; j < arrays[i].length; j++) {
+            m.set(arrays[i][j], (m.get(arrays[i][j]) || 0) + 1);
+            if (m.get(arrays[i][j]) === len) rs.push(arrays[i][j]);
         }
     }
-    return res
-}
+    return rs;
+};
 ```
 
 ### **...**

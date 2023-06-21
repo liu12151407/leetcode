@@ -1,4 +1,4 @@
-# [210. 课程表 II](https://leetcode-cn.com/problems/course-schedule-ii)
+# [210. 课程表 II](https://leetcode.cn/problems/course-schedule-ii)
 
 [English Version](/solution/0200-0299/0210.Course%20Schedule%20II/README_EN.md)
 
@@ -55,7 +55,15 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
-拓扑排序，BFS 实现。
+**方法一：拓扑排序**
+
+对于本题，我们可以将课程看作图中的节点，先修课程看作图中的边，那么我们可以将本题转化为判断有向图中是否存在环。
+
+具体地，我们可以使用拓扑排序的思想，对于每个入度为 $0$ 的节点，我们将其出度的节点的入度减 $1$，直到所有节点都被遍历到。
+
+如果所有节点都被遍历到，说明图中不存在环，那么我们就可以完成所有课程的学习；否则，我们就无法完成所有课程的学习。
+
+时间复杂度 $O(n + m)$，空间复杂度 $O(n + m)$。其中 $n$ 和 $m$ 分别为课程数和先修课程数。
 
 <!-- tabs:start -->
 
@@ -66,23 +74,20 @@
 ```python
 class Solution:
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
-        edges = defaultdict(list)
-        indegree = [0] * numCourses
+        g = defaultdict(list)
+        indeg = [0] * numCourses
         for a, b in prerequisites:
-            edges[b].append(a)
-            indegree[a] += 1
-        q = deque()
-        for i in range(numCourses):
-            if indegree[i] == 0:
-                q.append(i)
+            g[b].append(a)
+            indeg[a] += 1
         ans = []
+        q = deque(i for i, x in enumerate(indeg) if x == 0)
         while q:
-            b = q.popleft()
-            ans.append(b)
-            for a in edges[b]:
-                indegree[a] -= 1
-                if indegree[a] == 0:
-                    q.append(a)
+            i = q.popleft()
+            ans.append(i)
+            for j in g[i]:
+                indeg[j] -= 1
+                if indeg[j] == 0:
+                    q.append(j)
         return ans if len(ans) == numCourses else []
 ```
 
@@ -93,68 +98,33 @@ class Solution:
 ```java
 class Solution {
     public int[] findOrder(int numCourses, int[][] prerequisites) {
-        List<Integer>[] edges = new List[numCourses];
-        for (int i = 0; i < numCourses; ++i) {
-            edges[i] = new ArrayList<>();
-        }
-        int[] indegree = new int[numCourses];
-        for (int[] p : prerequisites) {
+        List<Integer>[] g = new List[numCourses];
+        Arrays.setAll(g, k -> new ArrayList<>());
+        int[] indeg = new int[numCourses];
+        for (var p : prerequisites) {
             int a = p[0], b = p[1];
-            edges[b].add(a);
-            ++indegree[a];
+            g[b].add(a);
+            ++indeg[a];
         }
-        Queue<Integer> q = new LinkedList<>();
+        Deque<Integer> q = new ArrayDeque<>();
         for (int i = 0; i < numCourses; ++i) {
-            if (indegree[i] == 0) {
+            if (indeg[i] == 0) {
                 q.offer(i);
             }
         }
         int[] ans = new int[numCourses];
-        int n = 0;
+        int cnt = 0;
         while (!q.isEmpty()) {
-            int b = q.poll();
-            ans[n++] = b;
-            for (int a : edges[b]) {
-                if (--indegree[a] == 0) {
-                    q.offer(a);
+            int i = q.poll();
+            ans[cnt++] = i;
+            for (int j : g[i]) {
+                if (--indeg[j] == 0) {
+                    q.offer(j);
                 }
             }
         }
-        return n == numCourses ? ans : new int[0];
+        return cnt == numCourses ? ans : new int[0];
     }
-}
-```
-
-### **TypeScript**
-
-```ts
-function findOrder(numCourses: number, prerequisites: number[][]): number[] {
-    let edges = Array.from({ length: numCourses }, () => []);
-    let indeg = new Array(numCourses).fill(0);
-    for (let [b, a] of prerequisites) {
-        edges[a].push(b);
-        indeg[b] += 1;
-    }
-
-    let queue = [];
-    for (let i = 0; i < numCourses; i++) {
-        if (!indeg[i]) {
-            queue.push(i);
-        }
-    }
-
-    let ans = [];
-    while (queue.length) {
-        const u = queue.shift();
-        ans.push(u);
-        for (let v of edges[u]) {
-            indeg[v] -= 1;
-            if (!indeg[v]) {
-                queue.push(v);
-            }
-        }
-    }
-    return ans.length == numCourses ? ans : [];
 }
 ```
 
@@ -164,27 +134,29 @@ function findOrder(numCourses: number, prerequisites: number[][]): number[] {
 class Solution {
 public:
     vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
-        vector<vector<int>> edges(numCourses);
-        vector<int> indegree(numCourses);
-        for (auto& p : prerequisites)
-        {
+        vector<vector<int>> g(numCourses);
+        vector<int> indeg(numCourses);
+        for (auto& p : prerequisites) {
             int a = p[0], b = p[1];
-            edges[b].push_back(a);
-            ++indegree[a];
+            g[b].push_back(a);
+            ++indeg[a];
         }
         queue<int> q;
-        for (int i = 0; i < numCourses; ++i)
-            if (indegree[i] == 0)
+        for (int i = 0; i < numCourses; ++i) {
+            if (indeg[i] == 0) {
                 q.push(i);
+            }
+        }
         vector<int> ans;
-        while (!q.empty())
-        {
-            int b = q.front();
+        while (!q.empty()) {
+            int i = q.front();
             q.pop();
-            ans.push_back(b);
-            for (int a : edges[b])
-                if (--indegree[a] == 0)
-                    q.push(a);
+            ans.push_back(i);
+            for (int j : g[i]) {
+                if (--indeg[j] == 0) {
+                    q.push(j);
+                }
+            }
         }
         return ans.size() == numCourses ? ans : vector<int>();
     }
@@ -195,28 +167,28 @@ public:
 
 ```go
 func findOrder(numCourses int, prerequisites [][]int) []int {
-	edges := make([][]int, numCourses)
-	indegree := make([]int, numCourses)
+	g := make([][]int, numCourses)
+	indeg := make([]int, numCourses)
 	for _, p := range prerequisites {
 		a, b := p[0], p[1]
-		edges[b] = append(edges[b], a)
-		indegree[a]++
+		g[b] = append(g[b], a)
+		indeg[a]++
 	}
-	var q []int
-	for i := 0; i < numCourses; i++ {
-		if indegree[i] == 0 {
+	q := []int{}
+	for i, x := range indeg {
+		if x == 0 {
 			q = append(q, i)
 		}
 	}
-	var ans []int
+	ans := []int{}
 	for len(q) > 0 {
-		b := q[0]
+		i := q[0]
 		q = q[1:]
-		ans = append(ans, b)
-		for _, a := range edges[b] {
-			indegree[a]--
-			if indegree[a] == 0 {
-				q = append(q, a)
+		ans = append(ans, i)
+		for _, j := range g[i] {
+			indeg[j]--
+			if indeg[j] == 0 {
+				q = append(q, j)
 			}
 		}
 	}
@@ -227,41 +199,69 @@ func findOrder(numCourses int, prerequisites [][]int) []int {
 }
 ```
 
+### **TypeScript**
+
+```ts
+function findOrder(numCourses: number, prerequisites: number[][]): number[] {
+    const g: number[][] = new Array(numCourses).fill(0).map(() => []);
+    const indeg: number[] = new Array(numCourses).fill(0);
+    for (const [a, b] of prerequisites) {
+        g[b].push(a);
+        indeg[a]++;
+    }
+    const q: number[] = [];
+    for (let i = 0; i < numCourses; ++i) {
+        if (indeg[i] == 0) {
+            q.push(i);
+        }
+    }
+    const ans: number[] = [];
+    while (q.length) {
+        const i = q.shift()!;
+        ans.push(i);
+        for (const j of g[i]) {
+            if (--indeg[j] == 0) {
+                q.push(j);
+            }
+        }
+    }
+    return ans.length === numCourses ? ans : [];
+}
+```
+
 ### **C#**
 
 ```cs
 public class Solution {
     public int[] FindOrder(int numCourses, int[][] prerequisites) {
-        var edges = new List<int>[numCourses];
-        for (int i = 0; i < numCourses; ++i)
-        {
-            edges[i] = new List<int>();
+        var g = new List<int>[numCourses];
+        for (int i = 0; i < numCourses; ++i) {
+            g[i] = new List<int>();
         }
-        var indegree = new int[numCourses];
-        for (int i = 0; i < prerequisites.Length; ++i)
-        {
-            int a = prerequisites[i][0];
-            int b = prerequisites[i][1];
-            edges[b].Add(a);
-            ++indegree[a];
+        var indeg = new int[numCourses];
+        foreach (var p in prerequisites) {
+            int a = p[0], b = p[1];
+            g[b].Add(a);
+            ++indeg[a];
         }
         var q = new Queue<int>();
-        for (int i = 0; i < numCourses; ++i)
-        {
-            if (indegree[i] == 0) q.Enqueue(i);
-        }
-        var ans = new int[numCourses];
-        var n = 0;
-        while (q.Count > 0)
-        {
-            int b = q.Dequeue();
-            ans[n++] = b;
-            foreach (int a in edges[b])
-            {
-                if (--indegree[a] == 0) q.Enqueue(a);
+        for (int i = 0; i < numCourses; ++i) {
+            if (indeg[i] == 0) {
+                q.Enqueue(i);
             }
         }
-        return n == numCourses ? ans : new int[0];
+        var ans = new int[numCourses];
+        var cnt = 0;
+        while (q.Count > 0) {
+            int i = q.Dequeue();
+            ans[cnt++] = i;
+            foreach (int j in g[i]) {
+                if (--indeg[j] == 0) {
+                    q.Enqueue(j);
+                }
+            }
+        }
+        return cnt == numCourses ? ans : new int[0];
     }
 }
 ```

@@ -10,12 +10,12 @@
 
 <ul>
 	<li><code>SummaryRanges()</code> Initializes the object with an empty stream.</li>
-	<li><code>void addNum(int val)</code> Adds the integer <code>val</code> to the stream.</li>
-	<li><code>int[][] getIntervals()</code> Returns a summary of the integers in the stream currently as a list of disjoint intervals <code>[start<sub>i</sub>, end<sub>i</sub>]</code>.</li>
+	<li><code>void addNum(int value)</code> Adds the integer <code>value</code> to the stream.</li>
+	<li><code>int[][] getIntervals()</code> Returns a summary of the integers in the stream currently as a list of disjoint intervals <code>[start<sub>i</sub>, end<sub>i</sub>]</code>. The answer should be sorted by <code>start<sub>i</sub></code>.</li>
 </ul>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input</strong>
@@ -42,8 +42,9 @@ summaryRanges.getIntervals(); // return [[1, 3], [6, 7]]
 <p><strong>Constraints:</strong></p>
 
 <ul>
-	<li><code>0 &lt;= val &lt;= 10<sup>4</sup></code></li>
+	<li><code>0 &lt;= value &lt;= 10<sup>4</sup></code></li>
 	<li>At most <code>3 * 10<sup>4</sup></code> calls will be made to <code>addNum</code> and <code>getIntervals</code>.</li>
+	<li>At most <code>10<sup>2</sup></code>&nbsp;calls will be made to&nbsp;<code>getIntervals</code>.</li>
 </ul>
 
 <p>&nbsp;</p>
@@ -58,8 +59,8 @@ summaryRanges.getIntervals(); // return [[1, 3], [6, 7]]
 ```python
 from sortedcontainers import SortedDict
 
-class SummaryRanges:
 
+class SummaryRanges:
     def __init__(self):
         self.mp = SortedDict()
 
@@ -69,7 +70,12 @@ class SummaryRanges:
         lidx = n if ridx == 0 else ridx - 1
         keys = self.mp.keys()
         values = self.mp.values()
-        if lidx != n and ridx != n and values[lidx][1] + 1 == val and values[ridx][0] - 1 == val:
+        if (
+            lidx != n
+            and ridx != n
+            and values[lidx][1] + 1 == val
+            and values[ridx][0] - 1 == val
+        ):
             self.mp[keys[lidx]][1] = self.mp[keys[ridx]][1]
             self.mp.pop(keys[ridx])
         elif lidx != n and val <= values[lidx][1] + 1:
@@ -110,7 +116,7 @@ class SummaryRanges {
         } else if (r != null && val >= mp.get(r)[0] - 1) {
             mp.get(r)[0] = Math.min(val, mp.get(r)[0]);
         } else {
-            mp.put(val, new int[]{val, val});
+            mp.put(val, new int[] {val, val});
         }
     }
 
@@ -138,22 +144,23 @@ class SummaryRanges {
 class SummaryRanges {
 private:
     map<int, vector<int>> mp;
+
 public:
     SummaryRanges() {
-
     }
 
     void addNum(int val) {
         auto r = mp.upper_bound(val);
         auto l = r == mp.begin() ? mp.end() : prev(r);
-        if (l != mp.end() && r != mp.end() && l->second[1] + 1 == val && r->second[0] - 1 == val)
-        {
+        if (l != mp.end() && r != mp.end() && l->second[1] + 1 == val && r->second[0] - 1 == val) {
             l->second[1] = r->second[1];
             mp.erase(r);
-        }
-        else if (l != mp.end() && val <= l->second[1] + 1) l->second[1] = max(val, l->second[1]);
-        else if (r != mp.end() && val >= r->second[0] - 1) r->second[0] = min(val, r->second[0]);
-        else mp[val] = {val, val};
+        } else if (l != mp.end() && val <= l->second[1] + 1)
+            l->second[1] = max(val, l->second[1]);
+        else if (r != mp.end() && val >= r->second[0] - 1)
+            r->second[0] = min(val, r->second[0]);
+        else
+            mp[val] = {val, val};
     }
 
     vector<vector<int>> getIntervals() {

@@ -1,4 +1,4 @@
-# [985. 查询后的偶数和](https://leetcode-cn.com/problems/sum-of-even-numbers-after-queries)
+# [985. 查询后的偶数和](https://leetcode.cn/problems/sum-of-even-numbers-after-queries)
 
 [English Version](/solution/0900-0999/0985.Sum%20of%20Even%20Numbers%20After%20Queries/README_EN.md)
 
@@ -52,7 +52,9 @@
 
 ```python
 class Solution:
-    def sumEvenAfterQueries(self, nums: List[int], queries: List[List[int]]) -> List[int]:
+    def sumEvenAfterQueries(
+        self, nums: List[int], queries: List[List[int]]
+    ) -> List[int]:
         ans = []
         s = sum(num for num in nums if num % 2 == 0)
         for v, i in queries:
@@ -112,14 +114,16 @@ public:
             if (num % 2 == 0)
                 s += num;
         vector<int> ans;
-        for (auto& q : queries)
-        {
+        for (auto& q : queries) {
             int v = q[0], i = q[1];
             int old = nums[i];
             nums[i] += v;
-            if (nums[i] % 2 == 0 && old % 2 == 0) s += v;
-            else if (nums[i] % 2 == 0 && old % 2 != 0) s += nums[i];
-            else if (old % 2 == 0) s -= old;
+            if (nums[i] % 2 == 0 && old % 2 == 0)
+                s += v;
+            else if (nums[i] % 2 == 0 && old % 2 != 0)
+                s += nums[i];
+            else if (old % 2 == 0)
+                s -= old;
             ans.push_back(s);
         }
         return ans;

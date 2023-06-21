@@ -1,4 +1,4 @@
-# [2068. 检查两个字符串是否几乎相等](https://leetcode-cn.com/problems/check-whether-two-strings-are-almost-equivalent)
+# [2068. 检查两个字符串是否几乎相等](https://leetcode.cn/problems/check-whether-two-strings-are-almost-equivalent)
 
 [English Version](/solution/2000-2099/2068.Check%20Whether%20Two%20Strings%20are%20Almost%20Equivalent/README_EN.md)
 
@@ -60,6 +60,12 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：计数**
+
+我们可以创建一个长度为 $26$ 的数组 $cnt$，记录两个字符串中每个字母出现的次数之差。最后遍历 $cnt$，如果有任意一个字母出现的次数之差大于 $3$，则返回 `false`，否则返回 `true`。
+
+时间复杂度 $O(n)$，空间复杂度 $O(C)$。其中 $n$ 是字符串的长度；而 $C$ 是字符集的大小，本题中 $C = 26$。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -67,7 +73,12 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def checkAlmostEquivalent(self, word1: str, word2: str) -> bool:
+        cnt = Counter(word1)
+        for c in word2:
+            cnt[c] -= 1
+        return all(abs(x) <= 3 for x in cnt.values())
 ```
 
 ### **Java**
@@ -75,7 +86,146 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public boolean checkAlmostEquivalent(String word1, String word2) {
+        int[] cnt = new int[26];
+        for (int i = 0; i < word1.length(); ++i) {
+            ++cnt[word1.charAt(i) - 'a'];
+        }
+        for (int i = 0; i < word2.length(); ++i) {
+            --cnt[word2.charAt(i) - 'a'];
+        }
+        for (int x : cnt) {
+            if (Math.abs(x) > 3) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool checkAlmostEquivalent(string word1, string word2) {
+        int cnt[26]{};
+        for (char& c : word1) {
+            ++cnt[c - 'a'];
+        }
+        for (char& c : word2) {
+            --cnt[c - 'a'];
+        }
+        for (int i = 0; i < 26; ++i) {
+            if (abs(cnt[i]) > 3) {
+                return false;
+            }
+        }
+        return true;
+    }
+};
+```
+
+### **Go**
+
+```go
+func checkAlmostEquivalent(word1 string, word2 string) bool {
+	cnt := [26]int{}
+	for _, c := range word1 {
+		cnt[c-'a']++
+	}
+	for _, c := range word2 {
+		cnt[c-'a']--
+	}
+	for _, x := range cnt {
+		if x > 3 || x < -3 {
+			return false
+		}
+	}
+	return true
+}
+```
+
+### **TypeScript**
+
+```ts
+function checkAlmostEquivalent(word1: string, word2: string): boolean {
+    const cnt: number[] = new Array(26).fill(0);
+    for (const c of word1) {
+        ++cnt[c.charCodeAt(0) - 97];
+    }
+    for (const c of word2) {
+        --cnt[c.charCodeAt(0) - 97];
+    }
+    return cnt.every(x => Math.abs(x) <= 3);
+}
+```
+
+### **C#**
+
+```cs
+public class Solution {
+    public bool CheckAlmostEquivalent(string word1, string word2) {
+        int[] cnt = new int[26];
+        foreach (var c in word1) {
+            cnt[c - 'a']++;
+        }
+        foreach (var c in word2) {
+            cnt[c - 'a']--;
+        }
+        return cnt.All(x => Math.Abs(x) <= 3);
+    }
+}
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param String $word1
+     * @param String $word2
+     * @return Boolean
+     */
+    function checkAlmostEquivalent($word1, $word2) {
+        for ($i = 0; $i < strlen($word1); $i++) {
+            $hashtable[$word1[$i]] += 1;
+            $hashtable[$word2[$i]] -= 1;
+        }
+        $keys = array_keys($hashtable);
+        for ($j = 0; $j < count($keys); $j++) {
+            if (abs($hashtable[$keys[$j]]) > 3) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {string} word1
+ * @param {string} word2
+ * @return {boolean}
+ */
+var checkAlmostEquivalent = function (word1, word2) {
+    const m = new Map();
+    for (let i = 0; i < word1.length; i++) {
+        m.set(word1[i], (m.get(word1[i]) || 0) + 1);
+        m.set(word2[i], (m.get(word2[i]) || 0) - 1);
+    }
+    for (const v of m.values()) {
+        if (Math.abs(v) > 3) {
+            return false;
+        }
+    }
+    return true;
+};
 ```
 
 ### **...**

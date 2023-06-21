@@ -1,4 +1,4 @@
-# [LCP 37. 最小矩形面积](https://leetcode-cn.com/problems/zui-xiao-ju-xing-mian-ji)
+# [LCP 37. 最小矩形面积](https://leetcode.cn/problems/zui-xiao-ju-xing-mian-ji)
 
 ## 题目描述
 
@@ -26,10 +26,10 @@
 
 **限制：**
 
-- `1 <= lines.length <= 10^5 且 lines[i].length == 2`
-- `1 <= lines[0] <= 10000`
-- `-10000 <= lines[1] <= 10000`
-- `与标准答案绝对误差或相对误差在 10^-4 以内的结果都被视为正确结果`
+-   `1 <= lines.length <= 10^5 且 lines[i].length == 2`
+-   `1 <= lines[0] <= 10000`
+-   `-10000 <= lines[1] <= 10000`
+-   `与标准答案绝对误差或相对误差在 10^-4 以内的结果都被视为正确结果`
 
 ## 解法
 

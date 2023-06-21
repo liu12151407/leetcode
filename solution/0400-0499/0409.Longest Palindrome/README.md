@@ -1,4 +1,4 @@
-# [409. 最长回文串](https://leetcode-cn.com/problems/longest-palindrome)
+# [409. 最长回文串](https://leetcode.cn/problems/longest-palindrome)
 
 [English Version](/solution/0400-0499/0409.Longest%20Palindrome/README_EN.md)
 
@@ -6,29 +6,58 @@
 
 <!-- 这里写题目描述 -->
 
-<p>给定一个包含大写字母和小写字母的字符串，找到通过这些字母构造成的最长的回文串。</p>
+<p>给定一个包含大写字母和小写字母的字符串<meta charset="UTF-8" />&nbsp;<code>s</code>&nbsp;，返回&nbsp;<em>通过这些字母构造成的 <strong>最长的回文串</strong></em>&nbsp;。</p>
 
-<p>在构造过程中，请注意区分大小写。比如&nbsp;<code>&quot;Aa&quot;</code>&nbsp;不能当做一个回文字符串。</p>
+<p>在构造过程中，请注意 <strong>区分大小写</strong> 。比如&nbsp;<code>"Aa"</code>&nbsp;不能当做一个回文字符串。</p>
 
-<p><strong>注意:</strong><br />
-假设字符串的长度不会超过 1010。</p>
+<p>&nbsp;</p>
 
 <p><strong>示例 1: </strong></p>
 
 <pre>
-输入:
-&quot;abccccdd&quot;
-
-输出:
-7
-
-解释:
-我们可以构造的最长的回文串是&quot;dccaccd&quot;, 它的长度是 7。
+<strong>输入:</strong>s = "abccccdd"
+<strong>输出:</strong>7
+<strong>解释:</strong>
+我们可以构造的最长的回文串是"dccaccd", 它的长度是 7。
 </pre>
+
+<p><strong>示例 2:</strong></p>
+
+<pre>
+<strong>输入:</strong>s = "a"
+<strong>输出:</strong>1
+</pre>
+
+<p><strong>示例 3：</strong></p>
+
+<pre>
+<strong>输入:</strong>s = "aaaaaccc"
+<strong>输出:</strong>7</pre>
+
+<p>&nbsp;</p>
+
+<p><strong>提示:</strong></p>
+
+<ul>
+	<li><code>1 &lt;= s.length &lt;= 2000</code></li>
+	<li><code>s</code>&nbsp;只由小写 <strong>和/或</strong> 大写英文字母组成</li>
+</ul>
 
 ## 解法
 
 <!-- 这里可写通用的实现逻辑 -->
+
+**方法一：计数**
+
+一个合法的回文字符串，最多存在一个出现奇数次数的字符，其余字符出现次数均为偶数。
+
+因此，我们可以先遍历字符串 $s$，统计每个字符出现的次数，记录在数组或哈希表 $cnt$ 中。
+
+然后，我们遍历 $cnt$，对于每个字符 $c$，如果 $cnt[c]$ 为偶数，则直接将 $cnt[c]$ 累加到答案 $ans$ 中；如果 $cnt[c]$ 为奇数，则将 $cnt[c] - 1$ 累加到 $ans$ 中，如果 $ans$ 为偶数，则将 $ans$ 增加 $1$。
+
+最后，我们返回 $ans$ 即可。
+
+时间复杂度 $O(n)$，空间复杂度 $O(C)$。其中 $n$ 为字符串 $s$ 的长度；而 $C$ 为字符集的大小，本题中 $C = 128$。
 
 <!-- tabs:start -->
 
@@ -39,10 +68,12 @@
 ```python
 class Solution:
     def longestPalindrome(self, s: str) -> int:
-        n = len(s)
-        counter = Counter(s)
-        odd_cnt = sum(e % 2 for e in counter.values())
-        return n if odd_cnt == 0 else n - odd_cnt + 1
+        cnt = Counter(s)
+        ans = 0
+        for v in cnt.values():
+            ans += v - (v & 1)
+            ans += (ans & 1 ^ 1) and (v & 1)
+        return ans
 ```
 
 ### **Java**
@@ -52,17 +83,59 @@ class Solution:
 ```java
 class Solution {
     public int longestPalindrome(String s) {
-        int[] counter = new int[128];
-        for (char c : s.toCharArray()) {
-            ++counter[c];
+        int[] cnt = new int[128];
+        for (int i = 0; i < s.length(); ++i) {
+            ++cnt[s.charAt(i)];
         }
-        int oddCnt = 0;
-        for (int e : counter) {
-            oddCnt += (e % 2);
+        int ans = 0;
+        for (int v : cnt) {
+            ans += v - (v & 1);
+            if (ans % 2 == 0 && v % 2 == 1) {
+                ++ans;
+            }
         }
-        int n = s.length();
-        return oddCnt == 0 ? n : n - oddCnt + 1;
+        return ans;
     }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int longestPalindrome(string s) {
+        int cnt[128]{};
+        for (char& c : s) {
+            ++cnt[c];
+        }
+        int ans = 0;
+        for (int v : cnt) {
+            ans += v - (v & 1);
+            if (ans % 2 == 0 && v % 2 == 1) {
+                ++ans;
+            }
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func longestPalindrome(s string) (ans int) {
+	cnt := [128]int{}
+	for _, c := range s {
+		cnt[c]++
+	}
+	for _, v := range cnt {
+		ans += v - (v & 1)
+		if ans&1 == 0 && v&1 == 1 {
+			ans++
+		}
+	}
+	return
 }
 ```
 
@@ -84,39 +157,47 @@ function longestPalindrome(s: string): number {
 }
 ```
 
-### **C++**
-
-```cpp
-class Solution {
-public:
-    int longestPalindrome(string s) {
-        vector<int> counter(128);
-        for (char c : s) ++counter[c];
-        int oddCnt = 0;
-        for (int e : counter) oddCnt += e % 2;
-        int n = s.size();
-        return oddCnt == 0 ? n : n - oddCnt + 1;
+```ts
+function longestPalindrome(s: string): number {
+    const map = new Map();
+    for (const c of s) {
+        map.set(c, (map.get(c) ?? 0) + 1);
     }
-};
+    let hasOdd = false;
+    let res = 0;
+    for (const v of map.values()) {
+        res += v;
+        if (v & 1) {
+            hasOdd = true;
+            res--;
+        }
+    }
+    return res + (hasOdd ? 1 : 0);
+}
 ```
 
-### **Go**
+### **Rust**
 
-```go
-func longestPalindrome(s string) int {
-	counter := make([]int, 128)
-	for _, c := range s {
-		counter[c]++
-	}
-	oddCnt := 0
-	for _, e := range counter {
-		oddCnt += e % 2
-	}
-	n := len(s)
-	if oddCnt == 0 {
-		return n
-	}
-	return n - oddCnt + 1
+```rust
+use std::collections::HashMap;
+
+impl Solution {
+    pub fn longest_palindrome(s: String) -> i32 {
+        let mut map: HashMap<char, i32> = HashMap::new();
+        for c in s.chars() {
+            map.insert(c, map.get(&c).unwrap_or(&0) + 1);
+        }
+        let mut has_odd = false;
+        let mut res = 0;
+        for v in map.values() {
+            res += v;
+            if v % 2 == 1 {
+                has_odd = true;
+                res -= 1;
+            }
+        }
+        res + if has_odd { 1 } else { 0 }
+    }
 }
 ```
 

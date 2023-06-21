@@ -11,7 +11,7 @@
 <p>Return <em>the number of times the binary string is <strong>prefix-aligned</strong> during the flipping process</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> flips = [3,2,4,1,5]
@@ -25,7 +25,7 @@ After applying step 5: The string becomes &quot;11111&quot;, which is prefix-ali
 We can see that the string was prefix-aligned 2 times, so we return 2.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> flips = [4,1,2,3]
@@ -54,19 +54,84 @@ We can see that the string was prefix-aligned 1 time, so we return 1.
 ### **Python3**
 
 ```python
-
+class Solution:
+    def numTimesAllBlue(self, flips: List[int]) -> int:
+        ans = mx = 0
+        for i, x in enumerate(flips, 1):
+            mx = max(mx, x)
+            ans += mx == i
+        return ans
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int numTimesAllBlue(int[] flips) {
+        int ans = 0, mx = 0;
+        for (int i = 1; i <= flips.length; ++i) {
+            mx = Math.max(mx, flips[i - 1]);
+            if (mx == i) {
+                ++ans;
+            }
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int numTimesAllBlue(vector<int>& flips) {
+        int ans = 0, mx = 0;
+        for (int i = 1; i <= flips.size(); ++i) {
+            mx = max(mx, flips[i - 1]);
+            ans += mx == i;
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func numTimesAllBlue(flips []int) (ans int) {
+	mx := 0
+	for i, x := range flips {
+		mx = max(mx, x)
+		if mx == i+1 {
+			ans++
+		}
+	}
+	return
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
 ```
 
 ### **TypeScript**
 
 ```ts
-
+function numTimesAllBlue(flips: number[]): number {
+    let ans = 0;
+    let mx = 0;
+    for (let i = 1; i <= flips.length; ++i) {
+        mx = Math.max(mx, flips[i - 1]);
+        if (mx === i) {
+            ++ans;
+        }
+    }
+    return ans;
+}
 ```
 
 ### **...**

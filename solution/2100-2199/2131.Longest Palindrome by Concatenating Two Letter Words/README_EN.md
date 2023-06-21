@@ -13,7 +13,7 @@
 <p>A <strong>palindrome</strong> is a string that reads the same forward and backward.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> words = [&quot;lc&quot;,&quot;cl&quot;,&quot;gg&quot;]
@@ -22,7 +22,7 @@
 Note that &quot;clgglc&quot; is another longest palindrome that can be created.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> words = [&quot;ab&quot;,&quot;ty&quot;,&quot;yt&quot;,&quot;lc&quot;,&quot;cl&quot;,&quot;ab&quot;]
@@ -31,7 +31,7 @@ Note that &quot;clgglc&quot; is another longest palindrome that can be created.
 Note that &quot;lcyttycl&quot; is another longest palindrome that can be created.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> words = [&quot;cc&quot;,&quot;ll&quot;,&quot;xx&quot;]
@@ -56,13 +56,104 @@ Note that &quot;ll&quot; is another longest palindrome that can be created, and 
 ### **Python3**
 
 ```python
-
+class Solution:
+    def longestPalindrome(self, words: List[str]) -> int:
+        cnt = Counter(words)
+        ans = x = 0
+        for k, v in cnt.items():
+            if k[0] == k[1]:
+                x += v & 1
+                ans += v // 2 * 2 * 2
+            else:
+                ans += min(v, cnt[k[::-1]]) * 2
+        ans += 2 if x else 0
+        return ans
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int longestPalindrome(String[] words) {
+        Map<String, Integer> cnt = new HashMap<>();
+        for (var w : words) {
+            cnt.put(w, cnt.getOrDefault(w, 0) + 1);
+        }
+        int ans = 0, x = 0;
+        for (var e : cnt.entrySet()) {
+            var k = e.getKey();
+            var rk = new StringBuilder(k).reverse().toString();
+            int v = e.getValue();
+            if (k.charAt(0) == k.charAt(1)) {
+                x += v & 1;
+                ans += v / 2 * 2 * 2;
+            } else {
+                ans += Math.min(v, cnt.getOrDefault(rk, 0)) * 2;
+            }
+        }
+        ans += x > 0 ? 2 : 0;
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int longestPalindrome(vector<string>& words) {
+        unordered_map<string, int> cnt;
+        for (auto& w : words) cnt[w]++;
+        int ans = 0, x = 0;
+        for (auto& [k, v] : cnt) {
+            string rk = k;
+            reverse(rk.begin(), rk.end());
+            if (k[0] == k[1]) {
+                x += v & 1;
+                ans += v / 2 * 2 * 2;
+            } else if (cnt.count(rk)) {
+                ans += min(v, cnt[rk]) * 2;
+            }
+        }
+        ans += x ? 2 : 0;
+        return ans;
+    }
+};
+```
+
+## **Go**
+
+```go
+func longestPalindrome(words []string) int {
+	cnt := map[string]int{}
+	for _, w := range words {
+		cnt[w]++
+	}
+	ans, x := 0, 0
+	for k, v := range cnt {
+		if k[0] == k[1] {
+			x += v & 1
+			ans += v / 2 * 2 * 2
+		} else {
+			rk := string([]byte{k[1], k[0]})
+			if y, ok := cnt[rk]; ok {
+				ans += min(v, y) * 2
+			}
+		}
+	}
+	if x > 0 {
+		ans += 2
+	}
+	return ans
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
 ```
 
 ### **TypeScript**

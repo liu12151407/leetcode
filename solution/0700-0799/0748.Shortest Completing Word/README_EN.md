@@ -13,7 +13,7 @@
 <p>Return <em>the shortest <strong>completing</strong> word in </em><code>words</code><em>.</em> It is guaranteed an answer exists. If there are multiple shortest <strong>completing</strong> words, return the <strong>first</strong> one that occurs in <code>words</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> licensePlate = &quot;1s3 PSt&quot;, words = [&quot;step&quot;,&quot;steps&quot;,&quot;stripe&quot;,&quot;stepple&quot;]
@@ -26,33 +26,12 @@
 Since &quot;steps&quot; is the only word containing all the letters, that is the answer.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> licensePlate = &quot;1s3 456&quot;, words = [&quot;looks&quot;,&quot;pest&quot;,&quot;stew&quot;,&quot;show&quot;]
 <strong>Output:</strong> &quot;pest&quot;
 <strong>Explanation:</strong> licensePlate only contains the letter &#39;s&#39;. All the words contain &#39;s&#39;, but among these &quot;pest&quot;, &quot;stew&quot;, and &quot;show&quot; are shortest. The answer is &quot;pest&quot; because it is the word that appears earliest of the 3.
-</pre>
-
-<p><strong>Example 3:</strong></p>
-
-<pre>
-<strong>Input:</strong> licensePlate = &quot;Ah71752&quot;, words = [&quot;suggest&quot;,&quot;letter&quot;,&quot;of&quot;,&quot;husband&quot;,&quot;easy&quot;,&quot;education&quot;,&quot;drug&quot;,&quot;prevent&quot;,&quot;writer&quot;,&quot;old&quot;]
-<strong>Output:</strong> &quot;husband&quot;
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> licensePlate = &quot;OgEu755&quot;, words = [&quot;enough&quot;,&quot;these&quot;,&quot;play&quot;,&quot;wide&quot;,&quot;wonder&quot;,&quot;box&quot;,&quot;arrive&quot;,&quot;money&quot;,&quot;tax&quot;,&quot;thus&quot;]
-<strong>Output:</strong> &quot;enough&quot;
-</pre>
-
-<p><strong>Example 5:</strong></p>
-
-<pre>
-<strong>Input:</strong> licensePlate = &quot;iMSlpe4&quot;, words = [&quot;claim&quot;,&quot;consumer&quot;,&quot;student&quot;,&quot;camera&quot;,&quot;public&quot;,&quot;never&quot;,&quot;wonder&quot;,&quot;simple&quot;,&quot;thought&quot;,&quot;use&quot;]
-<strong>Output:</strong> &quot;simple&quot;
 </pre>
 
 <p>&nbsp;</p>
@@ -126,7 +105,6 @@ class Solution {
             if (Character.isLetter(c)) {
                 ++counter[c - 'a'];
             }
-
         }
         return counter;
     }
@@ -151,12 +129,10 @@ public:
         vector<int> counter = count(licensePlate);
         int n = 16;
         string ans;
-        for (auto& word : words)
-        {
+        for (auto& word : words) {
             if (n <= word.size()) continue;
             vector<int> t = count(word);
-            if (check(counter, t))
-            {
+            if (check(counter, t)) {
                 n = word.size();
                 ans = word;
             }

@@ -1,24 +1,35 @@
-# [面试题 05. 替换空格](https://leetcode-cn.com/problems/ti-huan-kong-ge-lcof/)
+# [面试题 05. 替换空格](https://leetcode.cn/problems/ti-huan-kong-ge-lcof/)
 
 ## 题目描述
 
-请实现一个函数，把字符串 `s` 中的每个空格替换成"%20"。
+<p>请实现一个函数，把字符串 <code>s</code> 中的每个空格替换成&quot;%20&quot;。</p>
 
-**示例 1：**
+<p>&nbsp;</p>
 
-```
-输入：s = "We are happy."
-输出："We%20are%20happy."
-```
+<p><strong>示例 1：</strong></p>
 
-**限制：**
+<pre><strong>输入：</strong>s = &quot;We are happy.&quot;
+<strong>输出：</strong>&quot;We%20are%20happy.&quot;</pre>
 
-- `0 <= s 的长度 <= 10000`
+<p>&nbsp;</p>
+
+<p><strong>限制：</strong></p>
+
+<p><code>0 &lt;= s 的长度 &lt;= 10000</code></p>
 
 ## 解法
 
-- 使用 `replace()` 替换。
-- 遍历添加。
+**方法一：字符串内置方法**
+
+使用 `replace()` 方法。
+
+时间复杂度 $O(n)$，空间复杂度 $O(n)$。其中 $n$ 为字符串长度。
+
+**方法二：遍历替换**
+
+我们直接遍历字符串，遇到空格就替换成 `%20` 即可。
+
+时间复杂度 $O(n)$，空间复杂度 $O(n)$。其中 $n$ 为字符串长度。
 
 <!-- tabs:start -->
 
@@ -30,9 +41,16 @@ class Solution:
         return s.replace(' ', '%20')
 ```
 
-### **Java**
+```python
+class Solution:
+    def replaceSpace(self, s: str) -> str:
+        ans = []
+        for c in s:
+            ans.append('%20' if c == ' ' else c)
+        return ''.join(ans)
+```
 
-- 使用 replace：
+### **Java**
 
 ```java
 class Solution {
@@ -42,72 +60,15 @@ class Solution {
 }
 ```
 
-- 使用 StringBuilder：
-
 ```java
 class Solution {
     public String replaceSpace(String s) {
-        StringBuilder sb = new StringBuilder();
-        char[] chars = s.toCharArray();
-        for (char c : chars) {
-            sb.append(c == ' ' ? "%20" : c);
+        StringBuilder ans = new StringBuilder();
+        for (char c : s.toCharArray()) {
+            ans.append(c == ' ' ? "%20" : c);
         }
-        return sb.toString();
+        return ans.toString();
     }
-}
-```
-
-### **JavaScript**
-
-- 使用字符串内置方法
-
-```js
-/**
- * @param {string} s
- * @return {string}
- */
-var replaceSpace = function (s) {
-    return s.split(" ").join("%20");
-};
-```
-
-- 双指针
-
-```js
-/**
- * @param {string}
- * @return {string}
- */
-var replaceSpace = function (s) {
-    s = s.split("");
-    let emptyNum = 0;
-    for (let i = 0; i < s.length; i++) {
-        if (s[i] === " ") {
-            emptyNum++;
-        }
-    }
-    let p1 = s.length - 1;
-    let p2 = p1 + 2 * emptyNum;
-    while (p1 >= 0 && p2 > p1) {
-        if (s[p1] === " ") {
-            s[p2] = "0";
-            s[--p2] = "2";
-            s[--p2] = "%";
-        } else {
-            s[p2] = s[p1];
-        }
-        p1--;
-        p2--;
-    }
-    return s.join("");
-};
-```
-
-### **Go**
-
-```go
-func replaceSpace(s string) string {
-    return strings.Replace(s, " ", "%20", -1 )
 }
 ```
 
@@ -129,31 +90,83 @@ public:
 };
 ```
 
-### **TypeScript**
+### **Go**
 
-- 使用 `replace()`
-
-```ts
-function replaceSpace(s: string): string {
-    return s.replace(/\s/g, "%20");
+```go
+func replaceSpace(s string) string {
+	return strings.Replace(s, " ", "%20", -1)
 }
 ```
 
-- 遍历添加
+```go
+func replaceSpace(s string) string {
+	ans := strings.Builder{}
+	for _, c := range s {
+		if c == ' ' {
+			ans.WriteString("%20")
+		} else {
+			ans.WriteRune(c)
+		}
+	}
+	return ans.String()
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {string} s
+ * @return {string}
+ */
+var replaceSpace = function (s) {
+    return s.split(' ').join('%20');
+};
+```
+
+```js
+/**
+ * @param {string} s
+ * @return {string}
+ */
+var replaceSpace = function (s) {
+    return s.replace(/\s/g, '%20');
+};
+```
+
+```js
+/**
+ * @param {string} s
+ * @return {string}
+ */
+var replaceSpace = function (s) {
+    const ans = [];
+    for (const c of s) {
+        ans.push(c === ' ' ? '%20' : c);
+    }
+    return ans.join('');
+};
+```
+
+### **TypeScript**
+
+```ts
+function replaceSpace(s: string): string {
+    return s.replace(/\s/g, '%20');
+}
+```
 
 ```ts
 function replaceSpace(s: string): string {
     const strArr = [];
     for (const c of s) {
-        strArr.push(c === " " ? "%20" : c);
+        strArr.push(c === ' ' ? '%20' : c);
     }
-    return strArr.join("");
+    return strArr.join('');
 }
 ```
 
 ### **Rust**
-
-- 使用 `replace()`
 
 ```rust
 impl Solution {
@@ -162,8 +175,6 @@ impl Solution {
     }
 }
 ```
-
-- 遍历添加
 
 ```rust
 impl Solution {
@@ -177,6 +188,54 @@ impl Solution {
             }
         }
         result
+    }
+}
+```
+
+### **C#**
+
+```cs
+public class Solution {
+    public string ReplaceSpace(string s) {
+        return s.Replace(" ", "%20");
+    }
+}
+```
+
+```cs
+public class Solution {
+    public string ReplaceSpace(string s) {
+        StringBuilder res = new StringBuilder();
+        foreach (var c in s) {
+            if (c == ' ') {
+                res.Append("%20");
+            } else {
+                res.Append(c);
+            }
+        }
+        return res.ToString();
+    }
+}
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param String $s
+     * @return String
+     */
+    function replaceSpace($s) {
+        $rs = '';
+        for ($i = 0; $i < strlen($s); $i++) {
+            if ($s[$i] === ' ') {
+                $rs = $rs . '%20';
+            } else {
+                $rs = $rs . $s[$i];
+            }
+        }
+        return $rs;
     }
 }
 ```

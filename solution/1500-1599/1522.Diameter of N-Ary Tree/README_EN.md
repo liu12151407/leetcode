@@ -11,27 +11,27 @@
 <p>(<em>Nary-Tree input serialization is represented in their level order traversal, each group of children is separated by the null value.)</em></p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1522.Diameter%20of%20N-Ary%20Tree/images/sample_2_1897.png" style="width: 324px; height: 173px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1522.Diameter%20of%20N-Ary%20Tree/images/sample_2_1897.png" style="width: 324px; height: 173px;" /></p>
 
 <pre>
 <strong>Input:</strong> root = [1,null,3,2,4,null,5,6]
 <strong>Output:</strong> 3
 <strong>Explanation: </strong>Diameter is shown in red color.</pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1522.Diameter%20of%20N-Ary%20Tree/images/sample_1_1897.png" style="width: 253px; height: 246px;" /></strong></p>
+<p><strong><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1522.Diameter%20of%20N-Ary%20Tree/images/sample_1_1897.png" style="width: 253px; height: 246px;" /></strong></p>
 
 <pre>
 <strong>Input:</strong> root = [1,null,2,null,3,4,null,5,null,6]
 <strong>Output:</strong> 4
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1522.Diameter%20of%20N-Ary%20Tree/images/sample_3_1897.png" style="width: 369px; height: 326px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1522.Diameter%20of%20N-Ary%20Tree/images/sample_3_1897.png" style="width: 369px; height: 326px;" /></p>
 
 <pre>
 <strong>Input:</strong> root = [1,null,2,3,4,5,null,null,6,7,null,8,null,9,10,null,null,11,null,12,null,13,null,null,14]
@@ -61,12 +61,14 @@ class Node:
         self.children = children if children is not None else []
 """
 
+
 class Solution:
     def diameter(self, root: 'Node') -> int:
         """
         :type root: 'Node'
         :rtype: int
         """
+
         def dfs(root):
             if root is None:
                 return 0
@@ -102,6 +104,7 @@ class Solution:
         :type root: 'Node'
         :rtype: int
         """
+
         def build(root):
             nonlocal d
             if root is None:
@@ -142,16 +145,16 @@ class Node {
     public int val;
     public List<Node> children;
 
-    
+
     public Node() {
         children = new ArrayList<Node>();
     }
-    
+
     public Node(int _val) {
         val = _val;
         children = new ArrayList<Node>();
     }
-    
+
     public Node(int _val,ArrayList<Node> _children) {
         val = _val;
         children = _children;
@@ -165,7 +168,7 @@ class Solution {
     public int diameter(Node root) {
         ans = 0;
         dfs(root);
-        return ans;    
+        return ans;
     }
 
     private int dfs(Node root) {
@@ -289,21 +292,19 @@ public:
     int diameter(Node* root) {
         ans = 0;
         dfs(root);
-        return ans;    
+        return ans;
     }
-    
+
     int dfs(Node* root) {
         if (!root) return 0;
         int m1 = 0, m2 = 0;
-        for (Node* child : root->children)
-        {
+        for (Node* child : root->children) {
             int t = dfs(child);
-            if (t > m1)
-            {
+            if (t > m1) {
                 m2 = m1;
                 m1 = t;
-            }
-            else if (t > m2) m2 = t;
+            } else if (t > m2)
+                m2 = t;
         }
         ans = max(ans, m1 + m2);
         return 1 + m1;
@@ -352,8 +353,7 @@ public:
     void dfs(Node* u, int t) {
         if (vis.count(u)) return;
         vis.insert(u);
-        if (ans < t)
-        {
+        if (ans < t) {
             ans = t;
             next = u;
         }
@@ -364,8 +364,7 @@ public:
 
     void build(Node* root) {
         if (!root) return;
-        for (Node* child : root->children)
-        {
+        for (Node* child : root->children) {
             g[root].insert(child);
             g[child].insert(root);
             build(child);

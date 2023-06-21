@@ -9,7 +9,7 @@
 <p>Given an integer <code>n</code>, return <code>true</code><em> if </em><code>n</code><em> is a perfect number, otherwise return </em><code>false</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> num = 28
@@ -18,31 +18,10 @@
 1, 2, 4, 7, and 14 are all divisors of 28.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
-<strong>Input:</strong> num = 6
-<strong>Output:</strong> true
-</pre>
-
-<p><strong>Example 3:</strong></p>
-
-<pre>
-<strong>Input:</strong> num = 496
-<strong>Output:</strong> true
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> num = 8128
-<strong>Output:</strong> true
-</pre>
-
-<p><strong>Example 5:</strong></p>
-
-<pre>
-<strong>Input:</strong> num = 2
+<strong>Input:</strong> num = 7
 <strong>Output:</strong> false
 </pre>
 
@@ -95,7 +74,6 @@ class Solution {
         return s == num;
     }
 }
-
 ```
 
 ### **C++**
@@ -106,10 +84,8 @@ public:
     bool checkPerfectNumber(int num) {
         if (num == 1) return false;
         int s = 1;
-        for (int i = 2; i * i <= num; ++i)
-        {
-            if (num % i == 0)
-            {
+        for (int i = 2; i * i <= num; ++i) {
+            if (num % i == 0) {
                 s += i;
                 if (i != num / i) s += num / i;
             }

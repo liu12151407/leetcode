@@ -1,4 +1,4 @@
-# [LCP 25. 古董键盘](https://leetcode-cn.com/problems/Uh984O)
+# [LCP 25. 古董键盘](https://leetcode.cn/problems/Uh984O)
 
 ## 题目描述
 
@@ -26,8 +26,8 @@
 
 **提示：**
 
-- `1 <= k <= 5`
-- `1 <= n <= 26*k`
+-   `1 <= k <= 5`
+-   `1 <= n <= 26*k`
 
 ## 解法
 

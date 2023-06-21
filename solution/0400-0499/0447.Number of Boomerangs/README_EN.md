@@ -9,7 +9,7 @@
 <p>Return <em>the number of boomerangs</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> points = [[0,0],[1,0],[2,0]]
@@ -17,14 +17,14 @@
 <strong>Explanation:</strong> The two boomerangs are [[1,0],[0,0],[2,0]] and [[1,0],[2,0],[0,0]].
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> points = [[1,1],[2,2],[3,3]]
 <strong>Output:</strong> 2
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> points = [[1,1]]
@@ -127,7 +127,7 @@ public:
     int numberOfBoomerangs(vector<vector<int>>& points) {
         int ans = 0;
         for (const auto& p : points) {
-        unordered_map<int, int> cnt;
+            unordered_map<int, int> cnt;
             for (const auto& q : points) {
                 ++cnt[(p[0] - q[0]) * (p[0] - q[0]) + (p[1] - q[1]) * (p[1] - q[1])];
             }

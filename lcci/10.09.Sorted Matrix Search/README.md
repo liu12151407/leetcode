@@ -1,4 +1,4 @@
-# [面试题 10.09. 排序矩阵查找](https://leetcode-cn.com/problems/sorted-matrix-search-lcci)
+# [面试题 10.09. 排序矩阵查找](https://leetcode.cn/problems/sorted-matrix-search-lcci)
 
 [English Version](/lcci/10.09.Sorted%20Matrix%20Search/README_EN.md)
 
@@ -51,7 +51,6 @@ class Solution:
             else:
                 j += 1
         return False
-
 ```
 
 ### **Java**
@@ -90,11 +89,12 @@ public:
         if (matrix.size() == 0 || matrix[0].size() == 0) return false;
         int m = matrix.size(), n = matrix[0].size();
         int i = m - 1, j = 0;
-        while (i >= 0 && j < n)
-        {
+        while (i >= 0 && j < n) {
             if (matrix[i][j] == target) return true;
-            if (matrix[i][j] > target) --i;
-            else ++j;
+            if (matrix[i][j] > target)
+                --i;
+            else
+                ++j;
         }
         return false;
     }

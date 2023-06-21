@@ -1,4 +1,4 @@
-# [371. 两整数之和](https://leetcode-cn.com/problems/sum-of-two-integers)
+# [371. 两整数之和](https://leetcode.cn/problems/sum-of-two-integers)
 
 [English Version](/solution/0300-0399/0371.Sum%20of%20Two%20Integers/README_EN.md)
 
@@ -6,22 +6,37 @@
 
 <!-- 这里写题目描述 -->
 
-<p><strong>不使用</strong>运算符&nbsp;<code>+</code> 和&nbsp;<code>-</code>&nbsp;​​​​​​​，计算两整数&nbsp;​​​​​​​<code>a</code>&nbsp;、<code>b</code>&nbsp;​​​​​​​之和。</p>
+<p>给你两个整数 <code>a</code> 和 <code>b</code> ，<strong>不使用 </strong>运算符&nbsp;<code>+</code> 和&nbsp;<code>-</code>&nbsp;​​​​​​​，计算并返回两整数之和。</p>
 
-<p><strong>示例 1:</strong></p>
+<p>&nbsp;</p>
 
-<pre><strong>输入: </strong>a = 1, b = 2
-<strong>输出: </strong>3
+<p><strong>示例 1：</strong></p>
+
+<pre>
+<strong>输入：</strong>a = 1, b = 2
+<strong>输出：</strong>3
 </pre>
 
-<p><strong>示例 2:</strong></p>
+<p><strong>示例 2：</strong></p>
 
-<pre><strong>输入: </strong>a = -2, b = 3
-<strong>输出: </strong>1</pre>
+<pre>
+<strong>输入：</strong>a = 2, b = 3
+<strong>输出：</strong>5
+</pre>
+
+<p>&nbsp;</p>
+
+<p><strong>提示：</strong></p>
+
+<ul>
+	<li><code>-1000 &lt;= a, b &lt;= 1000</code></li>
+</ul>
 
 ## 解法
 
 <!-- 这里可写通用的实现逻辑 -->
+
+**方法一：位运算**
 
 两数字的二进制形式 a,b ，求和 s = a + b ，a(i)、b(i) 分别表示 a、b 的第 i 个二进制位。一共有 4 种情况：
 
@@ -39,6 +54,8 @@
 -   问题转换为求：“不进位的数 + 进位” 之和；
 -   循环，直至进位为 0，返回不进位的数即可（也可以用递归实现）。
 
+时间复杂度 $O(\log n)$。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -50,11 +67,11 @@
 ```python
 class Solution:
     def getSum(self, a: int, b: int) -> int:
-        a, b = a & 0xffffffff, b & 0xffffffff
+        a, b = a & 0xFFFFFFFF, b & 0xFFFFFFFF
         while b:
-            carry = ((a & b) << 1) & 0xffffffff
+            carry = ((a & b) << 1) & 0xFFFFFFFF
             a, b = a ^ b, carry
-        return a if a < 0x80000000 else ~(a ^ 0xffffffff)
+        return a if a < 0x80000000 else ~(a ^ 0xFFFFFFFF)
 ```
 
 ### **Java**
@@ -75,9 +92,8 @@ class Solution {
 class Solution {
 public:
     int getSum(int a, int b) {
-        while (b)
-        {
-            unsigned int carry = (unsigned int)(a & b) << 1;
+        while (b) {
+            unsigned int carry = (unsigned int) (a & b) << 1;
             a = a ^ b;
             b = carry;
         }

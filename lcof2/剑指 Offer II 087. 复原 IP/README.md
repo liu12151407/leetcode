@@ -1,4 +1,4 @@
-# [剑指 Offer II 087. 复原 IP](https://leetcode-cn.com/problems/0on3uN)
+# [剑指 Offer II 087. 复原 IP](https://leetcode.cn/problems/0on3uN)
 
 ## 题目描述
 
@@ -58,7 +58,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 93&nbsp;题相同：<a href="https://leetcode-cn.com/problems/restore-ip-addresses/">https://leetcode-cn.com/problems/restore-ip-addresses/</a>&nbsp;</p>
+<p><meta charset="UTF-8" />注意：本题与主站 93&nbsp;题相同：<a href="https://leetcode.cn/problems/restore-ip-addresses/">https://leetcode.cn/problems/restore-ip-addresses/</a>&nbsp;</p>
 
 ## 解法
 
@@ -75,8 +75,6 @@ DFS。
 ```python
 class Solution:
     def restoreIpAddresses(self, s: str) -> List[str]:
-        ans = []
-
         def check(s):
             if not (0 <= int(s) <= 255):
                 return False
@@ -95,6 +93,7 @@ class Solution:
                     dfs(s[i:], t)
                     t.pop()
 
+        ans = []
         dfs(s, [])
         return ans
 ```
@@ -159,10 +158,8 @@ public:
     }
 
     void dfs(string s, vector<string>& t, vector<string>& ans) {
-        if (t.size() == 4)
-        {
-            if (s == "")
-            {
+        if (t.size() == 4) {
+            if (s == "") {
                 string p = "";
                 for (auto e : t) p += e + ".";
                 p.pop_back();
@@ -170,11 +167,9 @@ public:
             }
             return;
         }
-        for (int i = 1; i < min(4, (int) s.size() + 1); ++i)
-        {
+        for (int i = 1; i < min(4, (int) s.size() + 1); ++i) {
             string c = s.substr(0, i);
-            if (check(c))
-            {
+            if (check(c)) {
                 t.push_back(c);
                 dfs(s.substr(i, s.size() - i), t, ans);
                 t.pop_back();
@@ -190,6 +185,42 @@ public:
         return true;
     }
 };
+```
+
+### **Go**
+
+```go
+func restoreIpAddresses(s string) []string {
+	check := func(s string) bool {
+		if i, _ := strconv.Atoi(s); i > 255 {
+			return false
+		}
+		if s[0] == '0' && len(s) > 1 {
+			return false
+		}
+		return true
+	}
+	var ans []string
+	var dfs func(s string, t []string)
+	dfs = func(s string, t []string) {
+		if len(t) == 4 {
+			if s == "" {
+				ans = append(ans, strings.Join(t, "."))
+			}
+			return
+		}
+		for i := 1; i < 4 && i < len(s)+1; i++ {
+			if check(s[0:i]) {
+				t = append(t, s[0:i])
+				dfs(s[i:], t)
+				t = t[0 : len(t)-1]
+			}
+		}
+	}
+	var t []string
+	dfs(s, t)
+	return ans
+}
 ```
 
 ### **...**

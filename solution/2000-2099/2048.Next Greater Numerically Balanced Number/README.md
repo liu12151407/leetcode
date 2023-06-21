@@ -1,4 +1,4 @@
-# [2048. 下一个更大的数值平衡数](https://leetcode-cn.com/problems/next-greater-numerically-balanced-number)
+# [2048. 下一个更大的数值平衡数](https://leetcode.cn/problems/next-greater-numerically-balanced-number)
 
 [English Version](/solution/2000-2099/2048.Next%20Greater%20Numerically%20Balanced%20Number/README_EN.md)
 
@@ -78,8 +78,8 @@ class Solution:
                     return False
             return True
 
-        for i in range(n + 1, 10 ** 7):
-            if (check(i)):
+        for i in range(n + 1, 10**7):
+            if check(i):
                 return i
         return -1
 ```
@@ -146,8 +146,7 @@ function isValid(n: number): boolean {
 class Solution {
 public:
     int nextBeautifulNumber(int n) {
-        for (int i = n + 1; i < 10000000; ++i)
-        {
+        for (int i = n + 1; i < 10000000; ++i) {
             if (check(i)) return i;
         }
         return -1;
@@ -157,8 +156,7 @@ public:
         string s = to_string(num);
         vector<int> counter(10);
         for (char c : s) ++counter[c - '0'];
-        for (char c : s)
-        {
+        for (char c : s) {
             if (counter[c - '0'] != c - '0') return false;
         }
         return true;

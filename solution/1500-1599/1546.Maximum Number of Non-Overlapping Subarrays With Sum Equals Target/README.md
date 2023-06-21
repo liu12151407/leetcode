@@ -1,4 +1,4 @@
-# [1546. 和为目标值的最大数目不重叠非空子数组数目](https://leetcode-cn.com/problems/maximum-number-of-non-overlapping-subarrays-with-sum-equals-target)
+# [1546. 和为目标值且不重叠的非空子数组的最大数目](https://leetcode.cn/problems/maximum-number-of-non-overlapping-subarrays-with-sum-equals-target)
 
 [English Version](/solution/1500-1599/1546.Maximum%20Number%20of%20Non-Overlapping%20Subarrays%20With%20Sum%20Equals%20Target/README_EN.md)
 
@@ -69,7 +69,7 @@ class Solution:
         ans = 0
         while i < n:
             s = 0
-            seen = set([0])
+            seen = {0}
             while i < n:
                 s += nums[i]
                 if s - target in seen:
@@ -118,16 +118,13 @@ public:
     int maxNonOverlapping(vector<int>& nums, int target) {
         int i = 0, n = nums.size();
         int ans = 0;
-        while (i < n)
-        {
+        while (i < n) {
             int s = 0;
             unordered_set<int> seen;
             seen.insert(0);
-            while (i < n)
-            {
+            while (i < n) {
                 s += nums[i];
-                if (seen.count(s - target))
-                {
+                if (seen.count(s - target)) {
                     ++ans;
                     break;
                 }

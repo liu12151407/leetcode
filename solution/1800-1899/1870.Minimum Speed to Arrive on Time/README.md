@@ -1,4 +1,4 @@
-# [1870. 准时到达的列车最小时速](https://leetcode-cn.com/problems/minimum-speed-to-arrive-on-time)
+# [1870. 准时到达的列车最小时速](https://leetcode.cn/problems/minimum-speed-to-arrive-on-time)
 
 [English Version](/solution/1800-1899/1870.Minimum%20Speed%20to%20Arrive%20on%20Time/README_EN.md)
 
@@ -66,9 +66,62 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
-二分法。
+**方法一：二分查找**
 
-以“二分”的方式枚举速度值，找到满足条件的最小速度。
+二分枚举速度值，找到满足条件的最小速度。
+
+时间复杂度 $O(n\times \log m)$，其中 $n$ 和 $m$ 分别为数组 `dist` 和最大速度值。
+
+以下是二分查找的两个通用模板：
+
+模板 1：
+
+```java
+boolean check(int x) {
+}
+
+int search(int left, int right) {
+    while (left < right) {
+        int mid = (left + right) >> 1;
+        if (check(mid)) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+    return left;
+}
+```
+
+模板 2：
+
+```java
+boolean check(int x) {
+}
+
+int search(int left, int right) {
+    while (left < right) {
+        int mid = (left + right + 1) >> 1;
+        if (check(mid)) {
+            left = mid;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return left;
+}
+```
+
+做二分题目时，可以按照以下步骤：
+
+1. 写出循环条件：`while (left < right)`，注意是 `left < right`，而非 `left <= right`；
+1. 循环体内，先无脑写出 `mid = (left + right) >> 1`；
+1. 根据具体题目，实现 `check()` 函数（有时很简单的逻辑，可以不定义 `check`），想一下究竟要用 `right = mid`（模板 1） 还是 `left = mid`（模板 2）；
+    - 如果 `right = mid`，那么无脑写出 else 语句 `left = mid + 1`，并且不需要更改 mid 的计算，即保持 `mid = (left + right) >> 1`；
+    - 如果 `left = mid`，那么无脑写出 else 语句 `right = mid - 1`，并且在 mid 计算时补充 +1，即 `mid = (left + right + 1) >> 1`。
+1. 循环结束时，left 与 right 相等。
+
+注意，这两个模板的优点是始终保持答案位于二分区间内，二分结束条件对应的值恰好在答案所处的位置。 对于可能无解的情况，只要判断二分结束后的 left 或者 right 是否满足题意即可。
 
 <!-- tabs:start -->
 
@@ -79,20 +132,15 @@
 ```python
 class Solution:
     def minSpeedOnTime(self, dist: List[int], hour: float) -> int:
-        def arrive_on_time(speed):
+        def check(speed):
             res = 0
             for i, d in enumerate(dist):
                 res += (d / speed) if i == len(dist) - 1 else math.ceil(d / speed)
             return res <= hour
 
-        left, right = 1, 10 ** 7
-        while left < right:
-            mid = (left + right) >> 1
-            if arrive_on_time(mid):
-                right = mid
-            else:
-                left = mid + 1
-        return left if arrive_on_time(left) else -1
+        r = 10**7 + 1
+        ans = bisect_left(range(1, r), True, key=check) + 1
+        return -1 if ans == r else ans
 ```
 
 ### **Java**
@@ -105,16 +153,16 @@ class Solution {
         int left = 1, right = (int) 1e7;
         while (left < right) {
             int mid = (left + right) >> 1;
-            if (arriveOnTime(dist, mid, hour)) {
+            if (check(dist, mid, hour)) {
                 right = mid;
             } else {
                 left = mid + 1;
             }
         }
-        return arriveOnTime(dist, left, hour) ? left : -1;
+        return check(dist, left, hour) ? left : -1;
     }
 
-    private boolean arriveOnTime(int[] dist, int speed, double hour) {
+    private boolean check(int[] dist, int speed, double hour) {
         double res = 0;
         for (int i = 0; i < dist.length; ++i) {
             double cost = dist[i] * 1.0 / speed;
@@ -134,16 +182,16 @@ public:
         int left = 1, right = 1e7;
         while (left < right) {
             int mid = (left + right) >> 1;
-            if (arriveOnTime(dist, mid, hour)) {
+            if (check(dist, mid, hour)) {
                 right = mid;
             } else {
                 left = mid + 1;
             }
         }
-        return arriveOnTime(dist, left, hour) ? left : -1;
+        return check(dist, left, hour) ? left : -1;
     }
 
-    bool arriveOnTime(vector<int>& dist, int speed, double hour) {
+    bool check(vector<int>& dist, int speed, double hour) {
         double res = 0;
         for (int i = 0; i < dist.size(); ++i) {
             double cost = dist[i] * 1.0 / speed;
@@ -152,6 +200,28 @@ public:
         return res <= hour;
     }
 };
+```
+
+### **Go**
+
+```go
+func minSpeedOnTime(dist []int, hour float64) int {
+	n := len(dist)
+	const mx int = 1e7
+	x := sort.Search(mx, func(s int) bool {
+		s++
+		var cost float64
+		for _, v := range dist[:n-1] {
+			cost += math.Ceil(float64(v) / float64(s))
+		}
+		cost += float64(dist[n-1]) / float64(s)
+		return cost <= hour
+	})
+	if x == mx {
+		return -1
+	}
+	return x + 1
+}
 ```
 
 ### **JavaScript**
@@ -191,33 +261,41 @@ function arriveOnTime(dist, speed, hour) {
 }
 ```
 
-### **Go**
+### **Rust**
 
-```go
-func minSpeedOnTime(dist []int, hour float64) int {
-	n := len(dist)
-	left, right := 1, int(1e7)
-	for left < right {
-		mid := (left + right) >> 1
-		if arriveOnTime(dist, n, float64(mid), hour) {
-			right = mid
-		} else {
-			left = mid + 1
-		}
-	}
-	if arriveOnTime(dist, n, float64(left), hour) {
-		return left
-	}
-	return -1
-}
+```rust
+impl Solution {
+    pub fn min_speed_on_time(dist: Vec<i32>, hour: f64) -> i32 {
+        let n = dist.len();
 
-func arriveOnTime(dist []int, n int, speed, hour float64) bool {
-	var cost float64
-	for _, v := range dist[:n-1] {
-		cost += math.Ceil(float64(v) / speed)
-	}
-	cost += float64(dist[n-1]) / speed
-	return cost <= hour
+        let check = |speed| {
+            let mut cur = 0.;
+            for (i, &d) in dist.iter().enumerate() {
+                if i == n - 1 {
+                    cur += d as f64 / speed as f64;
+                } else {
+                    cur += (d as f64 / speed as f64).ceil();
+                }
+            }
+            cur <= hour
+        };
+
+        let mut left = 1;
+        let mut right = 1e7 as i32;
+        while left < right {
+            let mid = left + (right - left) / 2;
+            if !check(mid) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+
+        if check(left) {
+            return left;
+        }
+        -1
+    }
 }
 ```
 

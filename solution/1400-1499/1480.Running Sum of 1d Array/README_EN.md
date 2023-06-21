@@ -9,39 +9,28 @@
 <p>Return the running sum of <code>nums</code>.</p>
 
 <p>&nbsp;</p>
-
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
-
 <strong>Input:</strong> nums = [1,2,3,4]
-
 <strong>Output:</strong> [1,3,6,10]
-
 <strong>Explanation:</strong> Running sum is obtained as follows: [1, 1+2, 1+2+3, 1+2+3+4].</pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
-
 <strong>Input:</strong> nums = [1,1,1,1,1]
-
 <strong>Output:</strong> [1,2,3,4,5]
-
 <strong>Explanation:</strong> Running sum is obtained as follows: [1, 1+1, 1+1+1, 1+1+1+1, 1+1+1+1+1].</pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
-
 <strong>Input:</strong> nums = [3,1,2,10,1]
-
 <strong>Output:</strong> [3,4,6,16,17]
-
 </pre>
 
 <p>&nbsp;</p>
-
 <p><strong>Constraints:</strong></p>
 
 <ul>
@@ -51,6 +40,12 @@
 
 ## Solutions
 
+**Approach 1: Prefix Sum**
+
+We directly traverse the array. For the current element $nums[i]$, we add it with the prefix sum $nums[i-1]$ to get the prefix sum $nums[i]$ of the current element.
+
+The time complexity is $O(n)$, where $n$ is the length of the array. The space complexity is $O(1)$.
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -58,9 +53,7 @@
 ```python
 class Solution:
     def runningSum(self, nums: List[int]) -> List[int]:
-        for i in range(1, len(nums)):
-            nums[i] += nums[i - 1]
-        return nums
+        return list(accumulate(nums))
 ```
 
 ### **Java**
@@ -82,9 +75,7 @@ class Solution {
 class Solution {
 public:
     vector<int> runningSum(vector<int>& nums) {
-        for (int i = 1; i < nums.size(); ++i) {
-            nums[i] += nums[i - 1];
-        }
+        for (int i = 1; i < nums.size(); ++i) nums[i] += nums[i - 1];
         return nums;
     }
 };
@@ -98,6 +89,47 @@ func runningSum(nums []int) []int {
 		nums[i] += nums[i-1]
 	}
 	return nums
+}
+```
+
+### **TypeScript**
+
+```ts
+function runningSum(nums: number[]): number[] {
+    for (let i = 1; i < nums.length; ++i) {
+        nums[i] += nums[i - 1];
+    }
+    return nums;
+}
+```
+
+### **C#**
+
+```cs
+public class Solution {
+    public int[] RunningSum(int[] nums) {
+        for (int i = 1; i < nums.Length; ++i) {
+            nums[i] += nums[i - 1];
+        }
+        return nums;
+    }
+}
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param Integer[] $nums
+     * @return Integer[]
+     */
+    function runningSum($nums) {
+        for ($i = 1; $i < count($nums); $i++) {
+            $nums[$i] += $nums[$i - 1];
+        }
+        return $nums;
+    }
 }
 ```
 

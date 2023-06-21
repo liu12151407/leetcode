@@ -7,7 +7,7 @@
 Given an integer number <code>n</code>, return the difference between the product of its digits and the sum of its digits.
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 234
@@ -18,7 +18,7 @@ Sum of digits = 2 + 3 + 4 = 9
 Result = 24 - 9 = 15
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 4421
@@ -101,6 +101,56 @@ func subtractProductAndSum(n int) int {
 		p *= t
 	}
 	return p - s
+}
+```
+
+### **TypeScript**
+
+```ts
+function subtractProductAndSum(n: number): number {
+    let p = 1;
+    let s = 0;
+    while (n) {
+        const num = n % 10;
+        n = Math.floor(n / 10);
+        p *= num;
+        s += num;
+    }
+    return p - s;
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn subtract_product_and_sum(mut n: i32) -> i32 {
+        let mut p = 1;
+        let mut s = 0;
+        while n != 0 {
+            let num = n % 10;
+            n /= 10;
+            p *= num;
+            s += num;
+        }
+        p - s
+    }
+}
+```
+
+### **C**
+
+```c
+int subtractProductAndSum(int n) {
+    int p = 1;
+    int s = 0;
+    while (n) {
+        int num = n % 10;
+        n /= 10;
+        p *= num;
+        s += num;
+    }
+    return p - s;
 }
 ```
 

@@ -13,33 +13,19 @@
 <p>The <strong>height</strong> of a rooted tree is the number of edges on the longest downward path between the root and a leaf.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0300-0399/0310.Minimum%20Height%20Trees/images/e1.jpg" style="width: 800px; height: 213px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0300-0399/0310.Minimum%20Height%20Trees/images/e1.jpg" style="width: 800px; height: 213px;" />
 <pre>
 <strong>Input:</strong> n = 4, edges = [[1,0],[1,2],[1,3]]
 <strong>Output:</strong> [1]
 <strong>Explanation:</strong> As shown, the height of the tree is 1 when the root is the node with label 1 which is the only MHT.
 </pre>
 
-<p><strong>Example 2:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0300-0399/0310.Minimum%20Height%20Trees/images/e2.jpg" style="width: 800px; height: 321px;" />
+<p><strong class="example">Example 2:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0300-0399/0310.Minimum%20Height%20Trees/images/e2.jpg" style="width: 800px; height: 321px;" />
 <pre>
 <strong>Input:</strong> n = 6, edges = [[3,0],[3,1],[3,2],[3,4],[5,4]]
 <strong>Output:</strong> [3,4]
-</pre>
-
-<p><strong>Example 3:</strong></p>
-
-<pre>
-<strong>Input:</strong> n = 1, edges = []
-<strong>Output:</strong> [0]
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> n = 2, edges = [[0,1]]
-<strong>Output:</strong> [0,1]
 </pre>
 
 <p>&nbsp;</p>
@@ -72,15 +58,11 @@ class Solution:
             g[b].append(a)
             degree[a] += 1
             degree[b] += 1
-        q = deque()
-        for i in range(n):
-            if degree[i] == 1:
-                q.append(i)
+        q = deque(i for i in range(n) if degree[i] == 1)
         ans = []
         while q:
-            n = len(q)
             ans.clear()
-            for _ in range(n):
+            for _ in range(len(q)):
                 a = q.popleft()
                 ans.append(a)
                 for b in g[a]:
@@ -99,10 +81,8 @@ class Solution {
             return Collections.singletonList(0);
         }
         List<Integer>[] g = new List[n];
+        Arrays.setAll(g, k -> new ArrayList<>());
         int[] degree = new int[n];
-        for (int i = 0; i < n; ++i) {
-            g[i] = new ArrayList<>();
-        }
         for (int[] e : edges) {
             int a = e[0], b = e[1];
             g[a].add(b);
@@ -143,8 +123,7 @@ public:
         if (n == 1) return {0};
         vector<vector<int>> g(n);
         vector<int> degree(n);
-        for (auto& e : edges)
-        {
+        for (auto& e : edges) {
             int a = e[0], b = e[1];
             g[a].push_back(b);
             g[b].push_back(a);
@@ -156,11 +135,9 @@ public:
             if (degree[i] == 1)
                 q.push(i);
         vector<int> ans;
-        while (!q.empty())
-        {
+        while (!q.empty()) {
             ans.clear();
-            for (int i = q.size(); i > 0; --i)
-            {
+            for (int i = q.size(); i > 0; --i) {
                 int a = q.front();
                 q.pop();
                 ans.push_back(a);

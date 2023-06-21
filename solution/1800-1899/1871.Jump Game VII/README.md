@@ -1,4 +1,4 @@
-# [1871. 跳跃游戏 VII](https://leetcode-cn.com/problems/jump-game-vii)
+# [1871. 跳跃游戏 VII](https://leetcode.cn/problems/jump-game-vii)
 
 [English Version](/solution/1800-1899/1871.Jump%20Game%20VII/README_EN.md)
 
@@ -118,7 +118,7 @@ var canReach = function (s, minJump, maxJump) {
     dp[0] = 1;
     sum[1] = 1;
     for (let i = 1; i < n; i++) {
-        if (s.charAt(i) == "0") {
+        if (s.charAt(i) == '0') {
             let left = Math.max(0, i - maxJump);
             let right = i - minJump;
             if (left <= right && sum[right + 1] - sum[left] > 0) {

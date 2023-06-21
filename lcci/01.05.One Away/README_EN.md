@@ -1,4 +1,4 @@
-# [01.05. One Away](https://leetcode-cn.com/problems/one-away-lcci)
+# [01.05. One Away](https://leetcode.cn/problems/one-away-lcci)
 
 [中文文档](/lcci/01.05.One%20Away/README.md)
 
@@ -132,7 +132,7 @@ public:
 
 ### **Go**
 
-Similar to [Edit Distance](https://leetcode-cn.com/problems/edit-distance/) solution
+Similar to [Edit Distance](https://leetcode.cn/problems/edit-distance/) solution
 
 ```go
 func oneEditAway(first string, second string) bool {
@@ -176,6 +176,64 @@ func min(x, y, z int) int {
 		return y
 	}
 	return z
+}
+```
+
+### **TypeScript**
+
+```ts
+function oneEditAway(first: string, second: string): boolean {
+    const n = first.length;
+    const m = second.length;
+
+    let count = 0;
+    let i = 0;
+    let j = 0;
+    while (i < n || j < m) {
+        if (first[i] !== second[j]) {
+            count++;
+
+            if (i < n && first[i + 1] === second[j]) {
+                i++;
+            } else if (j < m && first[i] === second[j + 1]) {
+                j++;
+            }
+        }
+        i++;
+        j++;
+    }
+    return count <= 1;
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn one_edit_away(first: String, second: String) -> bool {
+        let (f_len, s_len) = (first.len(), second.len());
+        let (first, second) = (first.as_bytes(), second.as_bytes());
+        let (mut i, mut j) = (0, 0);
+        let mut count = 0;
+        while i < f_len && j < s_len {
+            if first[i] != second[j] {
+                if count > 0 {
+                    return false;
+                }
+
+                count += 1;
+                if i + 1 < f_len && first[i + 1] == second[j] {
+                    i += 1;
+                } else if j + 1 < s_len && first[i] == second[j + 1] {
+                    j += 1;
+                }
+            }
+            i += 1;
+            j += 1;
+        }
+        count += f_len - i + s_len - j;
+        count <= 1
+    }
 }
 ```
 

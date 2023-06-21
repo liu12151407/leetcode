@@ -1,4 +1,4 @@
-# [104. 二叉树的最大深度](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree)
+# [104. 二叉树的最大深度](https://leetcode.cn/problems/maximum-depth-of-binary-tree)
 
 [English Version](/solution/0100-0199/0104.Maximum%20Depth%20of%20Binary%20Tree/README_EN.md)
 
@@ -27,7 +27,11 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
-递归遍历左右子树，求左右子树的最大深度 +1 即可。
+**方法一：递归**
+
+递归遍历左右子树，求左右子树的最大深度，然后取最大值加 $1$ 即可。
+
+时间复杂度 $O(n)$，其中 $n$ 是二叉树的节点数。每个节点在递归中只被遍历一次。
 
 <!-- tabs:start -->
 
@@ -154,6 +158,93 @@ var maxDepth = function (root) {
     const r = maxDepth(root.right);
     return 1 + Math.max(l, r);
 };
+```
+
+### **TypeScript**
+
+```ts
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function maxDepth(root: TreeNode | null): number {
+    if (root == null) {
+        return 0;
+    }
+    return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+}
+```
+
+### **Rust**
+
+```rust
+// Definition for a binary tree node.
+// #[derive(Debug, PartialEq, Eq)]
+// pub struct TreeNode {
+//   pub val: i32,
+//   pub left: Option<Rc<RefCell<TreeNode>>>,
+//   pub right: Option<Rc<RefCell<TreeNode>>>,
+// }
+//
+// impl TreeNode {
+//   #[inline]
+//   pub fn new(val: i32) -> Self {
+//     TreeNode {
+//       val,
+//       left: None,
+//       right: None
+//     }
+//   }
+// }
+use std::rc::Rc;
+use std::cell::RefCell;
+impl Solution {
+    fn dfs(root: &Option<Rc<RefCell<TreeNode>>>) -> i32 {
+        if root.is_none() {
+            return 0;
+        }
+        let node = root.as_ref().unwrap().borrow();
+        1 + Self::dfs(&node.left).max(Self::dfs(&node.right))
+    }
+
+    pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
+        Self::dfs(&root)
+    }
+}
+```
+
+### **C**
+
+```c
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+
+#define max(a, b) (((a) > (b)) ? (a) : (b))
+
+int maxDepth(struct TreeNode* root) {
+    if (!root) {
+        return 0;
+    }
+    int left = maxDepth(root->left);
+    int right = maxDepth(root->right);
+    return 1 + max(left, right);
+}
 ```
 
 ### **...**

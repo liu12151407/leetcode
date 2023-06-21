@@ -9,7 +9,7 @@
 <p>Notice that you can not jump outside of the array at any time.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> arr = [4,2,3,0,3,1,2], start = 5
@@ -20,7 +20,7 @@ index 5 -&gt; index 4 -&gt; index 1 -&gt; index 3
 index 5 -&gt; index 6 -&gt; index 4 -&gt; index 1 -&gt; index 3 
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> arr = [4,2,3,0,3,1,2], start = 0
@@ -30,7 +30,7 @@ index 5 -&gt; index 6 -&gt; index 4 -&gt; index 1 -&gt; index 3
 index 0 -&gt; index 4 -&gt; index 1 -&gt; index 3
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> arr = [3,0,2,1,2], start = 2
@@ -49,18 +49,122 @@ index 0 -&gt; index 4 -&gt; index 1 -&gt; index 3
 
 ## Solutions
 
+BFS.
+
 <!-- tabs:start -->
 
 ### **Python3**
 
 ```python
-
+class Solution:
+    def canReach(self, arr: List[int], start: int) -> bool:
+        q = deque([start])
+        while q:
+            i = q.popleft()
+            if arr[i] == 0:
+                return True
+            x = arr[i]
+            arr[i] = -1
+            for j in (i + x, i - x):
+                if 0 <= j < len(arr) and arr[j] >= 0:
+                    q.append(j)
+        return False
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public boolean canReach(int[] arr, int start) {
+        Deque<Integer> q = new ArrayDeque<>();
+        q.offer(start);
+        while (!q.isEmpty()) {
+            int i = q.poll();
+            if (arr[i] == 0) {
+                return true;
+            }
+            int x = arr[i];
+            arr[i] = -1;
+            for (int j : List.of(i + x, i - x)) {
+                if (j >= 0 && j < arr.length && arr[j] >= 0) {
+                    q.offer(j);
+                }
+            }
+        }
+        return false;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool canReach(vector<int>& arr, int start) {
+        queue<int> q{{start}};
+        while (!q.empty()) {
+            int i = q.front();
+            q.pop();
+            if (arr[i] == 0) {
+                return true;
+            }
+            int x = arr[i];
+            arr[i] = -1;
+            for (int j : {i + x, i - x}) {
+                if (j >= 0 && j < arr.size() && ~arr[j]) {
+                    q.push(j);
+                }
+            }
+        }
+        return false;
+    }
+};
+```
+
+### **Go**
+
+```go
+func canReach(arr []int, start int) bool {
+	q := []int{start}
+	for len(q) > 0 {
+		i := q[0]
+		q = q[1:]
+		if arr[i] == 0 {
+			return true
+		}
+		x := arr[i]
+		arr[i] = -1
+		for _, j := range []int{i + x, i - x} {
+			if j >= 0 && j < len(arr) && arr[j] >= 0 {
+				q = append(q, j)
+			}
+		}
+	}
+	return false
+}
+```
+
+### **TypeScript**
+
+```ts
+function canReach(arr: number[], start: number): boolean {
+    const q: number[] = [start];
+    while (q.length) {
+        const i: number = q.shift()!;
+        if (arr[i] === 0) {
+            return true;
+        }
+        const x: number = arr[i];
+        arr[i] = -1;
+        for (const j of [i + x, i - x]) {
+            if (j >= 0 && j < arr.length && arr[j] !== -1) {
+                q.push(j);
+            }
+        }
+    }
+    return false;
+}
 ```
 
 ### **...**

@@ -1,4 +1,4 @@
-# [剑指 Offer II 078. 合并排序链表](https://leetcode-cn.com/problems/vvXgSW)
+# [剑指 Offer II 078. 合并排序链表](https://leetcode.cn/problems/vvXgSW)
 
 ## 题目描述
 
@@ -54,7 +54,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 23&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/merge-k-sorted-lists/">https://leetcode-cn.com/problems/merge-k-sorted-lists/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 23&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/merge-k-sorted-lists/">https://leetcode.cn/problems/merge-k-sorted-lists/</a></p>
 
 ## 解法
 
@@ -170,15 +170,11 @@ private:
     ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
         ListNode* dummy = new ListNode();
         ListNode* cur = dummy;
-        while (l1 && l2)
-        {
-            if (l1->val <= l2->val)
-            {
+        while (l1 && l2) {
+            if (l1->val <= l2->val) {
                 cur->next = l1;
                 l1 = l1->next;
-            }
-            else
-            {
+            } else {
                 cur->next = l2;
                 l2 = l2->next;
             }
@@ -201,35 +197,35 @@ private:
  * }
  */
 func mergeKLists(lists []*ListNode) *ListNode {
-    n := len(lists)
-    if n == 0 {
-        return nil
-    }
-    for i := 1; i < n; i++ {
-        lists[i] = mergeTwoLists(lists[i-1], lists[i])
-    }
-    return lists[n-1]
+	n := len(lists)
+	if n == 0 {
+		return nil
+	}
+	for i := 1; i < n; i++ {
+		lists[i] = mergeTwoLists(lists[i-1], lists[i])
+	}
+	return lists[n-1]
 }
 
- func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
-    dummy := &ListNode{}
-    cur := dummy
-    for l1 != nil && l2 != nil {
-        if l1.Val <= l2.Val {
-            cur.Next = l1
-            l1 = l1.Next
-        } else {
-            cur.Next = l2
-            l2 = l2.Next
-        }
-        cur = cur.Next
-    }
-    if l1 != nil {
-        cur.Next = l1
-    } else if l2 != nil {
-        cur.Next = l2
-    }
-    return dummy.Next
+func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
+	dummy := &ListNode{}
+	cur := dummy
+	for l1 != nil && l2 != nil {
+		if l1.Val <= l2.Val {
+			cur.Next = l1
+			l1 = l1.Next
+		} else {
+			cur.Next = l2
+			l2 = l2.Next
+		}
+		cur = cur.Next
+	}
+	if l1 != nil {
+		cur.Next = l1
+	} else if l2 != nil {
+		cur.Next = l2
+	}
+	return dummy.Next
 }
 ```
 

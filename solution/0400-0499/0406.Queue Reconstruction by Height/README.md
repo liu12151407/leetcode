@@ -1,4 +1,4 @@
-# [406. 根据身高重建队列](https://leetcode-cn.com/problems/queue-reconstruction-by-height)
+# [406. 根据身高重建队列](https://leetcode.cn/problems/queue-reconstruction-by-height)
 
 [English Version](/solution/0400-0499/0406.Queue%20Reconstruction%20by%20Height/README_EN.md)
 
@@ -97,7 +97,7 @@ public:
             return a[0] > b[0] || (a[0] == b[0] && a[1] < b[1]);
         });
         vector<vector<int>> ans;
-        for (const vector<int>& p: people)
+        for (const vector<int>& p : people)
             ans.insert(ans.begin() + p[1], p);
         return ans;
     }

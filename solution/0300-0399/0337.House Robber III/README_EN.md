@@ -11,16 +11,16 @@
 <p>Given the <code>root</code> of the binary tree, return <em>the maximum amount of money the thief can rob <strong>without alerting the police</strong></em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0300-0399/0337.House%20Robber%20III/images/rob1-tree.jpg" style="width: 277px; height: 293px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0300-0399/0337.House%20Robber%20III/images/rob1-tree.jpg" style="width: 277px; height: 293px;" />
 <pre>
 <strong>Input:</strong> root = [3,2,3,null,3,null,1]
 <strong>Output:</strong> 7
 <strong>Explanation:</strong> Maximum amount of money the thief can rob = 3 + 3 + 1 = 7.
 </pre>
 
-<p><strong>Example 2:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0300-0399/0337.House%20Robber%20III/images/rob2-tree.jpg" style="width: 357px; height: 293px;" />
+<p><strong class="example">Example 2:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0300-0399/0337.House%20Robber%20III/images/rob2-tree.jpg" style="width: 357px; height: 293px;" />
 <pre>
 <strong>Input:</strong> root = [3,4,5,1,3,null,1]
 <strong>Output:</strong> 9
@@ -50,7 +50,7 @@
 #         self.right = right
 class Solution:
     def rob(self, root: TreeNode) -> int:
-        @lru_cache(None)
+        @cache
         def dfs(root):
             if root is None:
                 return 0
@@ -141,7 +141,7 @@ public:
         if (!root) return 0;
         if (memo.count(root)) return memo[root];
         int a = dfs(root->left) + dfs(root->right);
-        int b = root-> val;
+        int b = root->val;
         if (root->left) b += dfs(root->left->left) + dfs(root->left->right);
         if (root->right) b += dfs(root->right->left) + dfs(root->right->right);
         int res = max(a, b);

@@ -1,4 +1,4 @@
-# [608. 树节点](https://leetcode-cn.com/problems/tree-node)
+# [608. 树节点](https://leetcode.cn/problems/tree-node)
 
 [English Version](/solution/0600-0699/0608.Tree%20Node/README_EN.md)
 
@@ -80,7 +80,35 @@
 ### **SQL**
 
 ```sql
+SELECT
+    id,
+    (
+        CASE
+            WHEN p_id IS NULL THEN 'Root'
+            WHEN id IN (
+                SELECT p_id
+                FROM tree
+            ) THEN 'Inner'
+            ELSE 'Leaf'
+        END
+    ) AS type
+FROM tree;
+```
 
+```sql
+# Write your MySQL query statement below
+SELECT
+    id,
+    CASE
+        WHEN p_id IS NULL THEN 'Root'
+        WHEN id IN (
+            SELECT
+                p_id
+            FROM tree
+        ) THEN 'Inner'
+        ELSE 'Leaf'
+    END AS Type
+FROM tree;
 ```
 
 <!-- tabs:end -->

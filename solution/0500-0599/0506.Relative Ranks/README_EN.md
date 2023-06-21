@@ -18,14 +18,14 @@
 <p>Return an array <code>answer</code> of size <code>n</code> where <code>answer[i]</code> is the <strong>rank</strong> of the <code>i<sup>th</sup></code> athlete.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> score = [5,4,3,2,1]
 <strong>Output:</strong> [&quot;Gold Medal&quot;,&quot;Silver Medal&quot;,&quot;Bronze Medal&quot;,&quot;4&quot;,&quot;5&quot;]
 <strong>Explanation:</strong> The placements are [1<sup>st</sup>, 2<sup>nd</sup>, 3<sup>rd</sup>, 4<sup>th</sup>, 5<sup>th</sup>].</pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> score = [10,3,8,9,4]
@@ -75,7 +75,7 @@ class Solution {
         }
         Arrays.sort(idx, (i1, i2) -> score[i2] - score[i1]);
         String[] ans = new String[n];
-        String[] top3 = new String[]{"Gold Medal", "Silver Medal", "Bronze Medal"};
+        String[] top3 = new String[] {"Gold Medal", "Silver Medal", "Bronze Medal"};
         for (int i = 0; i < n; ++i) {
             ans[idx[i]] = i < 3 ? top3[i] : String.valueOf(i + 1);
         }
@@ -89,14 +89,13 @@ class Solution {
 ```cpp
 class Solution {
 public:
-    vector<string> findRelativeRanks(vector<int> &score) {
+    vector<string> findRelativeRanks(vector<int>& score) {
         int n = score.size();
         vector<pair<int, int>> idx;
         for (int i = 0; i < n; ++i)
             idx.push_back(make_pair(score[i], i));
         sort(idx.begin(), idx.end(),
-             [&](const pair<int, int> &x, const pair<int, int> &y)
-             { return x.first > y.first; });
+            [&](const pair<int, int>& x, const pair<int, int>& y) { return x.first > y.first; });
         vector<string> ans(n);
         vector<string> top3 = {"Gold Medal", "Silver Medal", "Bronze Medal"};
         for (int i = 0; i < n; ++i)

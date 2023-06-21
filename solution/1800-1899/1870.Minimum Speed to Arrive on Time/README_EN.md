@@ -17,7 +17,7 @@
 <p>Tests are generated such that the answer will not exceed <code>10<sup>7</sup></code> and <code>hour</code> will have <strong>at most two digits after the decimal point</strong>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> dist = [1,3,2], hour = 6
@@ -29,7 +29,7 @@
 - You will arrive at exactly the 6 hour mark.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> dist = [1,3,2], hour = 2.7
@@ -41,7 +41,7 @@
 - You will arrive at the 2.66667 hour mark.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> dist = [1,3,2], hour = 1.9
@@ -62,6 +62,46 @@
 
 ## Solutions
 
+Binary search.
+
+Template 1:
+
+```java
+boolean check(int x) {
+}
+
+int search(int left, int right) {
+    while (left < right) {
+        int mid = (left + right) >> 1;
+        if (check(mid)) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+    return left;
+}
+```
+
+Template 2:
+
+```java
+boolean check(int x) {
+}
+
+int search(int left, int right) {
+    while (left < right) {
+        int mid = (left + right + 1) >> 1;
+        if (check(mid)) {
+            left = mid;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return left;
+}
+```
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -69,20 +109,15 @@
 ```python
 class Solution:
     def minSpeedOnTime(self, dist: List[int], hour: float) -> int:
-        def arrive_on_time(speed):
+        def check(speed):
             res = 0
             for i, d in enumerate(dist):
                 res += (d / speed) if i == len(dist) - 1 else math.ceil(d / speed)
             return res <= hour
 
-        left, right = 1, 10 ** 7
-        while left < right:
-            mid = (left + right) >> 1
-            if arrive_on_time(mid):
-                right = mid
-            else:
-                left = mid + 1
-        return left if arrive_on_time(left) else -1
+        r = 10**7 + 1
+        ans = bisect_left(range(1, r), True, key=check) + 1
+        return -1 if ans == r else ans
 ```
 
 ### **Java**
@@ -93,16 +128,16 @@ class Solution {
         int left = 1, right = (int) 1e7;
         while (left < right) {
             int mid = (left + right) >> 1;
-            if (arriveOnTime(dist, mid, hour)) {
+            if (check(dist, mid, hour)) {
                 right = mid;
             } else {
                 left = mid + 1;
             }
         }
-        return arriveOnTime(dist, left, hour) ? left : -1;
+        return check(dist, left, hour) ? left : -1;
     }
 
-    private boolean arriveOnTime(int[] dist, int speed, double hour) {
+    private boolean check(int[] dist, int speed, double hour) {
         double res = 0;
         for (int i = 0; i < dist.length; ++i) {
             double cost = dist[i] * 1.0 / speed;
@@ -122,16 +157,16 @@ public:
         int left = 1, right = 1e7;
         while (left < right) {
             int mid = (left + right) >> 1;
-            if (arriveOnTime(dist, mid, hour)) {
+            if (check(dist, mid, hour)) {
                 right = mid;
             } else {
                 left = mid + 1;
             }
         }
-        return arriveOnTime(dist, left, hour) ? left : -1;
+        return check(dist, left, hour) ? left : -1;
     }
 
-    bool arriveOnTime(vector<int>& dist, int speed, double hour) {
+    bool check(vector<int>& dist, int speed, double hour) {
         double res = 0;
         for (int i = 0; i < dist.size(); ++i) {
             double cost = dist[i] * 1.0 / speed;
@@ -140,6 +175,28 @@ public:
         return res <= hour;
     }
 };
+```
+
+### **Go**
+
+```go
+func minSpeedOnTime(dist []int, hour float64) int {
+	n := len(dist)
+	const mx int = 1e7
+	x := sort.Search(mx, func(s int) bool {
+		s++
+		var cost float64
+		for _, v := range dist[:n-1] {
+			cost += math.Ceil(float64(v) / float64(s))
+		}
+		cost += float64(dist[n-1]) / float64(s)
+		return cost <= hour
+	})
+	if x == mx {
+		return -1
+	}
+	return x + 1
+}
 ```
 
 ### **JavaScript**
@@ -179,33 +236,41 @@ function arriveOnTime(dist, speed, hour) {
 }
 ```
 
-### **Go**
+### **Rust**
 
-```go
-func minSpeedOnTime(dist []int, hour float64) int {
-	n := len(dist)
-	left, right := 1, int(1e7)
-	for left < right {
-		mid := (left + right) >> 1
-		if arriveOnTime(dist, n, float64(mid), hour) {
-			right = mid
-		} else {
-			left = mid + 1
-		}
-	}
-	if arriveOnTime(dist, n, float64(left), hour) {
-		return left
-	}
-	return -1
-}
+```rust
+impl Solution {
+    pub fn min_speed_on_time(dist: Vec<i32>, hour: f64) -> i32 {
+        let n = dist.len();
 
-func arriveOnTime(dist []int, n int, speed, hour float64) bool {
-	var cost float64
-	for _, v := range dist[:n-1] {
-		cost += math.Ceil(float64(v) / speed)
-	}
-	cost += float64(dist[n-1]) / speed
-	return cost <= hour
+        let check = |speed| {
+            let mut cur = 0.;
+            for (i, &d) in dist.iter().enumerate() {
+                if i == n - 1 {
+                    cur += d as f64 / speed as f64;
+                } else {
+                    cur += (d as f64 / speed as f64).ceil();
+                }
+            }
+            cur <= hour
+        };
+
+        let mut left = 1;
+        let mut right = 1e7 as i32;
+        while left < right {
+            let mid = left + (right - left) / 2;
+            if !check(mid) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+
+        if check(left) {
+            return left;
+        }
+        -1
+    }
 }
 ```
 

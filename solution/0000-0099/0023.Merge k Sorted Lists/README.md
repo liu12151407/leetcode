@@ -1,4 +1,4 @@
-# [23. 合并 K 个升序链表](https://leetcode-cn.com/problems/merge-k-sorted-lists)
+# [23. 合并 K 个升序链表](https://leetcode.cn/problems/merge-k-sorted-lists)
 
 [English Version](/solution/0000-0099/0023.Merge%20k%20Sorted%20Lists/README_EN.md)
 
@@ -55,7 +55,15 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**朴素解法：**
+
 合并前后两个链表，结果放在后一个链表位置上，依次循环下去。最后返回链表数组的最后一个元素。
+
+**分而治之：**
+
+多个链表合并复杂，若只有两个或一个链表时，那么就如同 [21. 合并两个有序链表](https://leetcode.cn/problems/merge-two-sorted-lists/) 一样。
+
+与归并排序同思路，不断拆散，最终合并即可。
 
 <!-- tabs:start -->
 
@@ -165,15 +173,11 @@ private:
     ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
         ListNode* dummy = new ListNode();
         ListNode* cur = dummy;
-        while (l1 && l2)
-        {
-            if (l1->val <= l2->val)
-            {
+        while (l1 && l2) {
+            if (l1->val <= l2->val) {
                 cur->next = l1;
                 l1 = l1->next;
-            }
-            else
-            {
+            } else {
                 cur->next = l2;
                 l2 = l2->next;
             }
@@ -196,35 +200,35 @@ private:
  * }
  */
 func mergeKLists(lists []*ListNode) *ListNode {
-    n := len(lists)
-    if n == 0 {
-        return nil
-    }
-    for i := 1; i < n; i++ {
-        lists[i] = mergeTwoLists(lists[i-1], lists[i])
-    }
-    return lists[n-1]
+	n := len(lists)
+	if n == 0 {
+		return nil
+	}
+	for i := 1; i < n; i++ {
+		lists[i] = mergeTwoLists(lists[i-1], lists[i])
+	}
+	return lists[n-1]
 }
 
- func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
-    dummy := &ListNode{}
-    cur := dummy
-    for l1 != nil && l2 != nil {
-        if l1.Val <= l2.Val {
-            cur.Next = l1
-            l1 = l1.Next
-        } else {
-            cur.Next = l2
-            l2 = l2.Next
-        }
-        cur = cur.Next
-    }
-    if l1 != nil {
-        cur.Next = l1
-    } else if l2 != nil {
-        cur.Next = l2
-    }
-    return dummy.Next
+func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
+	dummy := &ListNode{}
+	cur := dummy
+	for l1 != nil && l2 != nil {
+		if l1.Val <= l2.Val {
+			cur.Next = l1
+			l1 = l1.Next
+		} else {
+			cur.Next = l2
+			l2 = l2.Next
+		}
+		cur = cur.Next
+	}
+	if l1 != nil {
+		cur.Next = l1
+	} else if l2 != nil {
+		cur.Next = l2
+	}
+	return dummy.Next
 }
 ```
 
@@ -353,6 +357,117 @@ public class Solution {
         }
         cur.next = l1 == null ? l2 : l1;
         return dummy.next;
+    }
+}
+```
+
+### **TypeScript**
+
+```ts
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+function mergeKLists(lists: Array<ListNode | null>): ListNode | null {
+    const n = lists.length;
+    const dfs = (start: number, end: number) => {
+        if (end - start <= 1) {
+            return lists[start] ?? null;
+        }
+
+        const mid = (start + end) >> 1;
+        let left = dfs(start, mid);
+        let right = dfs(mid, end);
+
+        const dummy = new ListNode();
+        let cur = dummy;
+        while (left || right) {
+            let next: ListNode;
+            if (
+                (left ?? { val: Infinity }).val <
+                (right ?? { val: Infinity }).val
+            ) {
+                next = left;
+                left = left.next;
+            } else {
+                next = right;
+                right = right.next;
+            }
+            cur.next = next;
+            cur = next;
+        }
+        return dummy.next;
+    };
+    return dfs(0, n);
+}
+```
+
+### **Rust**
+
+```rust
+// Definition for singly-linked list.
+// #[derive(PartialEq, Eq, Clone, Debug)]
+// pub struct ListNode {
+//   pub val: i32,
+//   pub next: Option<Box<ListNode>>
+// }
+//
+// impl ListNode {
+//   #[inline]
+//   fn new(val: i32) -> Self {
+//     ListNode {
+//       next: None,
+//       val
+//     }
+//   }
+// }
+impl Solution {
+    pub fn merge_k_lists(mut lists: Vec<Option<Box<ListNode>>>) -> Option<Box<ListNode>> {
+        let n = lists.len();
+        Self::dfs(&mut lists, 0, n)
+    }
+
+    fn dfs(
+        lists: &mut Vec<Option<Box<ListNode>>>,
+        start: usize,
+        end: usize,
+    ) -> Option<Box<ListNode>> {
+        if end - start <= 1 {
+            if lists.get(start).is_some() {
+                return lists[start].take();
+            }
+            return None;
+        }
+        let mid = start + (end - start) / 2;
+        let mut left = Self::dfs(lists, start, mid);
+        let mut right = Self::dfs(lists, mid, end);
+        let mut dummy = Box::new(ListNode::new(0));
+        let mut cur = &mut dummy;
+        while left.is_some() || right.is_some() {
+            let mut next = None;
+            if left.is_some()
+                && (right.is_none() || left.as_ref().unwrap().val < right.as_ref().unwrap().val)
+            {
+                let t = left.as_mut().unwrap().next.take();
+                next = left.take();
+                left = t;
+            } else {
+                let t = right.as_mut().unwrap().next.take();
+                next = right.take();
+                right = t;
+            }
+            cur.next = next;
+            cur = cur.next.as_mut().unwrap();
+        }
+        dummy.next
     }
 }
 ```

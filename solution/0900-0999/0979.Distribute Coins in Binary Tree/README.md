@@ -1,4 +1,4 @@
-# [979. 在二叉树中分配硬币](https://leetcode-cn.com/problems/distribute-coins-in-binary-tree)
+# [979. 在二叉树中分配硬币](https://leetcode.cn/problems/distribute-coins-in-binary-tree)
 
 [English Version](/solution/0900-0999/0979.Distribute%20Coins%20in%20Binary%20Tree/README_EN.md)
 
@@ -16,7 +16,7 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0979.Distribute%20Coins%20in%20Binary%20Tree/images/tree1.png" style="height: 142px; width: 150px;"></strong></p>
+<p><strong><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0979.Distribute%20Coins%20in%20Binary%20Tree/images/tree1.png" style="height: 142px; width: 150px;"></strong></p>
 
 <pre><strong>输入：</strong>[3,0,0]
 <strong>输出：</strong>2
@@ -25,7 +25,7 @@
 
 <p><strong>示例 2：</strong></p>
 
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0979.Distribute%20Coins%20in%20Binary%20Tree/images/tree2.png" style="height: 142px; width: 150px;"></strong></p>
+<p><strong><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0979.Distribute%20Coins%20in%20Binary%20Tree/images/tree2.png" style="height: 142px; width: 150px;"></strong></p>
 
 <pre><strong>输入：</strong>[0,3,0]
 <strong>输出：</strong>3
@@ -34,7 +34,7 @@
 
 <p><strong>示例 3：</strong></p>
 
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0979.Distribute%20Coins%20in%20Binary%20Tree/images/tree3.png" style="height: 142px; width: 150px;"></strong></p>
+<p><strong><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0979.Distribute%20Coins%20in%20Binary%20Tree/images/tree3.png" style="height: 142px; width: 150px;"></strong></p>
 
 <pre><strong>输入：</strong>[1,0,2]
 <strong>输出：</strong>2
@@ -42,7 +42,7 @@
 
 <p><strong>示例 4：</strong></p>
 
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0979.Distribute%20Coins%20in%20Binary%20Tree/images/tree4.png" style="height: 156px; width: 155px;"></strong></p>
+<p><strong><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0979.Distribute%20Coins%20in%20Binary%20Tree/images/tree4.png" style="height: 156px; width: 155px;"></strong></p>
 
 <pre><strong>输入：</strong>[1,0,0,null,3]
 <strong>输出：</strong>4
@@ -61,9 +61,15 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
-先遍历左右子树，获得硬币的余额。比如，我们从左子树得到 `left = "+3"`，说明左子树有 3 个额外的硬币需要移出。如果我们从右子树得到 `right = "-1"`，说明右子树需要额外移入 1 个硬币。累加移动的次数 `abs(+3) + abs(-1)`，然后返回整个二叉树的余额 `left + right + root.val - 1`。
+**方法一：DFS**
 
-返回最终的移动次数即可。
+我们定义一个函数 $dfs(node)$，表示以 $node$ 为根节点的子树中，金币的超载量，即金币的数量减去节点数。如果 $dfs(node)$ 为正数，表示该子树中金币的数量多于节点数，需要将多余的金币移出该子树；如果 $dfs(node)$ 为负数，表示该子树中金币的数量少于节点数，需要将不足的金币移入该子树。
+
+在函数 $dfs(node)$ 中，我们首先遍历左右子树，获得左右子树的金币超载量 $left$ 和 $right$。那么当前移动的次数需要加上 $|left| + |right|$，即将左右子树中的金币移动到当前节点。然后，我们返回整个子树的金币超载量，即 $left + right + node.val - 1$。
+
+最后返回移动的次数即可。
+
+时间复杂度 $O(n)$，空间复杂度 $O(h)$。其中 $n$ 和 $h$ 分别是二叉树的节点数和高度。
 
 <!-- tabs:start -->
 
@@ -79,12 +85,12 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def distributeCoins(self, root: TreeNode) -> int:
+    def distributeCoins(self, root: Optional[TreeNode]) -> int:
         def dfs(root):
-            nonlocal ans
             if root is None:
                 return 0
             left, right = dfs(root.left), dfs(root.right)
+            nonlocal ans
             ans += abs(left) + abs(right)
             return left + right + root.val - 1
 
@@ -114,11 +120,9 @@ class Solution:
  * }
  */
 class Solution {
-
     private int ans;
 
     public int distributeCoins(TreeNode root) {
-        ans = 0;
         dfs(root);
         return ans;
     }
@@ -133,7 +137,6 @@ class Solution {
         return left + right + root.val - 1;
     }
 }
-
 ```
 
 ### **C++**
@@ -152,26 +155,26 @@ class Solution {
  */
 class Solution {
 public:
-    int ans;
-
     int distributeCoins(TreeNode* root) {
-        ans = 0;
+        int ans = 0;
+        function<int(TreeNode*)> dfs = [&](TreeNode* root) -> int {
+            if (!root) {
+                return 0;
+            }
+            int left = dfs(root->left);
+            int right = dfs(root->right);
+            ans += abs(left) + abs(right);
+            return left + right + root->val - 1;
+        };
         dfs(root);
         return ans;
-    }
-
-    int dfs(TreeNode* root) {
-        if (!root) return 0;
-        int left = dfs(root->left), right = dfs(root->right);
-        ans += abs(left) + abs(right);
-        return left + right + root->val - 1;
     }
 };
 ```
 
-### **C++**
+### **Go**
 
-```cpp
+```go
 /**
  * Definition for a binary tree node.
  * type TreeNode struct {
@@ -180,9 +183,8 @@ public:
  *     Right *TreeNode
  * }
  */
-func distributeCoins(root *TreeNode) int {
-	ans := 0
-	var dfs func(root *TreeNode) int
+func distributeCoins(root *TreeNode) (ans int) {
+	var dfs func(*TreeNode) int
 	dfs = func(root *TreeNode) int {
 		if root == nil {
 			return 0
@@ -192,7 +194,7 @@ func distributeCoins(root *TreeNode) int {
 		return left + right + root.Val - 1
 	}
 	dfs(root)
-	return ans
+	return
 }
 
 func abs(x int) int {
@@ -200,6 +202,39 @@ func abs(x int) int {
 		return -x
 	}
 	return x
+}
+```
+
+### **TypeScript**
+
+```ts
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function distributeCoins(root: TreeNode | null): number {
+    let ans = 0;
+    const dfs = (root: TreeNode | null) => {
+        if (!root) {
+            return 0;
+        }
+        const left = dfs(root.left);
+        const right = dfs(root.right);
+        ans += Math.abs(left) + Math.abs(right);
+        return left + right + root.val - 1;
+    };
+    dfs(root);
+    return ans;
 }
 ```
 

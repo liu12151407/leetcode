@@ -16,8 +16,8 @@
 <p>Return <em>the <strong>earliest</strong> possible day where <strong>all</strong> seeds are blooming</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2100-2199/2136.Earliest%20Possible%20Day%20of%20Full%20Bloom/images/1.png" style="width: 453px; height: 149px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2100-2199/2136.Earliest%20Possible%20Day%20of%20Full%20Bloom/images/1.png" style="width: 453px; height: 149px;" />
 <pre>
 <strong>Input:</strong> plantTime = [1,4,3], growTime = [2,3,1]
 <strong>Output:</strong> 9
@@ -29,8 +29,8 @@ On days 5, 6, and 7, plant the 2<sup>nd</sup> seed. The seed grows for 1 full da
 Thus, on day 9, all the seeds are blooming.
 </pre>
 
-<p><strong>Example 2:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2100-2199/2136.Earliest%20Possible%20Day%20of%20Full%20Bloom/images/2.png" style="width: 454px; height: 184px;" />
+<p><strong class="example">Example 2:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2100-2199/2136.Earliest%20Possible%20Day%20of%20Full%20Bloom/images/2.png" style="width: 454px; height: 184px;" />
 <pre>
 <strong>Input:</strong> plantTime = [1,2,3,2], growTime = [2,1,2,1]
 <strong>Output:</strong> 9
@@ -43,7 +43,7 @@ On days 6 and 7, plant the 3<sup>rd</sup> seed. The seed grows for 1 full day an
 Thus, on day 9, all the seeds are blooming.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> plantTime = [1], growTime = [1]
@@ -68,13 +68,82 @@ Thus, on day 2, all the seeds are blooming.
 ### **Python3**
 
 ```python
-
+class Solution:
+    def earliestFullBloom(self, plantTime: List[int], growTime: List[int]) -> int:
+        ans = t = 0
+        for a, b in sorted(zip(plantTime, growTime), key=lambda x: -x[1]):
+            t += a
+            ans = max(ans, t + b)
+        return ans
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int earliestFullBloom(int[] plantTime, int[] growTime) {
+        int n = plantTime.length;
+        int[][] arr = new int[n][2];
+        for (int i = 0; i < n; ++i) {
+            arr[i] = new int[] {plantTime[i], growTime[i]};
+        }
+        Arrays.sort(arr, (a, b) -> b[1] - a[1]);
+        int ans = 0;
+        int t = 0;
+        for (int[] e : arr) {
+            t += e[0];
+            ans = Math.max(ans, t + e[1]);
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int earliestFullBloom(vector<int>& plantTime, vector<int>& growTime) {
+        int n = plantTime.size();
+        vector<pair<int, int>> arr;
+        for (int i = 0; i < n; ++i) arr.push_back({-growTime[i], plantTime[i]});
+        sort(arr.begin(), arr.end());
+        int ans = 0, t = 0;
+        for (auto [a, b] : arr) {
+            t += b;
+            ans = max(ans, t - a);
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func earliestFullBloom(plantTime []int, growTime []int) int {
+	arr := [][]int{}
+	for i, a := range plantTime {
+		arr = append(arr, []int{a, growTime[i]})
+	}
+	sort.Slice(arr, func(i, j int) bool {
+		return arr[i][1] > arr[j][1]
+	})
+	ans, t := 0, 0
+	for _, e := range arr {
+		t += e[0]
+		ans = max(ans, t+e[1])
+	}
+	return ans
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
 ```
 
 ### **TypeScript**

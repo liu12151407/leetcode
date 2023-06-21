@@ -16,7 +16,7 @@
 </ul>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input</strong>
@@ -59,7 +59,6 @@ Binary search.
 
 ```python
 class TopVotedCandidate:
-
     def __init__(self, persons: List[int], times: List[int]):
         mx = cur = 0
         counter = Counter()
@@ -145,11 +144,9 @@ public:
         int mx = 0, cur = 0;
         this->times = times;
         vector<int> counter(n);
-        for (int i = 0; i < n; ++i)
-        {
+        for (int i = 0; i < n; ++i) {
             int p = persons[i];
-            if (++counter[p] >= mx)
-            {
+            if (++counter[p] >= mx) {
                 mx = counter[p];
                 cur = p;
             }
@@ -159,11 +156,12 @@ public:
 
     int q(int t) {
         int left = 0, right = wins.size() - 1;
-        while (left < right)
-        {
+        while (left < right) {
             int mid = left + right + 1 >> 1;
-            if (times[mid] <= t) left = mid;
-            else right = mid - 1;
+            if (times[mid] <= t)
+                left = mid;
+            else
+                right = mid - 1;
         }
         return wins[left];
     }

@@ -1,4 +1,4 @@
-# [1923. 最长公共子路径](https://leetcode-cn.com/problems/longest-common-subpath)
+# [1923. 最长公共子路径](https://leetcode.cn/problems/longest-common-subpath)
 
 [English Version](/solution/1900-1999/1923.Longest%20Common%20Subpath/README_EN.md)
 
@@ -59,6 +59,16 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：字符串哈希**
+
+**字符串哈希**是把一个任意长度的字符串映射成一个非负整数，并且其冲突的概率几乎为 0。字符串哈希用于计算字符串哈希值，快速判断两个字符串是否相等。
+
+取一固定值 BASE，把字符串看作是 BASE 进制数，并分配一个大于 0 的数值，代表每种字符。一般来说，我们分配的数值都远小于 BASE。例如，对于小写字母构成的字符串，可以令 a=1, b=2, ..., z=26。取一固定值 MOD，求出该 BASE 进制对 M 的余数，作为该字符串的 hash 值。
+
+一般来说，取 BASE=131 或者 BASE=13331，此时 hash 值产生的冲突概率极低。只要两个字符串 hash 值相同，我们就认为两个字符串是相等的。通常 MOD 取 2^64，C++ 里，可以直接使用 unsigned long long 类型存储这个 hash 值，在计算时不处理算术溢出问题，产生溢出时相当于自动对 2^64 取模，这样可以避免低效取模运算。
+
+除了在极特殊构造的数据上，上述 hash 算法很难产生冲突，一般情况下上述 hash 算法完全可以出现在题目的标准答案中。我们还可以多取一些恰当的 BASE 和 MOD 的值（例如大质数），多进行几组 hash 运算，当结果都相同时才认为原字符串相等，就更加难以构造出使这个 hash 产生错误的数据。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -66,7 +76,43 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
+class Solution:
+    def longestCommonSubpath(self, n: int, paths: List[List[int]]) -> int:
+        def check(k: int) -> bool:
+            cnt = Counter()
+            for h in hh:
+                vis = set()
+                for i in range(1, len(h) - k + 1):
+                    j = i + k - 1
+                    x = (h[j] - h[i - 1] * p[j - i + 1]) % mod
+                    if x not in vis:
+                        vis.add(x)
+                        cnt[x] += 1
+            return max(cnt.values()) == m
 
+        m = len(paths)
+        mx = max(len(path) for path in paths)
+        base = 133331
+        mod = 2**64 + 1
+        p = [0] * (mx + 1)
+        p[0] = 1
+        for i in range(1, len(p)):
+            p[i] = p[i - 1] * base % mod
+        hh = []
+        for path in paths:
+            k = len(path)
+            h = [0] * (k + 1)
+            for i, x in enumerate(path, 1):
+                h[i] = h[i - 1] * base % mod + x
+            hh.append(h)
+        l, r = 0, min(len(path) for path in paths)
+        while l < r:
+            mid = (l + r + 1) >> 1
+            if check(mid):
+                l = mid
+            else:
+                r = mid - 1
+        return l
 ```
 
 ### **Java**

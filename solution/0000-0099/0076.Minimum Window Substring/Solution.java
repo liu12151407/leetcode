@@ -1,28 +1,28 @@
 class Solution {
     public String minWindow(String s, String t) {
-        int[] count = new int['z' - 'A' + 1];
-        int uniq = 0;
-        for (int i = 0; i < t.length(); ++i) {
-            if (++count[t.charAt(i) - 'A'] == 1) uniq++;
+        int[] need = new int[128];
+        int[] window = new int[128];
+        int m = s.length(), n = t.length();
+        for (int i = 0; i < n; ++i) {
+            ++need[t.charAt(i)];
         }
-        int found = 0,i = 0,j = 0;
-        int minLen = Integer.MAX_VALUE;
-        int minJ = Integer.MAX_VALUE;
-        while (found < uniq) {
-            while (i < s.length()) {
-                if (found >= uniq) break;
-                if (--count[s.charAt(i) - 'A'] == 0) found++;
-                i++;
+        int cnt = 0, j = 0, k = -1, mi = 1 << 30;
+        for (int i = 0; i < m; ++i) {
+            ++window[s.charAt(i)];
+            if (need[s.charAt(i)] >= window[s.charAt(i)]) {
+                ++cnt;
             }
-            if (found < uniq) break;
-            while (j < i && count[s.charAt(j) - 'A'] < 0) count[s.charAt(j++) - 'A']++;
-            if (i - j < minLen) {
-                minLen = i - j;
-                minJ = j;
+            while (cnt == n) {
+                if (i - j + 1 < mi) {
+                    mi = i - j + 1;
+                    k = j;
+                }
+                if (need[s.charAt(j)] >= window[s.charAt(j)]) {
+                    --cnt;
+                }
+                --window[s.charAt(j++)];
             }
-            count[s.charAt(j++) - 'A']++;
-            found--;
         }
-        return minLen < Integer.MAX_VALUE ? s.substring(minJ, minJ + minLen) : "";
+        return k < 0 ? "" : s.substring(k, k + mi);
     }
 }

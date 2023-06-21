@@ -11,7 +11,7 @@
 <p>Return <code>true</code><em> if </em><code>s</code><em> is a <strong>prefix string</strong> of </em><code>words</code><em>, or </em><code>false</code><em> otherwise</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;iloveleetcode&quot;, words = [&quot;i&quot;,&quot;love&quot;,&quot;leetcode&quot;,&quot;apples&quot;]
@@ -20,7 +20,7 @@
 s can be made by concatenating &quot;i&quot;, &quot;love&quot;, and &quot;leetcode&quot; together.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;iloveleetcode&quot;, words = [&quot;apples&quot;,&quot;i&quot;,&quot;love&quot;,&quot;leetcode&quot;]
@@ -45,13 +45,62 @@ It is impossible to make s using a prefix of arr.</pre>
 ### **Python3**
 
 ```python
-
+class Solution:
+    def isPrefixString(self, s: str, words: List[str]) -> bool:
+        t = 0
+        for i, w in enumerate(words):
+            t += len(w)
+            if len(s) == t:
+                return ''.join(words[: i + 1]) == s
+        return False
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public boolean isPrefixString(String s, String[] words) {
+        StringBuilder t = new StringBuilder();
+        for (String w : words) {
+            t.append(w);
+            if (s.length() == t.length()) {
+                return s.equals(t.toString());
+            }
+        }
+        return false;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool isPrefixString(string s, vector<string>& words) {
+        string t = "";
+        for (string& w : words) {
+            t += w;
+            if (t.size() == s.size()) return t == s;
+        }
+        return false;
+    }
+};
+```
+
+### **Go**
+
+```go
+func isPrefixString(s string, words []string) bool {
+	t := ""
+	for _, w := range words {
+		t += w
+		if t == s {
+			return true
+		}
+	}
+	return false
+}
 ```
 
 ### **...**

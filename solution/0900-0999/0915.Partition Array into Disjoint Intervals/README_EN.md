@@ -4,61 +4,43 @@
 
 ## Description
 
-<p>Given an array <code>A</code>, partition it&nbsp;into two (contiguous) subarrays&nbsp;<code>left</code>&nbsp;and <code>right</code>&nbsp;so that:</p>
+<p>Given an integer array <code>nums</code>, partition it into two (contiguous) subarrays <code>left</code> and <code>right</code> so that:</p>
 
 <ul>
-	<li>Every element in <code>left</code>&nbsp;is less than or equal to every element in <code>right</code>.</li>
+	<li>Every element in <code>left</code> is less than or equal to every element in <code>right</code>.</li>
 	<li><code>left</code> and <code>right</code> are non-empty.</li>
-	<li><code>left</code>&nbsp;has the smallest possible size.</li>
+	<li><code>left</code> has the smallest possible size.</li>
 </ul>
 
-<p>Return the <strong>length</strong> of <code>left</code> after such a partitioning.&nbsp; It is guaranteed that such a partitioning exists.</p>
+<p>Return <em>the length of </em><code>left</code><em> after such a partitioning</em>.</p>
+
+<p>Test cases are generated such that partitioning exists.</p>
 
 <p>&nbsp;</p>
-
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
-
-<strong>Input: </strong><span id="example-input-1-1">[5,0,3,8,6]</span>
-
-<strong>Output: </strong><span id="example-output-1">3</span>
-
-<strong>Explanation: </strong>left = [5,0,3], right = [8,6]
-
+<strong>Input:</strong> nums = [5,0,3,8,6]
+<strong>Output:</strong> 3
+<strong>Explanation:</strong> left = [5,0,3], right = [8,6]
 </pre>
 
-<div>
-
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
-
-<strong>Input: </strong><span id="example-input-2-1">[1,1,1,0,6,12]</span>
-
-<strong>Output: </strong><span id="example-output-2">4</span>
-
-<strong>Explanation: </strong>left = [1,1,1,0], right = [6,12]
-
+<strong>Input:</strong> nums = [1,1,1,0,6,12]
+<strong>Output:</strong> 4
+<strong>Explanation:</strong> left = [1,1,1,0], right = [6,12]
 </pre>
 
 <p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
 
-</div>
-
-<p><strong>Note:</strong></p>
-
-<ol>
-	<li><code>2 &lt;= A.length&nbsp;&lt;= 30000</code></li>
-	<li><code>0 &lt;= A[i] &lt;= 10^6</code></li>
-	<li>It is guaranteed there is at least one way to partition <code>A</code> as described.</li>
-</ol>
-
-<div>
-
-<div>&nbsp;</div>
-
-</div>
+<ul>
+	<li><code>2 &lt;= nums.length &lt;= 10<sup>5</sup></code></li>
+	<li><code>0 &lt;= nums[i] &lt;= 10<sup>6</sup></code></li>
+	<li>There is at least one valid answer for the given input.</li>
+</ul>
 
 ## Solutions
 
@@ -67,13 +49,97 @@
 ### **Python3**
 
 ```python
-
+class Solution:
+    def partitionDisjoint(self, nums: List[int]) -> int:
+        n = len(nums)
+        mi = [inf] * (n + 1)
+        for i in range(n - 1, -1, -1):
+            mi[i] = min(nums[i], mi[i + 1])
+        mx = 0
+        for i, v in enumerate(nums, 1):
+            mx = max(mx, v)
+            if mx <= mi[i]:
+                return i
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int partitionDisjoint(int[] nums) {
+        int n = nums.length;
+        int[] mi = new int[n + 1];
+        mi[n] = nums[n - 1];
+        for (int i = n - 1; i >= 0; --i) {
+            mi[i] = Math.min(nums[i], mi[i + 1]);
+        }
+        int mx = 0;
+        for (int i = 1; i <= n; ++i) {
+            int v = nums[i - 1];
+            mx = Math.max(mx, v);
+            if (mx <= mi[i]) {
+                return i;
+            }
+        }
+        return 0;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int partitionDisjoint(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> mi(n + 1, INT_MAX);
+        for (int i = n - 1; ~i; --i) mi[i] = min(nums[i], mi[i + 1]);
+        int mx = 0;
+        for (int i = 1; i <= n; ++i) {
+            int v = nums[i - 1];
+            mx = max(mx, v);
+            if (mx <= mi[i]) return i;
+        }
+        return 0;
+    }
+};
+```
+
+### **Go**
+
+```go
+func partitionDisjoint(nums []int) int {
+	n := len(nums)
+	mi := make([]int, n+1)
+	mi[n] = nums[n-1]
+	for i := n - 1; i >= 0; i-- {
+		mi[i] = min(nums[i], mi[i+1])
+	}
+	mx := 0
+	for i := 1; i <= n; i++ {
+		v := nums[i-1]
+		mx = max(mx, v)
+		if mx <= mi[i] {
+			return i
+		}
+	}
+	return 0
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
 ```
 
 ### **...**

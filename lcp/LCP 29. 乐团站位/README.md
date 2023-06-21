@@ -1,4 +1,4 @@
-# [LCP 29. 乐团站位](https://leetcode-cn.com/problems/SNJvJP)
+# [LCP 29. 乐团站位](https://leetcode.cn/problems/SNJvJP)
 
 ## 题目描述
 
@@ -8,7 +8,7 @@
 
 为保证声乐混合效果，成员站位规则为：自 `grid` 左上角开始顺时针螺旋形向内循环以 `1，2，...，9` 循环重复排列。例如当 num = `5` 时，站位如图所示
 
-![image.png](https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcp/LCP%2029.%20乐团站位/images/1616125411-WOblWH-image.png)
+![image.png](https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcp/LCP%2029.%20乐团站位/images/1616125411-WOblWH-image.png)
 
 请返回位于场地坐标 [`Xpos`,`Ypos`] 的成员所持乐器编号。
 
@@ -19,7 +19,7 @@
 > 输出：`3`
 >
 > 解释：
-> ![image.png](https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcp/LCP%2029.%20乐团站位/images/1616125437-WUOwsu-image.png)
+> ![image.png](https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcp/LCP%2029.%20乐团站位/images/1616125437-WUOwsu-image.png)
 
 **示例 2：**
 
@@ -28,12 +28,12 @@
 > 输出：`5`
 >
 > 解释：
-> ![image.png](https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcp/LCP%2029.%20乐团站位/images/1616125453-IIDpxg-image.png)
+> ![image.png](https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcp/LCP%2029.%20乐团站位/images/1616125453-IIDpxg-image.png)
 
 **提示：**
 
-- `1 <= num <= 10^9`
-- `0 <= Xpos, Ypos < num`
+-   `1 <= num <= 10^9`
+-   `0 <= Xpos, Ypos < num`
 
 ## 解法
 

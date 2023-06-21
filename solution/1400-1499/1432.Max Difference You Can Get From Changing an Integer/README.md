@@ -1,4 +1,4 @@
-# [1432. 改变一个整数能得到的最大差值](https://leetcode-cn.com/problems/max-difference-you-can-get-from-changing-an-integer)
+# [1432. 改变一个整数能得到的最大差值](https://leetcode.cn/problems/max-difference-you-can-get-from-changing-an-integer)
 
 [English Version](/solution/1400-1499/1432.Max%20Difference%20You%20Can%20Get%20From%20Changing%20an%20Integer/README_EN.md)
 
@@ -69,6 +69,18 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：贪心**
+
+要想得到最大差值，那么我们应该拿到最大值与最小值，这样差值最大。
+
+因此，我们先从高到低枚举 $nums$ 每个位置上的数，如果数字不为 `9`，就将所有该数字替换为 `9`，得到最大整数 $a$。
+
+接下来，我们再从高到低枚举 `nums` 每个位置上的数，首位不能为 `0`，因此如果首位不为 `1`，我们将其替换为 `1`；如果非首位，且数字不与首位相同，我们将其替换为 `0`，得到最大整数 $b$。
+
+答案为差值 $a - b$。
+
+时间复杂度 $O(\log num)$，空间复杂度 $O(\log num)$。其中 $num$ 为给定整数。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -76,7 +88,21 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def maxDiff(self, num: int) -> int:
+        a, b = str(num), str(num)
+        for c in a:
+            if c != "9":
+                a = a.replace(c, "9")
+                break
+        if b[0] != "1":
+            b = b.replace(b[0], "1")
+        else:
+            for c in b[1:]:
+                if c not in "01":
+                    b = b.replace(c, "0")
+                    break
+        return int(a) - int(b)
 ```
 
 ### **Java**
@@ -84,7 +110,91 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public int maxDiff(int num) {
+        String a = String.valueOf(num);
+        String b = a;
+        for (int i = 0; i < a.length(); ++i) {
+            if (a.charAt(i) != '9') {
+                a = a.replace(a.charAt(i), '9');
+                break;
+            }
+        }
+        if (b.charAt(0) != '1') {
+            b = b.replace(b.charAt(0), '1');
+        } else {
+            for (int i = 1; i < b.length(); ++i) {
+                if (b.charAt(i) != '0' && b.charAt(i) != '1') {
+                    b = b.replace(b.charAt(i), '0');
+                    break;
+                }
+            }
+        }
+        return Integer.parseInt(a) - Integer.parseInt(b);
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int maxDiff(int num) {
+        auto replace = [](string& s, char a, char b) {
+            for (auto& c : s) {
+                if (c == a) {
+                    c = b;
+                }
+            }
+        };
+        string a = to_string(num);
+        string b = a;
+        for (int i = 0; i < a.size(); ++i) {
+            if (a[i] != '9') {
+                replace(a, a[i], '9');
+                break;
+            }
+        }
+        if (b[0] != '1') {
+            replace(b, b[0], '1');
+        } else {
+            for (int i = 1; i < b.size(); ++i) {
+                if (b[i] != '0' && b[i] != '1') {
+                    replace(b, b[i], '0');
+                    break;
+                }
+            }
+        }
+        return stoi(a) - stoi(b);
+    }
+};
+```
+
+### **Go**
+
+```go
+func maxDiff(num int) int {
+	a, b := num, num
+	s := strconv.Itoa(num)
+	for i := range s {
+		if s[i] != '9' {
+			a, _ = strconv.Atoi(strings.ReplaceAll(s, string(s[i]), "9"))
+			break
+		}
+	}
+	if s[0] > '1' {
+		b, _ = strconv.Atoi(strings.ReplaceAll(s, string(s[0]), "1"))
+	} else {
+		for i := 1; i < len(s); i++ {
+			if s[i] != '0' && s[i] != '1' {
+				b, _ = strconv.Atoi(strings.ReplaceAll(s, string(s[i]), "0"))
+				break
+			}
+		}
+	}
+	return a - b
+}
 ```
 
 ### **...**

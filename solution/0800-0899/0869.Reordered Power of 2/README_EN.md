@@ -9,39 +9,18 @@
 <p>Return <code>true</code> <em>if and only if we can do this so that the resulting number is a power of two</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 1
 <strong>Output:</strong> true
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 10
 <strong>Output:</strong> false
-</pre>
-
-<p><strong>Example 3:</strong></p>
-
-<pre>
-<strong>Input:</strong> n = 16
-<strong>Output:</strong> true
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> n = 24
-<strong>Output:</strong> false
-</pre>
-
-<p><strong>Example 5:</strong></p>
-
-<pre>
-<strong>Input:</strong> n = 46
-<strong>Output:</strong> true
 </pre>
 
 <p>&nbsp;</p>
@@ -61,14 +40,14 @@
 class Solution:
     def reorderedPowerOf2(self, n: int) -> bool:
         def convert(n):
-            counter = [0] * 10
-            while n > 0:
-                counter[n % 10] += 1
-                n //= 10
-            return counter
+            cnt = [0] * 10
+            while n:
+                n, v = divmod(n, 10)
+                cnt[v] += 1
+            return cnt
 
         i, s = 1, convert(n)
-        while i <= 10 ** 9:
+        while i <= 10**9:
             if convert(i) == s:
                 return True
             i <<= 1
@@ -90,12 +69,11 @@ class Solution {
     }
 
     private String convert(int n) {
-        char[] counter = new char[10];
-        while (n > 0) {
-            ++counter[n % 10];
-            n /= 10;
+        char[] cnt = new char[10];
+        for (; n > 0; n /= 10) {
+            cnt[n % 10]++;
         }
-        return new String(counter);
+        return new String(cnt);
     }
 }
 ```
@@ -108,18 +86,15 @@ public:
     bool reorderedPowerOf2(int n) {
         vector<int> s = convert(n);
         for (int i = 1; i <= pow(10, 9); i <<= 1)
-            if (s == convert(i)) return true;
+            if (s == convert(i))
+                return true;
         return false;
     }
 
     vector<int> convert(int n) {
-        vector<int> counter(10);
-        while (n)
-        {
-            ++counter[n % 10];
-            n /= 10;
-        }
-        return counter;
+        vector<int> cnt(10);
+        for (; n; n /= 10) ++cnt[n % 10];
+        return cnt;
     }
 };
 ```
@@ -129,14 +104,12 @@ public:
 ```go
 func reorderedPowerOf2(n int) bool {
 	convert := func(n int) []byte {
-		counter := make([]byte, 10)
-		for n > 0 {
-			counter[n%10]++
-			n /= 10
+		cnt := make([]byte, 10)
+		for ; n > 0; n /= 10 {
+			cnt[n%10]++
 		}
-		return counter
+		return cnt
 	}
-
 	s := convert(n)
 	for i := 1; i <= 1e9; i <<= 1 {
 		if bytes.Equal(s, convert(i)) {

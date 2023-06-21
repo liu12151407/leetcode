@@ -1,4 +1,4 @@
-# [333. 最大 BST 子树](https://leetcode-cn.com/problems/largest-bst-subtree)
+# [333. 最大 BST 子树](https://leetcode.cn/problems/largest-bst-subtree)
 
 [English Version](/solution/0300-0399/0333.Largest%20BST%20Subtree/README_EN.md)
 
@@ -12,30 +12,20 @@
 
 <ul>
 	<li>
-	<p class="MachineTrans-lang-zh-CN">左子树的值小于其父（根）节点的值。</p>
+	<p>左子树的值小于其父（根）节点的值。</p>
 	</li>
 	<li>
-	<p class="MachineTrans-lang-zh-CN">右子树的值大于其父（根）节点的值。</p>
+	<p>右子树的值大于其父（根）节点的值。</p>
 	</li>
 </ul>
 
-<p><strong>注意:</strong></p>
+<p><strong>注意：</strong>子树必须包含其所有后代。</p>
 
-<ul>
-	<li>子树必须包含其所有后代。</li>
-</ul>
-
-<p><strong>进阶:</strong></p>
-
-<ul>
-	<li>你能想出 O(n) 时间复杂度的解法吗？</li>
-</ul>
-
-<p> </p>
+<p>&nbsp;</p>
 
 <p><strong>示例 1：</strong></p>
 
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0300-0399/0333.Largest%20BST%20Subtree/images/tmp.jpg" style="width: 571px; height: 302px;" /></strong></p>
+<p><strong><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0300-0399/0333.Largest%20BST%20Subtree/images/tmp.jpg" /></strong></p>
 
 <pre>
 <strong>输入：</strong>root = [10,5,15,1,8,null,7]
@@ -49,14 +39,18 @@
 <strong>输出：</strong>2
 </pre>
 
-<p> </p>
+<p>&nbsp;</p>
 
 <p><strong>提示：</strong></p>
 
 <ul>
 	<li>树上节点数目的范围是 <code>[0, 10<sup>4</sup>]</code></li>
-	<li><code>-10<sup>4</sup> <= Node.val <= 10<sup>4</sup></code></li>
+	<li><code>-10<sup>4</sup> &lt;= Node.val &lt;= 10<sup>4</sup></code></li>
 </ul>
+
+<p>&nbsp;</p>
+
+<p><strong>进阶:</strong>&nbsp; 你能想出 O(n) 时间复杂度的解法吗？</p>
 
 ## 解法
 
@@ -81,14 +75,14 @@ class Solution:
     def largestBSTSubtree(self, root: Optional[TreeNode]) -> int:
         def dfs(root):
             if root is None:
-                return float('inf'), float('-inf'), 0
+                return inf, -inf, 0
             lmi, lmx, ln = dfs(root.left)
             rmi, rmx, rn = dfs(root.right)
             nonlocal ans
             if lmx < root.val < rmi:
                 ans = max(ans, ln + rn + 1)
                 return min(lmi, root.val), max(rmx, root.val), ln + rn + 1
-            return float('-inf'), float('inf'), 0
+            return -inf, inf, 0
 
         ans = 0
         dfs(root)
@@ -126,15 +120,16 @@ class Solution {
 
     private int[] dfs(TreeNode root) {
         if (root == null) {
-            return new int[]{Integer.MAX_VALUE, Integer.MIN_VALUE, 0};
+            return new int[] {Integer.MAX_VALUE, Integer.MIN_VALUE, 0};
         }
         int[] left = dfs(root.left);
         int[] right = dfs(root.right);
         if (left[1] < root.val && root.val < right[0]) {
             ans = Math.max(ans, left[2] + right[2] + 1);
-            return new int[]{Math.min(root.val, left[0]), Math.max(root.val, right[1]), left[2] + right[2] + 1};
+            return new int[] {
+                Math.min(root.val, left[0]), Math.max(root.val, right[1]), left[2] + right[2] + 1};
         }
-        return new int[]{Integer.MIN_VALUE, Integer.MAX_VALUE, 0};
+        return new int[] {Integer.MIN_VALUE, Integer.MAX_VALUE, 0};
     }
 }
 ```
@@ -167,8 +162,7 @@ public:
         if (!root) return {INT_MAX, INT_MIN, 0};
         auto left = dfs(root->left);
         auto right = dfs(root->right);
-        if (left[1] < root->val && root->val < right[0])
-        {
+        if (left[1] < root->val && root->val < right[0]) {
             ans = max(ans, left[2] + right[2] + 1);
             return {min(root->val, left[0]), max(root->val, right[1]), left[2] + right[2] + 1};
         }

@@ -1,4 +1,4 @@
-# [2092. 找出知晓秘密的所有专家](https://leetcode-cn.com/problems/find-all-people-with-secret)
+# [2092. 找出知晓秘密的所有专家](https://leetcode.cn/problems/find-all-people-with-secret)
 
 [English Version](/solution/2000-2099/2092.Find%20All%20People%20With%20Secret/README_EN.md)
 
@@ -53,17 +53,6 @@
 时间 2 ，专家 3 将秘密与专家 4 共享。
 因此，在所有会议结束后，专家 0、1、2、3 和 4 都将知晓这个秘密。</pre>
 
-<p><strong>示例 4：</strong></p>
-
-<pre>
-<strong>输入：</strong>n = 6, meetings = [[0,2,1],[1,3,1],[4,5,1]], firstPerson = 1
-<strong>输出：</strong>[0,1,2,3]
-<strong>解释：</strong>
-时间 0 ，专家 0 将秘密与专家 1 共享。
-时间 1 ，专家 0 将秘密与专家 2 共享，专家 1 将秘密与专家 3 共享。
-因此，在所有会议结束后，专家 0、1、2 和 3 都将知晓这个秘密。
-</pre>
-
 <p>&nbsp;</p>
 
 <p><strong>提示：</strong></p>
@@ -82,6 +71,8 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：BFS**
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -89,7 +80,33 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def findAllPeople(
+        self, n: int, meetings: List[List[int]], firstPerson: int
+    ) -> List[int]:
+        vis = [False] * n
+        vis[0] = vis[firstPerson] = True
+        meetings.sort(key=lambda x: x[2])
+        i, m = 0, len(meetings)
+        while i < m:
+            j = i
+            while j + 1 < m and meetings[j + 1][2] == meetings[i][2]:
+                j += 1
+            s = set()
+            g = defaultdict(list)
+            for x, y, _ in meetings[i : j + 1]:
+                g[x].append(y)
+                g[y].append(x)
+                s.update([x, y])
+            q = deque([u for u in s if vis[u]])
+            while q:
+                u = q.popleft()
+                for v in g[u]:
+                    if not vis[v]:
+                        vis[v] = True
+                        q.append(v)
+            i = j + 1
+        return [i for i, v in enumerate(vis) if v]
 ```
 
 ### **Java**
@@ -97,7 +114,150 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public List<Integer> findAllPeople(int n, int[][] meetings, int firstPerson) {
+        boolean[] vis = new boolean[n];
+        vis[0] = true;
+        vis[firstPerson] = true;
+        int m = meetings.length;
+        Arrays.sort(meetings, Comparator.comparingInt(a -> a[2]));
+        for (int i = 0; i < m;) {
+            int j = i;
+            for (; j + 1 < m && meetings[j + 1][2] == meetings[i][2]; ++j)
+                ;
+            Map<Integer, List<Integer>> g = new HashMap<>();
+            Set<Integer> s = new HashSet<>();
+            for (int k = i; k <= j; ++k) {
+                int x = meetings[k][0], y = meetings[k][1];
+                g.computeIfAbsent(x, key -> new ArrayList<>()).add(y);
+                g.computeIfAbsent(y, key -> new ArrayList<>()).add(x);
+                s.add(x);
+                s.add(y);
+            }
+            Deque<Integer> q = new ArrayDeque<>();
+            for (int u : s) {
+                if (vis[u]) {
+                    q.offer(u);
+                }
+            }
+            while (!q.isEmpty()) {
+                int u = q.poll();
+                for (int v : g.getOrDefault(u, Collections.emptyList())) {
+                    if (!vis[v]) {
+                        vis[v] = true;
+                        q.offer(v);
+                    }
+                }
+            }
+            i = j + 1;
+        }
+        List<Integer> ans = new ArrayList<>();
+        for (int i = 0; i < n; ++i) {
+            if (vis[i]) {
+                ans.add(i);
+            }
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    vector<int> findAllPeople(int n, vector<vector<int>>& meetings, int firstPerson) {
+        vector<bool> vis(n);
+        vis[0] = vis[firstPerson] = true;
+        sort(meetings.begin(), meetings.end(), [&](const auto& x, const auto& y) {
+            return x[2] < y[2];
+        });
+        for (int i = 0, m = meetings.size(); i < m;) {
+            int j = i;
+            for (; j + 1 < m && meetings[j + 1][2] == meetings[i][2]; ++j)
+                ;
+            unordered_map<int, vector<int>> g;
+            unordered_set<int> s;
+            for (int k = i; k <= j; ++k) {
+                int x = meetings[k][0], y = meetings[k][1];
+                g[x].push_back(y);
+                g[y].push_back(x);
+                s.insert(x);
+                s.insert(y);
+            }
+            queue<int> q;
+            for (int u : s)
+                if (vis[u])
+                    q.push(u);
+            while (!q.empty()) {
+                int u = q.front();
+                q.pop();
+                for (int v : g[u]) {
+                    if (!vis[v]) {
+                        vis[v] = true;
+                        q.push(v);
+                    }
+                }
+            }
+            i = j + 1;
+        }
+        vector<int> ans;
+        for (int i = 0; i < n; ++i)
+            if (vis[i])
+                ans.push_back(i);
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func findAllPeople(n int, meetings [][]int, firstPerson int) []int {
+	vis := make([]bool, n)
+	vis[0], vis[firstPerson] = true, true
+	sort.Slice(meetings, func(i, j int) bool {
+		return meetings[i][2] < meetings[j][2]
+	})
+	for i, j, m := 0, 0, len(meetings); i < m; i = j + 1 {
+		j = i
+		for j+1 < m && meetings[j+1][2] == meetings[i][2] {
+			j++
+		}
+		g := map[int][]int{}
+		s := map[int]bool{}
+		for _, e := range meetings[i : j+1] {
+			x, y := e[0], e[1]
+			g[x] = append(g[x], y)
+			g[y] = append(g[y], x)
+			s[x], s[y] = true, true
+		}
+		q := []int{}
+		for u := range s {
+			if vis[u] {
+				q = append(q, u)
+			}
+		}
+		for len(q) > 0 {
+			u := q[0]
+			q = q[1:]
+			for _, v := range g[u] {
+				if !vis[v] {
+					vis[v] = true
+					q = append(q, v)
+				}
+			}
+		}
+	}
+	var ans []int
+	for i, v := range vis {
+		if v {
+			ans = append(ans, i)
+		}
+	}
+	return ans
+}
 ```
 
 ### **TypeScript**
@@ -106,7 +266,7 @@
 function findAllPeople(
     n: number,
     meetings: number[][],
-    firstPerson: number
+    firstPerson: number,
 ): number[] {
     let parent: Array<number> = Array.from({ length: n + 1 }, (v, i) => i);
     parent[firstPerson] = 0;

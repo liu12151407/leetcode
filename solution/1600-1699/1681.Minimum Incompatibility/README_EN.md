@@ -13,7 +13,7 @@
 <p>A subset is a group integers that appear in the array with no particular order.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,2,1,4], k = 2
@@ -22,7 +22,7 @@
 The incompatibility is (2-1) + (4-1) = 4.
 Note that [1,1] and [2,4] would result in a smaller sum, but the first subset contains 2 equal elements.</pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [6,3,8,1,3,1,2,2], k = 4
@@ -31,7 +31,7 @@ Note that [1,1] and [2,4] would result in a smaller sum, but the first subset co
 The incompatibility is (2-1) + (3-2) + (8-6) + (3-1) = 6.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [5,3,3,6,3,3], k = 3
@@ -55,7 +55,28 @@ The incompatibility is (2-1) + (3-2) + (8-6) + (3-1) = 6.
 ### **Python3**
 
 ```python
+class Solution:
+    def minimumIncompatibility(self, nums: List[int], k: int) -> int:
+        @cache
+        def dfs(mask):
+            if mask == (1 << n) - 1:
+                return 0
+            d = {v: i for i, v in enumerate(nums) if (mask >> i & 1) == 0}
+            ans = inf
+            if len(d) < m:
+                return ans
+            for vs in combinations(d.keys(), m):
+                nxt = mask
+                for v in vs:
+                    nxt |= 1 << d[v]
+                ans = min(ans, max(vs) - min(vs) + dfs(nxt))
+            return ans
 
+        n = len(nums)
+        m = n // k
+        ans = dfs(0)
+        dfs.cache_clear()
+        return ans if ans < inf else -1
 ```
 
 ### **Java**

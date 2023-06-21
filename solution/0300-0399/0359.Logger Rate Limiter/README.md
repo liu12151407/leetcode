@@ -1,4 +1,4 @@
-# [359. 日志速率限制器](https://leetcode-cn.com/problems/logger-rate-limiter)
+# [359. 日志速率限制器](https://leetcode.cn/problems/logger-rate-limiter)
 
 [English Version](/solution/0300-0399/0359.Logger%20Rate%20Limiter/README_EN.md)
 
@@ -63,7 +63,6 @@ logger.shouldPrintMessage(11, "foo"); // 11 >= 11 ，返回 true ，下一次 "f
 
 ```python
 class Logger:
-
     def __init__(self):
         """
         Initialize your data structure here.
@@ -102,9 +101,11 @@ class Logger {
         limiter = new HashMap<>();
     }
 
-    /** Returns true if the message should be printed in the given timestamp, otherwise returns false.
-        If this method returns false, the message will not be printed.
-        The timestamp is in seconds granularity. */
+    /**
+       Returns true if the message should be printed in the given timestamp, otherwise returns
+       false. If this method returns false, the message will not be printed. The timestamp is in
+       seconds granularity.
+     */
     public boolean shouldPrintMessage(int timestamp, String message) {
         int t = limiter.getOrDefault(message, 0);
         if (t > timestamp) {

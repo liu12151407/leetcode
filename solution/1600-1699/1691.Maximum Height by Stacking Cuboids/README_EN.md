@@ -11,9 +11,9 @@
 <p>Return <em>the <strong>maximum height</strong> of the stacked</em> <code>cuboids</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1600-1699/1691.Maximum%20Height%20by%20Stacking%20Cuboids/images/image.jpg" style="width: 420px; height: 299px;" /></strong></p>
+<p><strong><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1600-1699/1691.Maximum%20Height%20by%20Stacking%20Cuboids/images/image.jpg" style="width: 420px; height: 299px;" /></strong></p>
 
 <pre>
 <strong>Input:</strong> cuboids = [[50,45,20],[95,37,53],[45,23,12]]
@@ -25,7 +25,7 @@ Cuboid 2 is placed next with the 23x12 side facing down with height 45.
 The total height is 95 + 50 + 45 = 190.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> cuboids = [[38,25,45],[76,35,3]]
@@ -35,7 +35,7 @@ You can&#39;t place any of the cuboids on the other.
 We choose cuboid 1 and rotate it so that the 35x3 side is facing down and its height is 76.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> cuboids = [[7,11,17],[7,17,11],[11,7,17],[11,17,7],[17,7,11],[17,11,7]]
@@ -62,13 +62,131 @@ The maximum height of stacked cuboids is 6 * 17 = 102.
 ### **Python3**
 
 ```python
-
+class Solution:
+    def maxHeight(self, cuboids: List[List[int]]) -> int:
+        for c in cuboids:
+            c.sort()
+        cuboids.sort()
+        n = len(cuboids)
+        f = [0] * n
+        for i in range(n):
+            for j in range(i):
+                if cuboids[j][1] <= cuboids[i][1] and cuboids[j][2] <= cuboids[i][2]:
+                    f[i] = max(f[i], f[j])
+            f[i] += cuboids[i][2]
+        return max(f)
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int maxHeight(int[][] cuboids) {
+        for (var c : cuboids) {
+            Arrays.sort(c);
+        }
+        Arrays.sort(cuboids,
+            (a, b) -> a[0] == b[0] ? (a[1] == b[1] ? a[2] - b[2] : a[1] - b[1]) : a[0] - b[0]);
+        int n = cuboids.length;
+        int[] f = new int[n];
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < i; ++j) {
+                if (cuboids[j][1] <= cuboids[i][1] && cuboids[j][2] <= cuboids[i][2]) {
+                    f[i] = Math.max(f[i], f[j]);
+                }
+            }
+            f[i] += cuboids[i][2];
+        }
+        return Arrays.stream(f).max().getAsInt();
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int maxHeight(vector<vector<int>>& cuboids) {
+        for (auto& c : cuboids) sort(c.begin(), c.end());
+        sort(cuboids.begin(), cuboids.end());
+        int n = cuboids.size();
+        vector<int> f(n);
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < i; ++j) {
+                if (cuboids[j][1] <= cuboids[i][1] && cuboids[j][2] <= cuboids[i][2]) {
+                    f[i] = max(f[i], f[j]);
+                }
+            }
+            f[i] += cuboids[i][2];
+        }
+        return *max_element(f.begin(), f.end());
+    }
+};
+```
+
+### **Go**
+
+```go
+func maxHeight(cuboids [][]int) (ans int) {
+	for _, c := range cuboids {
+		sort.Ints(c)
+	}
+	sort.Slice(cuboids, func(i, j int) bool {
+		a, b := cuboids[i], cuboids[j]
+		return a[0] < b[0] || a[0] == b[0] && (a[1] < b[1] || a[1] == b[1] && a[2] < b[2])
+	})
+	n := len(cuboids)
+	f := make([]int, n)
+	for i := range f {
+		for j := 0; j < i; j++ {
+			if cuboids[j][1] <= cuboids[i][1] && cuboids[j][2] <= cuboids[i][2] {
+				f[i] = max(f[i], f[j])
+			}
+		}
+		f[i] += cuboids[i][2]
+		ans = max(ans, f[i])
+	}
+	return
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number[][]} cuboids
+ * @return {number}
+ */
+var maxHeight = function (cuboids) {
+    for (const c of cuboids) {
+        c.sort((a, b) => a - b);
+    }
+    cuboids.sort((a, b) => {
+        if (a[0] != b[0]) return a[0] - b[0];
+        if (a[1] != b[1]) return a[1] - b[1];
+        return a[2] - b[2];
+    });
+    const n = cuboids.length;
+    const f = new Array(n).fill(0);
+    for (let i = 0; i < n; ++i) {
+        for (let j = 0; j < i; ++j) {
+            const ok =
+                cuboids[j][1] <= cuboids[i][1] &&
+                cuboids[j][2] <= cuboids[i][2];
+            if (ok) f[i] = Math.max(f[i], f[j]);
+        }
+        f[i] += cuboids[i][2];
+    }
+    return Math.max(...f);
+};
 ```
 
 ### **...**

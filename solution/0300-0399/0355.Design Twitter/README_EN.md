@@ -17,7 +17,7 @@
 </ul>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input</strong>
@@ -55,7 +55,6 @@ twitter.getNewsFeed(1);  // User 1&#39;s news feed should return a list with 1 t
 
 ```python
 class Twitter:
-
     def __init__(self):
         """
         Initialize your data structure here.
@@ -82,7 +81,7 @@ class Twitter:
         users.add(userId)
         tweets = [self.user_tweets[u][::-1][:10] for u in users]
         tweets = sum(tweets, [])
-        return heapq.nlargest(10, tweets, key=lambda tweet: self.tweets[tweet])
+        return nlargest(10, tweets, key=lambda tweet: self.tweets[tweet])
 
     def follow(self, followerId: int, followeeId: int) -> None:
         """
@@ -97,7 +96,6 @@ class Twitter:
         following = self.user_following[followerId]
         if followeeId in following:
             following.remove(followeeId)
-
 
 
 # Your Twitter object will be instantiated and called as such:
@@ -131,12 +129,17 @@ class Twitter {
         tweets.put(tweetId, ++time);
     }
 
-    /** Retrieve the 10 most recent tweet ids in the user's news feed. Each item in the news feed must be posted by users who the user followed or by the user herself. Tweets must be ordered from most recent to least recent. */
+    /**
+     * Retrieve the 10 most recent tweet ids in the user's news feed. Each item in the news feed
+     * must be posted by users who the user followed or by the user herself. Tweets must be ordered
+     * from most recent to least recent.
+     */
     public List<Integer> getNewsFeed(int userId) {
         Set<Integer> following = userFollowing.getOrDefault(userId, new HashSet<>());
         Set<Integer> users = new HashSet<>(following);
         users.add(userId);
-        PriorityQueue<Integer> pq = new PriorityQueue<>(10, (a, b) -> (tweets.get(b) - tweets.get(a)));
+        PriorityQueue<Integer> pq
+            = new PriorityQueue<>(10, (a, b) -> (tweets.get(b) - tweets.get(a)));
         for (Integer u : users) {
             List<Integer> userTweet = userTweets.get(u);
             if (userTweet != null && !userTweet.isEmpty()) {

@@ -1,4 +1,4 @@
-# [剑指 Offer II 072. 求平方根](https://leetcode-cn.com/problems/jJ0w9p)
+# [剑指 Offer II 072. 求平方根](https://leetcode.cn/problems/jJ0w9p)
 
 ## 题目描述
 
@@ -24,7 +24,7 @@
 &nbsp;    由于返回类型是整数，小数部分将被舍去。
 </pre>
 
-<p><meta charset="UTF-8" />注意：本题与主站 69&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/sqrtx/">https://leetcode-cn.com/problems/sqrtx/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 69&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/sqrtx/">https://leetcode.cn/problems/sqrtx/</a></p>
 
 ## 解法
 
@@ -62,7 +62,7 @@ class Solution {
         int left = 0, right = x;
         while (left < right) {
             int mid = (left + right + 1) >>> 1;
-            if (mid <= x /mid) {
+            if (mid <= x / mid) {
                 // mid*mid <= x
                 left = mid;
             } else {
@@ -81,11 +81,12 @@ class Solution {
 public:
     int mySqrt(int x) {
         long long left = 0, right = x;
-        while (left < right)
-        {
+        while (left < right) {
             long long mid = left + ((right - left + 1) >> 1);
-            if (mid <= x / mid) left = mid;
-            else right = mid - 1;
+            if (mid <= x / mid)
+                left = mid;
+            else
+                right = mid - 1;
         }
         return (int) left;
     }

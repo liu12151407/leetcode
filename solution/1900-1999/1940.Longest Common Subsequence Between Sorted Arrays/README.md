@@ -1,4 +1,4 @@
-# [1940. 排序数组之间的最长公共子序列](https://leetcode-cn.com/problems/longest-common-subsequence-between-sorted-arrays)
+# [1940. 排序数组之间的最长公共子序列](https://leetcode.cn/problems/longest-common-subsequence-between-sorted-arrays)
 
 [English Version](/solution/1900-1999/1940.Longest%20Common%20Subsequence%20Between%20Sorted%20Arrays/README_EN.md)
 
@@ -146,19 +146,40 @@ public:
 
 ```go
 func longestCommomSubsequence(arrays [][]int) []int {
-    counter := make(map[int]int)
-    n := len(arrays)
-    var res []int
-    for _, array := range arrays {
-        for _, e := range array {
-            counter[e]++
-            if counter[e] == n {
-                res = append(res, e)
-            }
+	counter := make(map[int]int)
+	n := len(arrays)
+	var res []int
+	for _, array := range arrays {
+		for _, e := range array {
+			counter[e]++
+			if counter[e] == n {
+				res = append(res, e)
+			}
+		}
+	}
+	return res
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number[][]} arrays
+ * @return {number[]}
+ */
+var longestCommonSubsequence = function (arrays) {
+    const m = new Map();
+    const rs = [];
+    const len = arrays.length;
+    for (let i = 0; i < len; i++) {
+        for (let j = 0; j < arrays[i].length; j++) {
+            m.set(arrays[i][j], (m.get(arrays[i][j]) || 0) + 1);
+            if (m.get(arrays[i][j]) === len) rs.push(arrays[i][j]);
         }
     }
-    return res
-}
+    return rs;
+};
 ```
 
 ### **...**

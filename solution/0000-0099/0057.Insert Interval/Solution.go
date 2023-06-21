@@ -1,32 +1,36 @@
-func insert(intervals [][]int, newInterval []int) [][]int {
-	intervals = append(intervals, newInterval)
-	return merge(intervals)
-}
-
-func merge(intervals [][]int) [][]int {
-	var res [][]int
-	sort.Slice(intervals, func(i, j int) bool {
-		return intervals[i][0] < intervals[j][0]
-	})
-	st, ed := -1, -1
-	for _, e := range intervals {
-		if ed < e[0] {
-			if st != -1 {
-				res = append(res, []int{st, ed})
+func insert(intervals [][]int, newInterval []int) (ans [][]int) {
+	st, ed := newInterval[0], newInterval[1]
+	insert := false
+	for _, interval := range intervals {
+		s, e := interval[0], interval[1]
+		if ed < s {
+			if !insert {
+				ans = append(ans, []int{st, ed})
+				insert = true
 			}
-			st, ed = e[0], e[1]
+			ans = append(ans, interval)
+		} else if e < st {
+			ans = append(ans, interval)
 		} else {
-			ed = max(ed, e[1])
+			st = min(st, s)
+			ed = max(ed, e)
 		}
 	}
-	if st != -1 {
-		res = append(res, []int{st, ed})
+	if !insert {
+		ans = append(ans, []int{st, ed})
 	}
-	return res
+	return
 }
 
 func max(a, b int) int {
 	if a > b {
+		return a
+	}
+	return b
+}
+
+func min(a, b int) int {
+	if a < b {
 		return a
 	}
 	return b

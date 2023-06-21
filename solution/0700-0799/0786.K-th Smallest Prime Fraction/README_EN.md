@@ -11,7 +11,7 @@
 <p>Return <em>the</em> <code>k<sup>th</sup></code> <em>smallest fraction considered</em>. Return your answer as an array of integers of size <code>2</code>, where <code>answer[0] == arr[i]</code> and <code>answer[1] == arr[j]</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> arr = [1,2,3,5], k = 3
@@ -21,7 +21,7 @@
 The third fraction is 2/5.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> arr = [1,7], k = 1
@@ -40,6 +40,9 @@ The third fraction is 2/5.
 	<li><code>1 &lt;= k &lt;= arr.length * (arr.length - 1) / 2</code></li>
 </ul>
 
+<p>&nbsp;</p>
+<strong>Follow up:</strong> Can you solve the problem with better than <code>O(n<sup>2</sup>)</code> complexity?
+
 ## Solutions
 
 <!-- tabs:start -->
@@ -50,11 +53,11 @@ The third fraction is 2/5.
 class Solution:
     def kthSmallestPrimeFraction(self, arr: List[int], k: int) -> List[int]:
         h = [(1 / y, 0, j + 1) for j, y in enumerate(arr[1:])]
-        heapq.heapify(h)
+        heapify(h)
         for _ in range(k - 1):
-            _, i, j = heapq.heappop(h)
+            _, i, j = heappop(h)
             if i + 1 < j:
-                heapq.heappush(h, (arr[i + 1] / arr[j], i + 1, j))
+                heappush(h, (arr[i + 1] / arr[j], i + 1, j))
         return [arr[h[0][1]], arr[h[0][2]]]
 ```
 
@@ -75,7 +78,7 @@ class Solution {
             }
         }
         Frac f = pq.peek();
-        return new int[] { f.x, f.y };
+        return new int[] {f.x, f.y};
     }
 
     static class Frac implements Comparable {
@@ -133,7 +136,7 @@ public:
     vector<int> kthSmallestPrimeFraction(vector<int>& arr, int k) {
         using pii = pair<int, int>;
         int n = arr.size();
-        auto cmp = [&](const pii &a, const pii &b) {
+        auto cmp = [&](const pii& a, const pii& b) {
             return arr[a.first] * arr[b.second] > arr[b.first] * arr[a.second];
         };
         priority_queue<pii, vector<pii>, decltype(cmp)> pq(cmp);

@@ -4,14 +4,12 @@
 
 ## Description
 
-<p>Given an array of non-negative integers <code>nums</code>, you are initially positioned at the <strong>first index</strong> of the array.</p>
+<p>You are given an integer array <code>nums</code>. You are initially positioned at the array&#39;s <strong>first index</strong>, and each element in the array represents your maximum jump length at that position.</p>
 
-<p>Each element in the array represents your maximum jump length at that position.</p>
-
-<p>Determine if you are able to reach the last index.</p>
+<p>Return <code>true</code><em> if you can reach the last index, or </em><code>false</code><em> otherwise</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [2,3,1,1,4]
@@ -19,7 +17,7 @@
 <strong>Explanation:</strong> Jump 1 step from index 0 to 1, then 3 steps to the last index.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [3,2,1,0,4]
@@ -31,11 +29,21 @@
 <p><strong>Constraints:</strong></p>
 
 <ul>
-	<li><code>1 &lt;= nums.length &lt;= 3 * 10<sup>4</sup></code></li>
+	<li><code>1 &lt;= nums.length &lt;= 10<sup>4</sup></code></li>
 	<li><code>0 &lt;= nums[i] &lt;= 10<sup>5</sup></code></li>
 </ul>
 
 ## Solutions
+
+**Approach 1: Greedy**
+
+We use a variable $mx$ to maintain the farthest index that can be reached, initially $mx = 0$.
+
+We traverse the array from left to right, for each position $i$ we are currently traversing, if $mx \lt i$, it means that the current position cannot be reached, directly return `false`. Otherwise, the farthest position that can be reached from position $i$ by jumping is $i+nums[i]$, we use $i+nums[i]$ to update the value of $mx$, that is $mx = \max(mx, i + nums[i])$.
+
+When the traversal ends, return `true` directly.
+
+The time complexity is $O(n)$, where $n$ is the length of the array. The space complexity is $O(1)$.
 
 <!-- tabs:start -->
 
@@ -45,10 +53,10 @@
 class Solution:
     def canJump(self, nums: List[int]) -> bool:
         mx = 0
-        for i, num in enumerate(nums):
-            if i > mx:
+        for i, x in enumerate(nums):
+            if mx < i:
                 return False
-            mx = max(mx, i + num)
+            mx = max(mx, i + x)
         return True
 ```
 
@@ -59,7 +67,7 @@ class Solution {
     public boolean canJump(int[] nums) {
         int mx = 0;
         for (int i = 0; i < nums.length; ++i) {
-            if (i > mx) {
+            if (mx < i) {
                 return false;
             }
             mx = Math.max(mx, i + nums[i]);
@@ -77,7 +85,7 @@ public:
     bool canJump(vector<int>& nums) {
         int mx = 0;
         for (int i = 0; i < nums.size(); ++i) {
-            if (i > mx) {
+            if (mx < i) {
                 return false;
             }
             mx = max(mx, i + nums[i]);
@@ -92,11 +100,11 @@ public:
 ```go
 func canJump(nums []int) bool {
 	mx := 0
-	for i, num := range nums {
-		if i > mx {
+	for i, x := range nums {
+		if mx < i {
 			return false
 		}
-		mx = max(mx, i+num)
+		mx = max(mx, i+x)
 	}
 	return true
 }
@@ -109,16 +117,48 @@ func max(a, b int) int {
 }
 ```
 
+### **TypeScript**
+
+```ts
+function canJump(nums: number[]): boolean {
+    let mx: number = 0;
+    for (let i = 0; i < nums.length; ++i) {
+        if (mx < i) {
+            return false;
+        }
+        mx = Math.max(mx, i + nums[i]);
+    }
+    return true;
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+var canJump = function (nums) {
+    let mx = 0;
+    for (let i = 0; i < nums.length; ++i) {
+        if (mx < i) {
+            return false;
+        }
+        mx = Math.max(mx, i + nums[i]);
+    }
+    return true;
+};
+```
+
 ### **C#**
 
 ```cs
 public class Solution {
     public bool CanJump(int[] nums) {
         int mx = 0;
-        for (int i = 0; i < nums.Length; ++i)
-        {
-            if (i > mx)
-            {
+        for (int i = 0; i < nums.Length; ++i) {
+            if (mx < i) {
                 return false;
             }
             mx = Math.Max(mx, i + nums[i]);

@@ -1,4 +1,4 @@
-# [LCP 44. 开幕式焰火](https://leetcode-cn.com/problems/sZ59z6)
+# [LCP 44. 开幕式焰火](https://leetcode.cn/problems/sZ59z6)
 
 ## 题目描述
 
@@ -34,9 +34,9 @@
 
 **提示：**
 
-- `1 <= 节点个数 <= 1000`
+-   `1 <= 节点个数 <= 1000`
 
-- `1 <= Node.val <= 1000`
+-   `1 <= Node.val <= 1000`
 
 ## 解法
 

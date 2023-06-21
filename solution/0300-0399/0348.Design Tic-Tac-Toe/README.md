@@ -1,4 +1,4 @@
-# [348. 设计井字棋](https://leetcode-cn.com/problems/design-tic-tac-toe)
+# [348. 设计井字棋](https://leetcode.cn/problems/design-tic-tac-toe)
 
 [English Version](/solution/0300-0399/0348.Design%20Tic-Tac-Toe/README_EN.md)
 
@@ -79,7 +79,6 @@ toe.move(2, 1, 1); -&gt; 函数返回 1 (此时，玩家 1 赢得了该场比赛
 
 ```python
 class TicTacToe:
-
     def __init__(self, n: int):
         """
         Initialize your data structure here.
@@ -105,7 +104,12 @@ class TicTacToe:
             self.counter[player - 1][n << 1] += 1
         if row + col == n - 1:
             self.counter[player - 1][(n << 1) + 1] += 1
-        if self.counter[player - 1][row] == n or self.counter[player - 1][col + n] == n or self.counter[player - 1][n << 1] == n or self.counter[player - 1][(n << 1) + 1] == n:
+        if (
+            self.counter[player - 1][row] == n
+            or self.counter[player - 1][col + n] == n
+            or self.counter[player - 1][n << 1] == n
+            or self.counter[player - 1][(n << 1) + 1] == n
+        ):
             return player
         return 0
 
@@ -130,14 +134,16 @@ class TicTacToe {
         this.n = n;
     }
 
-    /** Player {player} makes a move at ({row}, {col}).
+    /**
+       Player {player} makes a move at ({row}, {col}).
         @param row The row of the board.
         @param col The column of the board.
         @param player The player, can be either 1 or 2.
         @return The current winning condition, can be either:
                 0: No one wins.
                 1: Player 1 wins.
-                2: Player 2 wins. */
+                2: Player 2 wins.
+     */
     public int move(int row, int col, int player) {
         counter[player - 1][row] += 1;
         counter[player - 1][col + n] += 1;
@@ -147,7 +153,8 @@ class TicTacToe {
         if (row + col == n - 1) {
             counter[player - 1][(n << 1) + 1] += 1;
         }
-        if (counter[player - 1][row] == n || counter[player - 1][col + n] == n || counter[player - 1][n << 1] == n || counter[player - 1][(n << 1) + 1] == n) {
+        if (counter[player - 1][row] == n || counter[player - 1][col + n] == n
+            || counter[player - 1][n << 1] == n || counter[player - 1][(n << 1) + 1] == n) {
             return player;
         }
         return 0;

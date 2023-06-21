@@ -4,7 +4,7 @@
 
 ## Description
 
-<p>Given a string <code>columnTitle</code> that represents the column title as appear in an Excel sheet, return <em>its corresponding column number</em>.</p>
+<p>Given a string <code>columnTitle</code> that represents the column title as appears in an Excel sheet, return <em>its corresponding column number</em>.</p>
 
 <p>For example:</p>
 
@@ -20,32 +20,25 @@ AB -&gt; 28
 </pre>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> columnTitle = &quot;A&quot;
 <strong>Output:</strong> 1
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> columnTitle = &quot;AB&quot;
 <strong>Output:</strong> 28
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> columnTitle = &quot;ZY&quot;
 <strong>Output:</strong> 701
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> columnTitle = &quot;FXSHRXW&quot;
-<strong>Output:</strong> 2147483647
 </pre>
 
 <p>&nbsp;</p>

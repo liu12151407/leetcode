@@ -11,10 +11,10 @@
 <p><b>The encoded string should be as compact as possible.</b></p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 <pre><strong>Input:</strong> root = [2,1,3]
 <strong>Output:</strong> [2,1,3]
-</pre><p><strong>Example 2:</strong></p>
+</pre><p><strong class="example">Example 2:</strong></p>
 <pre><strong>Input:</strong> root = []
 <strong>Output:</strong> []
 </pre>
@@ -41,11 +41,11 @@
 #         self.left = None
 #         self.right = None
 
-class Codec:
 
+class Codec:
     def serialize(self, root: TreeNode) -> str:
-        """Encodes a tree to a single string.
-        """
+        """Encodes a tree to a single string."""
+
         def dfs(root):
             if root is None:
                 return
@@ -62,8 +62,8 @@ class Codec:
         return ''.join(t[:-1])
 
     def deserialize(self, data: str) -> TreeNode:
-        """Decodes your encoded data to tree.
-        """
+        """Decodes your encoded data to tree."""
+
         def build(s, l, r):
             if l > r:
                 return None

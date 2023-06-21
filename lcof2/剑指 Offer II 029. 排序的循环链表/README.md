@@ -1,4 +1,4 @@
-# [剑指 Offer II 029. 排序的循环链表](https://leetcode-cn.com/problems/4ueAj6)
+# [剑指 Offer II 029. 排序的循环链表](https://leetcode.cn/problems/4ueAj6)
 
 ## 题目描述
 
@@ -16,7 +16,7 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20029.%20%E6%8E%92%E5%BA%8F%E7%9A%84%E5%BE%AA%E7%8E%AF%E9%93%BE%E8%A1%A8/images/example_1_before_65p.jpg" style="height: 149px; width: 250px;" /><br />
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20029.%20%E6%8E%92%E5%BA%8F%E7%9A%84%E5%BE%AA%E7%8E%AF%E9%93%BE%E8%A1%A8/images/example_1_before_65p.jpg" style="height: 149px; width: 250px;" /><br />
 &nbsp;</p>
 
 <pre>
@@ -24,7 +24,7 @@
 <strong>输出：</strong>[3,4,1,2]
 <strong>解释：</strong>在上图中，有一个包含三个元素的循环有序列表，你获得值为 3 的节点的指针，我们需要向表中插入元素 2 。新插入的节点应该在 1 和 3 之间，插入之后，整个列表如上图所示，最后返回节点 3 。
 
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20029.%20%E6%8E%92%E5%BA%8F%E7%9A%84%E5%BE%AA%E7%8E%AF%E9%93%BE%E8%A1%A8/images/example_1_after_65p.jpg" style="height: 149px; width: 250px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20029.%20%E6%8E%92%E5%BA%8F%E7%9A%84%E5%BE%AA%E7%8E%AF%E9%93%BE%E8%A1%A8/images/example_1_after_65p.jpg" style="height: 149px; width: 250px;" />
 </pre>
 
 <p><strong>示例 2：</strong></p>
@@ -54,7 +54,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 708&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/insert-into-a-sorted-circular-linked-list/">https://leetcode-cn.com/problems/insert-into-a-sorted-circular-linked-list/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 708&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/insert-into-a-sorted-circular-linked-list/">https://leetcode.cn/problems/insert-into-a-sorted-circular-linked-list/</a></p>
 
 ## 解法
 
@@ -80,6 +80,7 @@ class Node:
         self.next = next
 """
 
+
 class Solution:
     def insert(self, head: 'Node', insertVal: int) -> 'Node':
         node = Node(insertVal)
@@ -88,10 +89,13 @@ class Solution:
             return node
         p = head
         while True:
-            if p.val <= insertVal and insertVal <= p.next.val or \
-                p.val > p.next.val and (insertVal <= p.next.val or insertVal >= p.val) or \
-                p.next == head:
-
+            if (
+                p.val <= insertVal
+                and insertVal <= p.next.val
+                or p.val > p.next.val
+                and (insertVal <= p.next.val or insertVal >= p.val)
+                or p.next == head
+            ):
                 node.next = p.next
                 p.next = node
                 break
@@ -133,9 +137,9 @@ class Solution {
         }
         Node p = head;
         for (;;) {
-            if (p.val <= insertVal && insertVal <= p.next.val ||
-                    p.val > p.next.val && (insertVal <= p.next.val || insertVal >= p.val) ||
-                    p.next == head) {
+            if (p.val <= insertVal && insertVal <= p.next.val
+                || p.val > p.next.val && (insertVal <= p.next.val || insertVal >= p.val)
+                || p.next == head) {
                 node.next = p.next;
                 p.next = node;
                 break;
@@ -174,44 +178,98 @@ public:
 class Solution {
 public:
     Node* insert(Node* head, int insertVal) {
-        Node* insert = new Node(insertVal);
-        if (head == nullptr) {
-            head = insert;
-            head->next = head;
-        } else if (head->next == nullptr) {
-            head->next = insert;
-            insert->next = head;
-        } else {
-            insertCore(head, insert);
+        Node* node = new Node(insertVal);
+        if (!head) {
+            node->next = node;
+            return node;
         }
-
+        Node *prev = head, *curr = head->next;
+        while (curr != head) {
+            if ((prev->val <= insertVal && insertVal <= curr->val) || (prev->val > curr->val && (insertVal >= prev->val || insertVal <= curr->val))) break;
+            prev = curr;
+            curr = curr->next;
+        }
+        prev->next = node;
+        node->next = curr;
         return head;
     }
-
-    void insertCore(Node* head, Node* insert) {
-        Node* cur = head;
-        Node* maxNode = head;
-        Node* next = head->next;
-
-        while (!(cur->val <= insert->val && insert->val <= next->val) && next != head) {
-            cur = cur->next;
-            next = next->next;
-
-            if (cur->val >= maxNode->val)
-                maxNode = cur;
-        }
-
-        if (cur->val <= insert->val && insert->val <= next->val) {
-            insert->next = next;
-            cur->next = insert;
-        } else {
-            insert->next = maxNode->next;
-            maxNode->next = insert;
-
-        }
-
-    }
 };
+```
+
+### **Go**
+
+```go
+/**
+ * Definition for a Node.
+ * type Node struct {
+ *     Val int
+ *     Next *Node
+ * }
+ */
+
+func insert(head *Node, x int) *Node {
+	node := &Node{Val: x}
+	if head == nil {
+		node.Next = node
+		return node
+	}
+	prev, curr := head, head.Next
+	for curr != head {
+		if (prev.Val <= x && x <= curr.Val) || (prev.Val > curr.Val && (x >= prev.Val || x <= curr.Val)) {
+			break
+		}
+		prev, curr = curr, curr.Next
+	}
+	prev.Next = node
+	node.Next = curr
+	return head
+}
+```
+
+### **TypeScript**
+
+```ts
+/**
+ * Definition for node.
+ * class Node {
+ *     val: number
+ *     next: Node | null
+ *     constructor(val?: number, next?: Node) {
+ *         this.val = (val===undefined ? 0 : val);
+ *         this.next = (next===undefined ? null : next);
+ *     }
+ * }
+ */
+
+function insert(head: Node | null, insertVal: number): Node | null {
+    const newNode = new Node(insertVal);
+    if (head == null) {
+        newNode.next = newNode;
+        return newNode;
+    }
+    const dummy = new Node(0, head);
+    let cur = dummy.next;
+    while (cur.next != dummy.next) {
+        const val = cur.val;
+        const nextVal = cur.next.val;
+        if (val > nextVal) {
+            if (
+                (insertVal >= val && insertVal >= nextVal) ||
+                (insertVal <= val && insertVal <= nextVal)
+            ) {
+                break;
+            }
+        } else {
+            if (insertVal >= val && insertVal <= nextVal) {
+                break;
+            }
+        }
+        cur = cur.next;
+    }
+    newNode.next = cur.next;
+    cur.next = newNode;
+    return dummy.next;
+}
 ```
 
 ### **...**

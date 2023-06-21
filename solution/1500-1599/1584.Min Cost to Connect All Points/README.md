@@ -1,4 +1,4 @@
-# [1584. 连接所有点的最小费用](https://leetcode-cn.com/problems/min-cost-to-connect-all-points)
+# [1584. 连接所有点的最小费用](https://leetcode.cn/problems/min-cost-to-connect-all-points)
 
 [English Version](/solution/1500-1599/1584.Min%20Cost%20to%20Connect%20All%20Points/README_EN.md)
 
@@ -16,13 +16,13 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1584.Min%20Cost%20to%20Connect%20All%20Points/images/d.png" style="height:268px; width:214px" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1584.Min%20Cost%20to%20Connect%20All%20Points/images/d.png" style="height:268px; width:214px; background:#e5e5e5" /></p>
 
 <pre>
 <strong>输入：</strong>points = [[0,0],[2,2],[3,10],[5,2],[7,0]]
 <strong>输出：</strong>20
 <strong>解释：
-</strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1584.Min%20Cost%20to%20Connect%20All%20Points/images/c.png" style="height:268px; width:214px" />
+</strong><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1584.Min%20Cost%20to%20Connect%20All%20Points/images/c.png" style="height:268px; width:214px; background:#e5e5e5" />
 我们可以按照上图所示连接所有点得到最小总费用，总费用为 20 。
 注意到任意两个点之间只有唯一一条路径互相到达。
 </pre>
@@ -69,64 +69,19 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
-最小生成树 + 并查集。先将所有边按照长度由小到大进行排序，循环遍历每条边，逐个加入到图中，当所有点达到一个连通状态时，退出循环，返回此时的总费用即可。
+最小生成树问题。
 
-模板 1——朴素并查集：
+设 $n$, $m$ 分别表示点数和边数。
 
-```python
-# 初始化，p存储每个点的父节点
-p = list(range(n))
+**方法一：朴素 Prim 算法**
 
-# 返回x的祖宗节点
-def find(x):
-    if p[x] != x:
-        # 路径压缩
-        p[x] = find(p[x])
-    return p[x]
+时间复杂度 $O(n^2)$。
 
-# 合并a和b所在的两个集合
-p[find(a)] = find(b)
-```
+**方法二：Kruskal 算法**
 
-模板 2——维护 size 的并查集：
+先将所有边按照长度由小到大进行排序，循环遍历每条边，逐个加入到图中，当所有点达到一个连通状态时，退出循环，返回此时的总费用即可。
 
-```python
-# 初始化，p存储每个点的父节点，size只有当节点是祖宗节点时才有意义，表示祖宗节点所在集合中，点的数量
-p = list(range(n))
-size = [1] * n
-
-# 返回x的祖宗节点
-def find(x):
-    if p[x] != x:
-        # 路径压缩
-        p[x] = find(p[x])
-    return p[x]
-
-# 合并a和b所在的两个集合
-if find(a) != find(b):
-    size[find(b)] += size[find(a)]
-    p[find(a)] = find(b)
-```
-
-模板 3——维护到祖宗节点距离的并查集：
-
-```python
-# 初始化，p存储每个点的父节点，d[x]存储x到p[x]的距离
-p = list(range(n))
-d = [0] * n
-
-# 返回x的祖宗节点
-def find(x):
-    if p[x] != x:
-        t = find(p[x])
-        d[x] += d[p[x]]
-        p[x] = t
-    return p[x]
-
-# 合并a和b所在的两个集合
-p[find(a)] = find(b)
-d[find(a)] = distance
-```
+时间复杂度 $O(m\log m)$。
 
 <!-- tabs:start -->
 
@@ -134,33 +89,63 @@ d[find(a)] = distance
 
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
+朴素 Prim 算法：
+
 ```python
 class Solution:
     def minCostConnectPoints(self, points: List[List[int]]) -> int:
+        INF = 0x3F3F3F3F
         n = len(points)
-        p = list(range(n))
+        g = [[0] * n for _ in range(n)]
+        for i in range(n):
+            for j in range(n):
+                if i != j:
+                    x1, y1 = points[i]
+                    x2, y2 = points[j]
+                    g[i][j] = abs(x1 - x2) + abs(y1 - y2)
+        dist = [INF] * n
+        vis = [False] * n
+        ans = 0
+        for i in range(n):
+            t = -1
+            for j in range(n):
+                if not vis[j] and (t == -1 or dist[t] > dist[j]):
+                    t = j
+            if i:
+                ans += dist[t]
+            for j in range(n):
+                dist[j] = min(dist[j], g[t][j])
+            vis[t] = True
+        return ans
+```
 
+Kruskal 算法：
+
+```python
+class Solution:
+    def minCostConnectPoints(self, points: List[List[int]]) -> int:
         def find(x):
             if p[x] != x:
                 p[x] = find(p[x])
             return p[x]
 
-        edges = []
-        for i in range(n):
-            x1, y1 = points[i]
+        g = []
+        n = len(points)
+        for i, (x1, y1) in enumerate(points):
             for j in range(i + 1, n):
                 x2, y2 = points[j]
-                edges.append([abs(x1 - x2) + abs(y1 - y2), i, j])
-        edges.sort()
-        res = 0
-        for cost, i, j in edges:
+                g.append((abs(x1 - x2) + abs(y1 - y2), i, j))
+        g.sort()
+        p = list(range(n))
+        ans = 0
+        for cost, i, j in g:
             if find(i) == find(j):
                 continue
             p[find(i)] = find(j)
             n -= 1
-            res += cost
+            ans += cost
             if n == 1:
-                return res
+                return ans
         return 0
 ```
 
@@ -168,37 +153,82 @@ class Solution:
 
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
+朴素 Prim 算法：
+
+```java
+class Solution {
+    private static final int INF = 0x3f3f3f3f;
+
+    public int minCostConnectPoints(int[][] points) {
+        int n = points.length;
+        int[][] g = new int[n][n];
+        int[] dist = new int[n];
+        boolean[] vis = new boolean[n];
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (i != j) {
+                    int x1 = points[i][0], y1 = points[i][1];
+                    int x2 = points[j][0], y2 = points[j][1];
+                    g[i][j] = Math.abs(x1 - x2) + Math.abs(y1 - y2);
+                }
+            }
+        }
+        Arrays.fill(dist, INF);
+        int ans = 0;
+        for (int i = 0; i < n; ++i) {
+            int t = -1;
+            for (int j = 0; j < n; ++j) {
+                if (!vis[j] && (t == -1 || dist[t] > dist[j])) {
+                    t = j;
+                }
+            }
+            if (i > 0) {
+                ans += dist[t];
+            }
+            for (int j = 0; j < n; ++j) {
+                dist[j] = Math.min(dist[j], g[t][j]);
+            }
+            vis[t] = true;
+        }
+        return ans;
+    }
+}
+```
+
+Kruskal 算法：
+
 ```java
 class Solution {
     private int[] p;
+
     public int minCostConnectPoints(int[][] points) {
         int n = points.length;
+        List<int[]> g = new ArrayList<>();
+        for (int i = 0; i < n; ++i) {
+            int x1 = points[i][0], y1 = points[i][1];
+            for (int j = i + 1; j < n; ++j) {
+                int x2 = points[j][0], y2 = points[j][1];
+                g.add(new int[] {Math.abs(x1 - x2) + Math.abs(y1 - y2), i, j});
+            }
+        }
+        g.sort(Comparator.comparingInt(a -> a[0]));
         p = new int[n];
         for (int i = 0; i < n; ++i) {
             p[i] = i;
         }
-        List<int[]> edges = new ArrayList<>();
-        for (int i = 0; i < n; ++i) {
-            int x1 = points[i][0], y1 = points[i][1];
-            for (int j =  i + 1; j < n; ++j) {
-                int x2 = points[j][0], y2 = points[j][1];
-                edges.add(new int[]{Math.abs(x1 - x2) + Math.abs(y1 - y2), i, j});
-            }
-        }
-        edges.sort(Comparator.comparingInt(a -> a[0]));
-        int res = 0;
-        for (int[] e : edges) {
-            if (find(e[1]) == find(e[2])) {
+        int ans = 0;
+        for (int[] e : g) {
+            int cost = e[0], i = e[1], j = e[2];
+            if (find(i) == find(j)) {
                 continue;
             }
-            p[find(e[1])] = find(e[2]);
-            --n;
-            res += e[0];
-            if (n == 1) {
-                break;
+            p[find(i)] = find(j);
+            ans += cost;
+            if (--n == 1) {
+                return ans;
             }
         }
-        return res;
+        return 0;
     }
 
     private int find(int x) {
@@ -212,6 +242,46 @@ class Solution {
 
 ### **C++**
 
+朴素 Prim 算法：
+
+```cpp
+class Solution {
+public:
+    const int inf = 0x3f3f3f3f;
+
+    int minCostConnectPoints(vector<vector<int>>& points) {
+        int n = points.size();
+        vector<vector<int>> g(n, vector<int>(n));
+        vector<int> dist(n, inf);
+        vector<bool> vis(n);
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (i != j) {
+                    int x1 = points[i][0], y1 = points[i][1];
+                    int x2 = points[j][0], y2 = points[j][1];
+                    g[i][j] = abs(x1 - x2) + abs(y1 - y2);
+                }
+            }
+        }
+        int ans = 0;
+        for (int i = 0; i < n; ++i) {
+            int t = -1;
+            for (int j = 0; j < n; ++j) {
+                if (!vis[j] && (t == -1 || dist[t] > dist[j])) {
+                    t = j;
+                }
+            }
+            if (i) ans += dist[t];
+            for (int j = 0; j < n; ++j) dist[j] = min(dist[j], g[t][j]);
+            vis[t] = true;
+        }
+        return ans;
+    }
+};
+```
+
+Kruskal 算法：
+
 ```cpp
 class Solution {
 public:
@@ -219,29 +289,26 @@ public:
 
     int minCostConnectPoints(vector<vector<int>>& points) {
         int n = points.size();
-        p.resize(n);
-        for (int i = 0; i < n; ++i) p[i] = i;
-        vector<vector<int>> edges;
-        for (int i = 0; i < n; ++i)
-        {
+        vector<vector<int>> g;
+        for (int i = 0; i < n; ++i) {
             int x1 = points[i][0], y1 = points[i][1];
-            for (int j = i + 1; j < n; ++j)
-            {
+            for (int j = i + 1; j < n; ++j) {
                 int x2 = points[j][0], y2 = points[j][1];
-                edges.push_back({abs(x1 - x2) + abs(y1 - y2), i, j});
+                g.push_back({abs(x1 - x2) + abs(y1 - y2), i, j});
             }
         }
-        sort(edges.begin(), edges.end());
-        int res = 0;
-        for (auto e : edges)
-        {
-            if (find(e[1]) == find(e[2])) continue;
-            p[find(e[1])] = find(e[2]);
-            --n;
-            res += e[0];
-            if (n == 1) break;
+        sort(g.begin(), g.end());
+        p.resize(n);
+        for (int i = 0; i < n; ++i) p[i] = i;
+        int ans = 0;
+        for (auto& e : g) {
+            int cost = e[0], i = e[1], j = e[2];
+            if (find(i) == find(j)) continue;
+            p[find(i)] = find(j);
+            ans += cost;
+            if (--n == 1) return ans;
         }
-        return res;
+        return 0;
     }
 
     int find(int x) {
@@ -253,53 +320,108 @@ public:
 
 ### **Go**
 
-```go
-var p []int
+朴素 Prim 算法：
 
+```go
 func minCostConnectPoints(points [][]int) int {
-    n := len(points)
-    p = make([]int, n)
-    for i := 0; i < n; i++ {
-        p[i] = i
-    }
-    var edges [][]int
-    for i := 0; i < n; i++ {
-        x1, y1 := points[i][0], points[i][1]
-        for j := i + 1; j < n; j++ {
-            x2, y2 := points[j][0], points[j][1]
-            edges = append(edges, []int{abs(x1 - x2) + abs(y1 - y2), i, j})
-        }
-    }
-    sort.Slice(edges, func(i, j int) bool {
-        return edges[i][0] < edges[j][0]
-    })
-    res := 0
-    for _, e := range edges {
-        if find(e[1]) == find(e[2]) {
-            continue
-        }
-        p[find(e[1])] = find(e[2])
-        n--
-        res += e[0]
-        if n == 1 {
-            break
-        }
-    }
-    return res
+	n := len(points)
+	inf := 0x3f3f3f3f
+	g := make([][]int, n)
+	dist := make([]int, n)
+	vis := make([]bool, n)
+	for i, p1 := range points {
+		dist[i] = inf
+		g[i] = make([]int, n)
+		for j, p2 := range points {
+			if i != j {
+				x1, y1 := p1[0], p1[1]
+				x2, y2 := p2[0], p2[1]
+				g[i][j] = abs(x1-x2) + abs(y1-y2)
+			}
+		}
+	}
+	ans := 0
+	for i := 0; i < n; i++ {
+		t := -1
+		for j := 0; j < n; j++ {
+			if !vis[j] && (t == -1 || dist[t] > dist[j]) {
+				t = j
+			}
+		}
+		if i > 0 {
+			ans += dist[t]
+		}
+		for j := 0; j < n; j++ {
+			dist[j] = min(dist[j], g[t][j])
+		}
+		vis[t] = true
+	}
+	return ans
 }
 
-func find(x int) int {
-    if p[x] != x {
-        p[x] = find(p[x])
-    }
-    return p[x]
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
 }
 
 func abs(x int) int {
-    if x > 0 {
-        return x
-    }
-    return -x
+	if x < 0 {
+		return -x
+	}
+	return x
+}
+```
+
+Kruskal 算法：
+
+```go
+func minCostConnectPoints(points [][]int) int {
+	n := len(points)
+	var g [][]int
+	for i, p := range points {
+		x1, y1 := p[0], p[1]
+		for j := i + 1; j < n; j++ {
+			x2, y2 := points[j][0], points[j][1]
+			g = append(g, []int{abs(x1-x2) + abs(y1-y2), i, j})
+		}
+	}
+	sort.Slice(g, func(i, j int) bool {
+		return g[i][0] < g[j][0]
+	})
+	ans := 0
+	p := make([]int, n)
+	for i := range p {
+		p[i] = i
+	}
+	var find func(x int) int
+	find = func(x int) int {
+		if p[x] != x {
+			p[x] = find(p[x])
+		}
+		return p[x]
+	}
+	for _, e := range g {
+		cost, i, j := e[0], e[1], e[2]
+		if find(i) == find(j) {
+			continue
+		}
+		p[find(i)] = find(j)
+		ans += cost
+		n--
+		if n == 1 {
+			return ans
+		}
+	}
+	return 0
+}
+
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
 }
 ```
 

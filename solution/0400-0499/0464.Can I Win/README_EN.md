@@ -13,7 +13,7 @@
 <p>Given two integers <code>maxChoosableInteger</code> and <code>desiredTotal</code>, return <code>true</code> if the first player to move can force a win, otherwise, return <code>false</code>. Assume both players play <strong>optimally</strong>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> maxChoosableInteger = 10, desiredTotal = 11
@@ -26,14 +26,14 @@ The second player will win by choosing 10 and get a total = 11, which is &gt;= d
 Same with other integers chosen by the first player, the second player will always win.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> maxChoosableInteger = 10, desiredTotal = 0
 <strong>Output:</strong> true
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> maxChoosableInteger = 10, desiredTotal = 1
@@ -55,13 +55,114 @@ Same with other integers chosen by the first player, the second player will alwa
 ### **Python3**
 
 ```python
+class Solution:
+    def canIWin(self, maxChoosableInteger: int, desiredTotal: int) -> bool:
+        @cache
+        def dfs(state, t):
+            for i in range(1, maxChoosableInteger + 1):
+                if (state >> i) & 1:
+                    continue
+                if t + i >= desiredTotal or not dfs(state | 1 << i, t + i):
+                    return True
+            return False
 
+        s = (1 + maxChoosableInteger) * maxChoosableInteger // 2
+        if s < desiredTotal:
+            return False
+        return dfs(0, 0)
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    private Map<Integer, Boolean> memo = new HashMap<>();
 
+    public boolean canIWin(int maxChoosableInteger, int desiredTotal) {
+        int s = (1 + maxChoosableInteger) * maxChoosableInteger / 2;
+        if (s < desiredTotal) {
+            return false;
+        }
+        return dfs(0, 0, maxChoosableInteger, desiredTotal);
+    }
+
+    private boolean dfs(int state, int t, int maxChoosableInteger, int desiredTotal) {
+        if (memo.containsKey(state)) {
+            return memo.get(state);
+        }
+        boolean res = false;
+        for (int i = 1; i <= maxChoosableInteger; ++i) {
+            if (((state >> i) & 1) == 0) {
+                if (t + i >= desiredTotal
+                    || !dfs(state | 1 << i, t + i, maxChoosableInteger, desiredTotal)) {
+                    res = true;
+                    break;
+                }
+            }
+        }
+        memo.put(state, res);
+        return res;
+    }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool canIWin(int maxChoosableInteger, int desiredTotal) {
+        int s = (1 + maxChoosableInteger) * maxChoosableInteger / 2;
+        if (s < desiredTotal) return false;
+        unordered_map<int, bool> memo;
+        return dfs(0, 0, maxChoosableInteger, desiredTotal, memo);
+    }
+
+    bool dfs(int state, int t, int maxChoosableInteger, int desiredTotal, unordered_map<int, bool>& memo) {
+        if (memo.count(state)) return memo[state];
+        bool res = false;
+        for (int i = 1; i <= maxChoosableInteger; ++i) {
+            if ((state >> i) & 1) continue;
+            if (t + i >= desiredTotal || !dfs(state | 1 << i, t + i, maxChoosableInteger, desiredTotal, memo)) {
+                res = true;
+                break;
+            }
+        }
+        memo[state] = res;
+        return res;
+    }
+};
+```
+
+### **Go**
+
+```go
+func canIWin(maxChoosableInteger int, desiredTotal int) bool {
+	s := (1 + maxChoosableInteger) * maxChoosableInteger / 2
+	if s < desiredTotal {
+		return false
+	}
+	memo := map[int]bool{}
+	var dfs func(int, int) bool
+	dfs = func(state, t int) bool {
+		if v, ok := memo[state]; ok {
+			return v
+		}
+		res := false
+		for i := 1; i <= maxChoosableInteger; i++ {
+			if (state>>i)&1 == 1 {
+				continue
+			}
+			if t+i >= desiredTotal || !dfs(state|1<<i, t+i) {
+				res = true
+				break
+			}
+		}
+		memo[state] = res
+		return res
+	}
+	return dfs(0, 0)
+}
 ```
 
 ### **...**

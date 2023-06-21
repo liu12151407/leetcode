@@ -1,4 +1,4 @@
-# [剑指 Offer II 027. 回文链表](https://leetcode-cn.com/problems/aMhZSa)
+# [剑指 Offer II 027. 回文链表](https://leetcode.cn/problems/aMhZSa)
 
 ## 题目描述
 
@@ -12,7 +12,7 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20027.%20%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8/images/1626421737-LjXceN-image.png" /></strong></p>
+<p><strong><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20027.%20%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8/images/1626421737-LjXceN-image.png" /></strong></p>
 
 <pre>
 <strong>输入:</strong> head = [1,2,3,3,2,1]
@@ -20,7 +20,7 @@
 
 <p><strong>示例 2：</strong></p>
 
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20027.%20%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8/images/1626422231-wgvnWh-image.png" style="width: 138px; height: 62px;" /></strong></p>
+<p><strong><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20027.%20%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8/images/1626422231-wgvnWh-image.png" style="width: 138px; height: 62px;" /></strong></p>
 
 <pre>
 <strong>输入:</strong> head = [1,2]
@@ -42,7 +42,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 234&nbsp;题相同：<a href="https://leetcode-cn.com/problems/palindrome-linked-list/">https://leetcode-cn.com/problems/palindrome-linked-list/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 234&nbsp;题相同：<a href="https://leetcode.cn/problems/palindrome-linked-list/">https://leetcode.cn/problems/palindrome-linked-list/</a></p>
 
 ## 解法
 
@@ -147,22 +147,19 @@ public:
         if (!head || !head->next) return true;
         ListNode* slow = head;
         ListNode* fast = head->next;
-        while (fast && fast->next)
-        {
+        while (fast && fast->next) {
             slow = slow->next;
             fast = fast->next->next;
         }
         ListNode* pre = nullptr;
         ListNode* cur = slow->next;
-        while (cur)
-        {
+        while (cur) {
             ListNode* t = cur->next;
             cur->next = pre;
             pre = cur;
             cur = t;
         }
-        while (pre)
-        {
+        while (pre) {
             if (pre->val != head->val) return false;
             pre = pre->next;
             head = head->next;

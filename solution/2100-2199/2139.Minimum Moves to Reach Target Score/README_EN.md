@@ -18,7 +18,7 @@
 <p>Given the two integers <code>target</code> and <code>maxDoubles</code>, return <em>the minimum number of moves needed to reach </em><code>target</code><em> starting with </em><code>1</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> target = 5, maxDoubles = 0
@@ -26,7 +26,7 @@
 <strong>Explanation:</strong> Keep incrementing by 1 until you reach target.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> target = 19, maxDoubles = 2
@@ -39,7 +39,7 @@ Double again so x = 18
 Increment once so x = 19
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> target = 10, maxDoubles = 4
@@ -66,13 +66,65 @@ Double again so x = 10
 ### **Python3**
 
 ```python
-
+class Solution:
+    def minMoves(self, target: int, maxDoubles: int) -> int:
+        if target == 1:
+            return 0
+        if maxDoubles == 0:
+            return target - 1
+        if target % 2 == 0 and maxDoubles:
+            return 1 + self.minMoves(target >> 1, maxDoubles - 1)
+        return 1 + self.minMoves(target - 1, maxDoubles)
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int minMoves(int target, int maxDoubles) {
+        if (target == 1) {
+            return 0;
+        }
+        if (maxDoubles == 0) {
+            return target - 1;
+        }
+        if (target % 2 == 0 && maxDoubles > 0) {
+            return 1 + minMoves(target >> 1, maxDoubles - 1);
+        }
+        return 1 + minMoves(target - 1, maxDoubles);
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int minMoves(int target, int maxDoubles) {
+        if (target == 1) return 0;
+        if (maxDoubles == 0) return target - 1;
+        if (target % 2 == 0 && maxDoubles) return 1 + minMoves(target >> 1, maxDoubles - 1);
+        return 1 + minMoves(target - 1, maxDoubles);
+    }
+};
+```
+
+### **Go**
+
+```go
+func minMoves(target int, maxDoubles int) int {
+	if target == 1 {
+		return 0
+	}
+	if maxDoubles == 0 {
+		return target - 1
+	}
+	if target%2 == 0 && maxDoubles > 0 {
+		return 1 + minMoves(target>>1, maxDoubles-1)
+	}
+	return 1 + minMoves(target-1, maxDoubles)
+}
 ```
 
 ### **TypeScript**

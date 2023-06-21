@@ -15,7 +15,7 @@
 <p>Return <em>the minimum cost to paint all houses</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> costs = [[17,2,17],[16,16,5],[14,3,19]]
@@ -24,7 +24,7 @@
 Minimum cost: 2 + 5 + 3 = 10.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> costs = [[7,6,2]]
@@ -50,13 +50,10 @@ Minimum cost: 2 + 5 + 3 = 10.
 ```python
 class Solution:
     def minCost(self, costs: List[List[int]]) -> int:
-        r, g, b = 0, 0, 0
-        for cost in costs:
-            _r, _g, _b = r, g, b
-            r = min(_g, _b) + cost[0]
-            g = min(_r, _b) + cost[1]
-            b = min(_r, _g) + cost[2]
-        return min(r, g, b)
+        a = b = c = 0
+        for ca, cb, cc in costs:
+            a, b, c = min(b, c) + ca, min(a, c) + cb, min(a, b) + cc
+        return min(a, b, c)
 ```
 
 ### **Java**
@@ -114,6 +111,26 @@ func min(x, y int) int {
 	}
 	return y
 }
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number[][]} costs
+ * @return {number}
+ */
+var minCost = function (costs) {
+    let [a, b, c] = [0, 0, 0];
+    for (let [ca, cb, cc] of costs) {
+        [a, b, c] = [
+            Math.min(b, c) + ca,
+            Math.min(a, c) + cb,
+            Math.min(a, b) + cc,
+        ];
+    }
+    return Math.min(a, b, c);
+};
 ```
 
 ### **...**

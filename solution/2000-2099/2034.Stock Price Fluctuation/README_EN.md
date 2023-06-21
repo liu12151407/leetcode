@@ -28,7 +28,7 @@
 </ul>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input</strong>
@@ -70,7 +70,6 @@ from sortedcontainers import SortedDict
 
 
 class StockPrice:
-
     def __init__(self):
         self.last_ts = 0
         self.mp = {}
@@ -115,9 +114,8 @@ class StockPrice {
     private TreeMap<Integer, Integer> counter = new TreeMap<>();
 
     public StockPrice() {
-
     }
-    
+
     public void update(int timestamp, int price) {
         if (mp.containsKey(timestamp)) {
             int oldPrice = mp.get(timestamp);
@@ -130,15 +128,15 @@ class StockPrice {
         counter.put(price, counter.getOrDefault(price, 0) + 1);
         lastTs = Math.max(lastTs, timestamp);
     }
-    
+
     public int current() {
         return mp.get(lastTs);
     }
-    
+
     public int maximum() {
         return counter.lastKey();
     }
-    
+
     public int minimum() {
         return counter.firstKey();
     }
@@ -164,12 +162,10 @@ public:
     map<int, int> counter;
 
     StockPrice() {
-
     }
-    
+
     void update(int timestamp, int price) {
-        if (mp.count(timestamp))
-        {
+        if (mp.count(timestamp)) {
             int oldPrice = mp[timestamp];
             --counter[oldPrice];
             if (counter[oldPrice] == 0) counter.erase(oldPrice);
@@ -178,15 +174,15 @@ public:
         ++counter[price];
         lastTs = max(lastTs, timestamp);
     }
-    
+
     int current() {
         return mp[lastTs];
     }
-    
+
     int maximum() {
         return counter.rbegin()->first;
     }
-    
+
     int minimum() {
         return counter.begin()->first;
     }

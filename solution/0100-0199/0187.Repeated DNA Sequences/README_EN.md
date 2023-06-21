@@ -15,10 +15,10 @@
 <p>Given a string <code>s</code> that represents a <strong>DNA sequence</strong>, return all the <strong><code>10</code>-letter-long</strong> sequences (substrings) that occur more than once in a DNA molecule. You may return the answer in <strong>any order</strong>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 <pre><strong>Input:</strong> s = "AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT"
 <strong>Output:</strong> ["AAAAACCCCC","CCCCCAAAAA"]
-</pre><p><strong>Example 2:</strong></p>
+</pre><p><strong class="example">Example 2:</strong></p>
 <pre><strong>Input:</strong> s = "AAAAAAAAAAAAA"
 <strong>Output:</strong> ["AAAAAAAAAA"]
 </pre>
@@ -32,6 +32,14 @@
 
 ## Solutions
 
+**Approach 1: HashTable**
+
+Time complexity $O(n \times 10)$, Space complexity $O(n)$.
+
+**Approach 2: Rabin-Karp**
+
+Time complexity $O(n)$, Space complexity $O(n)$.
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -43,7 +51,7 @@ class Solution:
         cnt = Counter()
         ans = []
         for i in range(n + 1):
-            sub = s[i: i + 10]
+            sub = s[i : i + 10]
             cnt[sub] += 1
             if cnt[sub] == 2:
                 ans.append(sub)
@@ -94,17 +102,40 @@ var findRepeatedDnaSequences = function (s) {
 
 ### **Go**
 
+HashTable:
+
 ```go
 func findRepeatedDnaSequences(s string) []string {
-	cnt := make(map[string]int)
-	n := len(s) - 10
-	ans := make([]string, 0)
-	for i := 0; i <= n; i++ {
+	ans, cnt := []string{}, map[string]int{}
+	for i := 0; i <= len(s)-10; i++ {
 		sub := s[i : i+10]
 		cnt[sub]++
 		if cnt[sub] == 2 {
 			ans = append(ans, sub)
 		}
+	}
+	return ans
+}
+```
+
+Rabin-Karp:
+
+```go
+func findRepeatedDnaSequences(s string) []string {
+	hashCode := map[byte]int{'A': 0, 'C': 1, 'G': 2, 'T': 3}
+	ans, cnt, left, right := []string{}, map[int]int{}, 0, 0
+
+	sha, multi := 0, int(math.Pow(4, 9))
+	for ; right < len(s); right++ {
+		sha = sha*4 + hashCode[s[right]]
+		if right-left+1 < 10 {
+			continue
+		}
+		cnt[sha]++
+		if cnt[sha] == 2 {
+			ans = append(ans, s[left:right+1])
+		}
+		sha, left = sha-multi*hashCode[s[left]], left+1
 	}
 	return ans
 }
@@ -128,6 +159,117 @@ public:
         return ans;
     }
 };
+```
+
+### **C#**
+
+```cs
+using System.Collections.Generic;
+
+public class Solution {
+    public IList<string> FindRepeatedDnaSequences(string s) {
+        var once = new HashSet<int>();
+        var moreThanOnce = new HashSet<int>();
+        int bits = 0;
+        for (var i = 0; i < s.Length; ++i)
+        {
+            bits <<= 2;
+            switch (s[i])
+            {
+                case 'A':
+                    break;
+                case 'C':
+                    bits |= 1;
+                    break;
+                case 'G':
+                    bits |= 2;
+                    break;
+                case 'T':
+                    bits |= 3;
+                    break;
+            }
+            if (i >= 10)
+            {
+                bits &= 0xFFFFF;
+            }
+            if (i >= 9 && !once.Add(bits))
+            {
+                moreThanOnce.Add(bits);
+            }
+        }
+
+        var results = new List<string>();
+        foreach (var item in moreThanOnce)
+        {
+            var itemCopy = item;
+            var charArray = new char[10];
+            for (var i = 9; i >= 0; --i)
+            {
+                switch (itemCopy & 3)
+                {
+                    case 0:
+                        charArray[i] = 'A';
+                        break;
+                    case 1:
+                        charArray[i] = 'C';
+                        break;
+                    case 2:
+                        charArray[i] = 'G';
+                        break;
+                    case 3:
+                        charArray[i] = 'T';
+                        break;
+                }
+                itemCopy >>= 2;
+            }
+            results.Add(new string(charArray));
+        }
+        return results;
+    }
+}
+```
+
+### **TypeScript**
+
+```ts
+function findRepeatedDnaSequences(s: string): string[] {
+    const n = s.length;
+    const map = new Map<string, boolean>();
+    const res = [];
+    for (let i = 0; i <= n - 10; i++) {
+        const key = s.slice(i, i + 10);
+        if (map.has(key) && map.get(key)) {
+            res.push(key);
+        }
+        map.set(key, !map.has(key));
+    }
+    return res;
+}
+```
+
+### **Rust**
+
+```rust
+use std::collections::HashMap;
+
+impl Solution {
+    pub fn find_repeated_dna_sequences(s: String) -> Vec<String> {
+        let n = s.len();
+        let mut res = vec![];
+        if n < 10 {
+            return res;
+        }
+        let mut map = HashMap::new();
+        for i in 0..=n - 10 {
+            let key = &s[i..i + 10];
+            if map.contains_key(&key) && *map.get(&key).unwrap() {
+                res.push(key.to_string());
+            }
+            map.insert(key, !map.contains_key(&key));
+        }
+        res
+    }
+}
 ```
 
 ### **...**

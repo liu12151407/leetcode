@@ -7,7 +7,7 @@
 <p>Given a binary string <code>s</code> <strong>​​​​​without leading zeros</strong>, return <code>true</code>​​​ <em>if </em><code>s</code><em> contains <strong>at most one contiguous segment of ones</strong></em>. Otherwise, return <code>false</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;1001&quot;
@@ -15,7 +15,7 @@
 <strong>Explanation: </strong>The ones do not form a contiguous segment.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;110&quot;
@@ -37,13 +37,69 @@
 ### **Python3**
 
 ```python
-
+class Solution:
+    def checkOnesSegment(self, s: str) -> bool:
+        return '01' not in s
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public boolean checkOnesSegment(String s) {
+        return !s.contains("01");
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool checkOnesSegment(string s) {
+        return s.find("01") == -1;
+    }
+};
+```
+
+### **Go**
+
+```go
+func checkOnesSegment(s string) bool {
+	return !strings.Contains(s, "01")
+}
+```
+
+### **TypeScript**
+
+```ts
+function checkOnesSegment(s: string): boolean {
+    let pre = s[0];
+    for (const c of s) {
+        if (pre !== c && c === '1') {
+            return false;
+        }
+        pre = c;
+    }
+    return true;
+}
+```
+
+```ts
+function checkOnesSegment(s: string): boolean {
+    return !s.includes('01');
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn check_ones_segment(s: String) -> bool {
+        !s.contains("01")
+    }
+}
 ```
 
 ### **...**

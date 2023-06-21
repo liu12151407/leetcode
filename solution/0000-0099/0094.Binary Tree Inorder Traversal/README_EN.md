@@ -7,39 +7,25 @@
 <p>Given the <code>root</code> of a binary tree, return <em>the inorder traversal of its nodes&#39; values</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0000-0099/0094.Binary%20Tree%20Inorder%20Traversal/images/inorder_1.jpg" style="width: 202px; height: 324px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0000-0099/0094.Binary%20Tree%20Inorder%20Traversal/images/inorder_1.jpg" style="width: 125px; height: 200px;" />
 <pre>
 <strong>Input:</strong> root = [1,null,2,3]
 <strong>Output:</strong> [1,3,2]
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> root = []
 <strong>Output:</strong> []
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> root = [1]
 <strong>Output:</strong> [1]
-</pre>
-
-<p><strong>Example 4:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0000-0099/0094.Binary%20Tree%20Inorder%20Traversal/images/inorder_5.jpg" style="width: 202px; height: 202px;" />
-<pre>
-<strong>Input:</strong> root = [1,2]
-<strong>Output:</strong> [2,1]
-</pre>
-
-<p><strong>Example 5:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0000-0099/0094.Binary%20Tree%20Inorder%20Traversal/images/inorder_4.jpg" style="width: 202px; height: 202px;" />
-<pre>
-<strong>Input:</strong> root = [1,null,2]
-<strong>Output:</strong> [1,2]
 </pre>
 
 <p>&nbsp;</p>
@@ -51,12 +37,7 @@
 </ul>
 
 <p>&nbsp;</p>
-
-<p><strong>Follow up:</strong></p>
-
-<p>Recursive solution is trivial, could you do it iteratively?</p>
-
-<p>&nbsp;</p>
+<strong>Follow up:</strong> Recursive solution is trivial, could you do it iteratively?
 
 ## Solutions
 
@@ -389,27 +370,19 @@ class Solution {
 public:
     vector<int> inorderTraversal(TreeNode* root) {
         vector<int> ans;
-        while (root)
-        {
-            if (!root->left)
-            {
+        while (root) {
+            if (!root->left) {
                 ans.push_back(root->val);
                 root = root->right;
-            }
-            else
-            {
+            } else {
                 TreeNode* prev = root->left;
-                while (prev->right && prev->right != root)
-                {
+                while (prev->right && prev->right != root) {
                     prev = prev->right;
                 }
-                if (!prev->right)
-                {
+                if (!prev->right) {
                     prev->right = root;
                     root = root->left;
-                }
-                else
-                {
+                } else {
                     ans.push_back(root->val);
                     prev->right = nullptr;
                     root = root->right;
@@ -454,6 +427,202 @@ func inorderTraversal(root *TreeNode) []int {
 		}
 	}
 	return ans
+}
+```
+
+### **TypeScript**
+
+Recursion:
+
+```ts
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function inorderTraversal(root: TreeNode | null): number[] {
+    if (root == null) {
+        return [];
+    }
+    return [
+        ...inorderTraversal(root.left),
+        root.val,
+        ...inorderTraversal(root.right),
+    ];
+}
+```
+
+Iteration:
+
+```ts
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function inorderTraversal(root: TreeNode | null): number[] {
+    const res = [];
+    const stack = [];
+    while (root != null || stack.length != 0) {
+        if (root != null) {
+            stack.push(root);
+            root = root.left;
+        } else {
+            const { val, right } = stack.pop();
+            res.push(val);
+            root = right;
+        }
+    }
+    return res;
+}
+```
+
+Morris Traversal:
+
+```ts
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function inorderTraversal(root: TreeNode | null): number[] {
+    const res = [];
+    while (root != null) {
+        const { val, left, right } = root;
+        if (left == null) {
+            res.push(val);
+            root = right;
+        } else {
+            let mostRight = left;
+            while (mostRight.right != null && mostRight.right != root) {
+                mostRight = mostRight.right;
+            }
+            if (mostRight.right == root) {
+                res.push(val);
+                mostRight.right = null;
+                root = right;
+            } else {
+                mostRight.right = root;
+                root = left;
+            }
+        }
+    }
+    return res;
+}
+```
+
+### **Rust**
+
+Recursion:
+
+```rust
+// Definition for a binary tree node.
+// #[derive(Debug, PartialEq, Eq)]
+// pub struct TreeNode {
+//   pub val: i32,
+//   pub left: Option<Rc<RefCell<TreeNode>>>,
+//   pub right: Option<Rc<RefCell<TreeNode>>>,
+// }
+//
+// impl TreeNode {
+//   #[inline]
+//   pub fn new(val: i32) -> Self {
+//     TreeNode {
+//       val,
+//       left: None,
+//       right: None
+//     }
+//   }
+// }
+use std::rc::Rc;
+use std::cell::RefCell;
+impl Solution {
+    fn dfs (root: &Option<Rc<RefCell<TreeNode>>>, res: &mut Vec<i32>) {
+        if root.is_none() {
+            return;
+        }
+        let node = root.as_ref().unwrap().borrow();
+        Self::dfs(&node.left, res);
+        res.push(node.val);
+        Self::dfs(&node.right, res);
+    }
+
+    pub fn inorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
+        let mut res = vec![];
+        Self::dfs(&root, &mut res);
+        res
+    }
+}
+```
+
+Iteration:
+
+```rust
+// Definition for a binary tree node.
+// #[derive(Debug, PartialEq, Eq)]
+// pub struct TreeNode {
+//   pub val: i32,
+//   pub left: Option<Rc<RefCell<TreeNode>>>,
+//   pub right: Option<Rc<RefCell<TreeNode>>>,
+// }
+//
+// impl TreeNode {
+//   #[inline]
+//   pub fn new(val: i32) -> Self {
+//     TreeNode {
+//       val,
+//       left: None,
+//       right: None
+//     }
+//   }
+// }
+use std::rc::Rc;
+use std::cell::RefCell;
+impl Solution {
+    pub fn inorder_traversal(mut root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
+        let mut res = vec![];
+        let mut stack = vec![];
+        while root.is_some() || !stack.is_empty() {
+            if root.is_some() {
+                let next = root.as_mut().unwrap().borrow_mut().left.take();
+                stack.push(root);
+                root = next;
+            } else {
+                let mut node = stack.pop().unwrap();
+                let mut node = node.as_mut().unwrap().borrow_mut();
+                res.push(node.val);
+                root = node.right.take();
+            }
+        }
+        res
+    }
 }
 ```
 

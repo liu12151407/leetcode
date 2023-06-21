@@ -9,7 +9,7 @@
 <p>Return <em><strong>all</strong> lonely numbers in </em><code>nums</code>. You may return the answer in <strong>any order</strong>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [10,6,5,8]
@@ -22,7 +22,7 @@ Hence, the lonely numbers in nums are [10, 8].
 Note that [8, 10] may also be returned.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,3,5,3]
@@ -72,18 +72,13 @@ class Solution {
         }
         List<Integer> ans = new ArrayList<>();
         counter.forEach((k, v) -> {
-            if (
-                v == 1 &&
-                !counter.containsKey(k - 1) &&
-                !counter.containsKey(k + 1)
-            ) {
+            if (v == 1 && !counter.containsKey(k - 1) && !counter.containsKey(k + 1)) {
                 ans.add(k);
             }
         });
         return ans;
     }
 }
-
 ```
 
 ### **C++**
@@ -95,8 +90,7 @@ public:
         unordered_map<int, int> counter;
         for (int num : nums) ++counter[num];
         vector<int> ans;
-        for (auto& e : counter)
-        {
+        for (auto& e : counter) {
             int k = e.first, v = e.second;
             if (v == 1 && !counter.count(k - 1) && !counter.count(k + 1)) ans.push_back(k);
         }
@@ -126,7 +120,19 @@ func findLonely(nums []int) []int {
 ### **TypeScript**
 
 ```ts
-
+function findLonely(nums: number[]): number[] {
+    let hashMap: Map<number, number> = new Map();
+    for (let num of nums) {
+        hashMap.set(num, (hashMap.get(num) || 0) + 1);
+    }
+    let ans: Array<number> = [];
+    for (let [num, count] of hashMap.entries()) {
+        if (count == 1 && !hashMap.get(num - 1) && !hashMap.get(num + 1)) {
+            ans.push(num);
+        }
+    }
+    return ans;
+}
 ```
 
 ### **...**

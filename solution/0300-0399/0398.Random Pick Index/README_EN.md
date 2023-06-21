@@ -14,7 +14,7 @@
 </ul>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input</strong>
@@ -48,7 +48,6 @@ solution.pick(3); // It should return either index 2, 3, or 4 randomly. Each ind
 
 ```python
 class Solution:
-
     def __init__(self, nums: List[int]):
         self.nums = nums
 
@@ -114,10 +113,8 @@ public:
 
     int pick(int target) {
         int n = 0, ans = 0;
-        for (int i = 0; i < nums.size(); ++i)
-        {
-            if (nums[i] == target)
-            {
+        for (int i = 0; i < nums.size(); ++i) {
+            if (nums[i] == target) {
                 ++n;
                 int x = 1 + rand() % n;
                 if (n == x) ans = i;

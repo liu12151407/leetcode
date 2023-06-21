@@ -1,4 +1,4 @@
-# [1906. 查询差绝对值的最小值](https://leetcode-cn.com/problems/minimum-absolute-difference-queries)
+# [1906. 查询差绝对值的最小值](https://leetcode.cn/problems/minimum-absolute-difference-queries)
 
 [English Version](/solution/1900-1999/1906.Minimum%20Absolute%20Difference%20Queries/README_EN.md)
 
@@ -89,14 +89,14 @@ class Solution:
         ans = []
         for i in range(n):
             left, right = queries[i][0], queries[i][1] + 1
-            t = float('inf')
+            t = inf
             last = -1
             for j in range(1, 101):
                 if pre_sum[right][j] - pre_sum[left][j] > 0:
                     if last != -1:
                         t = min(t, j - last)
                     last = j
-            if t == float('inf'):
+            if t == inf:
                 t = -1
             ans.append(t)
         return ans

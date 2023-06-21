@@ -7,21 +7,21 @@
 <p>Given the <code>root</code> of a binary tree, return <em>the zigzag level order traversal of its nodes&#39; values</em>. (i.e., from left to right, then right to left for the next level and alternate between).</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0103.Binary%20Tree%20Zigzag%20Level%20Order%20Traversal/images/tree1.jpg" style="width: 277px; height: 302px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0103.Binary%20Tree%20Zigzag%20Level%20Order%20Traversal/images/tree1.jpg" style="width: 277px; height: 302px;" />
 <pre>
 <strong>Input:</strong> root = [3,9,20,null,null,15,7]
 <strong>Output:</strong> [[3],[20,9],[15,7]]
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> root = [1]
 <strong>Output:</strong> [[1]]
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> root = []
@@ -50,25 +50,24 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def zigzagLevelOrder(self, root: TreeNode) -> List[List[int]]:
+    def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        ans = []
         if root is None:
-            return []
-        left, ans = False, []
+            return ans
         q = deque([root])
+        ans = []
+        left = 1
         while q:
-            n = len(q)
             t = []
-            for _ in range(n):
+            for _ in range(len(q)):
                 node = q.popleft()
                 t.append(node.val)
                 if node.left:
                     q.append(node.left)
                 if node.right:
                     q.append(node.right)
-            if left:
-                t.reverse()
-            ans.append(t)
-            left = not left
+            ans.append(t if left else t[::-1])
+            left ^= 1
         return ans
 ```
 
@@ -92,17 +91,17 @@ class Solution:
  */
 class Solution {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> ans = new ArrayList<>();
         if (root == null) {
-            return Collections.emptyList();
+            return ans;
         }
         Deque<TreeNode> q = new ArrayDeque<>();
         q.offer(root);
-        boolean left = false;
-        List<List<Integer>> ans = new ArrayList<>();
+        boolean left = true;
         while (!q.isEmpty()) {
             List<Integer> t = new ArrayList<>();
-            for (int i = 0, n = q.size(); i < n; ++i) {
-                TreeNode node = q.pollFirst();
+            for (int n = q.size(); n > 0; --n) {
+                TreeNode node = q.poll();
                 t.add(node.val);
                 if (node.left != null) {
                     q.offer(node.left);
@@ -111,7 +110,7 @@ class Solution {
                     q.offer(node.right);
                 }
             }
-            if (left) {
+            if (!left) {
                 Collections.reverse(t);
             }
             ans.add(t);
@@ -139,24 +138,22 @@ class Solution {
 class Solution {
 public:
     vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
-        if (!root) return {};
-        queue<TreeNode*> q{{root}};
         vector<vector<int>> ans;
-        bool left = false;
-        while (!q.empty())
-        {
+        if (!root) return ans;
+        queue<TreeNode*> q{{root}};
+        int left = 1;
+        while (!q.empty()) {
             vector<int> t;
-            for (int i = 0, n = q.size(); i < n; ++i)
-            {
+            for (int n = q.size(); n; --n) {
                 auto node = q.front();
                 q.pop();
-                t.push_back(node->val);
+                t.emplace_back(node->val);
                 if (node->left) q.push(node->left);
                 if (node->right) q.push(node->right);
             }
-            if (left) reverse(t.begin(), t.end());
-            ans.push_back(t);
-            left = !left;
+            if (!left) reverse(t.begin(), t.end());
+            ans.emplace_back(t);
+            left ^= 1;
         }
         return ans;
     }
@@ -174,17 +171,15 @@ public:
  *     Right *TreeNode
  * }
  */
-func zigzagLevelOrder(root *TreeNode) [][]int {
+func zigzagLevelOrder(root *TreeNode) (ans [][]int) {
 	if root == nil {
-		return nil
+		return
 	}
-	var ans [][]int
-	var q = []*TreeNode{root}
-	left := false
+	q := []*TreeNode{root}
+	left := true
 	for len(q) > 0 {
-		var t []int
-		n := len(q)
-		for i := 0; i < n; i++ {
+		t := []int{}
+		for n := len(q); n > 0; n-- {
 			node := q[0]
 			q = q[1:]
 			t = append(t, node.Val)
@@ -195,18 +190,15 @@ func zigzagLevelOrder(root *TreeNode) [][]int {
 				q = append(q, node.Right)
 			}
 		}
-		if left {
-			i, j := 0, n-1
-			for i < j {
+		if !left {
+			for i, j := 0, len(t)-1; i < j; i, j = i+1, j-1 {
 				t[i], t[j] = t[j], t[i]
-				i++
-				j--
 			}
 		}
 		ans = append(ans, t)
 		left = !left
 	}
-	return ans
+	return
 }
 ```
 
@@ -226,15 +218,15 @@ func zigzagLevelOrder(root *TreeNode) [][]int {
  * @return {number[][]}
  */
 var zigzagLevelOrder = function (root) {
+    const ans = [];
     if (!root) {
-        return [];
+        return ans;
     }
-    let ans = [];
-    let q = [root];
-    let left = false;
+    const q = [root];
+    let left = 1;
     while (q.length) {
-        let t = [];
-        for (let i = 0, n = q.length; i < n; ++i) {
+        const t = [];
+        for (let n = q.length; n; --n) {
             const node = q.shift();
             t.push(node.val);
             if (node.left) {
@@ -244,14 +236,110 @@ var zigzagLevelOrder = function (root) {
                 q.push(node.right);
             }
         }
-        if (left) {
+        if (!left) {
             t.reverse();
         }
         ans.push(t);
-        left = !left;
+        left ^= 1;
     }
     return ans;
 };
+```
+
+### **TypeScript**
+
+```ts
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function zigzagLevelOrder(root: TreeNode | null): number[][] {
+    const res = [];
+    if (root == null) {
+        return res;
+    }
+    let isDesc = false;
+    const queue = [root];
+    while (queue.length !== 0) {
+        const arr = queue.slice().map(() => {
+            const { val, left, right } = queue.shift();
+            left && queue.push(left);
+            right && queue.push(right);
+            return val;
+        });
+        res.push(isDesc ? arr.reverse() : arr);
+        isDesc = !isDesc;
+    }
+    return res;
+}
+```
+
+### **Rust**
+
+```rust
+// Definition for a binary tree node.
+// #[derive(Debug, PartialEq, Eq)]
+// pub struct TreeNode {
+//   pub val: i32,
+//   pub left: Option<Rc<RefCell<TreeNode>>>,
+//   pub right: Option<Rc<RefCell<TreeNode>>>,
+// }
+//
+// impl TreeNode {
+//   #[inline]
+//   pub fn new(val: i32) -> Self {
+//     TreeNode {
+//       val,
+//       left: None,
+//       right: None
+//     }
+//   }
+// }
+use std::rc::Rc;
+use std::cell::RefCell;
+use std::collections::VecDeque;
+impl Solution {
+    pub fn zigzag_level_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {
+        let mut res = vec![];
+        if root.is_none() {
+            return res;
+        }
+        let mut is_desc = false;
+        let mut q = VecDeque::new();
+        q.push_back(root);
+        while !q.is_empty() {
+            let mut arr = vec![];
+            for _ in 0..q.len() {
+                if let Some(node) = q.pop_front().unwrap() {
+                    let mut node = node.borrow_mut();
+                    arr.push(node.val);
+                    if node.left.is_some() {
+                        q.push_back(node.left.take());
+                    }
+                    if node.right.is_some() {
+                        q.push_back(node.right.take());
+                    }
+                }
+            }
+            if is_desc {
+                arr.reverse();
+            }
+            is_desc = !is_desc;
+            res.push(arr);
+        }
+        res
+    }
+}
 ```
 
 ### **...**

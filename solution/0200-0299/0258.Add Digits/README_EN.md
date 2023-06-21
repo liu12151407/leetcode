@@ -7,7 +7,7 @@
 <p>Given an integer <code>num</code>, repeatedly add all its digits until the result has only one digit, and return it.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> num = 38
@@ -18,7 +18,7 @@
 Since 2 has only one digit, return it.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> num = 0
@@ -66,6 +66,43 @@ public:
         return (num - 1) % 9 + 1;
     }
 };
+```
+
+### **Go**
+
+```go
+func addDigits(num int) int {
+	if num == 0 {
+		return 0
+	}
+	return (num-1)%9 + 1
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn add_digits(num: i32) -> i32 {
+        if num < 10 {
+            return num;
+        }
+        Self::add_digits(
+            num.to_string()
+                .chars()
+                .map(|c| c.to_string().parse::<i32>().unwrap())
+                .sum::<i32>(),
+        )
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn add_digits(mut num: i32) -> i32 {
+        (num - 1) % 9 + 1
+    }
+}
 ```
 
 ### **...**

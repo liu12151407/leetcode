@@ -1,4 +1,4 @@
-# [2078. 两栋颜色不同且距离最远的房子](https://leetcode-cn.com/problems/two-furthest-houses-with-different-colors)
+# [2078. 两栋颜色不同且距离最远的房子](https://leetcode.cn/problems/two-furthest-houses-with-different-colors)
 
 [English Version](/solution/2000-2099/2078.Two%20Furthest%20Houses%20With%20Different%20Colors/README_EN.md)
 
@@ -16,7 +16,7 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2078.Two%20Furthest%20Houses%20With%20Different%20Colors/images/eg1.png" style="width: 610px; height: 84px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2078.Two%20Furthest%20Houses%20With%20Different%20Colors/images/eg1.png" style="width: 610px; height: 84px;" /></p>
 
 <pre>
 <strong>输入：</strong>colors = [<strong><em>1</em></strong>,1,1,<em><strong>6</strong></em>,1,1,1]
@@ -29,7 +29,7 @@
 
 <p><strong>示例 2：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2078.Two%20Furthest%20Houses%20With%20Different%20Colors/images/eg2.png" style="width: 426px; height: 84px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2078.Two%20Furthest%20Houses%20With%20Different%20Colors/images/eg2.png" style="width: 426px; height: 84px;" /></p>
 
 <pre>
 <strong>输入：</strong>colors = [<em><strong>1</strong></em>,8,3,8,<em><strong>3</strong></em>]
@@ -63,6 +63,12 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：暴力枚举**
+
+时间复杂度 $O(n^2)$。
+
+**方法二：贪心**
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -78,6 +84,20 @@ class Solution:
                 if colors[i] != colors[j]:
                     ans = max(ans, abs(i - j))
         return ans
+```
+
+```python
+class Solution:
+    def maxDistance(self, colors: List[int]) -> int:
+        n = len(colors)
+        if colors[0] != colors[-1]:
+            return n - 1
+        i, j = 1, n - 2
+        while colors[i] == colors[0]:
+            i += 1
+        while colors[j] == colors[0]:
+            j -= 1
+        return max(n - i - 1, j)
 ```
 
 ### **Java**
@@ -100,6 +120,23 @@ class Solution {
 }
 ```
 
+```java
+class Solution {
+    public int maxDistance(int[] colors) {
+        int n = colors.length;
+        if (colors[0] != colors[n - 1]) {
+            return n - 1;
+        }
+        int i = 0, j = n - 1;
+        while (colors[++i] == colors[0])
+            ;
+        while (colors[--j] == colors[0])
+            ;
+        return Math.max(n - i - 1, j);
+    }
+}
+```
+
 ### **C++**
 
 ```cpp
@@ -112,6 +149,22 @@ public:
                 if (colors[i] != colors[j])
                     ans = max(ans, abs(i - j));
         return ans;
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    int maxDistance(vector<int>& colors) {
+        int n = colors.size();
+        if (colors[0] != colors[n - 1]) return n - 1;
+        int i = 0, j = n;
+        while (colors[++i] == colors[0])
+            ;
+        while (colors[--j] == colors[0])
+            ;
+        return max(n - i - 1, j);
     }
 };
 ```
@@ -143,6 +196,30 @@ func abs(x int) int {
 		return x
 	}
 	return -x
+}
+```
+
+```go
+func maxDistance(colors []int) int {
+	n := len(colors)
+	if colors[0] != colors[n-1] {
+		return n - 1
+	}
+	i, j := 1, n-2
+	for colors[i] == colors[0] {
+		i++
+	}
+	for colors[j] == colors[0] {
+		j--
+	}
+	return max(n-i-1, j)
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }
 ```
 

@@ -16,7 +16,7 @@
 <p>Return the final string after all operations.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;abc&quot;, shift = [[0,1],[1,2]]
@@ -25,7 +25,7 @@
 [0,1] means shift to left by 1. &quot;abc&quot; -&gt; &quot;bca&quot;
 [1,2] means shift to right by 2. &quot;bca&quot; -&gt; &quot;cab&quot;</pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;abcdefg&quot;, shift = [[1,1],[1,1],[0,2],[1,3]]
@@ -55,13 +55,71 @@
 ### **Python3**
 
 ```python
-
+class Solution:
+    def stringShift(self, s: str, shift: List[List[int]]) -> str:
+        x = 0
+        for a, b in shift:
+            if a == 0:
+                b = -b
+            x += b
+        x %= len(s)
+        return s[-x:] + s[:-x]
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public String stringShift(String s, int[][] shift) {
+        int x = 0;
+        for (var e : shift) {
+            if (e[0] == 0) {
+                e[1] = -e[1];
+            }
+            x += e[1];
+        }
+        int n = s.length();
+        x = (x % n + n) % n;
+        return s.substring(n - x) + s.substring(0, n - x);
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    string stringShift(string s, vector<vector<int>>& shift) {
+        int x = 0;
+        for (auto& e : shift) {
+            if (e[0] == 0) {
+                e[1] = -e[1];
+            }
+            x += e[1];
+        }
+        int n = s.size();
+        x = (x % n + n) % n;
+        return s.substr(n - x, x) + s.substr(0, n - x);
+    }
+};
+```
+
+### **Go**
+
+```go
+func stringShift(s string, shift [][]int) string {
+	x := 0
+	for _, e := range shift {
+		if e[0] == 0 {
+			e[1] = -e[1]
+		}
+		x += e[1]
+	}
+	n := len(s)
+	x = (x%n + n) % n
+	return s[n-x:] + s[:n-x]
+}
 ```
 
 ### **...**

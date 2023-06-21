@@ -1,4 +1,4 @@
-# [55. 跳跃游戏](https://leetcode-cn.com/problems/jump-game)
+# [55. 跳跃游戏](https://leetcode.cn/problems/jump-game)
 
 [English Version](/solution/0000-0099/0055.Jump%20Game/README_EN.md)
 
@@ -43,7 +43,21 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
-贪心。
+**方法一：贪心**
+
+我们用变量 $mx$ 维护当前能够到达的最远下标，初始时 $mx = 0$。
+
+我们从左到右遍历数组，对于遍历到的每个位置 $i$，如果 $mx \lt i$，说明当前位置无法到达，直接返回 `false`。否则，我们可以通过跳跃从位置 $i$ 到达的最远位置为 $i+nums[i]$，我们用 $i+nums[i]$ 更新 $mx$ 的值，即 $mx = \max(mx, i + nums[i])$。
+
+遍历结束，直接返回 `true`。
+
+时间复杂度 $O(n)$，其中 $n$ 为数组的长度。空间复杂度 $O(1)$。
+
+相似题目：
+
+-   [45. 跳跃游戏 II](/solution/0000-0099/0045.Jump%20Game%20II/README.md)
+-   [1024. 视频拼接](/solution/1000-1099/1024.Video%20Stitching/README.md)
+-   [1326. 灌溉花园的最少水龙头数目](/solution/1300-1399/1326.Minimum%20Number%20of%20Taps%20to%20Open%20to%20Water%20a%20Garden/README.md)
 
 <!-- tabs:start -->
 
@@ -55,10 +69,10 @@
 class Solution:
     def canJump(self, nums: List[int]) -> bool:
         mx = 0
-        for i, num in enumerate(nums):
-            if i > mx:
+        for i, x in enumerate(nums):
+            if mx < i:
                 return False
-            mx = max(mx, i + num)
+            mx = max(mx, i + x)
         return True
 ```
 
@@ -71,7 +85,7 @@ class Solution {
     public boolean canJump(int[] nums) {
         int mx = 0;
         for (int i = 0; i < nums.length; ++i) {
-            if (i > mx) {
+            if (mx < i) {
                 return false;
             }
             mx = Math.max(mx, i + nums[i]);
@@ -89,7 +103,7 @@ public:
     bool canJump(vector<int>& nums) {
         int mx = 0;
         for (int i = 0; i < nums.size(); ++i) {
-            if (i > mx) {
+            if (mx < i) {
                 return false;
             }
             mx = max(mx, i + nums[i]);
@@ -104,11 +118,11 @@ public:
 ```go
 func canJump(nums []int) bool {
 	mx := 0
-	for i, num := range nums {
-		if i > mx {
+	for i, x := range nums {
+		if mx < i {
 			return false
 		}
-		mx = max(mx, i+num)
+		mx = max(mx, i+x)
 	}
 	return true
 }
@@ -121,16 +135,48 @@ func max(a, b int) int {
 }
 ```
 
+### **TypeScript**
+
+```ts
+function canJump(nums: number[]): boolean {
+    let mx: number = 0;
+    for (let i = 0; i < nums.length; ++i) {
+        if (mx < i) {
+            return false;
+        }
+        mx = Math.max(mx, i + nums[i]);
+    }
+    return true;
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+var canJump = function (nums) {
+    let mx = 0;
+    for (let i = 0; i < nums.length; ++i) {
+        if (mx < i) {
+            return false;
+        }
+        mx = Math.max(mx, i + nums[i]);
+    }
+    return true;
+};
+```
+
 ### **C#**
 
 ```cs
 public class Solution {
     public bool CanJump(int[] nums) {
         int mx = 0;
-        for (int i = 0; i < nums.Length; ++i)
-        {
-            if (i > mx)
-            {
+        for (int i = 0; i < nums.Length; ++i) {
+            if (mx < i) {
                 return false;
             }
             mx = Math.Max(mx, i + nums[i]);

@@ -13,8 +13,8 @@
 </ul>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0300-0399/0366.Find%20Leaves%20of%20Binary%20Tree/images/remleaves-tree.jpg" style="width: 500px; height: 215px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0300-0399/0366.Find%20Leaves%20of%20Binary%20Tree/images/remleaves-tree.jpg" style="width: 500px; height: 215px;" />
 <pre>
 <strong>Input:</strong> root = [1,2,3,4,5]
 <strong>Output:</strong> [[4,5,3],[2],[1]]
@@ -22,7 +22,7 @@ Explanation:
 [[3,5,4],[2],[1]] and [[3,4,5],[2],[1]] are also considered correct answers since per each level it does not matter the order on which elements are returned.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> root = [1]
@@ -34,7 +34,7 @@ Explanation:
 
 <ul>
 	<li>The number of nodes in the tree is in the range <code>[1, 100]</code>.</li>
-	<li><code>1 &lt;= Node.val &lt;= 100</code></li>
+	<li><code>-100 &lt;= Node.val &lt;= 100</code></li>
 </ul>
 
 ## Solutions
@@ -140,8 +140,7 @@ public:
     vector<vector<int>> findLeaves(TreeNode* root) {
         vector<vector<int>> res;
         TreeNode* prev = new TreeNode(0, root, nullptr);
-        while (prev->left)
-        {
+        while (prev->left) {
             vector<int> t;
             dfs(prev->left, prev, t);
             res.push_back(t);
@@ -151,11 +150,12 @@ public:
 
     void dfs(TreeNode* root, TreeNode* prev, vector<int>& t) {
         if (!root) return;
-        if (!root->left && !root->right)
-        {
+        if (!root->left && !root->right) {
             t.push_back(root->val);
-            if (prev->left == root) prev->left = nullptr;
-            else prev->right = nullptr;
+            if (prev->left == root)
+                prev->left = nullptr;
+            else
+                prev->right = nullptr;
         }
         dfs(root->left, root, t);
         dfs(root->right, root, t);

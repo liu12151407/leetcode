@@ -11,7 +11,7 @@
 <p>Note that <code>abs(x)</code> equals <code>x</code> if <code>x &gt;= 0</code>, and <code>-x</code> otherwise.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,-1,1], limit = 3, goal = -4
@@ -19,7 +19,7 @@
 <strong>Explanation:</strong> You can add -2 and -3, then the sum of the array will be 1 - 1 + 1 - 2 - 3 = -4.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,-10,9,1], limit = 100, goal = 0
@@ -43,13 +43,99 @@
 ### **Python3**
 
 ```python
-
+class Solution:
+    def minElements(self, nums: List[int], limit: int, goal: int) -> int:
+        d = abs(sum(nums) - goal)
+        return (d + limit - 1) // limit
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int minElements(int[] nums, int limit, int goal) {
+        // long s = Arrays.stream(nums).asLongStream().sum();
+        long s = 0;
+        for (int v : nums) {
+            s += v;
+        }
+        long d = Math.abs(s - goal);
+        return (int) ((d + limit - 1) / limit);
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int minElements(vector<int>& nums, int limit, int goal) {
+        long long s = accumulate(nums.begin(), nums.end(), 0ll);
+        long long d = abs(s - goal);
+        return (d + limit - 1) / limit;
+    }
+};
+```
+
+### **Go**
+
+```go
+func minElements(nums []int, limit int, goal int) int {
+	s := 0
+	for _, v := range nums {
+		s += v
+	}
+	d := abs(s - goal)
+	return (d + limit - 1) / limit
+}
+
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
+```
+
+### **TypeScript**
+
+```ts
+function minElements(nums: number[], limit: number, goal: number): number {
+    const sum = nums.reduce((r, v) => r + v, 0);
+    const diff = Math.abs(goal - sum);
+    return Math.floor((diff + limit - 1) / limit);
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn min_elements(nums: Vec<i32>, limit: i32, goal: i32) -> i32 {
+        let limit = limit as i64;
+        let goal = goal as i64;
+        let mut sum = 0;
+        for &num in nums.iter() {
+            sum += num as i64;
+        }
+        let diff = (goal - sum).abs();
+        ((diff + limit - 1) / limit) as i32
+    }
+}
+```
+
+### **C**
+
+```c
+int minElements(int* nums, int numsSize, int limit, int goal) {
+    long long sum = 0;
+    for (int i = 0; i < numsSize; i++) {
+        sum += nums[i];
+    }
+    long long diff = labs(goal - sum);
+    return (diff + limit - 1) / limit;
+}
 ```
 
 ### **...**

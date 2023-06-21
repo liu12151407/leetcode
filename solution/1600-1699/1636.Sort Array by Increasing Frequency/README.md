@@ -1,4 +1,4 @@
-# [1636. 按照频率将数组升序排序](https://leetcode-cn.com/problems/sort-array-by-increasing-frequency)
+# [1636. 按照频率将数组升序排序](https://leetcode.cn/problems/sort-array-by-increasing-frequency)
 
 [English Version](/solution/1600-1699/1636.Sort%20Array%20by%20Increasing%20Frequency/README_EN.md)
 
@@ -44,6 +44,14 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：数组或哈希表计数**
+
+用数组或者哈希表统计 `nums` 中每个数字出现的次数，由于题目中数字的范围是 $[-100, 100]$，我们可以直接创建一个大小为 $201$ 的数组来统计。
+
+然后对 `nums` 按照数字出现次数升序排序，如果出现次数相同，则按照数字降序排序。
+
+时间复杂度为 $O(n \times \log n)$，空间复杂度 $O(n)$。其中 $n$ 为数组 `nums` 的长度。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -51,7 +59,10 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def frequencySort(self, nums: List[int]) -> List[int]:
+        cnt = Counter(nums)
+        return sorted(nums, key=lambda x: (cnt[x], -x))
 ```
 
 ### **Java**
@@ -59,7 +70,110 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public int[] frequencySort(int[] nums) {
+        int[] cnt = new int[201];
+        List<Integer> t = new ArrayList<>();
+        for (int v : nums) {
+            v += 100;
+            ++cnt[v];
+            t.add(v);
+        }
+        t.sort((a, b) -> cnt[a] == cnt[b] ? b - a : cnt[a] - cnt[b]);
+        int[] ans = new int[nums.length];
+        int i = 0;
+        for (int v : t) {
+            ans[i++] = v - 100;
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    vector<int> frequencySort(vector<int>& nums) {
+        vector<int> cnt(201);
+        for (int v : nums) {
+            ++cnt[v + 100];
+        }
+        sort(nums.begin(), nums.end(), [&](const int a, const int b) {
+            if (cnt[a + 100] == cnt[b + 100]) return a > b;
+            return cnt[a + 100] < cnt[b + 100];
+        });
+        return nums;
+    }
+};
+```
+
+### **Go**
+
+```go
+func frequencySort(nums []int) []int {
+	cnt := make([]int, 201)
+	for _, v := range nums {
+		cnt[v+100]++
+	}
+	sort.Slice(nums, func(i, j int) bool {
+		a, b := nums[i]+100, nums[j]+100
+		return cnt[a] < cnt[b] || cnt[a] == cnt[b] && a > b
+	})
+	return nums
+}
+```
+
+### **TypeScript**
+
+```ts
+function frequencySort(nums: number[]): number[] {
+    const map = new Map<number, number>();
+    for (const num of nums) {
+        map.set(num, (map.get(num) ?? 0) + 1);
+    }
+    return nums.sort((a, b) => map.get(a) - map.get(b) || b - a);
+}
+```
+
+### **Rust**
+
+```rust
+use std::collections::HashMap;
+impl Solution {
+    pub fn frequency_sort(mut nums: Vec<i32>) -> Vec<i32> {
+        let n = nums.len();
+        let mut map = HashMap::new();
+        for &num in nums.iter() {
+            *map.entry(num).or_insert(0) += 1;
+        }
+        nums.sort_by(|a, b| {
+            if map.get(a) == map.get(b) {
+                return b.cmp(a);
+            }
+            map.get(a).cmp(&map.get(b))
+        });
+        nums
+    }
+}
+```
+
+### **Javascript**
+
+```js
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var frequencySort = function (nums) {
+    const m = new Map();
+    for (let i = 0; i < nums.length; i++) {
+        m.set(nums[i], (m.get(nums[i]) || 0) + 1);
+    }
+    nums.sort((a, b) => (m.get(a) != m.get(b) ? m.get(a) - m.get(b) : b - a));
+    return nums;
+};
 ```
 
 ### **...**

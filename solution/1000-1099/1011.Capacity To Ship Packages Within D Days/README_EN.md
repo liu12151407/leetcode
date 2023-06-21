@@ -4,17 +4,17 @@
 
 ## Description
 
-<p>A conveyor belt has packages that must be shipped from one port to another within <code>D</code> days.</p>
+<p>A conveyor belt has packages that must be shipped from one port to another within <code>days</code> days.</p>
 
-<p>The i<sup>th</sup> package on the conveyor belt has a weight of <code>weights[i]</code>. Each day, we load the ship with packages on the conveyor belt (in the order given by <code>weights</code>). We may not load more weight than the maximum weight capacity of the ship.</p>
+<p>The <code>i<sup>th</sup></code> package on the conveyor belt has a weight of <code>weights[i]</code>. Each day, we load the ship with packages on the conveyor belt (in the order given by <code>weights</code>). We may not load more weight than the maximum weight capacity of the ship.</p>
 
-<p>Return the least weight capacity of the ship that will result in all the packages on the conveyor belt being shipped within <code>D</code> days.</p>
+<p>Return the least weight capacity of the ship that will result in all the packages on the conveyor belt being shipped within <code>days</code> days.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
-<strong>Input:</strong> weights = [1,2,3,4,5,6,7,8,9,10], D = 5
+<strong>Input:</strong> weights = [1,2,3,4,5,6,7,8,9,10], days = 5
 <strong>Output:</strong> 15
 <strong>Explanation:</strong> A ship capacity of 15 is the minimum to ship all the packages in 5 days like this:
 1st day: 1, 2, 3, 4, 5
@@ -26,10 +26,10 @@
 Note that the cargo must be shipped in the order given, so using a ship of capacity 14 and splitting the packages into parts like (2, 3, 4, 5), (1, 6, 7), (8), (9), (10) is not allowed.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
-<strong>Input:</strong> weights = [3,2,2,4,1,4], D = 3
+<strong>Input:</strong> weights = [3,2,2,4,1,4], days = 3
 <strong>Output:</strong> 6
 <strong>Explanation:</strong> A ship capacity of 6 is the minimum to ship all the packages in 3 days like this:
 1st day: 3, 2
@@ -37,10 +37,10 @@ Note that the cargo must be shipped in the order given, so using a ship of capac
 3rd day: 1, 4
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
-<strong>Input:</strong> weights = [1,2,3,1,1], D = 4
+<strong>Input:</strong> weights = [1,2,3,1,1], days = 4
 <strong>Output:</strong> 3
 <strong>Explanation:</strong>
 1st day: 1
@@ -53,7 +53,7 @@ Note that the cargo must be shipped in the order given, so using a ship of capac
 <p><strong>Constraints:</strong></p>
 
 <ul>
-	<li><code>1 &lt;= D &lt;= weights.length &lt;= 5 * 10<sup>4</sup></code></li>
+	<li><code>1 &lt;= days &lt;= weights.length &lt;= 5 * 10<sup>4</sup></code></li>
 	<li><code>1 &lt;= weights[i] &lt;= 500</code></li>
 </ul>
 
@@ -67,27 +67,18 @@ Binary search.
 
 ```python
 class Solution:
-    def shipWithinDays(self, weights: List[int], D: int) -> int:
-        def check(capacity):
-            cnt, t = 1, 0
+    def shipWithinDays(self, weights: List[int], days: int) -> int:
+        def check(mx):
+            ws, cnt = 0, 1
             for w in weights:
-                if w > capacity:
-                    return False
-                if t + w <= capacity:
-                    t += w
-                else:
+                ws += w
+                if ws > mx:
                     cnt += 1
-                    t = w
-            return cnt <= D
+                    ws = w
+            return cnt <= days
 
-        left, right = 1, 25000000
-        while left < right:
-            mid = (left + right) >> 1
-            if check(mid):
-                right = mid
-            else:
-                left = mid + 1
-        return left
+        left, right = max(weights), sum(weights) + 1
+        return left + bisect_left(range(left, right), True, key=check)
 ```
 
 ### **Java**
@@ -95,10 +86,14 @@ class Solution:
 ```java
 class Solution {
     public int shipWithinDays(int[] weights, int days) {
-        int left = 1, right = Integer.MAX_VALUE;
+        int left = 0, right = 0;
+        for (int w : weights) {
+            left = Math.max(left, w);
+            right += w;
+        }
         while (left < right) {
             int mid = (left + right) >> 1;
-            if (canCarry(weights, days, mid)) {
+            if (check(mid, weights, days)) {
                 right = mid;
             } else {
                 left = mid + 1;
@@ -107,22 +102,16 @@ class Solution {
         return left;
     }
 
-
-    public boolean canCarry(int[] weights, int days, int carry) {
-        int useDay = 1;
-        int curCarry = 0;
-        for (int weight : weights) {
-            if (weight > carry) {
-                return false;
-            }
-            if ((carry - curCarry) >= weight) {
-                curCarry += weight;
-            } else {
-                curCarry = weight;
-                useDay++;
+    private boolean check(int mx, int[] weights, int days) {
+        int ws = 0, cnt = 1;
+        for (int w : weights) {
+            ws += w;
+            if (ws > mx) {
+                ws = w;
+                ++cnt;
             }
         }
-        return useDay <= days;
+        return cnt <= days;
     }
 }
 ```
@@ -132,42 +121,32 @@ class Solution {
 ```cpp
 class Solution {
 public:
-    int shipWithinDays(vector<int> &weights, int days) {
-        int left = 1, right = 25000000;
-        while (left < right)
-        {
-            int mid = left + right >> 1;
-            if (check(weights, days, mid))
-            {
-                right = mid;
+    int shipWithinDays(vector<int>& weights, int days) {
+        int left = 0, right = 0;
+        for (auto& w : weights) {
+            left = max(left, w);
+            right += w;
+        }
+        auto check = [&](int mx) {
+            int ws = 0, cnt = 1;
+            for (auto& w : weights) {
+                ws += w;
+                if (ws > mx) {
+                    ws = w;
+                    ++cnt;
+                }
             }
-            else
-            {
+            return cnt <= days;
+        };
+        while (left < right) {
+            int mid = (left + right) >> 1;
+            if (check(mid)) {
+                right = mid;
+            } else {
                 left = mid + 1;
             }
         }
         return left;
-    }
-
-    bool check(vector<int> &weights, int days, int capacity) {
-        int cnt = 1, t = 0;
-        for (auto w : weights)
-        {
-            if (w > capacity)
-            {
-                return false;
-            }
-            if (t + w <= capacity)
-            {
-                t += w;
-            }
-            else
-            {
-                ++cnt;
-                t = w;
-            }
-        }
-        return cnt <= days;
     }
 };
 ```
@@ -176,32 +155,59 @@ public:
 
 ```go
 func shipWithinDays(weights []int, days int) int {
-	left, right := 1, 25000000
-	for left < right {
-		mid := (left + right) >> 1
-		if check(weights, days, mid) {
-			right = mid
-		} else {
-			left = mid + 1
-		}
-	}
-	return left
-}
-
-func check(weights []int, days, capacity int) bool {
-	cnt, t := 1, 0
+	var left, right int
 	for _, w := range weights {
-		if w > capacity {
-			return false
+		if left < w {
+			left = w
 		}
-		if t+w <= capacity {
-			t += w
-		} else {
-			cnt++
-			t = w
-		}
+		right += w
 	}
-	return cnt <= days
+	return left + sort.Search(right, func(mx int) bool {
+		mx += left
+		ws, cnt := 0, 1
+		for _, w := range weights {
+			ws += w
+			if ws > mx {
+				ws = w
+				cnt++
+			}
+		}
+		return cnt <= days
+	})
+}
+```
+
+### **TypeScript**
+
+```ts
+function shipWithinDays(weights: number[], days: number): number {
+    let left = 0;
+    let right = 0;
+    for (const w of weights) {
+        left = Math.max(left, w);
+        right += w;
+    }
+    const check = (mx: number) => {
+        let ws = 0;
+        let cnt = 1;
+        for (const w of weights) {
+            ws += w;
+            if (ws > mx) {
+                ws = w;
+                ++cnt;
+            }
+        }
+        return cnt <= days;
+    };
+    while (left < right) {
+        const mid = (left + right) >> 1;
+        if (check(mid)) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+    return left;
 }
 ```
 

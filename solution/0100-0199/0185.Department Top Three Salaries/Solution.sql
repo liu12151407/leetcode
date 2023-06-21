@@ -1,17 +1,21 @@
+# Write your MySQL query statement below
+WITH
+    t AS (
+        SELECT
+            departmentId,
+            name,
+            salary,
+            dense_rank() OVER (
+                PARTITION BY departmentId
+                ORDER BY salary DESC
+            ) AS rk
+        FROM Employee
+    )
 SELECT
-	Department.NAME AS Department,
-	Employee.NAME AS Employee,
-	Salary
+    d.name AS Department,
+    t.name AS Employee,
+    salary AS Salary
 FROM
-	Employee,
-	Department
-WHERE
-	Employee.DepartmentId = Department.Id
-	AND  (SELECT
-            COUNT(DISTINCT e2.Salary)
-        FROM
-            Employee e2
-        WHERE
-            e2.Salary > Employee.Salary
-                AND Employee.DepartmentId = e2.DepartmentId
-    ) < 3
+    t
+    JOIN Department AS d ON t.departmentId = d.id
+WHERE rk < 4;

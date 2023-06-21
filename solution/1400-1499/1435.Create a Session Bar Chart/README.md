@@ -1,4 +1,4 @@
-# [1435. 制作会话柱状图](https://leetcode-cn.com/problems/create-a-session-bar-chart)
+# [1435. 制作会话柱状图](https://leetcode.cn/problems/create-a-session-bar-chart)
 
 [English Version](/solution/1400-1499/1435.Create%20a%20Session%20Bar%20Chart/README_EN.md)
 
@@ -64,7 +64,53 @@ Result 表：
 ### **SQL**
 
 ```sql
-
+(
+    SELECT
+        '[0-5>' AS bin,
+        SUM(
+            CASE
+                WHEN duration / 60 < 5 THEN 1
+                ELSE 0
+            END
+        ) AS total
+    FROM Sessions
+)
+UNION
+(
+    SELECT
+        '[5-10>' AS bin,
+        SUM(
+            CASE
+                WHEN (duration / 60 >= 5 AND duration / 60 < 10) THEN 1
+                ELSE 0
+            END
+        ) AS total
+    FROM Sessions
+)
+UNION
+(
+    SELECT
+        '[10-15>' AS bin,
+        SUM(
+            CASE
+                WHEN (duration / 60 >= 10 AND duration / 60 < 15) THEN 1
+                ELSE 0
+            END
+        ) AS total
+    FROM Sessions
+)
+UNION
+(
+    SELECT
+        '15 or more' AS bin,
+        SUM(
+            CASE
+                WHEN duration / 60 >= 15 THEN 1
+                ELSE 0
+            END
+        ) AS total
+    FROM Sessions
+);
 ```
 
 <!-- tabs:end -->

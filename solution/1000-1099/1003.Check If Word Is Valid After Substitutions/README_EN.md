@@ -15,7 +15,7 @@
 <p>Return <code>true</code> <em>if </em><code>s</code><em> is a <strong>valid</strong> string, otherwise, return</em> <code>false</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;aabcbc&quot;
@@ -24,7 +24,7 @@
 &quot;&quot; -&gt; &quot;<u>abc</u>&quot; -&gt; &quot;a<u>abc</u>bc&quot;
 Thus, &quot;aabcbc&quot; is valid.</pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;abcabcababcc&quot;
@@ -34,20 +34,12 @@ Thus, &quot;aabcbc&quot; is valid.</pre>
 Thus, &quot;abcabcababcc&quot; is valid.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;abccba&quot;
 <strong>Output:</strong> false
 <strong>Explanation:</strong> It is impossible to get &quot;abccba&quot; using the operation.
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> s = &quot;cababc&quot;
-<strong>Output:</strong> false
-<strong>Explanation:</strong> It is impossible to get &quot;cababc&quot; using the operation.
 </pre>
 
 <p>&nbsp;</p>
@@ -60,18 +52,108 @@ Thus, &quot;abcabcababcc&quot; is valid.
 
 ## Solutions
 
+**Solution 1: Stack**
+
+If the string is valid, it's length must be the multiple of $3$.
+
+We traverse the string and push every character into the stack $t$. If the size of stack $t$ is greater than or equal to $3$ and the top three elements of stack $t$ constitute the string `"abc"`, we pop the top three elements. Then we continue to traverse the next character of the string $s$.
+
+When the traversal is over, if the stack $t$ is empty, the string $s$ is valid, return `true`, otherwise return `false`.
+
+The time complexity is $O(n)$ and the space complexity is $O(n)$. Where $n$ is the length of the string $s$.
+
 <!-- tabs:start -->
 
 ### **Python3**
 
 ```python
-
+class Solution:
+    def isValid(self, s: str) -> bool:
+        if len(s) % 3:
+            return False
+        t = []
+        for c in s:
+            t.append(c)
+            if ''.join(t[-3:]) == 'abc':
+                t[-3:] = []
+        return not t
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public boolean isValid(String s) {
+        if (s.length() % 3 > 0) {
+            return false;
+        }
+        StringBuilder t = new StringBuilder();
+        for (char c : s.toCharArray()) {
+            t.append(c);
+            if (t.length() >= 3 && "abc".equals(t.substring(t.length() - 3))) {
+                t.delete(t.length() - 3, t.length());
+            }
+        }
+        return t.isEmpty();
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool isValid(string s) {
+        if (s.size() % 3) {
+            return false;
+        }
+        string t;
+        for (char c : s) {
+            t.push_back(c);
+            if (t.size() >= 3 && t.substr(t.size() - 3, 3) == "abc") {
+                t.erase(t.end() - 3, t.end());
+            }
+        }
+        return t.empty();
+    }
+};
+```
+
+### **Go**
+
+```go
+func isValid(s string) bool {
+	if len(s)%3 > 0 {
+		return false
+	}
+	t := []byte{}
+	for i := range s {
+		t = append(t, s[i])
+		if len(t) >= 3 && string(t[len(t)-3:]) == "abc" {
+			t = t[:len(t)-3]
+		}
+	}
+	return len(t) == 0
+}
+```
+
+### **TypeScript**
+
+```ts
+function isValid(s: string): boolean {
+    if (s.length % 3 !== 0) {
+        return false;
+    }
+    const t: string[] = [];
+    for (const c of s) {
+        t.push(c);
+        if (t.slice(-3).join('') === 'abc') {
+            t.splice(-3);
+        }
+    }
+    return t.length === 0;
+}
 ```
 
 ### **...**
@@ -80,5 +162,4 @@ Thus, &quot;abcabcababcc&quot; is valid.
 
 ```
 
-<!-- tabs:end -->
 <!-- tabs:end -->

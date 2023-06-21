@@ -1,4 +1,4 @@
-# [2022. 将一维数组转变成二维数组](https://leetcode-cn.com/problems/convert-1d-array-into-2d-array)
+# [2022. 将一维数组转变成二维数组](https://leetcode.cn/problems/convert-1d-array-into-2d-array)
 
 [English Version](/solution/2000-2099/2022.Convert%201D%20Array%20Into%202D%20Array/README_EN.md)
 
@@ -15,7 +15,7 @@
 <p>&nbsp;</p>
 
 <p><strong>示例 1：</strong></p>
-<img src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2022.Convert%201D%20Array%20Into%202D%20Array/images/image-20210826114243-1.png" style="width: 500px; height: 174px;">
+<img src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2022.Convert%201D%20Array%20Into%202D%20Array/images/image-20210826114243-1.png" style="width: 500px; height: 174px;">
 <pre><b>输入：</b>original = [1,2,3,4], m = 2, n = 2
 <b>输出：</b>[[1,2],[3,4]]
 <strong>解释：
@@ -65,9 +65,13 @@ original 中只有 1 个元素。
 
 <!-- 这里可写通用的实现逻辑 -->
 
-在该题当中，想要成功转换为二维数组，**元素不能少也不能多**，所以需要先做一次长度判断，不对等的情况下直接退出。
+**方法一：模拟**
 
-在数量正确时，则按照给出的规格，将 `original` 分割成小数组，放入返回数组当中。
+根据题目描述，我们知道，要想构造出一个 $m$ 行 $n$ 列的二维数组，需要满足 $m \times n$ 等于原数组的长度。如果不满足，直接返回空数组即可。
+
+如果满足，我们可以按照题目描述的过程，将原数组中的元素依次放入二维数组中即可。
+
+时间复杂度 $O(m \times n)$，其中 $m$ 和 $n$ 分别为二维数组的行数和列数。忽略答案的空间消耗，空间复杂度 $O(1)$。
 
 <!-- tabs:start -->
 
@@ -80,7 +84,7 @@ class Solution:
     def construct2DArray(self, original: List[int], m: int, n: int) -> List[List[int]]:
         if m * n != len(original):
             return []
-        return [original[i: i + n] for i in range(0, m * n, n)]
+        return [original[i : i + n] for i in range(0, m * n, n)]
 ```
 
 ### **Java**
@@ -110,12 +114,12 @@ class Solution {
 class Solution {
 public:
     vector<vector<int>> construct2DArray(vector<int>& original, int m, int n) {
-        if (m * n != original.size()) return {};
-        vector<vector<int>> ans(m, vector<int>(n, 0));
-        for (int i = 0; i < m; ++i)
-        {
-            for (int j = 0; j < n; ++j)
-            {
+        if (m * n != original.size()) {
+            return {};
+        }
+        vector<vector<int>> ans(m, vector<int>(n));
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
                 ans[i][j] = original[i * n + j];
             }
         }
@@ -127,15 +131,14 @@ public:
 ### **Go**
 
 ```go
-func construct2DArray(original []int, m int, n int) [][]int {
+func construct2DArray(original []int, m int, n int) (ans [][]int) {
 	if m*n != len(original) {
 		return [][]int{}
 	}
-	var ans [][]int
 	for i := 0; i < m*n; i += n {
 		ans = append(ans, original[i:i+n])
 	}
-	return ans
+	return
 }
 ```
 
@@ -148,37 +151,35 @@ func construct2DArray(original []int, m int, n int) [][]int {
  * @param {number} n
  * @return {number[][]}
  */
-var construct2DArray = function(original, m, n) {
-    const result = [];
-
-    if (original.length != m * n) {
-        return result;
+var construct2DArray = function (original, m, n) {
+    if (m * n != original.length) {
+        return [];
     }
-    
-    for (let i = 0; i < m; i++) {
-        result.push(original.slice(i * n, i * n + n));
+    const ans = [];
+    for (let i = 0; i < m * n; i += n) {
+        ans.push(original.slice(i, i + n));
     }
-    
-    return result;
+    return ans;
 };
 ```
 
 ### **TypeScript**
 
 ```ts
-function construct2DArray(original: number[], m: number, n: number): number[][] {
-    const result = [];
-
-    if (original.length != m * n) {
-        return result;
+function construct2DArray(
+    original: number[],
+    m: number,
+    n: number,
+): number[][] {
+    if (m * n != original.length) {
+        return [];
     }
-    
-    for (let i = 0; i < m; i++) {
-        result.push(original.slice(i * n, i * n + n));
+    const ans: number[][] = [];
+    for (let i = 0; i < m * n; i += n) {
+        ans.push(original.slice(i, i + n));
     }
-    
-    return result;
-};
+    return ans;
+}
 ```
 
 ### **...**

@@ -1,4 +1,4 @@
-# [2027. 转换字符串的最少操作次数](https://leetcode-cn.com/problems/minimum-moves-to-convert-string)
+# [2027. 转换字符串的最少操作次数](https://leetcode.cn/problems/minimum-moves-to-convert-string)
 
 [English Version](/solution/2000-2099/2027.Minimum%20Moves%20to%20Convert%20String/README_EN.md)
 
@@ -53,6 +53,12 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：贪心**
+
+遍历字符串 $s$，只要遇到 `'X'`，指针 $i$ 就直接往后移动三格，并且答案加 $1$；否则指针 $i$ 往后移动一格。
+
+时间复杂度 $O(n)$。其中 $n$ 表示字符串 $s$ 的长度。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -60,7 +66,16 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def minimumMoves(self, s: str) -> int:
+        ans = i = 0
+        while i < len(s):
+            if s[i] == "X":
+                ans += 1
+                i += 3
+            else:
+                i += 1
+        return ans
 ```
 
 ### **Java**
@@ -68,7 +83,110 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public int minimumMoves(String s) {
+        int ans = 0;
+        for (int i = 0; i < s.length(); ++i) {
+            if (s.charAt(i) == 'X') {
+                ++ans;
+                i += 2;
+            }
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int minimumMoves(string s) {
+        int ans = 0;
+        for (int i = 0; i < s.size(); ++i) {
+            if (s[i] == 'X') {
+                ++ans;
+                i += 2;
+            }
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func minimumMoves(s string) (ans int) {
+	for i := 0; i < len(s); i++ {
+		if s[i] == 'X' {
+			ans++
+			i += 2
+		}
+	}
+	return
+}
+```
+
+### **TypeScript**
+
+```ts
+function minimumMoves(s: string): number {
+    const n = s.length;
+    let ans = 0;
+    let i = 0;
+    while (i < n) {
+        if (s[i] === 'X') {
+            ans++;
+            i += 3;
+        } else {
+            i++;
+        }
+    }
+    return ans;
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn minimum_moves(s: String) -> i32 {
+        let s = s.as_bytes();
+        let n = s.len();
+        let mut ans = 0;
+        let mut i = 0;
+        while i < n {
+            if s[i] == b'X' {
+                ans += 1;
+                i += 3;
+            } else {
+                i += 1;
+            }
+        }
+        ans
+    }
+}
+```
+
+### **C**
+
+```c
+int minimumMoves(char* s) {
+    int n = strlen(s);
+    int ans = 0;
+    int i = 0;
+    while (i < n) {
+        if (s[i] == 'X') {
+            ans++;
+            i += 3;
+        } else {
+            i++;
+        }
+    }
+    return ans;
+}
 ```
 
 ### **...**

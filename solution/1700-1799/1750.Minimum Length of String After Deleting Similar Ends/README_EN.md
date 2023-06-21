@@ -17,7 +17,7 @@
 <p>Return <em>the <strong>minimum length</strong> of </em><code>s</code> <em>after performing the above operation any number of times (possibly zero times)</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;ca&quot;
@@ -25,7 +25,7 @@
 <strong>Explanation: </strong>You can&#39;t remove any characters, so the string stays as is.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;cabaabac&quot;
@@ -36,7 +36,7 @@
 - Take prefix = &quot;b&quot; and suffix = &quot;b&quot; and remove them, s = &quot;aa&quot;.
 - Take prefix = &quot;a&quot; and suffix = &quot;a&quot; and remove them, s = &quot;&quot;.</pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;aabccabba&quot;
@@ -56,18 +56,163 @@
 
 ## Solutions
 
+**Approach 1: Two pointers**
+
+We define two pointers $i$ and $j$ to point to the head and tail of the string $s$ respectively, then move them to the middle until the characters pointed to by $i$ and $j$ are not equal, then $\max(0, j - i + 1)$ is the answer.
+
+The time complexity is $O(n)$ and the space complexity is $O(1)$. Where $n$ is the length of the string $s$.
+
 <!-- tabs:start -->
 
 ### **Python3**
 
 ```python
-
+class Solution:
+    def minimumLength(self, s: str) -> int:
+        i, j = 0, len(s) - 1
+        while i < j and s[i] == s[j]:
+            while i + 1 < j and s[i] == s[i + 1]:
+                i += 1
+            while i < j - 1 and s[j - 1] == s[j]:
+                j -= 1
+            i, j = i + 1, j - 1
+        return max(0, j - i + 1)
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int minimumLength(String s) {
+        int i = 0, j = s.length() - 1;
+        while (i < j && s.charAt(i) == s.charAt(j)) {
+            while (i + 1 < j && s.charAt(i) == s.charAt(i + 1)) {
+                ++i;
+            }
+            while (i < j - 1 && s.charAt(j) == s.charAt(j - 1)) {
+                --j;
+            }
+            ++i;
+            --j;
+        }
+        return Math.max(0, j - i + 1);
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int minimumLength(string s) {
+        int i = 0, j = s.size() - 1;
+        while (i < j && s[i] == s[j]) {
+            while (i + 1 < j && s[i] == s[i + 1]) {
+                ++i;
+            }
+            while (i < j - 1 && s[j] == s[j - 1]) {
+                --j;
+            }
+            ++i;
+            --j;
+        }
+        return max(0, j - i + 1);
+    }
+};
+```
+
+### **Go**
+
+```go
+func minimumLength(s string) int {
+	i, j := 0, len(s)-1
+	for i < j && s[i] == s[j] {
+		for i+1 < j && s[i] == s[i+1] {
+			i++
+		}
+		for i < j-1 && s[j] == s[j-1] {
+			j--
+		}
+		i, j = i+1, j-1
+	}
+	return max(0, j-i+1)
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+```
+
+### **TypeScript**
+
+```ts
+function minimumLength(s: string): number {
+    let i = 0;
+    let j = s.length - 1;
+    while (i < j && s[i] === s[j]) {
+        while (i + 1 < j && s[i + 1] === s[i]) {
+            ++i;
+        }
+        while (i < j - 1 && s[j - 1] === s[j]) {
+            --j;
+        }
+        ++i;
+        --j;
+    }
+    return Math.max(0, j - i + 1);
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn minimum_length(s: String) -> i32 {
+        let s = s.as_bytes();
+        let n = s.len();
+        let mut start = 0;
+        let mut end = n - 1;
+        while start < end && s[start] == s[end] {
+            while start + 1 < end && s[start] == s[start + 1] {
+                start += 1;
+            }
+            while start < end - 1 && s[end] == s[end - 1] {
+                end -= 1;
+            }
+            start += 1;
+            end -= 1;
+        }
+        0.max(end - start + 1) as i32
+    }
+}
+```
+
+### **C**
+
+```c
+int minimumLength(char* s) {
+    int n = strlen(s);
+    int start = 0;
+    int end = n - 1;
+    while (start < end && s[start] == s[end]) {
+        while (start + 1 < end && s[start] == s[start + 1]) {
+            start++;
+        }
+        while (start < end - 1 && s[end] == s[end - 1]) {
+            end--;
+        }
+        start++;
+        end--;
+    }
+    if (start > end) {
+        return 0;
+    }
+    return end - start + 1;
+}
 ```
 
 ### **...**

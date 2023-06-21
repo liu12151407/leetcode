@@ -1,17 +1,61 @@
 class Solution {
     public int lengthOfLIS(int[] nums) {
-        int n = nums.length;
-        int[] dp = new int[n];
-        Arrays.fill(dp, 1);
-        int res = 1;
-        for (int i = 1; i < n; ++i) {
-            for (int j = 0; j < i; ++j) {
-                if (nums[j] < nums[i]) {
-                    dp[i] = Math.max(dp[i], dp[j] + 1);
-                }
+        int[] s = nums.clone();
+        Arrays.sort(s);
+        int m = 0;
+        int n = s.length;
+        for (int i = 0; i < n; ++i) {
+            if (i == 0 || s[i] != s[i - 1]) {
+                s[m++] = s[i];
             }
-            res = Math.max(res, dp[i]);
         }
-        return res;
+        BinaryIndexedTree tree = new BinaryIndexedTree(m);
+        int ans = 1;
+        for (int x : nums) {
+            x = search(s, x, m);
+            int t = tree.query(x - 1) + 1;
+            ans = Math.max(ans, t);
+            tree.update(x, t);
+        }
+        return ans;
+    }
+
+    private int search(int[] nums, int x, int r) {
+        int l = 0;
+        while (l < r) {
+            int mid = (l + r) >> 1;
+            if (nums[mid] >= x) {
+                r = mid;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return l + 1;
+    }
+}
+
+class BinaryIndexedTree {
+    private int n;
+    private int[] c;
+
+    public BinaryIndexedTree(int n) {
+        this.n = n;
+        c = new int[n + 1];
+    }
+
+    public void update(int x, int v) {
+        while (x <= n) {
+            c[x] = Math.max(c[x], v);
+            x += x & -x;
+        }
+    }
+
+    public int query(int x) {
+        int mx = 0;
+        while (x > 0) {
+            mx = Math.max(mx, c[x]);
+            x -= x & -x;
+        }
+        return mx;
     }
 }

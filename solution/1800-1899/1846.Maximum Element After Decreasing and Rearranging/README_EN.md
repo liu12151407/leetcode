@@ -21,7 +21,7 @@
 <p>Return <em>the <strong>maximum</strong> possible value of an element in </em><code>arr</code><em> after performing the operations to satisfy the conditions</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> arr = [2,2,1,2,1]
@@ -31,7 +31,7 @@ We can satisfy the conditions by rearranging <code>arr</code> so it becomes <cod
 The largest element in <code>arr</code> is 2.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> arr = [100,1,1000]
@@ -45,7 +45,7 @@ Now <code>arr = [1,2,3], which </code>satisfies the conditions.
 The largest element in <code>arr is 3.</code>
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> arr = [1,2,3,4,5]
@@ -68,13 +68,74 @@ The largest element in <code>arr is 3.</code>
 ### **Python3**
 
 ```python
-
+class Solution:
+    def maximumElementAfterDecrementingAndRearranging(self, arr: List[int]) -> int:
+        arr.sort()
+        arr[0] = 1
+        for i in range(1, len(arr)):
+            d = max(0, arr[i] - arr[i - 1] - 1)
+            arr[i] -= d
+        return max(arr)
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int maximumElementAfterDecrementingAndRearranging(int[] arr) {
+        Arrays.sort(arr);
+        arr[0] = 1;
+        int ans = 1;
+        for (int i = 1; i < arr.length; ++i) {
+            int d = Math.max(0, arr[i] - arr[i - 1] - 1);
+            arr[i] -= d;
+            ans = Math.max(ans, arr[i]);
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int maximumElementAfterDecrementingAndRearranging(vector<int>& arr) {
+        sort(arr.begin(), arr.end());
+        arr[0] = 1;
+        int ans = 1;
+        for (int i = 1; i < arr.size(); ++i) {
+            int d = max(0, arr[i] - arr[i - 1] - 1);
+            arr[i] -= d;
+            ans = max(ans, arr[i]);
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func maximumElementAfterDecrementingAndRearranging(arr []int) int {
+	sort.Ints(arr)
+	ans := 1
+	arr[0] = 1
+	for i := 1; i < len(arr); i++ {
+		d := max(0, arr[i]-arr[i-1]-1)
+		arr[i] -= d
+		ans = max(ans, arr[i])
+	}
+	return ans
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
 ```
 
 ### **...**

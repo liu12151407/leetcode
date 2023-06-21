@@ -1,9 +1,24 @@
 {
   "scripts": {
     "dev": "docsify serve --open",
-    "convert": "docsify-pdf-converter"
+    "convert": "docsify-pdf-converter",
+    "prepare": "husky install"
   },
   "dependencies": {
-    "docsify-cli": "^4.4.3"
+    "docsify-cli": "^4.4.4"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.6.5",
+    "@commitlint/config-conventional": "^17.6.5",
+    "@prettier/plugin-php": "^0.19.6",
+    "clang-format": "1.8.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
+    "prettier": "^2.8.8",
+    "prettier-plugin-sql-cst": "^0.8.2"
+  },
+  "lint-staged": {
+    "*.{js,ts,php,md,sql}": "prettier --write",
+    "*.py": "black -S"
   }
 }

@@ -16,7 +16,7 @@
 <p>Given the string <code>s</code>, the size of each group <code>k</code> and the character <code>fill</code>, return <em>a string array denoting the <strong>composition of every group</strong> </em><code>s</code><em> has been divided into, using the above procedure</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;abcdefghi&quot;, k = 3, fill = &quot;x&quot;
@@ -29,7 +29,7 @@ Since all groups can be completely filled by characters from the string, we do n
 Thus, the groups formed are &quot;abc&quot;, &quot;def&quot;, and &quot;ghi&quot;.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;abcdefghij&quot;, k = 3, fill = &quot;x&quot;
@@ -57,13 +57,59 @@ Thus, the 4 groups formed are &quot;abc&quot;, &quot;def&quot;, &quot;ghi&quot;,
 ### **Python3**
 
 ```python
-
+class Solution:
+    def divideString(self, s: str, k: int, fill: str) -> List[str]:
+        return [s[i : i + k].ljust(k, fill) for i in range(0, len(s), k)]
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public String[] divideString(String s, int k, char fill) {
+        int n = s.length();
+        String[] ans = new String[(n + k - 1) / k];
+        if (n % k != 0) {
+            s += String.valueOf(fill).repeat(k - n % k);
+        }
+        for (int i = 0; i < ans.length; ++i) {
+            ans[i] = s.substring(i * k, (i + 1) * k);
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    vector<string> divideString(string s, int k, char fill) {
+        int n = s.size();
+        if (n % k)
+            for (int i = 0; i < k - n % k; ++i) s.push_back(fill);
+        vector<string> ans;
+        for (int i = 0; i < s.size() / k; ++i) ans.push_back(s.substr(i * k, k));
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func divideString(s string, k int, fill byte) []string {
+	n := len(s)
+	if n%k != 0 {
+		s += strings.Repeat(string(fill), k-n%k)
+	}
+	var ans []string
+	for i := 0; i < len(s)/k; i++ {
+		ans = append(ans, s[i*k:(i+1)*k])
+	}
+	return ans
+}
 ```
 
 ### **TypeScript**

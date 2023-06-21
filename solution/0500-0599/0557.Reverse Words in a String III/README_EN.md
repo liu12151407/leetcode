@@ -7,10 +7,10 @@
 <p>Given a string <code>s</code>, reverse the order of characters in each word within a sentence while still preserving whitespace and initial word order.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 <pre><strong>Input:</strong> s = "Let's take LeetCode contest"
 <strong>Output:</strong> "s'teL ekat edoCteeL tsetnoc"
-</pre><p><strong>Example 2:</strong></p>
+</pre><p><strong class="example">Example 2:</strong></p>
 <pre><strong>Input:</strong> s = "God Ding"
 <strong>Output:</strong> "doG gniD"
 </pre>
@@ -60,10 +60,10 @@ class Solution {
 class Solution {
 public:
     string reverseWords(string s) {
-        for (int i = 0, n = s.size(); i < n; ++i)
-        {
+        for (int i = 0, n = s.size(); i < n; ++i) {
             int j = i;
-            while (++j < n && s[j] != ' ');
+            while (++j < n && s[j] != ' ')
+                ;
             reverse(s.begin() + i, s.begin() + j);
             i = j;
         }
@@ -88,6 +88,54 @@ func reverseWords(s string) string {
 		i = j
 	}
 	return string(t)
+}
+```
+
+### **TypeScript**
+
+```ts
+function reverseWords(s: string): string {
+    return s
+        .split(/\s+/)
+        .map(str => {
+            let res = '';
+            for (const c of str) {
+                res = c + res;
+            }
+            return res;
+        })
+        .join(' ');
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn reverse_words(s: String) -> String {
+        s.split(' ')
+            .map(|s| s.chars().rev().collect::<String>())
+            .collect::<Vec<_>>()
+            .join(" ")
+    }
+}
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param String $s
+     * @return String
+     */
+    function reverseWords($s) {
+        $sArr = explode(' ', $s);
+        for ($i = 0; $i < count($sArr); $i++) {
+            $sArr[$i] = strrev($sArr[$i]);
+        }
+        return implode(' ', $sArr);
+    }
 }
 ```
 

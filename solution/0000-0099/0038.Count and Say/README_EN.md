@@ -11,14 +11,14 @@
 	<li><code>countAndSay(n)</code> is the way you would &quot;say&quot; the digit string from <code>countAndSay(n-1)</code>, which is then converted into a different digit string.</li>
 </ul>
 
-<p>To determine how you &quot;say&quot; a digit string, split it into the <strong>minimal</strong> number of groups so that each group is a contiguous section all of the <strong>same character.</strong> Then for each group, say the number of characters, then say the character. To convert the saying into a digit string, replace the counts with a number and concatenate every saying.</p>
+<p>To determine how you &quot;say&quot; a digit string, split it into the <strong>minimal</strong> number of substrings such that each substring contains exactly <strong>one</strong> unique digit. Then for each substring, say the number of digits, then say the digit. Finally, concatenate every said digit.</p>
 
 <p>For example, the saying and conversion for digit string <code>&quot;3322251&quot;</code>:</p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0000-0099/0038.Count%20and%20Say/images/countandsay.jpg" style="width: 581px; height: 172px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0000-0099/0038.Count%20and%20Say/images/countandsay.jpg" style="width: 581px; height: 172px;" />
 <p>Given a positive integer <code>n</code>, return <em>the </em><code>n<sup>th</sup></code><em> term of the <strong>count-and-say</strong> sequence</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 1
@@ -26,7 +26,7 @@
 <strong>Explanation:</strong> This is the base case.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 4
@@ -100,11 +100,9 @@ class Solution {
 public:
     string countAndSay(int n) {
         string s = "1";
-        while (--n)
-        {
+        while (--n) {
             string t = "";
-            for (int i = 0; i < s.size();)
-            {
+            for (int i = 0; i < s.size();) {
                 int j = i;
                 while (j < s.size() && s[j] == s[i]) ++j;
                 t += to_string(j - i);
@@ -138,6 +136,97 @@ func countAndSay(n int) string {
 		s = t.String()
 	}
 	return s
+}
+```
+
+### **C#**
+
+```cs
+using System.Text;
+public class Solution {
+    public string CountAndSay(int n) {
+        var s = "1";
+        while (n > 1)
+        {
+            var sb = new StringBuilder();
+            var lastChar = '1';
+            var count = 0;
+            foreach (var ch in s)
+            {
+                if (count > 0 && lastChar == ch)
+                {
+                    ++count;
+                }
+                else
+                {
+                    if (count > 0)
+                    {
+                        sb.Append(count);
+                        sb.Append(lastChar);
+                    }
+                    lastChar = ch;
+                    count = 1;
+                }
+            }
+            if (count > 0)
+            {
+                sb.Append(count);
+                sb.Append(lastChar);
+            }
+            s = sb.ToString();
+            --n;
+        }
+        return s;
+    }
+}
+```
+
+### **JavaScript**
+
+```js
+const countAndSay = function (n) {
+    let s = '1';
+
+    for (let i = 2; i <= n; i++) {
+        let count = 1,
+            str = '',
+            len = s.length;
+
+        for (let j = 0; j < len; j++) {
+            if (j < len - 1 && s[j] === s[j + 1]) {
+                count++;
+            } else {
+                str += `${count}${s[j]}`;
+                count = 1;
+            }
+        }
+        s = str;
+    }
+    return s;
+};
+```
+
+### **TypeScript**
+
+```ts
+function countAndSay(n: number): string {
+    let s = '1';
+    for (let i = 1; i < n; i++) {
+        let t = '';
+        let cur = s[0];
+        let count = 1;
+        for (let j = 1; j < s.length; j++) {
+            if (s[j] !== cur) {
+                t += `${count}${cur}`;
+                cur = s[j];
+                count = 0;
+            }
+            count++;
+        }
+        t += `${count}${cur}`;
+        s = t;
+    }
+    return s;
 }
 ```
 

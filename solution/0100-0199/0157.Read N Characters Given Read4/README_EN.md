@@ -24,7 +24,7 @@ buf4[] is a destination, not a source. The results from read4 will be copied to 
 </pre>
 
 <p>Below is a high-level example of how <code>read4</code> works:</p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0157.Read%20N%20Characters%20Given%20Read4/images/157_example.png" style="width: 600px; height: 403px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0157.Read%20N%20Characters%20Given%20Read4/images/157_example.png" style="width: 600px; height: 403px;" />
 <pre>
 File file(&quot;abcde<code>&quot;); // File is &quot;</code>abcde<code>&quot;, initially file pointer (fp) points to &#39;a&#39;
 char[] buf4 = new char[4]; // Create buffer with enough space to store characters
@@ -59,7 +59,7 @@ buf[] is a destination, not a source. You will need to write the results to buf[
 </ul>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> file = &quot;abc&quot;, n = 4
@@ -68,7 +68,7 @@ buf[] is a destination, not a source. You will need to write the results to buf[
 Note that &quot;abc&quot; is the file&#39;s content, not buf. buf is the destination buffer that you will have to write the results to.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> file = &quot;abcde&quot;, n = 5
@@ -76,20 +76,12 @@ Note that &quot;abc&quot; is the file&#39;s content, not buf. buf is the destina
 <strong>Explanation:</strong> After calling your read method, buf should contain &quot;abcde&quot;. We read a total of 5 characters from the file, so return 5.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> file = &quot;abcdABCD1234&quot;, n = 12
 <strong>Output:</strong> 12
 <strong>Explanation:</strong> After calling your read method, buf should contain &quot;abcdABCD1234&quot;. We read a total of 12 characters from the file, so return 12.
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> file = &quot;leetcode&quot;, n = 5
-<strong>Output:</strong> 5
-<strong>Explanation:</strong> After calling your read method, buf should contain &quot;leetc&quot;. We read a total of 5 characters from the file, so return 5.
 </pre>
 
 <p>&nbsp;</p>
@@ -108,13 +100,139 @@ Note that &quot;abc&quot; is the file&#39;s content, not buf. buf is the destina
 ### **Python3**
 
 ```python
+"""
+The read4 API is already defined for you.
 
+    @param buf4, a list of characters
+    @return an integer
+    def read4(buf4):
+
+# Below is an example of how the read4 API can be called.
+file = File("abcdefghijk") # File is "abcdefghijk", initially file pointer (fp) points to 'a'
+buf4 = [' '] * 4 # Create buffer with enough space to store characters
+read4(buf4) # read4 returns 4. Now buf = ['a','b','c','d'], fp points to 'e'
+read4(buf4) # read4 returns 4. Now buf = ['e','f','g','h'], fp points to 'i'
+read4(buf4) # read4 returns 3. Now buf = ['i','j','k',...], fp points to end of file
+"""
+
+
+class Solution:
+    def read(self, buf, n):
+        """
+        :type buf: Destination buffer (List[str])
+        :type n: Number of characters to read (int)
+        :rtype: The number of actual characters read (int)
+        """
+        i = 0
+        buf4 = [0] * 4
+        v = 5
+        while v >= 4:
+            v = read4(buf4)
+            for j in range(v):
+                buf[i] = buf4[j]
+                i += 1
+                if i >= n:
+                    return n
+        return i
 ```
 
 ### **Java**
 
 ```java
+/**
+ * The read4 API is defined in the parent class Reader4.
+ *     int read4(char[] buf4);
+ */
 
+public class Solution extends Reader4 {
+    /**
+     * @param buf Destination buffer
+     * @param n   Number of characters to read
+     * @return    The number of actual characters read
+     */
+    public int read(char[] buf, int n) {
+        char[] buf4 = new char[4];
+        int i = 0, v = 5;
+        while (v >= 4) {
+            v = read4(buf4);
+            for (int j = 0; j < v; ++j) {
+                buf[i++] = buf4[j];
+                if (i >= n) {
+                    return n;
+                }
+            }
+        }
+        return i;
+    }
+}
+```
+
+### **C++**
+
+```cpp
+/**
+ * The read4 API is defined in the parent class Reader4.
+ *     int read4(char *buf4);
+ */
+
+class Solution {
+public:
+    /**
+     * @param buf Destination buffer
+     * @param n   Number of characters to read
+     * @return    The number of actual characters read
+     */
+    int read(char* buf, int n) {
+        char buf4[4];
+        int i = 0, v = 5;
+        while (v >= 4) {
+            v = read4(buf4);
+            for (int j = 0; j < v; ++j) {
+                buf[i++] = buf4[j];
+                if (i >= n) {
+                    return n;
+                }
+            }
+        }
+        return i;
+    }
+};
+```
+
+### **Go**
+
+```go
+/**
+ * The read4 API is already defined for you.
+ *
+ *     read4 := func(buf4 []byte) int
+ *
+ * // Below is an example of how the read4 API can be called.
+ * file := File("abcdefghijk") // File is "abcdefghijk", initially file pointer (fp) points to 'a'
+ * buf4 := make([]byte, 4) // Create buffer with enough space to store characters
+ * read4(buf4) // read4 returns 4. Now buf = ['a','b','c','d'], fp points to 'e'
+ * read4(buf4) // read4 returns 4. Now buf = ['e','f','g','h'], fp points to 'i'
+ * read4(buf4) // read4 returns 3. Now buf = ['i','j','k',...], fp points to end of file
+ */
+
+var solution = func(read4 func([]byte) int) func([]byte, int) int {
+	// implement read below.
+	return func(buf []byte, n int) int {
+		buf4 := make([]byte, 4)
+		i, v := 0, 5
+		for v >= 4 {
+			v = read4(buf4)
+			for j := 0; j < v; j++ {
+				buf[i] = buf4[j]
+				i++
+				if i >= n {
+					return n
+				}
+			}
+		}
+		return i
+	}
+}
 ```
 
 ### **...**

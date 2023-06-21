@@ -20,7 +20,7 @@
 <p>Return <em>an integer array <code>ans</code> of size </em><code>n</code> <em>where </em><code>ans[j]</code><em> is the answer to the </em><code>j<sup>th</sup></code><em> query</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [0,1,2], queries = [[0,2],[2,0],[3,2],[5,0]]
@@ -39,7 +39,7 @@ At minute 3, nums[2] does not exist.
 At minute 5, nums[0] is 0.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [2], queries = [[0,0],[1,0],[2,0],[3,0]]
@@ -75,13 +75,81 @@ At minute 3, nums[0] does not exist.
 ### **Python3**
 
 ```python
-
+class Solution:
+    def elementInNums(self, nums: List[int], queries: List[List[int]]) -> List[int]:
+        n, m = len(nums), len(queries)
+        ans = [-1] * m
+        for j, (t, i) in enumerate(queries):
+            t %= 2 * n
+            if t < n and i < n - t:
+                ans[j] = nums[i + t]
+            elif t > n and i < t - n:
+                ans[j] = nums[i]
+        return ans
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int[] elementInNums(int[] nums, int[][] queries) {
+        int n = nums.length, m = queries.length;
+        int[] ans = new int[m];
+        for (int j = 0; j < m; ++j) {
+            ans[j] = -1;
+            int t = queries[j][0], i = queries[j][1];
+            t %= (2 * n);
+            if (t < n && i < n - t) {
+                ans[j] = nums[i + t];
+            } else if (t > n && i < t - n) {
+                ans[j] = nums[i];
+            }
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    vector<int> elementInNums(vector<int>& nums, vector<vector<int>>& queries) {
+        int n = nums.size(), m = queries.size();
+        vector<int> ans(m, -1);
+        for (int j = 0; j < m; ++j) {
+            int t = queries[j][0], i = queries[j][1];
+            t %= (n * 2);
+            if (t < n && i < n - t) {
+                ans[j] = nums[i + t];
+            } else if (t > n && i < t - n) {
+                ans[j] = nums[i];
+            }
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func elementInNums(nums []int, queries [][]int) []int {
+	n, m := len(nums), len(queries)
+	ans := make([]int, m)
+	for j, q := range queries {
+		t, i := q[0], q[1]
+		t %= (n * 2)
+		ans[j] = -1
+		if t < n && i < n-t {
+			ans[j] = nums[i+t]
+		} else if t > n && i < t-n {
+			ans[j] = nums[i]
+		}
+	}
+	return ans
+}
 ```
 
 ### **TypeScript**

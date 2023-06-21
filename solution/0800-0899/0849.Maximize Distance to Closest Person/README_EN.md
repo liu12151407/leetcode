@@ -13,8 +13,8 @@
 <p>Return <em>that maximum distance to the closest person</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0800-0899/0849.Maximize%20Distance%20to%20Closest%20Person/images/distance.jpg" style="width: 650px; height: 257px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0800-0899/0849.Maximize%20Distance%20to%20Closest%20Person/images/distance.jpg" style="width: 650px; height: 257px;" />
 <pre>
 <strong>Input:</strong> seats = [1,0,0,0,1,0,1]
 <strong>Output:</strong> 2
@@ -24,7 +24,7 @@ If Alex sits in any other open seat, the closest person has distance 1.
 Thus, the maximum distance to the closest person is 2.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> seats = [1,0,0,0]
@@ -34,7 +34,7 @@ If Alex sits in the last seat (i.e. seats[3]), the closest person is 3 seats awa
 This is the maximum distance possible, so the answer is 3.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> seats = [0,1]
@@ -58,13 +58,93 @@ This is the maximum distance possible, so the answer is 3.
 ### **Python3**
 
 ```python
-
+class Solution:
+    def maxDistToClosest(self, seats: List[int]) -> int:
+        first = last = None
+        d = 0
+        for i, c in enumerate(seats):
+            if c:
+                if last is not None:
+                    d = max(d, i - last)
+                if first is None:
+                    first = i
+                last = i
+        return max(first, len(seats) - last - 1, d // 2)
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int maxDistToClosest(int[] seats) {
+        int first = -1, last = -1;
+        int d = 0, n = seats.length;
+        for (int i = 0; i < n; ++i) {
+            if (seats[i] == 1) {
+                if (last != -1) {
+                    d = Math.max(d, i - last);
+                }
+                if (first == -1) {
+                    first = i;
+                }
+                last = i;
+            }
+        }
+        return Math.max(d / 2, Math.max(first, n - last - 1));
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int maxDistToClosest(vector<int>& seats) {
+        int first = -1, last = -1;
+        int d = 0, n = seats.size();
+        for (int i = 0; i < n; ++i) {
+            if (seats[i] == 1) {
+                if (last != -1) {
+                    d = max(d, i - last);
+                }
+                if (first == -1) {
+                    first = i;
+                }
+                last = i;
+            }
+        }
+        return max({d / 2, max(first, n - last - 1)});
+    }
+};
+```
+
+### **Go**
+
+```go
+func maxDistToClosest(seats []int) int {
+	first, last := -1, -1
+	d := 0
+	for i, c := range seats {
+		if c == 1 {
+			if last != -1 {
+				d = max(d, i-last)
+			}
+			if first == -1 {
+				first = i
+			}
+			last = i
+		}
+	}
+	return max(d/2, max(first, len(seats)-last-1))
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
 ```
 
 ### **...**

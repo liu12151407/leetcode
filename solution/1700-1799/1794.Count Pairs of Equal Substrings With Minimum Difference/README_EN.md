@@ -16,33 +16,23 @@
 <p>Return <em>the <strong>number</strong> of such quadruples</em>.</p>
 
 <p>&nbsp;</p>
-
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
-
 <strong>Input:</strong> firstString = &quot;abcd&quot;, secondString = &quot;bccda&quot;
-
 <strong>Output:</strong> 1
-
 <strong>Explanation:</strong> The quadruple (0,0,4,4) is the only one that satisfies all the conditions and minimizes j - a.
-
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
-
 <strong>Input:</strong> firstString = &quot;ab&quot;, secondString = &quot;cd&quot;
-
 <strong>Output:</strong> 0
-
 <strong>Explanation:</strong> There are no quadruples satisfying all the conditions.
-
 </pre>
 
 <p>&nbsp;</p>
-
 <p><strong>Constraints:</strong></p>
 
 <ul>
@@ -57,13 +47,99 @@
 ### **Python3**
 
 ```python
-
+class Solution:
+    def countQuadruples(self, firstString: str, secondString: str) -> int:
+        last = {c: i for i, c in enumerate(secondString)}
+        ans, mi = 0, inf
+        for i, c in enumerate(firstString):
+            if c in last:
+                t = i - last[c]
+                if mi > t:
+                    mi = t
+                    ans = 1
+                elif mi == t:
+                    ans += 1
+        return ans
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int countQuadruples(String firstString, String secondString) {
+        int[] last = new int[26];
+        for (int i = 0; i < secondString.length(); ++i) {
+            last[secondString.charAt(i) - 'a'] = i + 1;
+        }
+        int ans = 0, mi = 1 << 30;
+        for (int i = 0; i < firstString.length(); ++i) {
+            int j = last[firstString.charAt(i) - 'a'];
+            if (j > 0) {
+                int t = i - j;
+                if (mi > t) {
+                    mi = t;
+                    ans = 1;
+                } else if (mi == t) {
+                    ++ans;
+                }
+            }
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int countQuadruples(string firstString, string secondString) {
+        int last[26] = {0};
+        for (int i = 0; i < secondString.size(); ++i) {
+            last[secondString[i] - 'a'] = i + 1;
+        }
+        int ans = 0, mi = 1 << 30;
+        for (int i = 0; i < firstString.size(); ++i) {
+            int j = last[firstString[i] - 'a'];
+            if (j) {
+                int t = i - j;
+                if (mi > t) {
+                    mi = t;
+                    ans = 1;
+                } else if (mi == t) {
+                    ++ans;
+                }
+            }
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func countQuadruples(firstString string, secondString string) (ans int) {
+	last := [26]int{}
+	for i, c := range secondString {
+		last[c-'a'] = i + 1
+	}
+	mi := 1 << 30
+	for i, c := range firstString {
+		j := last[c-'a']
+		if j > 0 {
+			t := i - j
+			if mi > t {
+				mi = t
+				ans = 1
+			} else if mi == t {
+				ans++
+			}
+		}
+	}
+	return
+}
 ```
 
 ### **...**

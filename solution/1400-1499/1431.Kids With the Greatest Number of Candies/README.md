@@ -1,4 +1,4 @@
-# [1431. 拥有最多糖果的孩子](https://leetcode-cn.com/problems/kids-with-the-greatest-number-of-candies)
+# [1431. 拥有最多糖果的孩子](https://leetcode.cn/problems/kids-with-the-greatest-number-of-candies)
 
 [English Version](/solution/1400-1499/1431.Kids%20With%20the%20Greatest%20Number%20of%20Candies/README_EN.md)
 
@@ -120,6 +120,67 @@ func max(a, b int) int {
 		return a
 	}
 	return b
+}
+```
+
+### **TypeScript**
+
+```ts
+function kidsWithCandies(candies: number[], extraCandies: number): boolean[] {
+    const max = candies.reduce((r, v) => Math.max(r, v));
+    return candies.map(v => v + extraCandies >= max);
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn kids_with_candies(candies: Vec<i32>, extra_candies: i32) -> Vec<bool> {
+        let max = *candies.iter().max().unwrap();
+        candies.iter().map(|v| v + extra_candies >= max).collect()
+    }
+}
+```
+
+### **C**
+
+```c
+#define max(a, b) (((a) > (b)) ? (a) : (b))
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+bool* kidsWithCandies(int* candies, int candiesSize, int extraCandies, int* returnSize) {
+    int mx = 0;
+    for (int i = 0; i < candiesSize; i++) {
+        mx = max(mx, candies[i]);
+    }
+    bool* ans = malloc(candiesSize * sizeof(bool));
+    for (int i = 0; i < candiesSize; i++) {
+        ans[i] = candies[i] + extraCandies >= mx;
+    }
+    *returnSize = candiesSize;
+    return ans;
+}
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param Integer[] $candies
+     * @param Integer $extraCandies
+     * @return Boolean[]
+     */
+    function kidsWithCandies($candies, $extraCandies) {
+        $max = max($candies);
+        $rs = [];
+        for ($i = 0; $i < count($candies); $i++) {
+            array_push($rs, $candies[$i] + $extraCandies >= $max);
+        }
+        return $rs;
+    }
 }
 ```
 

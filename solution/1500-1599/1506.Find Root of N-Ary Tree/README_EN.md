@@ -4,7 +4,7 @@
 
 ## Description
 
-<p>You are given all the nodes of an <strong><a href="https://leetcode.com/articles/introduction-to-n-ary-trees/">N-ary tree</a></strong> as an array of <code>Node</code> objects, where each node has a <strong>unique value</strong>.</p>
+<p>You are given all the nodes of an <strong><a href="https://leetcode.com/explore/learn/card/n-ary-tree/">N-ary tree</a></strong> as an array of <code>Node</code> objects, where each node has a <strong>unique value</strong>.</p>
 
 <p>Return <em>the <strong>root</strong> of the N-ary tree</em>.</p>
 
@@ -12,7 +12,7 @@
 
 <p>An N-ary tree can be serialized as represented in its level order traversal where each group of children is separated by the <code>null</code> value (see examples).</p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1506.Find%20Root%20of%20N-Ary%20Tree/images/sample_4_964.png" style="width: 296px; height: 241px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1506.Find%20Root%20of%20N-Ary%20Tree/images/sample_4_964.png" style="width: 296px; height: 241px;" /></p>
 
 <p>For example, the above tree is serialized as <code>[1,null,2,3,4,5,null,null,6,7,null,8,null,9,10,null,null,11,null,12,null,13,null,null,14]</code>.</p>
 
@@ -26,9 +26,9 @@
 </ol>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
-<p><img src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1506.Find%20Root%20of%20N-Ary%20Tree/images/narytreeexample.png" style="width: 100%; max-width: 300px;" /></p>
+<p><img src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1506.Find%20Root%20of%20N-Ary%20Tree/images/narytreeexample.png" style="width: 100%; max-width: 300px;" /></p>
 
 <pre>
 <strong>Input:</strong> tree = [1,null,3,2,4,null,5,6]
@@ -40,9 +40,9 @@ The findRoot function should return the root Node(1), and the driver code will s
 The input data and serialized Node(1) are the same, so the test passes.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1506.Find%20Root%20of%20N-Ary%20Tree/images/sample_4_964.png" style="width: 296px; height: 241px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1506.Find%20Root%20of%20N-Ary%20Tree/images/sample_4_964.png" style="width: 296px; height: 241px;" /></p>
 
 <pre>
 <strong>Input:</strong> tree = [1,null,2,3,4,5,null,null,6,7,null,8,null,9,10,null,null,11,null,12,null,13,null,null,14]
@@ -79,17 +79,15 @@ class Node:
         self.children = children if children is not None else []
 """
 
+
 class Solution:
     def findRoot(self, tree: List['Node']) -> 'Node':
-        xorsum = 0
+        x = 0
         for node in tree:
-            xorsum ^= node.val
+            x ^= node.val
             for child in node.children:
-                xorsum ^= child.val
-
-        for node in tree:
-            if node.val == xorsum:
-                return node
+                x ^= child.val
+        return next(node for node in tree if node.val == x)
 ```
 
 ### **Java**
@@ -120,19 +118,18 @@ class Node {
 
 class Solution {
     public Node findRoot(List<Node> tree) {
-        int xor = 0;
+        int x = 0;
         for (Node node : tree) {
-            xor ^= node.val;
+            x ^= node.val;
             for (Node child : node.children) {
-                xor ^= child.val;
+                x ^= child.val;
             }
         }
-        for (Node node :tree) {
-            if (node.val == xor) {
-                return node;
+        for (int i = 0;; ++i) {
+            if (tree.get(i).val == x) {
+                return tree.get(i);
             }
         }
-        return null;
     }
 }
 ```
@@ -163,19 +160,18 @@ public:
 class Solution {
 public:
     Node* findRoot(vector<Node*> tree) {
-        int xorsum = 0;
-        for (auto& node : tree) {
-            xorsum ^= node->val;
-            for (auto& child : node->children) {
-                xorsum ^= child->val;
+        int x = 0;
+        for (Node* node : tree) {
+            x ^= node->val;
+            for (Node* child : node->children) {
+                x ^= child->val;
             }
         }
-        for (auto& node : tree) {
-            if (node->val == xorsum) {
-                return node;
+        for (int i = 0;; ++i) {
+            if (tree[i]->val == x) {
+                return tree[i];
             }
         }
-        return nullptr;
     }
 };
 ```
@@ -192,19 +188,45 @@ public:
  */
 
 func findRoot(tree []*Node) *Node {
-	xorsum := 0
+	x := 0
 	for _, node := range tree {
-		xorsum ^= node.Val
+		x ^= node.Val
 		for _, child := range node.Children {
-			xorsum ^= child.Val
+			x ^= child.Val
 		}
 	}
-	for _, node := range tree {
-		if node.Val == xorsum {
-			return node
+	for i := 0; ; i++ {
+		if tree[i].Val == x {
+			return tree[i]
 		}
 	}
-	return nil
+}
+```
+
+### **TypeScript**
+
+```ts
+/**
+ * Definition for Node.
+ * class Node {
+ *     val: number
+ *     children: Node[]
+ *     constructor(val?: number, children?: Node[]) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.children = (children===undefined ? [] : children)
+ *     }
+ * }
+ */
+
+function findRoot(tree: Node[]): Node | null {
+    let x = 0;
+    for (const node of tree) {
+        x ^= node.val;
+        for (const child of node.children) {
+            x ^= child.val;
+        }
+    }
+    return tree.find(node => node.val === x) || null;
 }
 ```
 

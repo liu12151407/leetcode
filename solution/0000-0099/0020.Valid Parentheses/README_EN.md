@@ -11,42 +11,29 @@
 <ol>
 	<li>Open brackets must be closed by the same type of brackets.</li>
 	<li>Open brackets must be closed in the correct order.</li>
+	<li>Every close bracket has a corresponding open bracket of the same type.</li>
 </ol>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;()&quot;
 <strong>Output:</strong> true
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;()[]{}&quot;
 <strong>Output:</strong> true
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;(]&quot;
 <strong>Output:</strong> false
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> s = &quot;([)]&quot;
-<strong>Output:</strong> false
-</pre>
-
-<p><strong>Example 5:</strong></p>
-
-<pre>
-<strong>Input:</strong> s = &quot;{[]}&quot;
-<strong>Output:</strong> true
 </pre>
 
 <p>&nbsp;</p>
@@ -66,14 +53,14 @@
 ```python
 class Solution:
     def isValid(self, s: str) -> bool:
-        q = []
-        parentheses = {'()', '[]', '{}'}
-        for ch in s:
-            if ch in '([{':
-                q.append(ch)
-            elif not q or q.pop() + ch not in parentheses:
+        stk = []
+        d = {'()', '[]', '{}'}
+        for c in s:
+            if c in '({[':
+                stk.append(c)
+            elif not stk or stk.pop() + c not in d:
                 return False
-        return not q
+        return not stk
 ```
 
 ### **Java**
@@ -81,14 +68,15 @@ class Solution:
 ```java
 class Solution {
     public boolean isValid(String s) {
-        char[] chars = s.toCharArray();
-        Deque<Character> q = new ArrayDeque<>();
-        for (char ch : chars) {
-            boolean left = ch == '(' || ch == '[' || ch == '{';
-            if (left) q.push(ch);
-            else if (q.isEmpty() || !match(q.pop(), ch)) return false;
+        Deque<Character> stk = new ArrayDeque<>();
+        for (char c : s.toCharArray()) {
+            if (c == '(' || c == '{' || c == '[') {
+                stk.push(c);
+            } else if (stk.isEmpty() || !match(stk.pop(), c)) {
+                return false;
+            }
         }
-        return q.isEmpty();
+        return stk.isEmpty();
     }
 
     private boolean match(char l, char r) {
@@ -103,19 +91,147 @@ class Solution {
 class Solution {
 public:
     bool isValid(string s) {
-        stack<char> q;
-        for (int i = 0, n = s.length(); i < n; ++i) {
-            if (s[i] == '{' || s[i] == '[' || s[i] == '(') q.push(s[i]);
-            else if (q.empty() || !match(q.top(), s[i])) return false;
-            else q.pop();
+        string stk;
+        for (char c : s) {
+            if (c == '(' || c == '{' || c == '[')
+                stk.push_back(c);
+            else if (stk.empty() || !match(stk.back(), c))
+                return false;
+            else
+                stk.pop_back();
         }
-        return q.empty();
+        return stk.empty();
     }
-private:
+
     bool match(char l, char r) {
         return (l == '(' && r == ')') || (l == '[' && r == ']') || (l == '{' && r == '}');
     }
 };
+```
+
+### **Go**
+
+```go
+func isValid(s string) bool {
+	stk := []rune{}
+	for _, c := range s {
+		if c == '(' || c == '{' || c == '[' {
+			stk = append(stk, c)
+		} else if len(stk) == 0 || !match(stk[len(stk)-1], c) {
+			return false
+		} else {
+			stk = stk[:len(stk)-1]
+		}
+	}
+	return len(stk) == 0
+}
+
+func match(l, r rune) bool {
+	return (l == '(' && r == ')') || (l == '[' && r == ']') || (l == '{' && r == '}')
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {string} s
+ * @return {boolean}
+ */
+var isValid = function (s) {
+    let stk = [];
+    for (const c of s) {
+        if (c == '(' || c == '{' || c == '[') {
+            stk.push(c);
+        } else if (stk.length == 0 || !match(stk[stk.length - 1], c)) {
+            return false;
+        } else {
+            stk.pop();
+        }
+    }
+    return stk.length == 0;
+};
+
+function match(l, r) {
+    return (
+        (l == '(' && r == ')') ||
+        (l == '[' && r == ']') ||
+        (l == '{' && r == '}')
+    );
+}
+```
+
+### **Ruby**
+
+```rb
+# @param {String} s
+# @return {Boolean}
+def is_valid(s)
+  stack = ''
+  s.split('').each do |c|
+    if ['{', '[', '('].include?(c)
+      stack += c
+    else
+      if c == '}' && stack[stack.length - 1] == '{'
+
+        stack = stack.length > 1 ? stack[0..stack.length - 2] : ""
+      elsif c == ']' && stack[stack.length - 1] == '['
+        stack = stack.length > 1 ? stack[0..stack.length - 2] : ""
+      elsif c == ')' && stack[stack.length - 1] == '('
+        stack = stack.length > 1 ? stack[0..stack.length - 2] : ""
+      else
+        return false
+      end
+    end
+  end
+  stack == ''
+end
+```
+
+### **TypeScript**
+
+```ts
+const map = new Map([
+    ['(', ')'],
+    ['[', ']'],
+    ['{', '}'],
+]);
+
+function isValid(s: string): boolean {
+    const stack = [];
+    for (const c of s) {
+        if (map.has(c)) {
+            stack.push(map.get(c));
+        } else if (stack.pop() !== c) {
+            return false;
+        }
+    }
+    return stack.length === 0;
+}
+```
+
+### **Rust**
+
+```rust
+use std::collections::HashMap;
+
+impl Solution {
+    pub fn is_valid(s: String) -> bool {
+        let mut map = HashMap::new();
+        map.insert('(', ')');
+        map.insert('[', ']');
+        map.insert('{', '}');
+        let mut stack = vec![];
+        for c in s.chars() {
+            if map.contains_key(&c) {
+                stack.push(map[&c]);
+            } else if stack.pop().unwrap_or(' ') != c {
+                return false;
+            }
+        }
+        stack.len() == 0
+    }
+}
 ```
 
 ### **...**

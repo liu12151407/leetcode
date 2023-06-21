@@ -1,4 +1,4 @@
-# [2114. 句子中的最多单词数](https://leetcode-cn.com/problems/maximum-number-of-words-found-in-sentences)
+# [2114. 句子中的最多单词数](https://leetcode.cn/problems/maximum-number-of-words-found-in-sentences)
 
 [English Version](/solution/2100-2199/2114.Maximum%20Number%20of%20Words%20Found%20in%20Sentences/README_EN.md)
 
@@ -49,7 +49,11 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
-返回最大空格数量再加 1 即可。
+**方法一：空格计数**
+
+我们遍历数组 `sentences`，对于每个句子，我们计算其中的空格数，那么单词数就是空格数加 $1$。最后返回最大的单词数即可。
+
+时间复杂度 $O(L)$，空间复杂度 $O(1)$。其中 $L$ 是数组 `sentences` 中所有字符串的长度之和。
 
 <!-- tabs:start -->
 
@@ -69,26 +73,20 @@ class Solution:
 
 ```java
 class Solution {
-
     public int mostWordsFound(String[] sentences) {
         int ans = 0;
-        for (String s : sentences) {
-            ans = Math.max(ans, 1 + count(s, ' '));
+        for (var s : sentences) {
+            int cnt = 1;
+            for (int i = 0; i < s.length(); ++i) {
+                if (s.charAt(i) == ' ') {
+                    ++cnt;
+                }
+            }
+            ans = Math.max(ans, cnt);
         }
         return ans;
     }
-
-    private int count(String s, char c) {
-        int cnt = 0;
-        for (char ch : s.toCharArray()) {
-            if (ch == c) {
-                ++cnt;
-            }
-        }
-        return cnt;
-    }
 }
-
 ```
 
 ### **C++**
@@ -98,17 +96,11 @@ class Solution {
 public:
     int mostWordsFound(vector<string>& sentences) {
         int ans = 0;
-        for (string& s : sentences)
-            ans = max(ans, 1 + count(s, ' '));
+        for (auto& s : sentences) {
+            int cnt = 1 + count(s.begin(), s.end(), ' ');
+            ans = max(ans, cnt);
+        }
         return ans;
-    }
-
-    int count(string s, char c) {
-        int cnt = 0;
-        for (char& ch : s)
-            if (ch == c)
-                ++cnt;
-        return cnt;
     }
 };
 ```
@@ -116,37 +108,71 @@ public:
 ### **Go**
 
 ```go
-func mostWordsFound(sentences []string) int {
-	count := func(s string, c rune) int {
-		cnt := 0
-		for _, ch := range s {
-			if ch == c {
-				cnt++
-			}
-		}
-		return cnt
-	}
-	ans := 0
+func mostWordsFound(sentences []string) (ans int) {
 	for _, s := range sentences {
-		ans = max(ans, 1+count(s, ' '))
+		cnt := 1 + strings.Count(s, " ")
+		if ans < cnt {
+			ans = cnt
+		}
 	}
-	return ans
-}
-
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
+	return
 }
 ```
 
 ### **TypeScript**
 
-<!-- 这里可写当前语言的特殊实现逻辑 -->
-
 ```ts
+function mostWordsFound(sentences: string[]): number {
+    return sentences.reduce(
+        (r, s) =>
+            Math.max(
+                r,
+                [...s].reduce((r, c) => r + (c === ' ' ? 1 : 0), 1),
+            ),
+        0,
+    );
+}
+```
 
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn most_words_found(sentences: Vec<String>) -> i32 {
+        let mut ans = 0;
+        for s in sentences.iter() {
+            let mut count = 1;
+            for c in s.as_bytes() {
+                if *c == b' ' {
+                    count += 1;
+                }
+            }
+            ans = ans.max(count);
+        }
+        ans
+    }
+}
+```
+
+### **C**
+
+```c
+#define max(a, b) (((a) > (b)) ? (a) : (b))
+
+int mostWordsFound(char** sentences, int sentencesSize) {
+    int ans = 0;
+    for (int i = 0; i < sentencesSize; i++) {
+        char* s = sentences[i];
+        int count = 1;
+        for (int j = 0; s[j]; j++) {
+            if (s[j] == ' ') {
+                count++;
+            }
+        }
+        ans = max(ans, count);
+    }
+    return ans;
+}
 ```
 
 ### **...**

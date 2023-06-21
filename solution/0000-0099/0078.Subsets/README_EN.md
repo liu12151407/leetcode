@@ -4,19 +4,19 @@
 
 ## Description
 
-<p>Given an integer array <code>nums</code> of <strong>unique</strong> elements, return <em>all possible subsets (the power set)</em>.</p>
+<p>Given an integer array <code>nums</code> of <strong>unique</strong> elements, return <em>all possible</em> <span data-keyword="subset"><em>subsets</em></span> <em>(the power set)</em>.</p>
 
 <p>The solution set <strong>must not</strong> contain duplicate subsets. Return the solution in <strong>any order</strong>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,2,3]
 <strong>Output:</strong> [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [0]
@@ -43,41 +43,73 @@ DFS.
 ```python
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
-        res = []
-
-        def dfs(i, n, t):
-            res.append(t.copy())
-            if i == n:
+        def dfs(i: int):
+            if i == len(nums):
+                ans.append(t[:])
                 return
-            for j in range(i, n):
-                t.append(nums[j])
-                dfs(j + 1, n, t)
-                t.pop()
+            dfs(i + 1)
+            t.append(nums[i])
+            dfs(i + 1)
+            t.pop()
 
-        dfs(0, len(nums), [])
-        return res
+        ans = []
+        t = []
+        dfs(0)
+        return ans
+```
+
+```python
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        ans = []
+        for mask in range(1 << len(nums)):
+            t = [x for i, x in enumerate(nums) if mask >> i & 1]
+            ans.append(t)
+        return ans
 ```
 
 ### **Java**
 
 ```java
 class Solution {
+    private List<List<Integer>> ans = new ArrayList<>();
+    private List<Integer> t = new ArrayList<>();
+    private int[] nums;
+
     public List<List<Integer>> subsets(int[] nums) {
-        List<List<Integer>> res = new ArrayList<>();
-        dfs(0, nums, new ArrayList<>(), res);
-        return res;
+        this.nums = nums;
+        dfs(0);
+        return ans;
     }
 
-    private void dfs(int i, int[] nums, List<Integer> t, List<List<Integer>> res) {
-        res.add(new ArrayList<>(t));
+    private void dfs(int i) {
         if (i == nums.length) {
+            ans.add(new ArrayList<>(t));
             return;
         }
-        for (int j = i; j < nums.length; ++j) {
-            t.add(nums[j]);
-            dfs(j + 1, nums, t, res);
-            t.remove(t.size() - 1);
+        dfs(i + 1);
+        t.add(nums[i]);
+        dfs(i + 1);
+        t.remove(t.size() - 1);
+    }
+}
+```
+
+```java
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        int n = nums.length;
+        List<List<Integer>> ans = new ArrayList<>();
+        for (int mask = 0; mask < 1 << n; ++mask) {
+            List<Integer> t = new ArrayList<>();
+            for (int i = 0; i < n; ++i) {
+                if (((mask >> i) & 1) == 1) {
+                    t.add(nums[i]);
+                }
+            }
+            ans.add(t);
         }
+        return ans;
     }
 }
 ```
@@ -88,21 +120,40 @@ class Solution {
 class Solution {
 public:
     vector<vector<int>> subsets(vector<int>& nums) {
-        vector<vector<int>> res;
+        vector<vector<int>> ans;
         vector<int> t;
-        dfs(0, nums, t, res);
-        return res;
-    }
-
-    void dfs(int i, vector<int>& nums, vector<int> t, vector<vector<int>>& res) {
-        res.push_back(t);
-        if (i == nums.size()) return;
-        for (int j = i; j < nums.size(); ++j)
-        {
-            t.push_back(nums[j]);
-            dfs(j + 1, nums, t, res);
+        function<void(int)> dfs = [&](int i) -> void {
+            if (i == nums.size()) {
+                ans.push_back(t);
+                return;
+            }
+            dfs(i + 1);
+            t.push_back(nums[i]);
+            dfs(i + 1);
             t.pop_back();
+        };
+        dfs(0);
+        return ans;
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        int n = nums.size();
+        vector<vector<int>> ans;
+        for (int mask = 0; mask < 1 << n; ++mask) {
+            vector<int> t;
+            for (int i = 0; i < n; ++i) {
+                if (mask >> i & 1) {
+                    t.emplace_back(nums[i]);
+                }
+            }
+            ans.emplace_back(t);
         }
+        return ans;
     }
 };
 ```
@@ -110,25 +161,98 @@ public:
 ### **Go**
 
 ```go
-func subsets(nums []int) [][]int {
-	var res [][]int
-	var t []int
-	dfs(0, nums, t, &res)
-	return res
-}
-
-func dfs(i int, nums, t []int, res *[][]int) {
-	cp := make([]int, len(t))
-	copy(cp, t)
-	*res = append(*res, cp)
-	if i == len(nums) {
-		return
-	}
-	for j := i; j < len(nums); j++ {
-		t = append(t, nums[j])
-		dfs(j+1, nums, t, res)
+func subsets(nums []int) (ans [][]int) {
+	t := []int{}
+	var dfs func(int)
+	dfs = func(i int) {
+		if i == len(nums) {
+			ans = append(ans, append([]int(nil), t...))
+			return
+		}
+		dfs(i + 1)
+		t = append(t, nums[i])
+		dfs(i + 1)
 		t = t[:len(t)-1]
 	}
+	dfs(0)
+	return
+}
+```
+
+```go
+func subsets(nums []int) (ans [][]int) {
+	n := len(nums)
+	for mask := 0; mask < 1<<n; mask++ {
+		t := []int{}
+		for i, x := range nums {
+			if mask>>i&1 == 1 {
+				t = append(t, x)
+			}
+		}
+		ans = append(ans, t)
+	}
+	return
+}
+```
+
+### **TypeScript**
+
+```ts
+function subsets(nums: number[]): number[][] {
+    const ans: number[][] = [];
+    const t: number[] = [];
+    const dfs = (i: number) => {
+        if (i === nums.length) {
+            ans.push(t.slice());
+            return;
+        }
+        dfs(i + 1);
+        t.push(nums[i]);
+        dfs(i + 1);
+        t.pop();
+    };
+    dfs(0);
+    return ans;
+}
+```
+
+```ts
+function subsets(nums: number[]): number[][] {
+    const n = nums.length;
+    const ans: number[][] = [];
+    for (let mask = 0; mask < 1 << n; ++mask) {
+        const t: number[] = [];
+        for (let i = 0; i < n; ++i) {
+            if (((mask >> i) & 1) === 1) {
+                t.push(nums[i]);
+            }
+        }
+        ans.push(t);
+    }
+    return ans;
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    fn dfs(i: usize, path: &mut Vec<i32>, res: &mut Vec<Vec<i32>>, nums: &Vec<i32>) {
+        if i == nums.len() {
+            res.push(path.clone());
+            return;
+        }
+        Self::dfs(i + 1, path, res, nums);
+        path.push(nums[i]);
+        Self::dfs(i + 1, path, res, nums);
+        path.pop();
+    }
+
+    pub fn subsets(nums: Vec<i32>) -> Vec<Vec<i32>> {
+        let mut res = Vec::new();
+        Self::dfs(0, &mut Vec::new(), &mut res, &nums);
+        res
+    }
 }
 ```
 

@@ -1,4 +1,4 @@
-# [LCP 30. 魔塔游戏](https://leetcode-cn.com/problems/p0NxJO)
+# [LCP 30. 魔塔游戏](https://leetcode.cn/problems/p0NxJO)
 
 ## 题目描述
 
@@ -26,8 +26,8 @@
 
 **提示：**
 
-- `1 <= nums.length <= 10^5`
-- `-10^5 <= nums[i] <= 10^5`
+-   `1 <= nums.length <= 10^5`
+-   `-10^5 <= nums[i] <= 10^5`
 
 ## 解法
 

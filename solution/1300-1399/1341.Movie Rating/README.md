@@ -1,4 +1,4 @@
-# [1341. 电影评分](https://leetcode-cn.com/problems/movie-rating)
+# [1341. 电影评分](https://leetcode.cn/problems/movie-rating)
 
 [English Version](/solution/1300-1399/1341.Movie%20Rating/README_EN.md)
 
@@ -8,7 +8,8 @@
 
 <p>表：<code>Movies</code></p>
 
-<pre>+---------------+---------+
+<pre>
++---------------+---------+
 | Column Name   | Type    |
 +---------------+---------+
 | movie_id      | int     |
@@ -20,7 +21,8 @@ title 是电影的名字。
 
 <p>表：<code>Users</code></p>
 
-<pre>+---------------+---------+
+<pre>
++---------------+---------+
 | Column Name   | Type    |
 +---------------+---------+
 | user_id       | int     |
@@ -29,9 +31,10 @@ title 是电影的名字。
 user_id 是表的主键。
 </pre>
 
-<p>表：<code>Movie_Rating</code></p>
+<p>表：<code>MovieRating</code></p>
 
-<pre>+---------------+---------+
+<pre>
++---------------+---------+
 | Column Name   | Type    |
 +---------------+---------+
 | movie_id      | int     |
@@ -49,17 +52,21 @@ created_at 是用户的点评日期。
 <p>请你编写一组&nbsp;SQL 查询：</p>
 
 <ul>
-	<li>查找评论电影数量最多的用户名。
-	<p>如果出现平局，返回字典序较小的用户名。</p>
-	</li>
-	<li>查找在 <strong>2020 年 2 月 平均评分最高</strong> 的电影名称。
-	<p>如果出现平局，返回字典序较小的电影名称。</p>
-	</li>
+	<li>查找评论电影数量最多的用户名。如果出现平局，返回字典序较小的用户名。</li>
+	<li>查找在 <code>February 2020</code><strong> 平均评分最高</strong> 的电影名称。如果出现平局，返回字典序较小的电影名称。</li>
 </ul>
 
-<p>查询分两行返回，查询结果格式如下例所示：</p>
+<p><strong>字典序</strong> ，即按字母在字典中出现顺序对字符串排序，字典序较小则意味着排序靠前。</p>
 
-<pre>Movies 表：
+<p>查询结果格式如下例所示。</p>
+
+<p>&nbsp;</p>
+
+<p><strong>示例：</strong></p>
+
+<pre>
+<strong>输入：</strong>
+Movies 表：
 +-------------+--------------+
 | movie_id    |  title       |
 +-------------+--------------+
@@ -67,7 +74,6 @@ created_at 是用户的点评日期。
 | 2           | Frozen 2     |
 | 3           | Joker        |
 +-------------+--------------+
-
 Users 表：
 +-------------+--------------+
 | user_id     |  name        |
@@ -77,8 +83,7 @@ Users 表：
 | 3           | Maria        |
 | 4           | James        |
 +-------------+--------------+
-
-Movie_Rating 表：
+MovieRating 表：
 +-------------+--------------+--------------+-------------+
 | movie_id    | user_id      | rating       | created_at  |
 +-------------+--------------+--------------+-------------+
@@ -92,7 +97,7 @@ Movie_Rating 表：
 | 3           | 1            | 3            | 2020-02-22  | 
 | 3           | 2            | 4            | 2020-02-25  | 
 +-------------+--------------+--------------+-------------+
-
+<strong>输出：</strong>
 Result 表：
 +--------------+
 | results      |
@@ -100,8 +105,8 @@ Result 表：
 | Daniel       |
 | Frozen 2     |
 +--------------+
-
-Daniel 和 Monica 都点评了 3 部电影（&quot;Avengers&quot;, &quot;Frozen 2&quot; 和 &quot;Joker&quot;） 但是 Daniel 字典序比较小。
+<strong>解释：</strong>
+Daniel 和 Monica 都点评了 3 部电影（"Avengers", "Frozen 2" 和 "Joker"） 但是 Daniel 字典序比较小。
 Frozen 2 和 Joker 在 2 月的评分都是 3.5，但是 Frozen 2 的字典序比较小。
 </pre>
 
@@ -109,12 +114,38 @@ Frozen 2 和 Joker 在 2 月的评分都是 3.5，但是 Frozen 2 的字典序�
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：Union all**
+
+分别查询两个结果，然后使用 `union all` 合并结果集。
+
 <!-- tabs:start -->
 
 ### **SQL**
 
 ```sql
-
+# Write your MySQL query statement below
+(
+    SELECT
+        name AS results
+    FROM
+        MovieRating AS r
+        LEFT JOIN Users AS u ON u.user_id = r.user_id
+    GROUP BY r.user_id
+    ORDER BY count(1) DESC, name
+    LIMIT 1
+)
+UNION ALL
+(
+    SELECT
+        title AS results
+    FROM
+        MovieRating AS r
+        LEFT JOIN Movies AS m ON m.movie_id = r.movie_id
+    WHERE date_format(created_at, '%Y-%m') = '2020-02'
+    GROUP BY m.movie_id
+    ORDER BY avg(rating) DESC, title
+    LIMIT 1
+);
 ```
 
 <!-- tabs:end -->

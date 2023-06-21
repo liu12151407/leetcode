@@ -1,4 +1,4 @@
-# [863. 二叉树中所有距离为 K 的结点](https://leetcode-cn.com/problems/all-nodes-distance-k-in-binary-tree)
+# [863. 二叉树中所有距离为 K 的结点](https://leetcode.cn/problems/all-nodes-distance-k-in-binary-tree)
 
 [English Version](/solution/0800-0899/0863.All%20Nodes%20Distance%20K%20in%20Binary%20Tree/README_EN.md)
 
@@ -6,9 +6,9 @@
 
 <!-- 这里写题目描述 -->
 
-<p>给定一个二叉树（具有根结点&nbsp;<code>root</code>），&nbsp;一个目标结点&nbsp;<code>target</code>&nbsp;，和一个整数值 <code>K</code> 。</p>
+<p>给定一个二叉树（具有根结点&nbsp;<code>root</code>），&nbsp;一个目标结点&nbsp;<code>target</code>&nbsp;，和一个整数值 <code>k</code> 。</p>
 
-<p>返回到目标结点 <code>target</code> 距离为 <code>K</code> 的所有结点的值的列表。 答案可以以任何顺序返回。</p>
+<p>返回到目标结点 <code>target</code> 距离为 <code>k</code> 的所有结点的值的列表。 答案可以以 <strong>任何顺序</strong> 返回。</p>
 
 <p>&nbsp;</p>
 
@@ -17,34 +17,44 @@
 
 <p><strong>示例 1：</strong></p>
 
-<pre><strong>输入：</strong>root = [3,5,1,6,2,0,8,null,null,7,4], target = 5, K = 2
+<p><img src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0800-0899/0863.All%20Nodes%20Distance%20K%20in%20Binary%20Tree/images/sketch0.png" style="height: 429px; width: 500px;" /></p>
+
+<pre>
+<strong>输入：</strong>root = [3,5,1,6,2,0,8,null,null,7,4], target = 5, k = 2
 <strong>输出：</strong>[7,4,1]
-<strong>解释：</strong>
-所求结点为与目标结点（值为 5）距离为 2 的结点，
-值分别为 7，4，以及 1
+<strong>解释：</strong>所求结点为与目标结点（值为 5）距离为 2 的结点，值分别为 7，4，以及 1
+</pre>
 
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0800-0899/0863.All%20Nodes%20Distance%20K%20in%20Binary%20Tree/images/sketch0.png" style="height: 240px; width: 280px;">
+<p><strong>示例 2:</strong></p>
 
-注意，输入的 &quot;root&quot; 和 &quot;target&quot; 实际上是树上的结点。
-上面的输入仅仅是对这些对象进行了序列化描述。
+<pre>
+<strong>输入:</strong> root = [1], target = 1, k = 3
+<strong>输出:</strong> []
 </pre>
 
 <p>&nbsp;</p>
 
-<p><strong>提示：</strong></p>
+<p><strong>提示:</strong></p>
 
-<ol>
-	<li>给定的树是非空的。</li>
-	<li>树上的每个结点都具有唯一的值&nbsp;<code>0 &lt;= node.val &lt;= 500</code>&nbsp;。</li>
+<ul>
+	<li>节点数在&nbsp;<code>[1, 500]</code>&nbsp;范围内</li>
+	<li><code>0 &lt;= Node.val &lt;= 500</code></li>
+	<li><code>Node.val</code>&nbsp;中所有值 <strong>不同</strong></li>
 	<li>目标结点&nbsp;<code>target</code>&nbsp;是树上的结点。</li>
-	<li><code>0 &lt;= K &lt;= 1000</code>.</li>
-</ol>
+	<li><code>0 &lt;= k &lt;= 1000</code></li>
+</ul>
+
+<p>&nbsp;</p>
 
 ## 解法
 
 <!-- 这里可写通用的实现逻辑 -->
 
-先用哈希表存放每个节点的父节点，然后 DFS 找到距离目标节点 target 为 k 的节点即可。
+**方法一：DFS + 哈希表**
+
+我们先用 DFS 遍历整棵树，记录每个结点的父结点，然后从目标结点开始，向上、向下分别搜索距离为 $k$ 的结点，添加到答案数组中。
+
+时间复杂度 $O(n)$，空间复杂度 $O(n)$。其中 $n$ 是二叉树的结点数。
 
 <!-- tabs:start -->
 
@@ -59,6 +69,7 @@
 #         self.val = x
 #         self.left = None
 #         self.right = None
+
 
 class Solution:
     def distanceK(self, root: TreeNode, target: TreeNode, k: int) -> List[int]:
@@ -87,6 +98,41 @@ class Solution:
         ans = []
         vis = set()
         dfs(target, k)
+        return ans
+```
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+
+class Solution:
+    def distanceK(self, root: TreeNode, target: TreeNode, k: int) -> List[int]:
+        def dfs1(root, fa):
+            if root is None:
+                return
+            p[root] = fa
+            dfs1(root.left, root)
+            dfs1(root.right, root)
+
+        def dfs2(root, fa, k):
+            if root is None:
+                return
+            if k == 0:
+                ans.append(root.val)
+                return
+            for nxt in (root.left, root.right, p[root]):
+                if nxt != fa:
+                    dfs2(nxt, root, k - 1)
+
+        p = {}
+        dfs1(root, None)
+        ans = []
+        dfs2(target, None, k)
         return ans
 ```
 
@@ -177,8 +223,7 @@ public:
     void dfs(TreeNode* root, int k) {
         if (!root || vis.count(root->val)) return;
         vis.insert(root->val);
-        if (k == 0)
-        {
+        if (k == 0) {
             ans.push_back(root->val);
             return;
         }

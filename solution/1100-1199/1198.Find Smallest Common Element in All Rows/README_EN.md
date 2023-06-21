@@ -9,14 +9,14 @@
 <p>If there is no common element, return <code>-1</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> mat = [[1,2,3,4,5],[2,4,5,8,10],[3,5,7,9,11],[1,3,5,7,9]]
 <strong>Output:</strong> 5
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> mat = [[1,2,3],[2,3,4],[2,3,5]]
@@ -43,12 +43,12 @@
 ```python
 class Solution:
     def smallestCommonElement(self, mat: List[List[int]]) -> int:
-        counter = Counter()
+        cnt = Counter()
         for row in mat:
-            for num in row:
-                counter[num] += 1
-                if counter[num] == len(mat):
-                    return num
+            for x in row:
+                cnt[x] += 1
+                if cnt[x] == len(mat):
+                    return x
         return -1
 ```
 
@@ -57,17 +57,68 @@ class Solution:
 ```java
 class Solution {
     public int smallestCommonElement(int[][] mat) {
-        int[] counter = new int[10001];
-        for (int[] row : mat) {
-            for (int num : row) {
-                ++counter[num];
-                if (counter[num] == mat.length) {
-                    return num;
+        int[] cnt = new int[10001];
+        for (var row : mat) {
+            for (int x : row) {
+                if (++cnt[x] == mat.length) {
+                    return x;
                 }
             }
         }
         return -1;
     }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int smallestCommonElement(vector<vector<int>>& mat) {
+        int cnt[10001]{};
+        for (auto& row : mat) {
+            for (int x : row) {
+                if (++cnt[x] == mat.size()) {
+                    return x;
+                }
+            }
+        }
+        return -1;
+    }
+};
+```
+
+### **Go**
+
+```go
+func smallestCommonElement(mat [][]int) int {
+	cnt := [10001]int{}
+	for _, row := range mat {
+		for _, x := range row {
+			cnt[x]++
+			if cnt[x] == len(mat) {
+				return x
+			}
+		}
+	}
+	return -1
+}
+```
+
+### **TypeScript**
+
+```ts
+function smallestCommonElement(mat: number[][]): number {
+    const cnt: number[] = new Array(10001).fill(0);
+    for (const row of mat) {
+        for (const x of row) {
+            if (++cnt[x] == mat.length) {
+                return x;
+            }
+        }
+    }
+    return -1;
 }
 ```
 

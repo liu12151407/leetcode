@@ -17,7 +17,7 @@
 </ul>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input</strong>
@@ -57,7 +57,6 @@ hitCounter.getHits(301); // get hits at timestamp 301, return 3.
 
 ```python
 class HitCounter:
-
     def __init__(self):
         """
         Initialize your data structure here.
@@ -70,7 +69,6 @@ class HitCounter:
         @param timestamp - The current timestamp (in seconds granularity).
         """
         self.counter[timestamp] += 1
-
 
     def getHits(self, timestamp: int) -> int:
         """
@@ -98,14 +96,18 @@ class HitCounter {
         counter = new HashMap<>();
     }
 
-    /** Record a hit.
-        @param timestamp - The current timestamp (in seconds granularity). */
+    /**
+       Record a hit.
+        @param timestamp - The current timestamp (in seconds granularity).
+     */
     public void hit(int timestamp) {
         counter.put(timestamp, counter.getOrDefault(timestamp, 0) + 1);
     }
 
-    /** Return the number of hits in the past 5 minutes.
-        @param timestamp - The current timestamp (in seconds granularity). */
+    /**
+       Return the number of hits in the past 5 minutes.
+        @param timestamp - The current timestamp (in seconds granularity).
+     */
     public int getHits(int timestamp) {
         int hits = 0;
         for (Map.Entry<Integer, Integer> entry : counter.entrySet()) {

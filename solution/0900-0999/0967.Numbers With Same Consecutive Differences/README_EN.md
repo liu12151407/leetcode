@@ -4,14 +4,12 @@
 
 ## Description
 
-<p>Return all <strong>non-negative</strong> integers of length <code>n</code> such that the absolute difference between every two consecutive digits is <code>k</code>.</p>
+<p>Given two integers n and k, return <em>an array of all the integers of length </em><code>n</code><em> where the difference between every two consecutive digits is </em><code>k</code>. You may return the answer in <strong>any order</strong>.</p>
 
-<p>Note that <strong>every</strong> number in the answer <strong>must not</strong> have leading zeros. For example, <code>01</code> has one leading zero and is invalid.</p>
-
-<p>You may return the answer in <strong>any order</strong>.</p>
+<p>Note that the integers should not have leading zeros. Integers as <code>02</code> and <code>043</code> are not allowed.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 3, k = 7
@@ -19,25 +17,11 @@
 <strong>Explanation:</strong> Note that 070 is not a valid number, because it has leading zeroes.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 2, k = 1
 <strong>Output:</strong> [10,12,21,23,32,34,43,45,54,56,65,67,76,78,87,89,98]
-</pre>
-
-<p><strong>Example 3:</strong></p>
-
-<pre>
-<strong>Input:</strong> n = 2, k = 0
-<strong>Output:</strong> [11,22,33,44,55,66,77,88,99]
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> n = 2, k = 2
-<strong>Output:</strong> [13,20,24,31,35,42,46,53,57,64,68,75,79,86,97]
 </pre>
 
 <p>&nbsp;</p>
@@ -122,8 +106,7 @@ public:
     }
 
     void dfs(int n, int k, int t) {
-        if (n == 0)
-        {
+        if (n == 0) {
             ans.push_back(t);
             return;
         }

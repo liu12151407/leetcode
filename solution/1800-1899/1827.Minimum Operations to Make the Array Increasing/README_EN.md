@@ -15,47 +15,32 @@
 <p>An array <code>nums</code> is <strong>strictly increasing</strong> if <code>nums[i] &lt; nums[i+1]</code> for all <code>0 &lt;= i &lt; nums.length - 1</code>. An array of length <code>1</code> is trivially strictly increasing.</p>
 
 <p>&nbsp;</p>
-
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
-
 <strong>Input:</strong> nums = [1,1,1]
-
 <strong>Output:</strong> 3
-
 <strong>Explanation:</strong> You can do the following operations:
-
 1) Increment nums[2], so nums becomes [1,1,<u><strong>2</strong></u>].
-
 2) Increment nums[1], so nums becomes [1,<u><strong>2</strong></u>,2].
-
 3) Increment nums[2], so nums becomes [1,2,<u><strong>3</strong></u>].
-
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
-
 <strong>Input:</strong> nums = [1,5,2,4,1]
-
 <strong>Output:</strong> 14
-
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
-
 <strong>Input:</strong> nums = [8]
-
 <strong>Output:</strong> 0
-
 </pre>
 
 <p>&nbsp;</p>
-
 <p><strong>Constraints:</strong></p>
 
 <ul>
@@ -72,17 +57,11 @@
 ```python
 class Solution:
     def minOperations(self, nums: List[int]) -> int:
-        n = len(nums)
-        pre_max = nums[0]
-        times = 0
-        for i in range(1, n):
-            if nums[i] <= pre_max:
-                steps = pre_max - nums[i] + 1
-                times += steps
-                pre_max = nums[i] + steps
-            else:
-                pre_max = nums[i]
-        return times
+        ans = mx = 0
+        for v in nums:
+            ans += max(0, mx + 1 - v)
+            mx = max(mx + 1, v)
+        return ans
 ```
 
 ### **Java**
@@ -90,20 +69,110 @@ class Solution:
 ```java
 class Solution {
     public int minOperations(int[] nums) {
-        int n = nums.length;
-        int preMax = nums[0];
-        int times = 0;
-        for (int i = 1; i < n; ++i) {
-            if (nums[i] <= preMax) {
-                int steps = preMax - nums[i] + 1;
-                times += steps;
-                preMax = nums[i] + steps;
-            } else {
-                preMax = nums[i];
-            }
+        int ans = 0, mx = 0;
+        for (int v : nums) {
+            ans += Math.max(0, mx + 1 - v);
+            mx = Math.max(mx + 1, v);
         }
-        return times;
+        return ans;
     }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int minOperations(vector<int>& nums) {
+        int ans = 0, mx = 0;
+        for (int& v : nums) {
+            ans += max(0, mx + 1 - v);
+            mx = max(mx + 1, v);
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func minOperations(nums []int) (ans int) {
+	mx := 0
+	for _, v := range nums {
+		ans += max(0, mx+1-v)
+		mx = max(mx+1, v)
+	}
+	return
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+```
+
+### **C#**
+
+```cs
+public class Solution {
+    public int MinOperations(int[] nums) {
+        int ans = 0, mx = 0;
+        foreach (int v in nums) {
+            ans += Math.Max(0, mx + 1 - v);
+            mx = Math.Max(mx + 1, v);
+        }
+        return ans;
+    }
+}
+```
+
+### **TypeScript**
+
+```ts
+function minOperations(nums: number[]): number {
+    let ans = 0;
+    let max = 0;
+    for (const v of nums) {
+        ans += Math.max(0, max + 1 - v);
+        max = Math.max(max + 1, v);
+    }
+    return ans;
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn min_operations(nums: Vec<i32>) -> i32 {
+        let mut ans = 0;
+        let mut max = 0;
+        for &v in nums.iter() {
+            ans += 0.max(max + 1 - v);
+            max = v.max(max + 1);
+        }
+        ans
+    }
+}
+```
+
+### **C**
+
+```c
+#define max(a, b) (((a) > (b)) ? (a) : (b))
+
+int minOperations(int* nums, int numsSize) {
+    int ans = 0;
+    int mx = 0;
+    for (int i = 0; i < numsSize; i++) {
+        ans += max(0, mx + 1 - nums[i]);
+        mx = max(mx + 1, nums[i]);
+    }
+    return ans;
 }
 ```
 

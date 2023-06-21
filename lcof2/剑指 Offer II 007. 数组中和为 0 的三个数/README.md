@@ -1,4 +1,4 @@
-# [剑指 Offer II 007. 数组中和为 0 的三个数](https://leetcode-cn.com/problems/1fGaJU)
+# [剑指 Offer II 007. 数组中和为 0 的三个数](https://leetcode.cn/problems/1fGaJU)
 
 ## 题目描述
 
@@ -40,7 +40,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 15&nbsp;题相同：<a href="https://leetcode-cn.com/problems/3sum/">https://leetcode-cn.com/problems/3sum/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 15&nbsp;题相同：<a href="https://leetcode.cn/problems/3sum/">https://leetcode.cn/problems/3sum/</a></p>
 
 ## 解法
 
@@ -60,7 +60,8 @@ class Solution:
         n, ans = len(nums), []
         nums.sort()
         for i in range(n - 2):
-            if i > 0 and nums[i] == nums[i - 1]: continue
+            if i > 0 and nums[i] == nums[i - 1]:
+                continue
             left, right = i + 1, n - 1
             while left < right:
                 cur = nums[i] + nums[left] + nums[right]
@@ -167,14 +168,14 @@ public:
             int j = nums.size() - 1;
             if (k > 0 && nums[k] == nums[k - 1]) continue;
 
-            while(i < j) {
+            while (i < j) {
                 if (nums[i] + nums[j] + nums[k] == 0) {
                     res.push_back(vector<int>{nums[k], nums[i], nums[j]});
                     i++;
                     j--;
 
-                    while(i < j && nums[i] == nums[i - 1]) i++;
-                    while(i < j && nums[j] == nums[j + 1]) j--;
+                    while (i < j && nums[i] == nums[i - 1]) i++;
+                    while (i < j && nums[j] == nums[j + 1]) j--;
                 } else if (nums[i] + nums[j] + nums[k] < 0) {
                     i++;
                 } else {

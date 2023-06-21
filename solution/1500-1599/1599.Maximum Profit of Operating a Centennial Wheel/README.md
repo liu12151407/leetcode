@@ -1,4 +1,4 @@
-# [1599. 经营摩天轮的最大利润](https://leetcode-cn.com/problems/maximum-profit-of-operating-a-centennial-wheel)
+# [1599. 经营摩天轮的最大利润](https://leetcode.cn/problems/maximum-profit-of-operating-a-centennial-wheel)
 
 [English Version](/solution/1500-1599/1599.Maximum%20Profit%20of%20Operating%20a%20Centennial%20Wheel/README_EN.md)
 
@@ -18,60 +18,45 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1599.Maximum%20Profit%20of%20Operating%20a%20Centennial%20Wheel/images/wheeldiagram12.png" style="height: 291px; width: 906px;"></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1599.Maximum%20Profit%20of%20Operating%20a%20Centennial%20Wheel/images/wheeldiagram12.png" /></p>
 
-<pre><strong>输入：</strong>customers = [8,3], boardingCost = 5, runningCost = 6
+<pre>
+<strong>输入：</strong>customers = [8,3], boardingCost = 5, runningCost = 6
 <strong>输出：</strong>3
 <strong>解释：</strong>座舱上标注的数字是该座舱的当前游客数。
-1. 8 位游客抵达，4 位登舱，4 位等待下一舱，摩天轮轮转。当前利润为 4 * $5 - 1 * $6 = $14 。
-2. 3 位游客抵达，4 位在等待的游客登舱，其他 3 位等待，摩天轮轮转。当前利润为 8 * $5 - 2 * $6 = $28 。
-3. 最后 3 位游客登舱，摩天轮轮转。当前利润为 11 * $5 - 3 * $6 = $37 。
-轮转 3 次得到最大利润，最大利润为 $37 。</pre>
+1. 8 位游客抵达，4 位登舱，4 位等待下一舱，摩天轮轮转。当前利润为 4 * 5 - 1 * 6 = 14 。
+2. 3 位游客抵达，4 位在等待的游客登舱，其他 3 位等待，摩天轮轮转。当前利润为 8 * 5 - 2 * 6 = 28 。
+3. 最后 3 位游客登舱，摩天轮轮转。当前利润为 11 * 5 - 3 * 6 = 37 。
+轮转 3 次得到最大利润，最大利润为 37 。</pre>
 
 <p><strong>示例 2：</strong></p>
 
-<pre><strong>输入：</strong>customers = [10,9,6], boardingCost = 6, runningCost = 4
+<pre>
+<strong>输入：</strong>customers = [10,9,6], boardingCost = 6, runningCost = 4
 <strong>输出：</strong>7
 <strong>解释：</strong>
-1. 10 位游客抵达，4 位登舱，6 位等待下一舱，摩天轮轮转。当前利润为 4 * $6 - 1 * $4 = $20 。
-2. 9 位游客抵达，4 位登舱，11 位等待（2 位是先前就在等待的，9 位新加入等待的），摩天轮轮转。当前利润为 8 * $6 - 2 * $4 = $40 。
-3. 最后 6 位游客抵达，4 位登舱，13 位等待，摩天轮轮转。当前利润为 12 * $6 - 3 * $4 = $60 。
-4. 4 位登舱，9 位等待，摩天轮轮转。当前利润为 * $6 - 4 * $4 = $80 。
-5. 4 位登舱，5 位等待，摩天轮轮转。当前利润为 20 * $6 - 5 * $4 = $100 。
-6. 4 位登舱，1 位等待，摩天轮轮转。当前利润为 24 * $6 - 6 * $4 = $120 。
-7. 1 位登舱，摩天轮轮转。当前利润为 25 * $6 - 7 * $4 = $122 。
-轮转 7 次得到最大利润，最大利润为$122 。
+1. 10 位游客抵达，4 位登舱，6 位等待下一舱，摩天轮轮转。当前利润为 4 * 6 - 1 * 4 = 20 。
+2. 9 位游客抵达，4 位登舱，11 位等待（2 位是先前就在等待的，9 位新加入等待的），摩天轮轮转。当前利润为 8 * 6 - 2 * 4 = 40 。
+3. 最后 6 位游客抵达，4 位登舱，13 位等待，摩天轮轮转。当前利润为 12 * 6 - 3 * 4 = 60 。
+4. 4 位登舱，9 位等待，摩天轮轮转。当前利润为 16 * 6 - 4 * 4 = 80 。
+5. 4 位登舱，5 位等待，摩天轮轮转。当前利润为 20 * 6 - 5 * 4 = 100 。
+6. 4 位登舱，1 位等待，摩天轮轮转。当前利润为 24 * 6 - 6 * 4 = 120 。
+7. 1 位登舱，摩天轮轮转。当前利润为 25 * 6 - 7 * 4 = 122 。
+轮转 7 次得到最大利润，最大利润为 122 。
 </pre>
 
 <p><strong>示例 3：</strong></p>
 
-<pre><strong>输入：</strong>customers = [3,4,0,5,1], boardingCost = 1, runningCost = 92
+<pre>
+<strong>输入：</strong>customers = [3,4,0,5,1], boardingCost = 1, runningCost = 92
 <strong>输出：</strong>-1
 <strong>解释：</strong>
-1. 3 位游客抵达，3 位登舱，0 位等待，摩天轮轮转。当前利润为 3 * $1 - 1 * $92 = -$89 。
-2. 4 位游客抵达，4 位登舱，0 位等待，摩天轮轮转。当前利润为 is 7 * $1 - 2 * $92 = -$177 。
-3. 0 位游客抵达，0 位登舱，0 位等待，摩天轮轮转。当前利润为 7 * $1 - 3 * $92 = -$269 。
-4. 5 位游客抵达，4 位登舱，1 位等待，摩天轮轮转。当前利润为 12 * $1 - 4 * $92 = -$356 。
-5. 1 位游客抵达，2 位登舱，0 位等待，摩天轮轮转。当前利润为 13 * $1 - 5 * $92 = -$447 。
+1. 3 位游客抵达，3 位登舱，0 位等待，摩天轮轮转。当前利润为 3 * 1 - 1 * 92 = -89 。
+2. 4 位游客抵达，4 位登舱，0 位等待，摩天轮轮转。当前利润为 7 * 1 - 2 * 92 = -177 。
+3. 0 位游客抵达，0 位登舱，0 位等待，摩天轮轮转。当前利润为 7 * 1 - 3 * 92 = -269 。
+4. 5 位游客抵达，4 位登舱，1 位等待，摩天轮轮转。当前利润为 12 * 1 - 4 * 92 = -356 。
+5. 1 位游客抵达，2 位登舱，0 位等待，摩天轮轮转。当前利润为 13 * 1 - 5 * 92 = -447 。
 利润永不为正，所以返回 -1 。
-</pre>
-
-<p><strong>示例 4：</strong></p>
-
-<pre><strong>输入：</strong>customers = [10,10,6,4,7], boardingCost = 3, runningCost = 8
-<strong>输出：</strong>9
-<strong>解释：</strong>
-1. 10 位游客抵达，4 位登舱，6 位等待，摩天轮轮转。当前利润为 4 * $3 - 1 * $8 = $4 。
-2. 10 位游客抵达，4 位登舱，12 位等待，摩天轮轮转。当前利润为 8 * $3 - 2 * $8 = $8 。
-3. 6 位游客抵达，4 位登舱，14 位等待，摩天轮轮转。当前利润为 12 * $3 - 3 * $8 = $12 。
-4. 4 位游客抵达，4 位登舱，14 位等待，摩天轮轮转。当前利润为 16 * $3 - 4 * $8 = $16 。
-5. 7 位游客抵达，4 位登舱，17 位等待，摩天轮轮转。当前利润为 20 * $3 - 5 * $8 = $20 。
-6. 4 位登舱，13 位等待，摩天轮轮转。当前利润为 24 * $3 - 6 * $8 = $24 。
-7. 4 位登舱，9 位等待，摩天轮轮转。当前利润为 28 * $3 - 7 * $8 = $28 。
-8. 4 位登舱，5 位等待，摩天轮轮转。当前利润为 32 * $3 - 8 * $8 = $32 。
-9. 4 位登舱，1 位等待，摩天轮轮转。当前利润为 36 * $3 - 9 * $8 = $36 。
-​​​​​​​10. 1 位登舱，0 位等待，摩天轮轮转。当前利润为 37 * $3 - 10 * $8 = $31 。
-轮转 9 次得到最大利润，最大利润为 $36 。
 </pre>
 
 <p>&nbsp;</p>
@@ -89,6 +74,12 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：模拟**
+
+我们直接模拟摩天轮的轮转过程，每次轮转时，累加等待的游客以及新到达的游客，然后最多 $4$ 个人上船，更新等待的游客数和利润，记录最大利润与其对应的轮转次数。
+
+时间复杂度 $O(\frac{S}{4})$，其中 $S$ 为数组 `customers` 的元素和，即游客总数。空间复杂度 $O(1)$。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -96,7 +87,24 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def minOperationsMaxProfit(
+        self, customers: List[int], boardingCost: int, runningCost: int
+    ) -> int:
+        ans = -1
+        mx = t = 0
+        wait = 0
+        i = 0
+        while wait or i < len(customers):
+            wait += customers[i] if i < len(customers) else 0
+            up = wait if wait < 4 else 4
+            wait -= up
+            t += up * boardingCost - runningCost
+            i += 1
+            if t > mx:
+                mx = t
+                ans = i
+        return ans
 ```
 
 ### **Java**
@@ -104,7 +112,81 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public int minOperationsMaxProfit(int[] customers, int boardingCost, int runningCost) {
+        int ans = -1;
+        int mx = 0, t = 0;
+        int wait = 0, i = 0;
+        while (wait > 0 || i < customers.length) {
+            wait += i < customers.length ? customers[i] : 0;
+            int up = Math.min(4, wait);
+            wait -= up;
+            ++i;
+            t += up * boardingCost - runningCost;
+            if (t > mx) {
+                mx = t;
+                ans = i;
+            }
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int minOperationsMaxProfit(vector<int>& customers, int boardingCost, int runningCost) {
+        int ans = -1;
+        int mx = 0, t = 0;
+        int wait = 0, i = 0;
+        while (wait || i < customers.size()) {
+            wait += i < customers.size() ? customers[i] : 0;
+            int up = min(4, wait);
+            wait -= up;
+            ++i;
+            t += up * boardingCost - runningCost;
+            if (t > mx) {
+                mx = t;
+                ans = i;
+            }
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func minOperationsMaxProfit(customers []int, boardingCost int, runningCost int) int {
+	ans := -1
+	t, mx := 0, 0
+	wait, i := 0, 0
+	for wait > 0 || i < len(customers) {
+		if i < len(customers) {
+			wait += customers[i]
+		}
+		up := min(4, wait)
+		wait -= up
+		t += up*boardingCost - runningCost
+		i++
+		if t > mx {
+			mx = t
+			ans = i
+		}
+	}
+	return ans
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
 ```
 
 ### **...**

@@ -10,12 +10,14 @@
 
 <ul>
 	<li>For example, if <code>buildings = [[1,5,2],[3,10,4]],</code> the street could be represented by <code>street = [[1,3,2],[3,5,3],[5,10,4]]</code> because:
-	<ul>
-		<li>From 1 to 3, there is only the first building with an average height of <code>2 / 1 = 2</code>.</li>
-		<li>From 3 to 5, both the first and the second building are there with an average height of <code>(2+4) / 2 = 3</code>.</li>
-		<li>From 5 to 10, there is only the second building with an average height of <code>4 / 1 = 4</code>.</li>
-	</ul>
-	</li>
+
+    <ul>
+    	<li>From 1 to 3, there is only the first building with an average height of <code>2 / 1 = 2</code>.</li>
+    	<li>From 3 to 5, both the first and the second building are there with an average height of <code>(2+4) / 2 = 3</code>.</li>
+    	<li>From 5 to 10, there is only the second building with an average height of <code>4 / 1 = 4</code>.</li>
+    </ul>
+    </li>
+
 </ul>
 
 <p>Given <code>buildings</code>, return <em>the 2D integer array </em><code>street</code><em> as described above (<strong>excluding</strong> any areas of the street where there are no buldings). You may return the array in <strong>any order</strong></em>.</p>
@@ -25,18 +27,18 @@
 <p>A <strong>half-closed segment</strong> <code>[a, b)</code> is the section of the number line between points <code>a</code> and <code>b</code> <strong>including</strong> point <code>a</code> and <strong>not including</strong> point <code>b</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2015.Average%20Height%20of%20Buildings%20in%20Each%20Segment/images/image-20210921224001-2.png" style="width: 500px; height: 349px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2015.Average%20Height%20of%20Buildings%20in%20Each%20Segment/images/image-20210921224001-2.png" style="width: 500px; height: 349px;" />
 <pre>
-<strong>Input:</strong> buildings = [[1,5,2],[3,10,4]]
-<strong>Output:</strong> [[1,3,2],[3,5,3],[5,10,4]]
+<strong>Input:</strong> buildings = [[1,4,2],[3,9,4]]
+<strong>Output:</strong> [[1,3,2],[3,4,3],[4,9,4]]
 <strong>Explanation:</strong>
 From 1 to 3, there is only the first building with an average height of 2 / 1 = 2.
-From 3 to 5, both the first and the second building are there with an average height of (2+4) / 2 = 3.
-From 5 to 10, there is only the second building with an average height of 4 / 1 = 4.
+From 3 to 4, both the first and the second building are there with an average height of (2+4) / 2 = 3.
+From 4 to 9, there is only the second building with an average height of 4 / 1 = 4.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> buildings = [[1,3,2],[2,5,3],[2,8,3]]
@@ -50,7 +52,7 @@ The average height from 1 to 3 is the same so we can group them into one segment
 The average height from 3 to 8 is the same so we can group them into one segment.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> buildings = [[1,2,1],[5,6,1]]
@@ -79,13 +81,136 @@ We cannot group the segments together because an empty space with no buildings s
 ### **Python3**
 
 ```python
-
+class Solution:
+    def averageHeightOfBuildings(self, buildings: List[List[int]]) -> List[List[int]]:
+        height = defaultdict(int)
+        cnt = defaultdict(int)
+        for s, e, h in buildings:
+            cnt[s] += 1
+            cnt[e] -= 1
+            height[s] += h
+            height[e] -= h
+        ans = []
+        i = h = n = 0
+        for j in sorted(cnt.keys()):
+            if n:
+                t = [i, j, h // n]
+                if ans and ans[-1][1] == i and ans[-1][2] == t[-1]:
+                    ans[-1][1] = j
+                else:
+                    ans.append(t)
+            i = j
+            h += height[j]
+            n += cnt[j]
+        return ans
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int[][] averageHeightOfBuildings(int[][] buildings) {
+        TreeMap<Integer, Integer> height = new TreeMap<>();
+        TreeMap<Integer, Integer> cnt = new TreeMap<>();
+        for (var v : buildings) {
+            int s = v[0], e = v[1], h = v[2];
+            cnt.put(s, cnt.getOrDefault(s, 0) + 1);
+            cnt.put(e, cnt.getOrDefault(e, 0) - 1);
+            height.put(s, height.getOrDefault(s, 0) + h);
+            height.put(e, height.getOrDefault(e, 0) - h);
+        }
+        int i = 0, h = 0, n = 0;
+        List<int[]> res = new ArrayList<>();
+        for (int j : cnt.keySet()) {
+            if (n > 0) {
+                int[] t = new int[] {i, j, h / n};
+                int k = res.size() - 1;
+                if (k >= 0 && res.get(k)[1] == i && res.get(k)[2] == t[2]) {
+                    res.get(k)[1] = j;
+                } else {
+                    res.add(t);
+                }
+            }
+            h += height.get(j);
+            n += cnt.get(j);
+            i = j;
+        }
+        int[][] ans = new int[res.size()][3];
+        for (i = 0; i < ans.length; ++i) {
+            ans[i] = res.get(i);
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> averageHeightOfBuildings(vector<vector<int>>& buildings) {
+        map<int, int> height, cnt;
+        for (auto& v : buildings) {
+            int s = v[0], e = v[1], h = v[2];
+            cnt[s]++, cnt[e]--;
+            height[s] += h, height[e] -= h;
+        }
+        vector<vector<int>> ans;
+        int i = 0, h = 0, n = 0;
+        for (auto& [j, _] : cnt) {
+            if (n) {
+                vector<int> t = {i, j, h / n};
+                if (ans.size() && ans.back()[1] == i && ans.back()[2] == t[2]) {
+                    ans.back()[1] = j;
+                } else {
+                    ans.push_back(t);
+                }
+            }
+            i = j;
+            h += height[j];
+            n += cnt[j];
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func averageHeightOfBuildings(buildings [][]int) [][]int {
+	height := make(map[int]int)
+	cnt := make(map[int]int)
+	for _, v := range buildings {
+		s, e, h := v[0], v[1], v[2]
+		cnt[s]++
+		cnt[e]--
+		height[s] += h
+		height[e] -= h
+	}
+	keys := make([]int, len(cnt))
+	for k := range cnt {
+		keys = append(keys, k)
+	}
+	sort.Ints(keys)
+	i, h, n := 0, 0, 0
+	ans := [][]int{}
+	for _, j := range keys {
+		if n > 0 {
+			t := []int{i, j, h / n}
+			if len(ans) > 0 && ans[len(ans)-1][1] == i && ans[len(ans)-1][2] == t[2] {
+				ans[len(ans)-1][1] = j
+			} else {
+				ans = append(ans, t)
+			}
+		}
+		i = j
+		h += height[j]
+		n += cnt[j]
+	}
+	return ans
+}
 ```
 
 ### **...**

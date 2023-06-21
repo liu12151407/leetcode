@@ -1,4 +1,4 @@
-# [449. 序列化和反序列化二叉搜索树](https://leetcode-cn.com/problems/serialize-and-deserialize-bst)
+# [449. 序列化和反序列化二叉搜索树](https://leetcode.cn/problems/serialize-and-deserialize-bst)
 
 [English Version](/solution/0400-0499/0449.Serialize%20and%20Deserialize%20BST/README_EN.md)
 
@@ -12,7 +12,7 @@
 
 <p><strong>编码的字符串应尽可能紧凑。</strong></p>
 
-<p> </p>
+<p>&nbsp;</p>
 
 <p><strong>示例 1：</strong></p>
 
@@ -28,19 +28,15 @@
 <strong>输出：</strong>[]
 </pre>
 
-<p> </p>
+<p>&nbsp;</p>
 
 <p><strong>提示：</strong></p>
 
 <ul>
 	<li>树中节点数范围是 <code>[0, 10<sup>4</sup>]</code></li>
-	<li><code>0 <= Node.val <= 10<sup>4</sup></code></li>
+	<li><code>0 &lt;= Node.val &lt;= 10<sup>4</sup></code></li>
 	<li>题目数据 <strong>保证</strong> 输入的树是一棵二叉搜索树。</li>
 </ul>
-
-<p> </p>
-
-<p><strong>注意</strong>：不要使用类成员/全局/静态变量来存储状态。 你的序列化和反序列化算法应该是无状态的。</p>
 
 ## 解法
 
@@ -60,11 +56,11 @@
 #         self.left = None
 #         self.right = None
 
-class Codec:
 
+class Codec:
     def serialize(self, root: TreeNode) -> str:
-        """Encodes a tree to a single string.
-        """
+        """Encodes a tree to a single string."""
+
         def dfs(root):
             if root is None:
                 return
@@ -81,8 +77,8 @@ class Codec:
         return ''.join(t[:-1])
 
     def deserialize(self, data: str) -> TreeNode:
-        """Decodes your encoded data to tree.
-        """
+        """Decodes your encoded data to tree."""
+
         def build(s, l, r):
             if l > r:
                 return None

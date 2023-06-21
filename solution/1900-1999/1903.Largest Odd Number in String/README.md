@@ -1,4 +1,4 @@
-# [1903. 字符串中的最大奇数](https://leetcode-cn.com/problems/largest-odd-number-in-string)
+# [1903. 字符串中的最大奇数](https://leetcode.cn/problems/largest-odd-number-in-string)
 
 [English Version](/solution/1900-1999/1903.Largest%20Odd%20Number%20in%20String/README_EN.md)
 
@@ -62,7 +62,7 @@ class Solution:
     def largestOddNumber(self, num: str) -> str:
         for i in range(len(num) - 1, -1, -1):
             if (int(num[i]) & 1) == 1:
-                return num[:i + 1]
+                return num[: i + 1]
         return ''
 ```
 
@@ -98,7 +98,7 @@ var largestOddNumber = function (num) {
             return num.slice(0, j + 1);
         }
     }
-    return "";
+    return '';
 };
 ```
 

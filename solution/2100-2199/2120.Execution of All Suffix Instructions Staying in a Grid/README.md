@@ -1,4 +1,4 @@
-# [2120. 执行所有后缀指令](https://leetcode-cn.com/problems/execution-of-all-suffix-instructions-staying-in-a-grid)
+# [2120. 执行所有后缀指令](https://leetcode.cn/problems/execution-of-all-suffix-instructions-staying-in-a-grid)
 
 [English Version](/solution/2100-2199/2120.Execution%20of%20All%20Suffix%20Instructions%20Staying%20in%20a%20Grid/README_EN.md)
 
@@ -23,7 +23,7 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2100-2199/2120.Execution%20of%20All%20Suffix%20Instructions%20Staying%20in%20a%20Grid/images/1.png" style="width: 145px; height: 142px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2100-2199/2120.Execution%20of%20All%20Suffix%20Instructions%20Staying%20in%20a%20Grid/images/1.png" style="width: 145px; height: 142px;" /></p>
 
 <pre>
 <strong>输入：</strong>n = 3, startPos = [0,1], s = "RRDDLU"
@@ -39,7 +39,7 @@
 
 <p><strong>示例 2：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2100-2199/2120.Execution%20of%20All%20Suffix%20Instructions%20Staying%20in%20a%20Grid/images/2.png" style="width: 106px; height: 103px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2100-2199/2120.Execution%20of%20All%20Suffix%20Instructions%20Staying%20in%20a%20Grid/images/2.png" style="width: 106px; height: 103px;" /></p>
 
 <pre>
 <strong>输入：</strong>n = 2, startPos = [1,1], s = "LURD"
@@ -53,7 +53,7 @@
 
 <p><strong>示例 3：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2100-2199/2120.Execution%20of%20All%20Suffix%20Instructions%20Staying%20in%20a%20Grid/images/3.png" style="width: 67px; height: 64px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2100-2199/2120.Execution%20of%20All%20Suffix%20Instructions%20Staying%20in%20a%20Grid/images/3.png" style="width: 67px; height: 64px;" /></p>
 
 <pre>
 <strong>输入：</strong>n = 1, startPos = [0,0], s = "LRUD"
@@ -90,12 +90,7 @@ class Solution:
     def executeInstructions(self, n: int, startPos: List[int], s: str) -> List[int]:
         ans = []
         m = len(s)
-        mp = {
-            "L": [0, -1],
-            "R": [0, 1],
-            "U": [-1, 0],
-            "D": [1, 0]
-        }
+        mp = {"L": [0, -1], "R": [0, 1], "U": [-1, 0], "D": [1, 0]}
         for i in range(m):
             x, y = startPos
             t = 0
@@ -119,10 +114,10 @@ class Solution {
         int m = s.length();
         int[] ans = new int[m];
         Map<Character, int[]> mp = new HashMap<>(4);
-        mp.put('L', new int[]{0, -1});
-        mp.put('R', new int[]{0, 1});
-        mp.put('U', new int[]{-1, 0});
-        mp.put('D', new int[]{1, 0});
+        mp.put('L', new int[] {0, -1});
+        mp.put('R', new int[] {0, 1});
+        mp.put('U', new int[] {-1, 0});
+        mp.put('D', new int[] {1, 0});
         for (int i = 0; i < m; ++i) {
             int x = startPos[0], y = startPos[1];
             int t = 0;
@@ -157,20 +152,17 @@ public:
         mp['R'] = {0, 1};
         mp['U'] = {-1, 0};
         mp['D'] = {1, 0};
-        for (int i = 0; i < m; ++i)
-        {
+        for (int i = 0; i < m; ++i) {
             int x = startPos[0], y = startPos[1];
             int t = 0;
-            for (int j = i; j < m; ++j)
-            {
+            for (int j = i; j < m; ++j) {
                 int a = mp[s[j]][0], b = mp[s[j]][1];
-                if (0 <= x + a && x + a < n && 0 <= y + b && y + b < n)
-                {
+                if (0 <= x + a && x + a < n && 0 <= y + b && y + b < n) {
                     x += a;
                     y += b;
                     ++t;
-                }
-                else break;
+                } else
+                    break;
             }
             ans[i] = t;
         }
@@ -214,7 +206,100 @@ func executeInstructions(n int, startPos []int, s string) []int {
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```ts
+function executeInstructions(
+    n: number,
+    startPos: number[],
+    s: string,
+): number[] {
+    const m = s.length;
+    const ans = new Array(m);
+    for (let i = 0; i < m; i++) {
+        let [y, x] = startPos;
+        let j: number;
+        for (j = i; j < m; j++) {
+            const c = s[j];
+            if (c === 'U') {
+                y--;
+            } else if (c === 'D') {
+                y++;
+            } else if (c === 'L') {
+                x--;
+            } else {
+                x++;
+            }
+            if (y === -1 || y === n || x === -1 || x === n) {
+                break;
+            }
+        }
+        ans[i] = j - i;
+    }
+    return ans;
+}
+```
 
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn execute_instructions(n: i32, start_pos: Vec<i32>, s: String) -> Vec<i32> {
+        let s = s.as_bytes();
+        let m = s.len();
+        let mut ans = vec![0; m];
+        for i in 0..m {
+            let mut y = start_pos[0];
+            let mut x = start_pos[1];
+            let mut j = i;
+            while j < m {
+                match s[j] {
+                    b'U' => y -= 1,
+                    b'D' => y += 1,
+                    b'L' => x -= 1,
+                    _ => x += 1,
+                }
+                if y == -1 || y == n || x == -1 || x == n {
+                    break;
+                }
+                j += 1;
+            }
+            ans[i] = (j - i) as i32;
+        }
+        ans
+    }
+}
+```
+
+### **C**
+
+```c
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* executeInstructions(int n, int* startPos, int startPosSize, char* s, int* returnSize) {
+    int m = strlen(s);
+    int* ans = malloc(sizeof(int) * m);
+    for (int i = 0; i < m; i++) {
+        int y = startPos[0];
+        int x = startPos[1];
+        int j = i;
+        for (j = i; j < m; j++) {
+            if (s[j] == 'U') {
+                y--;
+            } else if (s[j] == 'D') {
+                y++;
+            } else if (s[j] == 'L') {
+                x--;
+            } else {
+                x++;
+            }
+            if (y == -1 || y == n || x == -1 || x == n) {
+                break;
+            }
+        }
+        ans[i] = j - i;
+    }
+    *returnSize = m;
+    return ans;
+}
 ```
 
 ### **...**

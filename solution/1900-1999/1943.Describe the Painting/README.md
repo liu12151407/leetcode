@@ -1,4 +1,4 @@
-# [1943. 描述绘画结果](https://leetcode-cn.com/problems/describe-the-painting)
+# [1943. 描述绘画结果](https://leetcode.cn/problems/describe-the-painting)
 
 [English Version](/solution/1900-1999/1943.Describe%20the%20Painting/README_EN.md)
 
@@ -20,11 +20,13 @@
 
 <ul>
 	<li>比方说，这幅画由&nbsp;<code>segments = [[1,4,5],[1,7,7]]</code>&nbsp;组成，那么它可以表示为&nbsp;<code>painting = [[1,4,12],[4,7,7]]</code>&nbsp;，因为：
-	<ul>
-		<li><code>[1,4)</code>&nbsp;由颜色&nbsp;<code>{5,7}</code>&nbsp;组成（和为&nbsp;<code>12</code>），分别来自第一个线段和第二个线段。</li>
-		<li><code>[4,7)</code>&nbsp;由颜色 <code>{7}</code>&nbsp;组成，来自第二个线段。</li>
-	</ul>
-	</li>
+
+    <ul>
+    	<li><code>[1,4)</code>&nbsp;由颜色&nbsp;<code>{5,7}</code>&nbsp;组成（和为&nbsp;<code>12</code>），分别来自第一个线段和第二个线段。</li>
+    	<li><code>[4,7)</code>&nbsp;由颜色 <code>{7}</code>&nbsp;组成，来自第二个线段。</li>
+    </ul>
+    </li>
+
 </ul>
 
 <p>请你返回二维数组&nbsp;<code>painting</code>&nbsp;，它表示最终绘画的结果（<strong>没有</strong>&nbsp;被涂色的部分不出现在结果中）。你可以按 <strong>任意顺序</strong> 返回最终数组的结果。</p>
@@ -34,17 +36,19 @@
 <p>&nbsp;</p>
 
 <p><strong>示例 1：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1900-1999/1943.Describe%20the%20Painting/images/1.png" style="width: 529px; height: 241px;">
-<pre><b>输入：</b>segments = [[1,4,5],[4,7,7],[1,7,9]]
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1900-1999/1943.Describe%20the%20Painting/images/1.png" style="width: 529px; height: 241px;" />
+<pre>
+<b>输入：</b>segments = [[1,4,5],[4,7,7],[1,7,9]]
 <b>输出：</b>[[1,4,14],[4,7,16]]
-<strong>解释：</strong>绘画借故偶可以表示为：
+<strong>解释：</strong>绘画结果可以表示为：
 - [1,4) 颜色为 {5,9} （和为 14），分别来自第一和第二个线段。
 - [4,7) 颜色为 {7,9} （和为 16），分别来自第二和第三个线段。
 </pre>
 
 <p><strong>示例 2：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1900-1999/1943.Describe%20the%20Painting/images/2.png" style="width: 532px; height: 219px;">
-<pre><b>输入：</b>segments = [[1,7,9],[6,8,15],[8,10,7]]
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1900-1999/1943.Describe%20the%20Painting/images/2.png" style="width: 532px; height: 219px;" />
+<pre>
+<b>输入：</b>segments = [[1,7,9],[6,8,15],[8,10,7]]
 <b>输出：</b>[[1,6,9],[6,7,24],[7,8,15],[8,10,7]]
 <b>解释：</b>绘画结果可以以表示为：
 - [1,6) 颜色为 9 ，来自第一个线段。
@@ -54,8 +58,9 @@
 </pre>
 
 <p><strong>示例 3：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1900-1999/1943.Describe%20the%20Painting/images/c1.png" style="width: 529px; height: 289px;">
-<pre><b>输入：</b>segments = [[1,4,5],[1,4,7],[4,7,1],[4,7,11]]
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1900-1999/1943.Describe%20the%20Painting/images/c1.png" style="width: 529px; height: 289px;" />
+<pre>
+<b>输入：</b>segments = [[1,4,5],[1,4,7],[4,7,1],[4,7,11]]
 <b>输出：</b>[[1,4,12],[4,7,12]]
 <strong>解释：</strong>绘画结果可以表示为：
 - [1,4) 颜色为 {5,7} （和为 12），分别来自第一和第二个线段。
@@ -79,7 +84,7 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
-差分数组。
+**方法一：差分数组**
 
 <!-- tabs:start -->
 
@@ -98,11 +103,7 @@ class Solution:
         n = len(s)
         for i in range(1, n):
             s[i][1] += s[i - 1][1]
-        ans = []
-        for i in range(n - 1):
-            if s[i][1]:
-                ans.append([s[i][0], s[i + 1][0], s[i][1]])
-        return ans
+        return [[s[i][0], s[i + 1][0], s[i][1]] for i in range(n - 1) if s[i][1]]
 ```
 
 ### **Java**
@@ -145,19 +146,17 @@ class Solution {
 public:
     vector<vector<long long>> splitPainting(vector<vector<int>>& segments) {
         map<int, long long> d;
-        for (auto& e : segments)
-        {
+        for (auto& e : segments) {
             int l = e[0], r = e[1], c = e[2];
             d[l] += c;
             d[r] -= c;
         }
         vector<vector<long long>> ans;
         long long i, j, cur = 0;
-        for (auto& it : d)
-        {
-            if (it == *d.begin()) i = it.first;
-            else
-            {
+        for (auto& it : d) {
+            if (it == *d.begin())
+                i = it.first;
+            else {
                 j = it.first;
                 if (cur > 0) ans.push_back({i, j, cur});
                 i = j;

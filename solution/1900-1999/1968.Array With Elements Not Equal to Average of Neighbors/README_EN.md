@@ -11,7 +11,7 @@
 <p>Return <em><strong>any</strong> rearrangement of </em><code>nums</code><em> that meets the requirements</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,2,3,4,5]
@@ -22,7 +22,7 @@ When i=2, nums[i] = 4, and the average of its neighbors is (2+5) / 2 = 3.5.
 When i=3, nums[i] = 5, and the average of its neighbors is (4+3) / 2 = 3.5.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [6,2,0,9,7]
@@ -48,13 +48,90 @@ When i=3, nums[i] = 2, and the average of its neighbors is (6+0) / 2 = 3.
 ### **Python3**
 
 ```python
-
+class Solution:
+    def rearrangeArray(self, nums: List[int]) -> List[int]:
+        nums.sort()
+        n = len(nums)
+        m = (n + 1) >> 1
+        ans = []
+        for i in range(m):
+            ans.append(nums[i])
+            if i + m < n:
+                ans.append(nums[i + m])
+        return ans
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int[] rearrangeArray(int[] nums) {
+        Arrays.sort(nums);
+        int n = nums.length;
+        int m = (n + 1) >> 1;
+        int[] ans = new int[n];
+        for (int i = 0, j = 0; i < n; i += 2, j++) {
+            ans[i] = nums[j];
+            if (j + m < n) {
+                ans[i + 1] = nums[j + m];
+            }
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    vector<int> rearrangeArray(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        vector<int> ans;
+        int n = nums.size();
+        int m = (n + 1) >> 1;
+        for (int i = 0; i < m; ++i) {
+            ans.push_back(nums[i]);
+            if (i + m < n) ans.push_back(nums[i + m]);
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func rearrangeArray(nums []int) []int {
+	sort.Ints(nums)
+	n := len(nums)
+	m := (n + 1) >> 1
+	var ans []int
+	for i := 0; i < m; i++ {
+		ans = append(ans, nums[i])
+		if i+m < n {
+			ans = append(ans, nums[i+m])
+		}
+	}
+	return ans
+}
+```
+
+```go
+func rearrangeArray(nums []int) []int {
+	rand.Seed(time.Now().UnixNano())
+outer:
+	for {
+		rand.Shuffle(len(nums), func(i, j int) { nums[i], nums[j] = nums[j], nums[i] })
+		for i := 1; i < len(nums)-1; i++ {
+			if nums[i]*2 == nums[i-1]+nums[i+1] {
+				continue outer
+			}
+		}
+		return nums
+	}
+}
 ```
 
 ### **...**

@@ -1,4 +1,4 @@
-# [366. 寻找二叉树的叶子节点](https://leetcode-cn.com/problems/find-leaves-of-binary-tree)
+# [366. 寻找二叉树的叶子节点](https://leetcode.cn/problems/find-leaves-of-binary-tree)
 
 [English Version](/solution/0300-0399/0366.Find%20Leaves%20of%20Binary%20Tree/README_EN.md)
 
@@ -164,8 +164,7 @@ public:
     vector<vector<int>> findLeaves(TreeNode* root) {
         vector<vector<int>> res;
         TreeNode* prev = new TreeNode(0, root, nullptr);
-        while (prev->left)
-        {
+        while (prev->left) {
             vector<int> t;
             dfs(prev->left, prev, t);
             res.push_back(t);
@@ -175,11 +174,12 @@ public:
 
     void dfs(TreeNode* root, TreeNode* prev, vector<int>& t) {
         if (!root) return;
-        if (!root->left && !root->right)
-        {
+        if (!root->left && !root->right) {
             t.push_back(root->val);
-            if (prev->left == root) prev->left = nullptr;
-            else prev->right = nullptr;
+            if (prev->left == root)
+                prev->left = nullptr;
+            else
+                prev->right = nullptr;
         }
         dfs(root->left, root, t);
         dfs(root->right, root, t);

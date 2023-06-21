@@ -7,21 +7,21 @@
 <p>Given the <code>root</code> of a binary tree, return <em>the bottom-up level order traversal of its nodes&#39; values</em>. (i.e., from left to right, level by level from leaf to root).</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0107.Binary%20Tree%20Level%20Order%20Traversal%20II/images/tree1.jpg" style="width: 277px; height: 302px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0107.Binary%20Tree%20Level%20Order%20Traversal%20II/images/tree1.jpg" style="width: 277px; height: 302px;" />
 <pre>
 <strong>Input:</strong> root = [3,9,20,null,null,15,7]
 <strong>Output:</strong> [[15,7],[9,20],[3]]
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> root = [1]
 <strong>Output:</strong> [[1]]
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> root = []
@@ -50,15 +50,14 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def levelOrderBottom(self, root: TreeNode) -> List[List[int]]:
+    def levelOrderBottom(self, root: Optional[TreeNode]) -> List[List[int]]:
         ans = []
         if root is None:
             return ans
         q = deque([root])
         while q:
-            n = len(q)
             t = []
-            for _ in range(n):
+            for _ in range(len(q)):
                 node = q.popleft()
                 t.append(node.val)
                 if node.left:
@@ -134,17 +133,16 @@ public:
         vector<vector<int>> ans;
         if (!root) return ans;
         queue<TreeNode*> q{{root}};
-        while (!q.empty())
-        {
+        while (!q.empty()) {
             vector<int> t;
-            for (int i = q.size(); i > 0; --i) {
-                TreeNode* node = q.front();
+            for (int i = q.size(); i; --i) {
+                auto node = q.front();
                 q.pop();
-                t.push_back(node->val);
+                t.emplace_back(node->val);
                 if (node->left) q.push(node->left);
                 if (node->right) q.push(node->right);
             }
-            ans.push_back(t);
+            ans.emplace_back(t);
         }
         reverse(ans.begin(), ans.end());
         return ans;

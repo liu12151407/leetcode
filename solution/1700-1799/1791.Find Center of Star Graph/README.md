@@ -1,4 +1,4 @@
-# [1791. 找出星型图的中心节点](https://leetcode-cn.com/problems/find-center-of-star-graph)
+# [1791. 找出星型图的中心节点](https://leetcode.cn/problems/find-center-of-star-graph)
 
 [English Version](/solution/1700-1799/1791.Find%20Center%20of%20Star%20Graph/README_EN.md)
 
@@ -13,7 +13,7 @@
 <p> </p>
 
 <p><strong>示例 1：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1700-1799/1791.Find%20Center%20of%20Star%20Graph/images/star_graph.png" style="width: 331px; height: 321px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1700-1799/1791.Find%20Center%20of%20Star%20Graph/images/star_graph.png" style="width: 331px; height: 321px;" />
 <pre>
 <strong>输入：</strong>edges = [[1,2],[2,3],[4,2]]
 <strong>输出：</strong>2
@@ -44,6 +44,12 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：直接比较前两条边的点**
+
+中心点的特点是，它与其他所有点都相连，因此只要比较前两条边的点，如果有相同的点，那么这个点就是中心点。
+
+时间复杂度 $O(1)$。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -53,9 +59,7 @@
 ```python
 class Solution:
     def findCenter(self, edges: List[List[int]]) -> int:
-        a, b = edges[0]
-        c, d = edges[1]
-        return a if a == c or a == d else b
+        return edges[0][0] if edges[0][0] in edges[1] else edges[0][1]
 ```
 
 ### **Java**
@@ -108,6 +112,33 @@ func findCenter(edges [][]int) int {
 	}
 	return b
 }
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn find_center(edges: Vec<Vec<i32>>) -> i32 {
+        if edges[0][0] == edges[1][0] || edges[0][0] == edges[1][1] {
+            return edges[0][0];
+        }
+        edges[0][1]
+    }
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number[][]} edges
+ * @return {number}
+ */
+var findCenter = function (edges) {
+    const [a, b] = edges[0];
+    const [c, d] = edges[1];
+    return a == c || a == d ? a : b;
+};
 ```
 
 ### **...**

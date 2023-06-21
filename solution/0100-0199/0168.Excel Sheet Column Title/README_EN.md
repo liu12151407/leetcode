@@ -20,32 +20,25 @@ AB -&gt; 28
 </pre>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> columnNumber = 1
 <strong>Output:</strong> &quot;A&quot;
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> columnNumber = 28
 <strong>Output:</strong> &quot;AB&quot;
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> columnNumber = 701
 <strong>Output:</strong> &quot;ZY&quot;
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> columnNumber = 2147483647
-<strong>Output:</strong> &quot;FXSHRXW&quot;
 </pre>
 
 <p>&nbsp;</p>
@@ -99,7 +92,7 @@ function convertToTitle(columnNumber: number): string {
         res.unshift(String.fromCharCode(num + 65));
         columnNumber = Math.floor(columnNumber / 26);
     }
-    return res.join("");
+    return res.join('');
 }
 ```
 
@@ -116,6 +109,20 @@ public class Solution {
         }
         return new string(res.ToString().Reverse().ToArray());
     }
+}
+```
+
+### **Go**
+
+```go
+func convertToTitle(columnNumber int) string {
+	res := []rune{}
+	for columnNumber != 0 {
+		columnNumber -= 1
+		res = append([]rune{rune(columnNumber%26 + int('A'))}, res...)
+		columnNumber /= 26
+	}
+	return string(res)
 }
 ```
 

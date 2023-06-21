@@ -11,7 +11,7 @@
 <p>Note that the strings are considered in the <strong>order in which they appear</strong> in the array.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> arr = [&quot;d&quot;,&quot;b&quot;,&quot;c&quot;,&quot;b&quot;,&quot;c&quot;,&quot;a&quot;], k = 2
@@ -23,7 +23,7 @@ The only distinct strings in arr are &quot;d&quot; and &quot;a&quot;.
 Since k == 2, &quot;a&quot; is returned. 
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> arr = [&quot;aaa&quot;,&quot;aa&quot;,&quot;a&quot;], k = 1
@@ -32,7 +32,7 @@ Since k == 2, &quot;a&quot; is returned.
 All strings in arr are distinct, so the 1<sup>st</sup> string &quot;aaa&quot; is returned.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> arr = [&quot;a&quot;,&quot;b&quot;,&quot;a&quot;], k = 3
@@ -57,13 +57,76 @@ The only distinct string is &quot;b&quot;. Since there are fewer than 3 distinct
 ### **Python3**
 
 ```python
-
+class Solution:
+    def kthDistinct(self, arr: List[str], k: int) -> str:
+        counter = Counter(arr)
+        for v in arr:
+            if counter[v] == 1:
+                k -= 1
+                if k == 0:
+                    return v
+        return ''
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public String kthDistinct(String[] arr, int k) {
+        Map<String, Integer> counter = new HashMap<>();
+        for (String v : arr) {
+            counter.put(v, counter.getOrDefault(v, 0) + 1);
+        }
+        for (String v : arr) {
+            if (counter.get(v) == 1) {
+                --k;
+                if (k == 0) {
+                    return v;
+                }
+            }
+        }
+        return "";
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    string kthDistinct(vector<string>& arr, int k) {
+        unordered_map<string, int> counter;
+        for (auto& v : arr) ++counter[v];
+        for (auto& v : arr) {
+            if (counter[v] == 1) {
+                --k;
+                if (k == 0) return v;
+            }
+        }
+        return "";
+    }
+};
+```
+
+### **Go**
+
+```go
+func kthDistinct(arr []string, k int) string {
+	counter := make(map[string]int)
+	for _, v := range arr {
+		counter[v]++
+	}
+	for _, v := range arr {
+		if counter[v] == 1 {
+			k--
+			if k == 0 {
+				return v
+			}
+		}
+	}
+	return ""
+}
 ```
 
 ### **...**

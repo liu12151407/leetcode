@@ -4,95 +4,45 @@
 
 ## Description
 
-<p>
+<p>You are given an array of characters <code>letters</code> that is sorted in <strong>non-decreasing order</strong>, and a character <code>target</code>. There are <strong>at least two different</strong> characters in <code>letters</code>.</p>
 
-Given a list of sorted characters <code>letters</code> containing only lowercase letters, and given a target letter <code>target</code>, find the smallest element in the list that is larger than the given target.
+<p>Return <em>the smallest character in </em><code>letters</code><em> that is lexicographically greater than </em><code>target</code>. If such a character does not exist, return the first character in <code>letters</code>.</p>
 
-</p><p>
-
-Letters also wrap around. For example, if the target is <code>target = 'z'</code> and <code>letters = ['a', 'b']</code>, the answer is <code>'a'</code>.
-
-</p>
-
-<p><b>Examples:</b><br />
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
-
-<b>Input:</b>
-
-letters = ["c", "f", "j"]
-
-target = "a"
-
-<b>Output:</b> "c"
-
-
-
-<b>Input:</b>
-
-letters = ["c", "f", "j"]
-
-target = "c"
-
-<b>Output:</b> "f"
-
-
-
-<b>Input:</b>
-
-letters = ["c", "f", "j"]
-
-target = "d"
-
-<b>Output:</b> "f"
-
-
-
-<b>Input:</b>
-
-letters = ["c", "f", "j"]
-
-target = "g"
-
-<b>Output:</b> "j"
-
-
-
-<b>Input:</b>
-
-letters = ["c", "f", "j"]
-
-target = "j"
-
-<b>Output:</b> "c"
-
-
-
-<b>Input:</b>
-
-letters = ["c", "f", "j"]
-
-target = "k"
-
-<b>Output:</b> "c"
-
+<strong>Input:</strong> letters = [&quot;c&quot;,&quot;f&quot;,&quot;j&quot;], target = &quot;a&quot;
+<strong>Output:</strong> &quot;c&quot;
+<strong>Explanation:</strong> The smallest character that is lexicographically greater than &#39;a&#39; in letters is &#39;c&#39;.
 </pre>
 
-</p>
+<p><strong class="example">Example 2:</strong></p>
 
-<p><b>Note:</b><br>
+<pre>
+<strong>Input:</strong> letters = [&quot;c&quot;,&quot;f&quot;,&quot;j&quot;], target = &quot;c&quot;
+<strong>Output:</strong> &quot;f&quot;
+<strong>Explanation:</strong> The smallest character that is lexicographically greater than &#39;c&#39; in letters is &#39;f&#39;.
+</pre>
 
-<ol>
+<p><strong class="example">Example 3:</strong></p>
 
-<li><code>letters</code> has a length in range <code>[2, 10000]</code>.</li>
+<pre>
+<strong>Input:</strong> letters = [&quot;x&quot;,&quot;x&quot;,&quot;y&quot;,&quot;y&quot;], target = &quot;z&quot;
+<strong>Output:</strong> &quot;x&quot;
+<strong>Explanation:</strong> There are no characters in letters that is lexicographically greater than &#39;z&#39; so we return letters[0].
+</pre>
 
-<li><code>letters</code> consists of lowercase letters, and contains at least 2 unique letters.</li>
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
 
-<li><code>target</code> is a lowercase letter.</li>
-
-</ol>
-
-</p>
+<ul>
+	<li><code>2 &lt;= letters.length &lt;= 10<sup>4</sup></code></li>
+	<li><code>letters[i]</code> is a lowercase English letter.</li>
+	<li><code>letters</code> is sorted in <strong>non-decreasing</strong> order.</li>
+	<li><code>letters</code> contains at least two different characters.</li>
+	<li><code>target</code> is a lowercase English letter.</li>
+</ul>
 
 ## Solutions
 
@@ -136,18 +86,18 @@ class Solution {
 
 ```ts
 function nextGreatestLetter(letters: string[], target: string): string {
-    let left = 0,
-        right = letters.length;
-    let x = target.charCodeAt(0);
+    const n = letters.length;
+    let left = 0;
+    let right = letters.length;
     while (left < right) {
-        let mid = (left + right) >> 1;
-        if (x < letters[mid].charCodeAt(0)) {
+        let mid = (left + right) >>> 1;
+        if (letters[mid] > target) {
             right = mid;
         } else {
             left = mid + 1;
         }
     }
-    return letters[left % letters.length];
+    return letters[left % n];
 }
 ```
 
@@ -185,6 +135,64 @@ func nextGreatestLetter(letters []byte, target byte) byte {
 		}
 	}
 	return letters[left%len(letters)]
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn next_greatest_letter(letters: Vec<char>, target: char) -> char {
+        *letters.iter().find(|&&c| c > target).unwrap_or(&letters[0])
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn next_greatest_letter(letters: Vec<char>, target: char) -> char {
+        let n = letters.len();
+        let mut left = 0;
+        let mut right = n;
+        while left < right {
+            let mid = left + (right - left) / 2;
+            if letters[mid] > target {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        letters[left % n]
+    }
+}
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param String[] $letters
+     * @param String $target
+     * @return String
+     */
+    function nextGreatestLetter($letters, $target) {
+        $left = 0;
+        $right = count($letters);
+        while ($left <= $right) {
+            $mid = floor($left + ($right - $left) / 2);
+            if ($letters[$mid] > $target) {
+                $right = $mid - 1;
+            } else {
+                $left = $mid + 1;
+            }
+        }
+        if ($left >= count($letters)) {
+            return $letters[0];
+        } else {
+            return $letters[$left];
+        }
+    }
 }
 ```
 

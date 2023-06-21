@@ -7,15 +7,15 @@
 <p>Given the <code>head</code> of a linked&nbsp;list, rotate the list to the right by <code>k</code> places.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0000-0099/0061.Rotate%20List/images/rotate1.jpg" style="width: 600px; height: 254px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0000-0099/0061.Rotate%20List/images/rotate1.jpg" style="width: 450px; height: 191px;" />
 <pre>
 <strong>Input:</strong> head = [1,2,3,4,5], k = 2
 <strong>Output:</strong> [4,5,1,2,3]
 </pre>
 
-<p><strong>Example 2:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0000-0099/0061.Rotate%20List/images/roate2.jpg" style="width: 472px; height: 542px;" />
+<p><strong class="example">Example 2:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0000-0099/0061.Rotate%20List/images/roate2.jpg" style="width: 305px; height: 350px;" />
 <pre>
 <strong>Input:</strong> head = [0,1,2], k = 4
 <strong>Output:</strong> [2,0,1]
@@ -151,6 +151,51 @@ function rotateRight(head: ListNode | null, k: number): ListNode | null {
 }
 ```
 
+```ts
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+function rotateRight(head: ListNode | null, k: number): ListNode | null {
+    if (head == null || k === 0) {
+        return head;
+    }
+
+    let n = 0;
+    let cur = head;
+    while (cur != null) {
+        cur = cur.next;
+        n++;
+    }
+    k = k % n;
+    if (k === 0) {
+        return head;
+    }
+
+    cur = head;
+    for (let i = 0; i < n - k - 1; i++) {
+        cur = cur.next;
+    }
+
+    const res = cur.next;
+    cur.next = null;
+    cur = res;
+    while (cur.next != null) {
+        cur = cur.next;
+    }
+    cur.next = head;
+    return res;
+}
+```
+
 ### **C++**
 
 ```cpp
@@ -171,7 +216,7 @@ public:
             return head;
         }
         int n = 0;
-        for (ListNode *cur = head; !!cur; cur = cur->next) {
+        for (ListNode* cur = head; !!cur; cur = cur->next) {
             ++n;
         }
         k %= n;
@@ -187,7 +232,7 @@ public:
             fast = fast->next;
         }
 
-        ListNode *start = slow->next;
+        ListNode* start = slow->next;
         slow->next = nullptr;
         fast->next = head;
         return start;
@@ -240,6 +285,59 @@ public class Solution {
         slow.next = null;
         fast.next = head;
         return start;
+    }
+}
+```
+
+### **Rust**
+
+```rust
+// Definition for singly-linked list.
+// #[derive(PartialEq, Eq, Clone, Debug)]
+// pub struct ListNode {
+//   pub val: i32,
+//   pub next: Option<Box<ListNode>>
+// }
+//
+// impl ListNode {
+//   #[inline]
+//   fn new(val: i32) -> Self {
+//     ListNode {
+//       next: None,
+//       val
+//     }
+//   }
+// }
+impl Solution {
+    pub fn rotate_right(mut head: Option<Box<ListNode>>, mut k: i32) -> Option<Box<ListNode>> {
+        if head.is_none() || k == 0 {
+            return head;
+        }
+        let n = {
+            let mut cur = &head;
+            let mut res = 0;
+            while cur.is_some() {
+                cur = &cur.as_ref().unwrap().next;
+                res += 1;
+            }
+            res
+        };
+        k = k % n;
+        if k == 0 {
+            return head;
+        }
+
+        let mut cur = &mut head;
+        for _ in 0..n - k - 1 {
+            cur = &mut cur.as_mut().unwrap().next;
+        }
+        let mut res = cur.as_mut().unwrap().next.take();
+        cur = &mut res;
+        while cur.is_some() {
+            cur = &mut cur.as_mut().unwrap().next;
+        }
+        *cur = head.take();
+        res
     }
 }
 ```

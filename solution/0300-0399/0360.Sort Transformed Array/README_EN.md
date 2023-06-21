@@ -7,10 +7,10 @@
 <p>Given a <strong>sorted</strong> integer array <code>nums</code> and three integers <code>a</code>, <code>b</code> and <code>c</code>, apply a quadratic function of the form <code>f(x) = ax<sup>2</sup> + bx + c</code> to each element <code>nums[i]</code> in the array, and return <em>the array in a sorted order</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 <pre><strong>Input:</strong> nums = [-4,-2,2,4], a = 1, b = 3, c = 5
 <strong>Output:</strong> [3,9,15,33]
-</pre><p><strong>Example 2:</strong></p>
+</pre><p><strong class="example">Example 2:</strong></p>
 <pre><strong>Input:</strong> nums = [-4,-2,2,4], a = -1, b = 3, c = 5
 <strong>Output:</strong> [-23,-5,1,7]
 </pre>
@@ -34,7 +34,9 @@
 
 ```python
 class Solution:
-    def sortTransformedArray(self, nums: List[int], a: int, b: int, c: int) -> List[int]:
+    def sortTransformedArray(
+        self, nums: List[int], a: int, b: int, c: int
+    ) -> List[int]:
         def f(x):
             return a * x * x + b * x + c
 
@@ -106,48 +108,38 @@ class Solution {
 ```cpp
 class Solution {
 public:
-	vector<int> sortTransformedArray(vector<int> &nums, int a, int b, int c) {
-		int n = nums.size();
-		int i = 0, j = n - 1, k = a < 0 ? 0 : n - 1;
-		vector<int> res(n);
-		while (i <= j)
-		{
-			int v1 = f(a, b, c, nums[i]), v2 = f(a, b, c, nums[j]);
-			if (a < 0)
-			{
-				if (v1 <= v2)
-				{
-					res[k] = v1;
-					++i;
-				}
-				else
-				{
-					res[k] = v2;
-					--j;
-				}
-				++k;
-			}
-			else
-			{
-				if (v1 >= v2)
-				{
-					res[k] = v1;
-					++i;
-				}
-				else
-				{
-					res[k] = v2;
-					--j;
-				}
-				--k;
-			}
-		}
-		return res;
-	}
+    vector<int> sortTransformedArray(vector<int>& nums, int a, int b, int c) {
+        int n = nums.size();
+        int i = 0, j = n - 1, k = a < 0 ? 0 : n - 1;
+        vector<int> res(n);
+        while (i <= j) {
+            int v1 = f(a, b, c, nums[i]), v2 = f(a, b, c, nums[j]);
+            if (a < 0) {
+                if (v1 <= v2) {
+                    res[k] = v1;
+                    ++i;
+                } else {
+                    res[k] = v2;
+                    --j;
+                }
+                ++k;
+            } else {
+                if (v1 >= v2) {
+                    res[k] = v1;
+                    ++i;
+                } else {
+                    res[k] = v2;
+                    --j;
+                }
+                --k;
+            }
+        }
+        return res;
+    }
 
-	int f(int a, int b, int c, int x) {
-		return a * x * x + b * x + c;
-	}
+    int f(int a, int b, int c, int x) {
+        return a * x * x + b * x + c;
+    }
 };
 ```
 

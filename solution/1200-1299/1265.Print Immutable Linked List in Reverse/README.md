@@ -1,4 +1,4 @@
-# [1265. 逆序打印不可变链表](https://leetcode-cn.com/problems/print-immutable-linked-list-in-reverse)
+# [1265. 逆序打印不可变链表](https://leetcode.cn/problems/print-immutable-linked-list-in-reverse)
 
 [English Version](/solution/1200-1299/1265.Print%20Immutable%20Linked%20List%20in%20Reverse/README_EN.md)
 
@@ -20,17 +20,6 @@
 </ul>
 
 <p>输入只用来内部初始化链表。您不可以通过修改链表解决问题。也就是说，您只能通过上述 API 来操作链表。</p>
-
-<p>&nbsp;</p>
-
-<p><strong>进阶：</strong></p>
-
-<p>您是否可以：</p>
-
-<ul>
-	<li>使用常数级空间复杂度解决问题？</li>
-	<li>使用线性级时间复杂度和低于线性级空间复杂度解决问题？</li>
-</ul>
 
 <p>&nbsp;</p>
 
@@ -67,6 +56,17 @@
 	<li>每个节点的值在&nbsp;<code>[-1000, 1000]</code>&nbsp;之间。</li>
 </ul>
 
+<p>&nbsp;</p>
+
+<p><strong>进阶：</strong></p>
+
+<p>您是否可以：</p>
+
+<ul>
+	<li>使用常数级空间复杂度解决问题？</li>
+	<li>使用线性级时间复杂度和低于线性级空间复杂度解决问题？</li>
+</ul>
+
 ## 解法
 
 <!-- 这里可写通用的实现逻辑 -->
@@ -85,6 +85,7 @@
 # class ImmutableListNode:
 #     def printValue(self) -> None: # print the value of this node.
 #     def getNext(self) -> 'ImmutableListNode': # return the next node.
+
 
 class Solution:
     def printLinkedListInReverse(self, head: 'ImmutableListNode') -> None:
@@ -160,9 +161,30 @@ public:
  */
 
 func printLinkedListInReverse(head ImmutableListNode) {
-    if head != nil {
-        printLinkedListInReverse(head.getNext())
-        head.printValue()
+	if head != nil {
+		printLinkedListInReverse(head.getNext())
+		head.printValue()
+	}
+}
+```
+
+### **TypeScript**
+
+```ts
+/**
+ * // This is the ImmutableListNode's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * class ImmutableListNode {
+ *      printValue() {}
+ *
+ *      getNext(): ImmutableListNode {}
+ * }
+ */
+
+function printLinkedListInReverse(head: ImmutableListNode) {
+    if (head) {
+        printLinkedListInReverse(head.next);
+        head.printValue();
     }
 }
 ```

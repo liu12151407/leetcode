@@ -23,8 +23,8 @@
 <p><strong>Note:</strong> There will be no obstacles on points <code>0</code> and <code>n</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1800-1899/1824.Minimum%20Sideway%20Jumps/images/ic234-q3-ex1.png" style="width: 500px; height: 244px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1800-1899/1824.Minimum%20Sideway%20Jumps/images/ic234-q3-ex1.png" style="width: 500px; height: 244px;" />
 <pre>
 <strong>Input:</strong> obstacles = [0,1,2,3,0]
 <strong>Output:</strong> 2 
@@ -32,16 +32,16 @@
 Note that the frog can jump over obstacles only when making side jumps (as shown at point 2).
 </pre>
 
-<p><strong>Example 2:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1800-1899/1824.Minimum%20Sideway%20Jumps/images/ic234-q3-ex2.png" style="width: 500px; height: 196px;" />
+<p><strong class="example">Example 2:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1800-1899/1824.Minimum%20Sideway%20Jumps/images/ic234-q3-ex2.png" style="width: 500px; height: 196px;" />
 <pre>
 <strong>Input:</strong> obstacles = [0,1,1,3,3,0]
 <strong>Output:</strong> 0
 <strong>Explanation:</strong> There are no obstacles on lane 2. No side jumps are required.
 </pre>
 
-<p><strong>Example 3:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1800-1899/1824.Minimum%20Sideway%20Jumps/images/ic234-q3-ex3.png" style="width: 500px; height: 196px;" />
+<p><strong class="example">Example 3:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1800-1899/1824.Minimum%20Sideway%20Jumps/images/ic234-q3-ex3.png" style="width: 500px; height: 196px;" />
 <pre>
 <strong>Input:</strong> obstacles = [0,2,1,0,3,0]
 <strong>Output:</strong> 2
@@ -65,13 +65,127 @@ Note that the frog can jump over obstacles only when making side jumps (as shown
 ### **Python3**
 
 ```python
-
+class Solution:
+    def minSideJumps(self, obstacles: List[int]) -> int:
+        f = [1, 0, 1]
+        for v in obstacles[1:]:
+            for j in range(3):
+                if v == j + 1:
+                    f[j] = inf
+                    break
+            x = min(f) + 1
+            for j in range(3):
+                if v != j + 1:
+                    f[j] = min(f[j], x)
+        return min(f)
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int minSideJumps(int[] obstacles) {
+        final int inf = 1 << 30;
+        int[] f = {1, 0, 1};
+        for (int i = 1; i < obstacles.length; ++i) {
+            for (int j = 0; j < 3; ++j) {
+                if (obstacles[i] == j + 1) {
+                    f[j] = inf;
+                    break;
+                }
+            }
+            int x = Math.min(f[0], Math.min(f[1], f[2])) + 1;
+            for (int j = 0; j < 3; ++j) {
+                if (obstacles[i] != j + 1) {
+                    f[j] = Math.min(f[j], x);
+                }
+            }
+        }
+        return Math.min(f[0], Math.min(f[1], f[2]));
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int minSideJumps(vector<int>& obstacles) {
+        const int inf = 1 << 30;
+        int f[3] = {1, 0, 1};
+        for (int i = 1; i < obstacles.size(); ++i) {
+            for (int j = 0; j < 3; ++j) {
+                if (obstacles[i] == j + 1) {
+                    f[j] = inf;
+                    break;
+                }
+            }
+            int x = min({f[0], f[1], f[2]}) + 1;
+            for (int j = 0; j < 3; ++j) {
+                if (obstacles[i] != j + 1) {
+                    f[j] = min(f[j], x);
+                }
+            }
+        }
+        return min({f[0], f[1], f[2]});
+    }
+};
+```
+
+### **Go**
+
+```go
+func minSideJumps(obstacles []int) int {
+	f := [3]int{1, 0, 1}
+	const inf = 1 << 30
+	for _, v := range obstacles[1:] {
+		for j := 0; j < 3; j++ {
+			if v == j+1 {
+				f[j] = inf
+				break
+			}
+		}
+		x := min(f[0], min(f[1], f[2])) + 1
+		for j := 0; j < 3; j++ {
+			if v != j+1 {
+				f[j] = min(f[j], x)
+			}
+		}
+	}
+	return min(f[0], min(f[1], f[2]))
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+```
+
+### **TypeScript**
+
+```ts
+function minSideJumps(obstacles: number[]): number {
+    const inf = 1 << 30;
+    const f = [1, 0, 1];
+    for (let i = 1; i < obstacles.length; ++i) {
+        for (let j = 0; j < 3; ++j) {
+            if (obstacles[i] == j + 1) {
+                f[j] = inf;
+                break;
+            }
+        }
+        const x = Math.min(...f) + 1;
+        for (let j = 0; j < 3; ++j) {
+            if (obstacles[i] != j + 1) {
+                f[j] = Math.min(f[j], x);
+            }
+        }
+    }
+    return Math.min(...f);
+}
 ```
 
 ### **...**

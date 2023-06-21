@@ -1,4 +1,4 @@
-# [1288. 删除被覆盖区间](https://leetcode-cn.com/problems/remove-covered-intervals)
+# [1288. 删除被覆盖区间](https://leetcode.cn/problems/remove-covered-intervals)
 
 [English Version](/solution/1200-1299/1288.Remove%20Covered%20Intervals/README_EN.md)
 
@@ -88,15 +88,12 @@ class Solution {
 ```cpp
 class Solution {
 public:
-    int removeCoveredIntervals(vector<vector<int>> &intervals) {
-        sort(intervals.begin(), intervals.end(), [](const vector<int> &a, const vector<int> &b)
-             { return a[0] == b[0] ? b[1] < a[1] : a[0] < b[0]; });
+    int removeCoveredIntervals(vector<vector<int>>& intervals) {
+        sort(intervals.begin(), intervals.end(), [](const vector<int>& a, const vector<int>& b) { return a[0] == b[0] ? b[1] < a[1] : a[0] < b[0]; });
         int cnt = 1;
         vector<int> pre = intervals[0];
-        for (int i = 1; i < intervals.size(); ++i)
-        {
-            if (pre[1] < intervals[i][1])
-            {
+        for (int i = 1; i < intervals.size(); ++i) {
+            if (pre[1] < intervals[i][1]) {
                 ++cnt;
                 pre = intervals[i];
             }

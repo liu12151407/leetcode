@@ -1,4 +1,4 @@
-# [1883. 准时抵达会议现场的最小跳过休息次数](https://leetcode-cn.com/problems/minimum-skips-to-arrive-at-meeting-on-time)
+# [1883. 准时抵达会议现场的最小跳过休息次数](https://leetcode.cn/problems/minimum-skips-to-arrive-at-meeting-on-time)
 
 [English Version](/solution/1800-1899/1883.Minimum%20Skips%20to%20Arrive%20at%20Meeting%20On%20Time/README_EN.md)
 
@@ -75,8 +75,8 @@
 
 考虑最后一段道路 `dist[i - 1]` 是否跳过：
 
-- 若没有跳过，那么 `dp[i][j] = ⌈dp[i - 1][j] + dist[i - 1] / speed⌉`
-- 若跳过，那么 `dp[i][j] = dp[i - 1][j - 1] + dist[i - 1] / speed`
+-   若没有跳过，那么 `dp[i][j] = ⌈dp[i - 1][j] + dist[i - 1] / speed⌉`
+-   若跳过，那么 `dp[i][j] = dp[i - 1][j - 1] + dist[i - 1] / speed`
 
 综合两种情况，`dp[i][j] = min{⌈dp[i - 1][j] + dist[i - 1] / speed⌉, dp[i - 1][j - 1] + dist[i - 1] / speed}`。
 
@@ -90,13 +90,16 @@
 class Solution:
     def minSkips(self, dist: List[int], speed: int, hoursBefore: int) -> int:
         n = len(dist)
-        dp = [[float('inf')] * (n + 1) for _ in range(n + 1)]
+        dp = [[inf] * (n + 1) for _ in range(n + 1)]
         dp[0][0] = 0
         for i in range(1, n + 1):
             for j in range(i + 1):
                 if i != j:
                     # 没有跳过
-                    dp[i][j] = min(dp[i][j], ((dp[i - 1][j] + dist[i - 1] - 1) // speed + 1) * speed)
+                    dp[i][j] = min(
+                        dp[i][j],
+                        ((dp[i - 1][j] + dist[i - 1] - 1) // speed + 1) * speed,
+                    )
                 if j > 0:
                     # 跳过
                     dp[i][j] = min(dp[i][j], dp[i - 1][j - 1] + dist[i - 1])
@@ -125,7 +128,8 @@ class Solution {
             for (int j = 0; j <= i; ++j) {
                 if (i != j) {
                     // 没有跳过
-                    dp[i][j] = Math.min(dp[i][j], ((dp[i - 1][j] + dist[i - 1] - 1) / speed + 1) * speed);
+                    dp[i][j] = Math.min(
+                        dp[i][j], ((dp[i - 1][j] + dist[i - 1] - 1) / speed + 1) * speed);
                 }
                 if (j > 0) {
                     // 跳过

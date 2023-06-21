@@ -15,7 +15,7 @@
 <p><strong>Note:</strong> You may not engage in multiple transactions simultaneously (i.e., you must sell the stock before you buy again).</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> prices = [1,2,3,0,2]
@@ -23,7 +23,7 @@
 <strong>Explanation:</strong> transactions = [buy, sell, cooldown, buy, sell]
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> prices = [1]
@@ -70,6 +70,24 @@ class Solution {
         }
         return f2;
     }
+}
+```
+
+### **TypeScript**
+
+```ts
+function maxProfit(prices: number[]): number {
+    const n = prices.length;
+    let dp = Array.from({ length: n }, v => new Array(3).fill(0));
+    dp[0] = [0, -prices[0], Number.MIN_SAFE_INTEGER];
+    for (let i = 1; i < n; i++) {
+        dp[i] = [
+            Math.max(dp[i - 1][0], dp[i - 1][2]),
+            Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i]),
+            dp[i - 1][1] + prices[i],
+        ];
+    }
+    return Math.max(dp[n - 1][0], dp[n - 1][2]);
 }
 ```
 

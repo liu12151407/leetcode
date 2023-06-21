@@ -11,7 +11,7 @@
 <p>Return <em>the maximum score of a pair of sightseeing spots</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> values = [8,1,5,2,6]
@@ -19,7 +19,7 @@
 <strong>Explanation:</strong> i = 0, j = 2, values[i] + values[j] + i - j = 8 + 5 + 0 - 2 = 11
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> values = [1,2]
@@ -43,11 +43,11 @@
 ```python
 class Solution:
     def maxScoreSightseeingPair(self, values: List[int]) -> int:
-        res, mx = 0, values[0]
-        for i in range(1, len(values)):
-            res = max(res, values[i] - i + mx)
-            mx = max(mx, values[i] + i)
-        return res
+        ans, mx = 0, values[0]
+        for j in range(1, len(values)):
+            ans = max(ans, values[j] - j + mx)
+            mx = max(mx, values[j] + j)
+        return ans
 ```
 
 ### **Java**
@@ -55,12 +55,12 @@ class Solution:
 ```java
 class Solution {
     public int maxScoreSightseeingPair(int[] values) {
-        int res = 0, mx = values[0];
-        for (int i = 1; i < values.length; ++i) {
-            res = Math.max(res, values[i] - i + mx);
-            mx = Math.max(mx, values[i] + i);
+        int ans = 0, mx = values[0];
+        for (int j = 1; j < values.length; ++j) {
+            ans = Math.max(ans, values[j] - j + mx);
+            mx = Math.max(mx, values[j] + j);
         }
-        return res;
+        return ans;
     }
 }
 ```
@@ -71,12 +71,12 @@ class Solution {
 class Solution {
 public:
     int maxScoreSightseeingPair(vector<int>& values) {
-        int res = 0, mx = values[0];
-        for (int i = 1; i < values.size(); ++i) {
-            res = max(res, values[i] - i + mx);
-            mx = max(mx, values[i] + i);
+        int ans = 0, mx = values[0];
+        for (int j = 1; j < values.size(); ++j) {
+            ans = max(ans, values[j] - j + mx);
+            mx = max(mx, values[j] + j);
         }
-        return res;
+        return ans;
     }
 };
 ```
@@ -84,13 +84,12 @@ public:
 ### **Go**
 
 ```go
-func maxScoreSightseeingPair(values []int) int {
-	res, mx := 0, values[0]
-	for i := 1; i < len(values); i++ {
-		res = max(res, values[i]-i+mx)
-		mx = max(mx, values[i]+i)
+func maxScoreSightseeingPair(values []int) (ans int) {
+	for j, mx := 1, values[0]; j < len(values); j++ {
+		ans = max(ans, values[j]-j+mx)
+		mx = max(mx, values[j]+j)
 	}
-	return res
+	return
 }
 
 func max(a, b int) int {
@@ -98,6 +97,20 @@ func max(a, b int) int {
 		return a
 	}
 	return b
+}
+```
+
+### **TypeScript**
+
+```ts
+function maxScoreSightseeingPair(values: number[]): number {
+    let ans = 0;
+    let mx = values[0];
+    for (let j = 1; j < values.length; ++j) {
+        ans = Math.max(ans, values[j] - j + mx);
+        mx = Math.max(mx, values[j] + j);
+    }
+    return ans;
 }
 ```
 

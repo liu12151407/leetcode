@@ -1,4 +1,4 @@
-# [266. 回文排列](https://leetcode-cn.com/problems/palindrome-permutation)
+# [266. 回文排列](https://leetcode.cn/problems/palindrome-permutation)
 
 [English Version](/solution/0200-0299/0266.Palindrome%20Permutation/README_EN.md)
 
@@ -27,7 +27,19 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
-利用 HashMap（字典表）统计每个字符出现的频率，至多有一个字符出现奇数次数即可。
+**方法一：数组**
+
+创建一个长度为 $26$ 的数组，统计每个字母出现的频率，至多有一个字符出现奇数次数即可。
+
+时间复杂度 $O(n)$，空间复杂度 $O(26)$。其中 $n$ 是字符串的长度。
+
+**方法二：哈希表**
+
+利用哈希表来维护元素。遍历字符串每个字母 $s[i]$，若 $s[i]$ 在哈希表中，则将 $s[i]$ 从哈希表中删除，否则将 $s[i]$ 加入哈希表。
+
+遍历结束，若哈希表中元素个数不超过 $1$，则返回 $true$，否则返回 $false$。
+
+时间复杂度 $O(n)$，空间复杂度 $O(26)$。其中 $n$ 是字符串的长度。
 
 <!-- tabs:start -->
 
@@ -38,8 +50,7 @@
 ```python
 class Solution:
     def canPermutePalindrome(self, s: str) -> bool:
-        counter = Counter(s)
-        return sum(e % 2 for e in counter.values()) < 2
+        return sum(v % 2 for v in Counter(s).values()) <= 1
 ```
 
 ### **Java**
@@ -49,15 +60,15 @@ class Solution:
 ```java
 class Solution {
     public boolean canPermutePalindrome(String s) {
-        Map<Character, Integer> counter = new HashMap<>();
+        int[] cnt = new int[26];
         for (char c : s.toCharArray()) {
-            counter.put(c, counter.getOrDefault(c, 0) + 1);
+            ++cnt[c - 'a'];
         }
-        int oddCnt = 0;
-        for (int e : counter.values()) {
-            oddCnt += e % 2;
+        int n = 0;
+        for (int v : cnt) {
+            n += v % 2;
         }
-        return oddCnt < 2;
+        return n < 2;
     }
 }
 ```
@@ -68,11 +79,11 @@ class Solution {
 class Solution {
 public:
     bool canPermutePalindrome(string s) {
-        unordered_map<char, int> counter;
-        for (char c : s) ++counter[c];
-        int oddCnt = 0;
-        for (auto& it : counter) oddCnt += it.second % 2;
-        return oddCnt < 2;
+        vector<int> cnt(26);
+        for (char& c : s) ++cnt[c - 'a'];
+        int n = 0;
+        for (int& v : cnt) n += v & 1;
+        return n < 2;
     }
 };
 ```
@@ -81,16 +92,36 @@ public:
 
 ```go
 func canPermutePalindrome(s string) bool {
-    counter := make(map[rune]int)
-    for _, c := range s {
-        counter[c]++
-    }
-    oddCnt := 0
-    for _, e := range counter {
-        oddCnt += e % 2
-    }
-    return oddCnt < 2
+	cnt := make([]int, 26)
+	for _, c := range s {
+		cnt[c-'a']++
+	}
+	n := 0
+	for _, v := range cnt {
+		n += v & 1
+	}
+	return n < 2
 }
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {string} s
+ * @return {boolean}
+ */
+var canPermutePalindrome = function (s) {
+    let ss = new Set();
+    for (let c of s) {
+        if (ss.has(c)) {
+            ss.delete(c);
+        } else {
+            ss.add(c);
+        }
+    }
+    return ss.size < 2;
+};
 ```
 
 ### **...**

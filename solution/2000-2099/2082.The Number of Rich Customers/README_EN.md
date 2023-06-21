@@ -25,7 +25,7 @@ Each row contains information about the amount of one bill and the customer asso
 <p>The query result format is in the following example.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> 
@@ -60,11 +60,9 @@ Customer 3 has one bill with an amount strictly greater than 500.
 ```sql
 # Write your MySQL query statement below
 SELECT
-    COUNT(DISTINCT(customer_id)) AS rich_count
-FROM
-    Store
-WHERE
-    amount > 500;
+    COUNT(DISTINCT customer_id) AS rich_count
+FROM Store
+WHERE amount > 500;
 ```
 
 <!-- tabs:end -->

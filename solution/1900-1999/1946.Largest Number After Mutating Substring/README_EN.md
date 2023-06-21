@@ -6,14 +6,14 @@
 
 <p>You are given a string <code>num</code>, which represents a large integer. You are also given a <strong>0-indexed</strong> integer array <code>change</code> of length <code>10</code> that maps each digit <code>0-9</code> to another digit. More formally, digit <code>d</code> maps to digit <code>change[d]</code>.</p>
 
-<p>You may choose to <strong>mutate</strong> any substring of <code>num</code>. To mutate a substring, replace each digit <code>num[i]</code> with the digit it maps to in <code>change</code> (i.e. replace <code>num[i]</code> with <code>change[num[i]]</code>).</p>
+<p>You may <strong>choose</strong> to <b>mutate a single substring</b> of <code>num</code>. To mutate a substring, replace each digit <code>num[i]</code> with the digit it maps to in <code>change</code> (i.e. replace <code>num[i]</code> with <code>change[num[i]]</code>).</p>
 
-<p>Return <em>a string representing the <strong>largest</strong> possible integer after <strong>mutating</strong> (or choosing not to) any substring of </em><code>num</code>.</p>
+<p>Return <em>a string representing the <strong>largest</strong> possible integer after <strong>mutating</strong> (or choosing not to) a <strong>single substring</strong> of </em><code>num</code>.</p>
 
 <p>A <strong>substring</strong> is a contiguous sequence of characters within the string.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> num = &quot;<u>1</u>32&quot;, change = [9,8,5,0,3,6,4,2,6,8]
@@ -24,7 +24,7 @@ Thus, &quot;<u>1</u>32&quot; becomes &quot;<u>8</u>32&quot;.
 &quot;832&quot; is the largest number that can be created, so return it.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> num = &quot;<u>021</u>&quot;, change = [9,4,3,5,7,2,1,9,0,6]
@@ -37,7 +37,7 @@ Thus, &quot;<u>021</u>&quot; becomes &quot;<u>934</u>&quot;.
 &quot;934&quot; is the largest number that can be created, so return it.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> num = &quot;5&quot;, change = [1,4,7,5,3,2,5,6,9,4]
@@ -64,17 +64,14 @@ Thus, &quot;<u>021</u>&quot; becomes &quot;<u>934</u>&quot;.
 ```python
 class Solution:
     def maximumNumber(self, num: str, change: List[int]) -> str:
-        find = False
-        nums = list(num)
-        for i, c in enumerate(num):
-            if int(c) < change[int(c)]:
-                nums[i] = str(change[int(c)])
-                find = True
-            elif find and int(c) == change[int(c)]:
-                continue
-            elif find:
+        s = list(num)
+        for i, c in enumerate(s):
+            if change[int(c)] > int(c):
+                while i < len(s) and int(s[i]) <= change[int(s[i])]:
+                    s[i] = str(change[int(s[i])])
+                    i += 1
                 break
-        return ''.join(nums)
+        return ''.join(s)
 ```
 
 ### **Java**
@@ -82,21 +79,54 @@ class Solution:
 ```java
 class Solution {
     public String maximumNumber(String num, int[] change) {
-        boolean find = false;
-        char[] nums = num.toCharArray();
-        for (int i = 0; i < num.length(); ++i) {
-            int c = num.charAt(i) - '0';
-            if (c < change[c]) {
-                nums[i] = (char) ('0' + change[c]);
-                find = true;
-            } else if (find && c == change[c]) {
-                continue;
-            } else if (find) {
+        char[] s = num.toCharArray();
+        for (int i = 0; i < s.length; ++i) {
+            if (change[s[i] - '0'] > s[i] - '0') {
+                for (; i < s.length && s[i] - '0' <= change[s[i] - '0']; ++i) {
+                    s[i] = (char) (change[s[i] - '0'] + '0');
+                }
                 break;
             }
         }
-        return new String(nums);
+        return String.valueOf(s);
     }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    string maximumNumber(string num, vector<int>& change) {
+        int n = num.size();
+        for (int i = 0; i < n; ++i) {
+            if (change[num[i] - '0'] > num[i] - '0') {
+                for (; i < n && change[num[i] - '0'] >= num[i] - '0'; ++i) {
+                    num[i] = change[num[i] - '0'] + '0';
+                }
+                break;
+            }
+        }
+        return num;
+    }
+};
+```
+
+### **Go**
+
+```go
+func maximumNumber(num string, change []int) string {
+	s := []byte(num)
+	for i, c := range num {
+		if change[c-'0'] > int(c-'0') {
+			for ; i < len(s) && change[s[i]-'0'] >= int(s[i]-'0'); i++ {
+				s[i] = byte(change[s[i]-'0']) + '0'
+			}
+			break
+		}
+	}
+	return string(s)
 }
 ```
 

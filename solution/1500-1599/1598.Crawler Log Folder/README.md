@@ -1,4 +1,4 @@
-# [1598. 文件夹操作日志搜集器](https://leetcode-cn.com/problems/crawler-log-folder)
+# [1598. 文件夹操作日志搜集器](https://leetcode.cn/problems/crawler-log-folder)
 
 [English Version](/solution/1500-1599/1598.Crawler%20Log%20Folder/README_EN.md)
 
@@ -26,7 +26,7 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1598.Crawler%20Log%20Folder/images/sample_11_1957.png" style="height: 151px; width: 775px;"></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1598.Crawler%20Log%20Folder/images/sample_11_1957.png" style="height: 151px; width: 775px;"></p>
 
 <pre><strong>输入：</strong>logs = [&quot;d1/&quot;,&quot;d2/&quot;,&quot;../&quot;,&quot;d21/&quot;,&quot;./&quot;]
 <strong>输出：</strong>2
@@ -35,7 +35,7 @@
 
 <p><strong>示例 2：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1598.Crawler%20Log%20Folder/images/sample_22_1957.png" style="height: 270px; width: 600px;"></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1598.Crawler%20Log%20Folder/images/sample_22_1957.png" style="height: 270px; width: 600px;"></p>
 
 <pre><strong>输入：</strong>logs = [&quot;d1/&quot;,&quot;d2/&quot;,&quot;./&quot;,&quot;d3/&quot;,&quot;../&quot;,&quot;d31/&quot;]
 <strong>输出：</strong>3
@@ -63,6 +63,12 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：模拟**
+
+直接模拟，记录深度的变化即可。
+
+时间复杂度 $O(n)$，空间复杂度 $O(1)$。其中 $n$ 为 `logs` 的长度。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -70,7 +76,15 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def minOperations(self, logs: List[str]) -> int:
+        ans = 0
+        for v in logs:
+            if v == "../":
+                ans = max(0, ans - 1)
+            elif v[0] != ".":
+                ans += 1
+        return ans
 ```
 
 ### **Java**
@@ -78,7 +92,109 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public int minOperations(String[] logs) {
+        int ans = 0;
+        for (var v : logs) {
+            if ("../".equals(v)) {
+                ans = Math.max(0, ans - 1);
+            } else if (v.charAt(0) != '.') {
+                ++ans;
+            }
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int minOperations(vector<string>& logs) {
+        int ans = 0;
+        for (auto& v : logs) {
+            if (v == "../") {
+                ans = max(0, ans - 1);
+            } else if (v[0] != '.') {
+                ++ans;
+            }
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func minOperations(logs []string) int {
+	ans := 0
+	for _, v := range logs {
+		if v == "../" {
+			if ans > 0 {
+				ans--
+			}
+		} else if v[0] != '.' {
+			ans++
+		}
+	}
+	return ans
+}
+```
+
+### **C**
+
+```c
+#define max(a, b) (((a) > (b)) ? (a) : (b))
+
+int minOperations(char** logs, int logsSize) {
+    int depth = 0;
+    for (int i = 0; i < logsSize; i++) {
+        char* log = logs[i];
+        if (!strcmp(log, "../")) {
+            depth = max(0, depth - 1);
+        } else if (strcmp(log, "./")) {
+            depth++;
+        }
+    }
+    return depth;
+}
+```
+
+### **TypeScript**
+
+```ts
+function minOperations(logs: string[]): number {
+    let depth = 0;
+    for (const log of logs) {
+        if (log === '../') {
+            depth = Math.max(0, depth - 1);
+        } else if (log !== './') {
+            depth++;
+        }
+    }
+    return depth;
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn min_operations(logs: Vec<String>) -> i32 {
+        let mut depth = 0;
+        for log in logs.iter() {
+            if log == "../" {
+                depth = 0.max(depth - 1);
+            } else if log != "./" {
+                depth += 1;
+            }
+        }
+        depth
+    }
+}
 ```
 
 ### **...**

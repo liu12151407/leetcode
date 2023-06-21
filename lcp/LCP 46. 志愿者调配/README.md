@@ -1,4 +1,4 @@
-# [LCP 46. 志愿者调配](https://leetcode-cn.com/problems/05ZEDJ)
+# [LCP 46. 志愿者调配](https://leetcode.cn/problems/05ZEDJ)
 
 ## 题目描述
 
@@ -18,17 +18,17 @@
 
 **注意：**
 
-- 测试数据保证当某场馆进行第一种调配时，该场馆的志愿者人数一定为偶数；
+-   测试数据保证当某场馆进行第一种调配时，该场馆的志愿者人数一定为偶数；
 
-- 测试数据保证当某场馆进行第三种调配时，该场馆的相邻场馆志愿者人数不为负数；
+-   测试数据保证当某场馆进行第三种调配时，该场馆的相邻场馆志愿者人数不为负数；
 
-- 测试数据保证比赛开始时每个场馆的志愿者人数都不超过 `10^9`；
+-   测试数据保证比赛开始时每个场馆的志愿者人数都不超过 `10^9`；
 
-- 测试数据保证给定的场馆间的道路分布情况中不会出现自环、重边的情况。
+-   测试数据保证给定的场馆间的道路分布情况中不会出现自环、重边的情况。
 
 **示例 1：**
 
-> ![image.png](https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcp/LCP%2046.%20%E5%BF%97%E6%84%BF%E8%80%85%E8%B0%83%E9%85%8D/images/1630061228-gnZsOz-image.png)
+> ![image.png](https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcp/LCP%2046.%20%E5%BF%97%E6%84%BF%E8%80%85%E8%B0%83%E9%85%8D/images/1630061228-gnZsOz-image.png)
 
 > 输入：
 
@@ -42,7 +42,7 @@
 
 > 解释：
 
-> ![image.png](https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcp/LCP%2046.%20%E5%BF%97%E6%84%BF%E8%80%85%E8%B0%83%E9%85%8D/images/1630061300-WuVkeF-image.png)
+> ![image.png](https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcp/LCP%2046.%20%E5%BF%97%E6%84%BF%E8%80%85%E8%B0%83%E9%85%8D/images/1630061300-WuVkeF-image.png)
 
 **示例 2 ：**
 
@@ -56,23 +56,23 @@
 
 **提示：**
 
-- `2 <= n <= 5*10^4`
+-   `2 <= n <= 5*10^4`
 
-- `1 <= edges.length <= min((n * (n - 1)) / 2, 5*10^4)`
+-   `1 <= edges.length <= min((n * (n - 1)) / 2, 5*10^4)`
 
-- `0 <= edges[i][0], edges[i][1] < n`
+-   `0 <= edges[i][0], edges[i][1] < n`
 
-- `1 <= plans.length <= 10`
+-   `1 <= plans.length <= 10`
 
-- `1 <= plans[i][0] <=3`
+-   `1 <= plans[i][0] <=3`
 
-- `0 <= plans[i][1] < n`
+-   `0 <= plans[i][1] < n`
 
-- `finalCnt.length = n-1`
+-   `finalCnt.length = n-1`
 
-- `0 <= finalCnt[i] < 10^9`
+-   `0 <= finalCnt[i] < 10^9`
 
-- `0 <= totalNum < 5*10^13`
+-   `0 <= totalNum < 5*10^13`
 
 ## 解法
 

@@ -10,20 +10,18 @@
 
 <ul>
 	<li>Take any bag of balls and divide it into two new bags with a <strong>positive </strong>number of balls.
-
     <ul>
     	<li>For example, a bag of <code>5</code> balls can become two new bags of <code>1</code> and <code>4</code> balls, or two new bags of <code>2</code> and <code>3</code> balls.</li>
     </ul>
     </li>
-
 </ul>
 
 <p>Your penalty is the <strong>maximum</strong> number of balls in a bag. You want to <strong>minimize</strong> your penalty after the operations.</p>
 
-<p>Return <em>the minimum possible penalty&nbsp;after performing the operations</em>.</p>
+<p>Return <em>the minimum possible penalty after performing the operations</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [9], maxOperations = 2
@@ -34,7 +32,7 @@
 The bag with the most number of balls has 3 balls, so your penalty is 3 and you should return 3.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [2,4,8,2], maxOperations = 4
@@ -44,14 +42,7 @@ The bag with the most number of balls has 3 balls, so your penalty is 3 and you 
 - Divide the bag with 4 balls into two bags of sizes 2 and 2. [2,<strong><u>4</u></strong>,4,4,2] -&gt; [2,2,2,4,4,2].
 - Divide the bag with 4 balls into two bags of sizes 2 and 2. [2,2,2,<strong><u>4</u></strong>,4,2] -&gt; [2,2,2,2,2,4,2].
 - Divide the bag with 4 balls into two bags of sizes 2 and 2. [2,2,2,2,2,<strong><u>4</u></strong>,2] -&gt; [2,2,2,2,2,2,2,2].
-The bag with the most number of balls has 2 balls, so your penalty is 2 an you should return 2.
-</pre>
-
-<p><strong>Example 3:</strong></p>
-
-<pre>
-<strong>Input:</strong> nums = [7,17], maxOperations = 2
-<strong>Output:</strong> 7
+The bag with the most number of balls has 2 balls, so your penalty is 2, and you should return 2.
 </pre>
 
 <p>&nbsp;</p>
@@ -73,15 +64,10 @@ Binary search.
 ```python
 class Solution:
     def minimumSize(self, nums: List[int], maxOperations: int) -> int:
-        left, right = 1, max(nums)
-        while left < right:
-            mid = (left + right) >> 1
-            ops = sum([(num - 1) // mid for num in nums])
-            if ops <= maxOperations:
-                right = mid
-            else:
-                left = mid + 1
-        return left
+        def check(mx: int) -> bool:
+            return sum((x - 1) // mx for x in nums) <= maxOperations
+
+        return bisect_left(range(1, max(nums)), True, key=check) + 1
 ```
 
 ### **Java**
@@ -89,14 +75,17 @@ class Solution:
 ```java
 class Solution {
     public int minimumSize(int[] nums, int maxOperations) {
-        int left = 1, right = 1000000000;
+        int left = 1, right = 0;
+        for (int x : nums) {
+            right = Math.max(right, x);
+        }
         while (left < right) {
-            int mid = (left + right) >>> 1;
-            long ops = 0;
-            for (int num : nums) {
-                ops += (num - 1) / mid;
+            int mid = (left + right) >> 1;
+            long cnt = 0;
+            for (int x : nums) {
+                cnt += (x - 1) / mid;
             }
-            if (ops <= maxOperations) {
+            if (cnt <= maxOperations) {
                 right = mid;
             } else {
                 left = mid + 1;
@@ -115,12 +104,12 @@ public:
     int minimumSize(vector<int>& nums, int maxOperations) {
         int left = 1, right = *max_element(nums.begin(), nums.end());
         while (left < right) {
-            int mid = left + (right - left >> 1);
-            long long ops = 0;
-            for (int num : nums) {
-                ops += (num - 1) / mid;
+            int mid = (left + right) >> 1;
+            long long cnt = 0;
+            for (int x : nums) {
+                cnt += (x - 1) / mid;
             }
-            if (ops <= maxOperations) {
+            if (cnt <= maxOperations) {
                 right = mid;
             } else {
                 left = mid + 1;
@@ -135,30 +124,74 @@ public:
 
 ```go
 func minimumSize(nums []int, maxOperations int) int {
-	left, right := 1, max(nums)
-	for left < right {
-		mid := (left + right) >> 1
-		var ops int
-		for _, num := range nums {
-			ops += (num - 1) / mid
-		}
-		if ops <= maxOperations {
-			right = mid
-		} else {
-			left = mid + 1
-		}
+	r := 0
+	for _, x := range nums {
+		r = max(r, x)
 	}
-	return left
+	return 1 + sort.Search(r, func(mx int) bool {
+		mx++
+		cnt := 0
+		for _, x := range nums {
+			cnt += (x - 1) / mx
+		}
+		return cnt <= maxOperations
+	})
 }
 
-func max(nums []int) int {
-	res := 0
-	for _, num := range nums {
-		if res < num {
-			res = num
-		}
+func max(a, b int) int {
+	if a > b {
+		return a
 	}
-	return res
+	return b
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number[]} nums
+ * @param {number} maxOperations
+ * @return {number}
+ */
+var minimumSize = function (nums, maxOperations) {
+    let left = 1;
+    let right = Math.max(...nums);
+    while (left < right) {
+        const mid = (left + right) >> 1;
+        let cnt = 0;
+        for (const x of nums) {
+            cnt += ~~((x - 1) / mid);
+        }
+        if (cnt <= maxOperations) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+    return left;
+};
+```
+
+### **TypeScript**
+
+```ts
+function minimumSize(nums: number[], maxOperations: number): number {
+    let left = 1;
+    let right = Math.max(...nums);
+    while (left < right) {
+        const mid = (left + right) >> 1;
+        let cnt = 0;
+        for (const x of nums) {
+            cnt += ~~((x - 1) / mid);
+        }
+        if (cnt <= maxOperations) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+    return left;
 }
 ```
 

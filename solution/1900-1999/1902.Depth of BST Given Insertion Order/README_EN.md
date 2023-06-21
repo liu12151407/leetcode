@@ -26,51 +26,31 @@
 <p>A binary tree&#39;s <strong>depth</strong> is the number of <strong>nodes</strong> along the <strong>longest path</strong> from the root node down to the farthest leaf node.</p>
 
 <p>&nbsp;</p>
-
-<p><strong>Example 1:</strong></p>
-
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1900-1999/1902.Depth%20of%20BST%20Given%20Insertion%20Order/images/1.png" style="width: 624px; height: 154px;" />
-
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1900-1999/1902.Depth%20of%20BST%20Given%20Insertion%20Order/images/1.png" style="width: 624px; height: 154px;" />
 <pre>
-
 <strong>Input:</strong> order = [2,1,4,3]
-
 <strong>Output:</strong> 3
-
 <strong>Explanation: </strong>The binary search tree has a depth of 3 with path 2-&gt;3-&gt;4.
-
 </pre>
 
-<p><strong>Example 2:</strong></p>
-
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1900-1999/1902.Depth%20of%20BST%20Given%20Insertion%20Order/images/2.png" style="width: 624px; height: 146px;" />
-
+<p><strong class="example">Example 2:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1900-1999/1902.Depth%20of%20BST%20Given%20Insertion%20Order/images/2.png" style="width: 624px; height: 146px;" />
 <pre>
-
 <strong>Input:</strong> order = [2,1,3,4]
-
 <strong>Output:</strong> 3
-
 <strong>Explanation: </strong>The binary search tree has a depth of 3 with path 2-&gt;3-&gt;4.
-
 </pre>
 
-<p><strong>Example 3:</strong></p>
-
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1900-1999/1902.Depth%20of%20BST%20Given%20Insertion%20Order/images/3.png" style="width: 624px; height: 225px;" />
-
+<p><strong class="example">Example 3:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1900-1999/1902.Depth%20of%20BST%20Given%20Insertion%20Order/images/3.png" style="width: 624px; height: 225px;" />
 <pre>
-
 <strong>Input:</strong> order = [1,2,3,4]
-
 <strong>Output:</strong> 4
-
 <strong>Explanation: </strong>The binary search tree has a depth of 4 with path 1-&gt;2-&gt;3-&gt;4.
-
 </pre>
 
 <p>&nbsp;</p>
-
 <p><strong>Constraints:</strong></p>
 
 <ul>
@@ -91,7 +71,7 @@ from sortedcontainers import SortedDict
 
 class Solution:
     def maxDepthBST(self, order: List[int]) -> int:
-        sd = SortedDict({0: 0, float('inf'): 0, order[0]: 1})
+        sd = SortedDict({0: 0, inf: 0, order[0]: 1})
         ans = 1
         for v in order[1:]:
             lower = sd.bisect_left(v) - 1

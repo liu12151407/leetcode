@@ -1,4 +1,4 @@
-# [LCS 03. 主题空间](https://leetcode-cn.com/problems/YesdPw/)
+# [LCS 03. 主题空间](https://leetcode.cn/problems/YesdPw/)
 
 ## 题目描述
 
@@ -15,7 +15,7 @@
 > 输出：`1`
 >
 > 解释：4 个主题空间中，只有 1 个不与走廊相邻，面积为 1。
-> ![image.png](https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcs/LCS%2003.%20主题空间/images/1613708145-rscctN-image.png)
+> ![image.png](https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcs/LCS%2003.%20主题空间/images/1613708145-rscctN-image.png)
 
 **示例 2:**
 
@@ -24,13 +24,13 @@
 > 输出：`3`
 >
 > 解释：8 个主题空间中，有 5 个不与走廊相邻，面积分别为 3、1、1、1、2，最大面积为 3。
-> ![image.png](https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcs/LCS%2003.%20主题空间/images/1613707985-KJyiXJ-image.png)
+> ![image.png](https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcs/LCS%2003.%20主题空间/images/1613707985-KJyiXJ-image.png)
 
 **提示：**
 
-- `1 <= grid.length <= 500`
-- `1 <= grid[i].length <= 500`
-- `grid[i][j]` 仅可能是 `"0"～"5"`
+-   `1 <= grid.length <= 500`
+-   `1 <= grid[i].length <= 500`
+-   `grid[i][j]` 仅可能是 `"0"～"5"`
 
 ## 解法
 
@@ -46,12 +46,14 @@
 # 初始化，p存储每个点的父节点
 p = list(range(n))
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
         # 路径压缩
         p[x] = find(p[x])
     return p[x]
+
 
 # 合并a和b所在的两个集合
 p[find(a)] = find(b)
@@ -64,12 +66,14 @@ p[find(a)] = find(b)
 p = list(range(n))
 size = [1] * n
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
         # 路径压缩
         p[x] = find(p[x])
     return p[x]
+
 
 # 合并a和b所在的两个集合
 if find(a) != find(b):
@@ -84,6 +88,7 @@ if find(a) != find(b):
 p = list(range(n))
 d = [0] * n
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
@@ -92,10 +97,17 @@ def find(x):
         p[x] = t
     return p[x]
 
+
 # 合并a和b所在的两个集合
 p[find(a)] = find(b)
 d[find(a)] = distance
 ```
+
+对于本题，记 m, n 分别为 grid 的行数和列数。
+
+-   将所有走廊及 "0" 对应的格子与超级节点 `m * n` 相连。
+-   对于其它格子，判断其相邻（上、下、左、右）的格子是否为 "0" 或者与当前格子相同，若是，更新 size 并将两个格子相连。
+-   最后，获取不与超级节点相连的格子的最大 size，即为答案。
 
 <!-- tabs:start -->
 
@@ -106,32 +118,36 @@ d[find(a)] = distance
 ```python
 class Solution:
     def largestArea(self, grid: List[str]) -> int:
-        m, n = len(grid), len(grid[0])
-        p = list(range(m * n + 1))
-
         def find(x):
             if p[x] != x:
                 p[x] = find(p[x])
             return p[x]
 
+        m, n = len(grid), len(grid[0])
+        p = list(range(m * n + 1))
+        size = [1] * (m * n + 1)
+        dirs = [[0, -1], [0, 1], [1, 0], [-1, 0]]
         for i in range(m):
             for j in range(n):
                 if i == 0 or i == m - 1 or j == 0 or j == n - 1 or grid[i][j] == '0':
                     p[find(i * n + j)] = find(m * n)
                 else:
-                    for x, y in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-                        if grid[i + x][j + y] == '0' or grid[i][j] == grid[i + x][j + y]:
-                            p[find(i * n + j)] = find((i + x) * n + j + y)
-
-        mp = defaultdict(int)
-        res = 0
-        for i in range(m):
-            for j in range(n):
-                root = find(i * n + j)
-                if root != find(m * n):
-                    mp[root] += 1
-                    res = max(res, mp[root])
-        return res
+                    for a, b in dirs:
+                        x, y = i + a, j + b
+                        if (grid[x][y] == '0' or grid[i][j] == grid[x][y]) and find(
+                            x * n + y
+                        ) != find(i * n + j):
+                            size[find(x * n + y)] += size[find(i * n + j)]
+                            p[find(i * n + j)] = find(x * n + y)
+        return max(
+            [
+                size[i * n + j]
+                for i in range(m)
+                for j in range(n)
+                if find(i * n + j) != find(m * n)
+            ],
+            default=0,
+        )
 ```
 
 ### **Java**
@@ -141,39 +157,44 @@ class Solution:
 ```java
 class Solution {
     private int[] p;
-    private int[][] dirs = new int[][]{{0, -1}, {0, 1}, {1, 0}, {-1, 0}};
 
     public int largestArea(String[] grid) {
-        int m = grid.length, n = grid[0].length();
+        int m = grid.length;
+        int n = grid[0].length();
         p = new int[m * n + 1];
+        int[] size = new int[m * n + 1];
         for (int i = 0; i < p.length; ++i) {
             p[i] = i;
+            size[i] = 1;
         }
+        int[] dirs = {0, 1, 0, -1, 0};
         for (int i = 0; i < m; ++i) {
             for (int j = 0; j < n; ++j) {
                 if (i == 0 || i == m - 1 || j == 0 || j == n - 1 || grid[i].charAt(j) == '0') {
                     p[find(i * n + j)] = find(m * n);
                 } else {
-                    for (int[] e : dirs) {
-                        if (grid[i + e[0]].charAt(j + e[1]) == '0' || grid[i].charAt(j) == grid[i + e[0]].charAt(j + e[1])) {
-                            p[find(i * n + j)] = find((i + e[0]) * n + j + e[1]);
+                    for (int k = 0; k < 4; ++k) {
+                        int x = i + dirs[k];
+                        int y = j + dirs[k + 1];
+                        if (grid[x].charAt(y) == '0' || grid[i].charAt(j) == grid[x].charAt(y)) {
+                            if (find(x * n + y) != find(i * n + j)) {
+                                size[find(x * n + y)] += size[find(i * n + j)];
+                                p[find(i * n + j)] = find(x * n + y);
+                            }
                         }
                     }
                 }
             }
         }
-        Map<Integer, Integer> mp = new HashMap<>();
-        int res = 0;
+        int ans = 0;
         for (int i = 0; i < m; ++i) {
             for (int j = 0; j < n; ++j) {
-                int root = find(i * n + j);
-                if (root != find(m * n)) {
-                    mp.put(root, mp.getOrDefault(root, 0) + 1);
-                    res = Math.max(res, mp.get(root));
+                if (find(i * n + j) != find(m * n)) {
+                    ans = Math.max(ans, size[i * n + j]);
                 }
             }
         }
-        return res;
+        return ans;
     }
 
     private int find(int x) {
@@ -191,43 +212,34 @@ class Solution {
 class Solution {
 public:
     vector<int> p;
-    int dirs[4][2] = {{0, -1}, {0, 1}, {1, 0}, {-1, 0}};
 
     int largestArea(vector<string>& grid) {
         int m = grid.size(), n = grid[0].size();
         p.resize(m * n + 1);
         for (int i = 0; i < p.size(); ++i) p[i] = i;
-        for (int i = 0; i < m; ++i)
-        {
-            for (int j = 0; j < n; ++j)
-            {
+        vector<int> size(m * n + 1, 1);
+        vector<int> dirs = {-1, 0, 1, 0, -1};
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
                 if (i == 0 || i == m - 1 || j == 0 || j == n - 1 || grid[i][j] == '0')
                     p[find(i * n + j)] = find(m * n);
-                else
-                {
-                    for (auto e : dirs)
-                    {
-                        if (grid[i + e[0]][j + e[1]] == '0' || grid[i][j]== grid[i + e[0]][j + e[1]])
-                            p[find(i * n + j)] = find((i + e[0]) * n + j + e[1]);
+                else {
+                    for (int k = 0; k < 4; ++k) {
+                        int x = i + dirs[k], y = j + dirs[k + 1];
+                        if ((grid[x][y] == '0' || grid[i][j] == grid[x][y]) && find(x * n + y) != find(i * n + j)) {
+                            size[find(x * n + y)] += size[find(i * n + j)];
+                            p[find(i * n + j)] = find(x * n + y);
+                        }
                     }
                 }
             }
         }
-        unordered_map<int, int> mp;
-        int res = 0;
+        int ans = 0;
         for (int i = 0; i < m; ++i)
-        {
             for (int j = 0; j < n; ++j)
-            {
-                int root = find(i * n + j);
-                if (root != find(m * n))
-                {
-                    ++mp[root];
-                    res = max(res, mp[root]);
-                }
-            }
-        }
-        return res;
+                if (find(i * n + j) != find(m * n))
+                    ans = max(ans, size[i * n + j]);
+        return ans;
     }
 
     int find(int x) {
@@ -240,56 +252,106 @@ public:
 ### **Go**
 
 ```go
-var p []int
-
 func largestArea(grid []string) int {
 	m, n := len(grid), len(grid[0])
-	p = make([]int, m*n+1)
-	for i := 0; i < len(p); i++ {
+	p := make([]int, m*n+1)
+	size := make([]int, m*n+1)
+	for i := range p {
 		p[i] = i
+		size[i] = 1
 	}
-
-	dirs := [4][2]int{{0, -1}, {0, 1}, {1, 0}, {-1, 0}}
+	dirs := []int{-1, 0, 1, 0, -1}
+	var find func(x int) int
+	find = func(x int) int {
+		if p[x] != x {
+			p[x] = find(p[x])
+		}
+		return p[x]
+	}
 	for i := 0; i < m; i++ {
 		for j := 0; j < n; j++ {
 			if i == 0 || i == m-1 || j == 0 || j == n-1 || grid[i][j] == '0' {
 				p[find(i*n+j)] = find(m * n)
 			} else {
-				for _, e := range dirs {
-					if grid[i+e[0]][j+e[1]] == '0' || grid[i][j] == grid[i+e[0]][j+e[1]] {
-						p[find(i*n+j)] = find((i+e[0])*n + j + e[1])
+				for k := 0; k < 4; k++ {
+					x, y := i+dirs[k], j+dirs[k+1]
+					if (grid[x][y] == '0' || grid[i][j] == grid[x][y]) && find(x*n+y) != find(i*n+j) {
+						size[find(x*n+y)] += size[find(i*n+j)]
+						p[find(i*n+j)] = find(x*n + y)
 					}
 				}
 			}
 		}
 	}
-	mp := make(map[int]int, 0)
-	res := 0
+	ans := 0
 	for i := 0; i < m; i++ {
 		for j := 0; j < n; j++ {
-			root := find(i*n + j)
-			if root != find(m*n) {
-				mp[root]++
-				res = max(res, mp[root])
+			if find(i*n+j) != find(m*n) && ans < size[i*n+j] {
+				ans = size[i*n+j]
 			}
 		}
 	}
-	return res
+	return ans
 }
+```
 
-func find(x int) int {
-	if p[x] != x {
-		p[x] = find(p[x])
-	}
-	return p[x]
-}
+### **JavaScript**
 
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
-}
+```js
+/**
+ * @param {string[]} grid
+ * @return {number}
+ */
+var largestArea = function (grid) {
+    const m = grid.length;
+    const n = grid[0].length;
+    let p = new Array(m * n + 1).fill(0);
+    let size = new Array(m * n + 1).fill(1);
+    for (let i = 0; i < p.length; ++i) {
+        p[i] = i;
+    }
+    const dirs = [-1, 0, 1, 0, -1];
+    function find(x) {
+        if (p[x] != x) {
+            p[x] = find(p[x]);
+        }
+        return p[x];
+    }
+    for (let i = 0; i < m; ++i) {
+        for (let j = 0; j < n; ++j) {
+            if (
+                i == 0 ||
+                i == m - 1 ||
+                j == 0 ||
+                j == n - 1 ||
+                grid[i][j] == '0'
+            ) {
+                p[find(i * n + j)] = find(m * n);
+            } else {
+                for (let k = 0; k < 4; ++k) {
+                    const x = i + dirs[k];
+                    const y = j + dirs[k + 1];
+                    if (
+                        (grid[x][y] == '0' || grid[i][j] == grid[x][y]) &&
+                        find(x * n + y) != find(i * n + j)
+                    ) {
+                        size[find(x * n + y)] += size[find(i * n + j)];
+                        p[find(i * n + j)] = find(x * n + y);
+                    }
+                }
+            }
+        }
+    }
+    let ans = 0;
+    for (let i = 0; i < m; ++i) {
+        for (let j = 0; j < n; ++j) {
+            if (find(i * n + j) != find(m * n) && ans < size[i * n + j]) {
+                ans = size[i * n + j];
+            }
+        }
+    }
+    return ans;
+};
 ```
 
 ### **...**

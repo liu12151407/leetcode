@@ -6,8 +6,10 @@
 
 <p>Given an array of integers <code>nums</code> which is sorted in ascending order, and an integer <code>target</code>, write a function to search <code>target</code> in <code>nums</code>. If <code>target</code> exists, then return its index. Otherwise, return <code>-1</code>.</p>
 
+<p>You must write an algorithm with <code>O(log n)</code> runtime complexity.</p>
+
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [-1,0,3,5,9,12], target = 9
@@ -15,7 +17,7 @@
 <strong>Explanation:</strong> 9 exists in nums and its index is 4
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [-1,0,3,5,9,12], target = 2
@@ -28,9 +30,9 @@
 
 <ul>
 	<li><code>1 &lt;= nums.length &lt;= 10<sup>4</sup></code></li>
-	<li><code>-9999 &lt;= nums[i], target &lt;= 9999</code></li>
+	<li><code>-10<sup>4</sup> &lt; nums[i], target &lt; 10<sup>4</sup></code></li>
 	<li>All the integers in <code>nums</code> are <strong>unique</strong>.</li>
-	<li><code>nums</code> is sorted in an ascending order.</li>
+	<li><code>nums</code> is sorted in ascending order.</li>
 </ul>
 
 ## Solutions
@@ -78,11 +80,12 @@ class Solution {
 public:
     int search(vector<int>& nums, int target) {
         int left = 0, right = nums.size() - 1;
-        while (left < right)
-        {
+        while (left < right) {
             int mid = left + right >> 1;
-            if (nums[mid] >= target) right = mid;
-            else left = mid + 1;
+            if (nums[mid] >= target)
+                right = mid;
+            else
+                left = mid + 1;
         }
         return nums[left] == target ? left : -1;
     }
@@ -130,6 +133,55 @@ var search = function (nums, target) {
     }
     return nums[left] == target ? left : -1;
 };
+```
+
+### **Rust**
+
+Cycle:
+
+```rust
+use std::cmp::Ordering;
+
+impl Solution {
+    pub fn search(nums: Vec<i32>, target: i32) -> i32 {
+        let mut l = 0;
+        let mut r = nums.len();
+        while l < r {
+            let mid = l + r >> 1;
+            match nums[mid].cmp(&target) {
+                Ordering::Less => l = mid + 1,
+                Ordering::Greater => r = mid,
+                Ordering::Equal => return mid as i32,
+            }
+        }
+        -1
+    }
+}
+```
+
+Recursion:
+
+```rust
+use std::cmp::Ordering;
+
+impl Solution {
+    fn binary_search(nums: Vec<i32>, target: i32, l: usize, r: usize) -> i32 {
+        if l == r {
+            return if nums[l] == target { l as i32 } else { -1 };
+        }
+        let mid = l + r >> 1;
+        match nums[mid].cmp(&target) {
+            Ordering::Less => Self::binary_search(nums, target, mid + 1, r),
+            Ordering::Greater => Self::binary_search(nums, target, l, mid),
+            Ordering::Equal => mid as i32,
+        }
+    }
+
+    pub fn search(nums: Vec<i32>, target: i32) -> i32 {
+        let r = nums.len() - 1;
+        Self::binary_search(nums, target, 0, r)
+    }
+}
 ```
 
 ### **...**

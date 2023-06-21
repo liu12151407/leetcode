@@ -1,4 +1,4 @@
-# [面试题 16.18. 模式匹配](https://leetcode-cn.com/problems/pattern-matching-lcci)
+# [面试题 16.18. 模式匹配](https://leetcode.cn/problems/pattern-matching-lcci)
 
 [English Version](/lcci/16.18.Pattern%20Matching/README_EN.md)
 
@@ -33,7 +33,6 @@
 ## 解法
 
 <!-- 这里可写通用的实现逻辑 -->
-
 <!-- tabs:start -->
 
 ### **Python3**

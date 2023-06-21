@@ -1,4 +1,4 @@
-# [剑指 Offer II 061. 和最小的 k 个数对](https://leetcode-cn.com/problems/qn8gGX)
+# [剑指 Offer II 061. 和最小的 k 个数对](https://leetcode.cn/problems/qn8gGX)
 
 ## 题目描述
 
@@ -51,7 +51,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 373&nbsp;题相同：<a href="https://leetcode-cn.com/problems/find-k-pairs-with-smallest-sums/">https://leetcode-cn.com/problems/find-k-pairs-with-smallest-sums/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 373&nbsp;题相同：<a href="https://leetcode.cn/problems/find-k-pairs-with-smallest-sums/">https://leetcode.cn/problems/find-k-pairs-with-smallest-sums/</a></p>
 
 ## 解法
 
@@ -67,13 +67,15 @@
 
 ```python
 class Solution:
-    def kSmallestPairs(self, nums1: List[int], nums2: List[int], k: int) -> List[List[int]]:
+    def kSmallestPairs(
+        self, nums1: List[int], nums2: List[int], k: int
+    ) -> List[List[int]]:
         hp = []
         for x in nums1[:k]:
             for y in nums2[:k]:
-                heapq.heappush(hp, (-(x + y), [x, y]))
+                heappush(hp, (-(x + y), [x, y]))
                 if len(hp) > k:
-                    heapq.heappop(hp)
+                    heappop(hp)
         return [p for _, p in hp]
 ```
 
@@ -84,9 +86,8 @@ class Solution:
 ```java
 class Solution {
     public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
-        Queue<List<Integer>> pq = new PriorityQueue<>((p1, p2) -> {
-            return p2.get(0) + p2.get(1) - (p1.get(0) + p1.get(1));
-        });
+        Queue<List<Integer>> pq = new PriorityQueue<>(
+            (p1, p2) -> { return p2.get(0) + p2.get(1) - (p1.get(0) + p1.get(1)); });
         for (int i = 0; i < nums1.length && i < k; i++) {
             for (int j = 0; j < nums2.length && j < k; j++) {
                 pq.offer(List.of(nums1[i], nums2[j]));

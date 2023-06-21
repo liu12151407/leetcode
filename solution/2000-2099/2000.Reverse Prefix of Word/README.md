@@ -1,4 +1,4 @@
-# [2000. 反转单词前缀](https://leetcode-cn.com/problems/reverse-prefix-of-word)
+# [2000. 反转单词前缀](https://leetcode.cn/problems/reverse-prefix-of-word)
 
 [English Version](/solution/2000-2099/2000.Reverse%20Prefix%20of%20Word/README_EN.md)
 
@@ -54,6 +54,12 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：模拟**
+
+我们先找到字符 $ch$ 第一次出现的下标 $i$，然后反转从下标 $0$ 开始、直到下标 $i$ 结束（含下标 $i$）的那段字符，最后将反转后的字符串与下标 $i + 1$ 开始的字符串拼接即可。
+
+时间复杂度 $O(n)$，空间复杂度 $O(n)$。其中 $n$ 为字符串 $word$ 的长度。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -61,7 +67,10 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def reversePrefix(self, word: str, ch: str) -> str:
+        i = word.find(ch)
+        return word if i == -1 else word[i::-1] + word[i + 1 :]
 ```
 
 ### **Java**
@@ -69,7 +78,121 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public String reversePrefix(String word, char ch) {
+        int j = word.indexOf(ch);
+        if (j == -1) {
+            return word;
+        }
+        char[] cs = word.toCharArray();
+        for (int i = 0; i < j; ++i, --j) {
+            char t = cs[i];
+            cs[i] = cs[j];
+            cs[j] = t;
+        }
+        return String.valueOf(cs);
+    }
+}
+```
 
+```java
+class Solution {
+    public String reversePrefix(String word, char ch) {
+        int j = word.indexOf(ch);
+        if (j == -1) {
+            return word;
+        }
+        return new StringBuilder(word.substring(0, j + 1))
+            .reverse()
+            .append(word.substring(j + 1))
+            .toString();
+    }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    string reversePrefix(string word, char ch) {
+        int i = word.find(ch);
+        if (i != string::npos) {
+            reverse(word.begin(), word.begin() + i + 1);
+        }
+        return word;
+    }
+};
+```
+
+### **Go**
+
+```go
+func reversePrefix(word string, ch byte) string {
+	j := strings.IndexByte(word, ch)
+	if j < 0 {
+		return word
+	}
+	s := []byte(word)
+	for i := 0; i < j; i++ {
+		s[i], s[j] = s[j], s[i]
+		j--
+	}
+	return string(s)
+}
+```
+
+### **TypeScript**
+
+```ts
+function reversePrefix(word: string, ch: string): string {
+    const i = word.indexOf(ch) + 1;
+    if (!i) {
+        return word;
+    }
+    return [...word.slice(0, i)].reverse().join('') + word.slice(i);
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn reverse_prefix(word: String, ch: char) -> String {
+        match word.find(ch) {
+            Some(i) => word[..=i].chars().rev().collect::<String>() + &word[i + 1..],
+            None => word,
+        }
+    }
+}
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param String $word
+     * @param String $ch
+     * @return String
+     */
+    function reversePrefix($word, $ch) {
+        $len = strlen($word);
+        $rs = '';
+        for ($i = 0; $i < $len; $i++) {
+            $rs = $rs . $word[$i];
+            if ($word[$i] == $ch) {
+                break;
+            }
+        }
+        if (strlen($rs) == $len && $rs[$len - 1] != $ch) {
+            return $word;
+        }
+        $rs = strrev($rs);
+        $rs = $rs . substr($word, strlen($rs));
+        return $rs;
+    }
+}
 ```
 
 ### **...**

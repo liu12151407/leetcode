@@ -11,7 +11,7 @@
 <p>Return <em>the least number of units of times that the CPU will take to finish all the given tasks</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> tasks = [&quot;A&quot;,&quot;A&quot;,&quot;A&quot;,&quot;B&quot;,&quot;B&quot;,&quot;B&quot;], n = 2
@@ -21,7 +21,7 @@ A -&gt; B -&gt; idle -&gt; A -&gt; B -&gt; idle -&gt; A -&gt; B
 There is at least 2 units of time between any two same tasks.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> tasks = [&quot;A&quot;,&quot;A&quot;,&quot;A&quot;,&quot;B&quot;,&quot;B&quot;,&quot;B&quot;], n = 0
@@ -34,7 +34,7 @@ There is at least 2 units of time between any two same tasks.
 And so on.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> tasks = [&quot;A&quot;,&quot;A&quot;,&quot;A&quot;,&quot;A&quot;,&quot;A&quot;,&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;,&quot;E&quot;,&quot;F&quot;,&quot;G&quot;], n = 2
@@ -60,13 +60,105 @@ A -&gt; B -&gt; C -&gt; A -&gt; D -&gt; E -&gt; A -&gt; F -&gt; G -&gt; A -&gt; 
 ### **Python3**
 
 ```python
-
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        cnt = Counter(tasks)
+        x = max(cnt.values())
+        s = sum(v == x for v in cnt.values())
+        return max(len(tasks), (x - 1) * (n + 1) + s)
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int leastInterval(char[] tasks, int n) {
+        int[] cnt = new int[26];
+        int x = 0;
+        for (char c : tasks) {
+            c -= 'A';
+            ++cnt[c];
+            x = Math.max(x, cnt[c]);
+        }
+        int s = 0;
+        for (int v : cnt) {
+            if (v == x) {
+                ++s;
+            }
+        }
+        return Math.max(tasks.length, (x - 1) * (n + 1) + s);
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+        vector<int> cnt(26);
+        int x = 0;
+        for (char c : tasks) {
+            c -= 'A';
+            ++cnt[c];
+            x = max(x, cnt[c]);
+        }
+        int s = 0;
+        for (int v : cnt) {
+            s += v == x;
+        }
+        return max((int) tasks.size(), (x - 1) * (n + 1) + s);
+    }
+};
+```
+
+### **Go**
+
+```go
+func leastInterval(tasks []byte, n int) int {
+	cnt := make([]int, 26)
+	x := 0
+	for _, c := range tasks {
+		c -= 'A'
+		cnt[c]++
+		x = max(x, cnt[c])
+	}
+	s := 0
+	for _, v := range cnt {
+		if v == x {
+			s++
+		}
+	}
+	return max(len(tasks), (x-1)*(n+1)+s)
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+```
+
+### **C#**
+
+```cs
+public class Solution {
+    public int LeastInterval(char[] tasks, int n) {
+        int[] cnt = new int[26];
+        int x = 0;
+        foreach (char c in tasks) {
+            cnt[c - 'A']++;
+            x = Math.Max(x, cnt[c - 'A']);
+        }
+        int s = 0;
+        foreach (int v in cnt) {
+            s = v == x ? s + 1 : s;
+        }
+        return Math.Max(tasks.Length, (x - 1) * (n + 1) + s);
+    }
+}
 ```
 
 ### **...**

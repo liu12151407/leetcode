@@ -24,7 +24,7 @@
 </ul>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,3,4,8], queries = [[0,1],[1,2],[2,3],[0,3]]
@@ -36,7 +36,7 @@
 - queries[3] = [0,3]: The subarray is [1,<u>3</u>,<u>4</u>,8] and the minimum absolute difference is |3-4| = 1.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [4,5,2,2,7,10], queries = [[2,3],[0,2],[0,5],[3,5]]
@@ -78,14 +78,14 @@ class Solution:
         ans = []
         for i in range(n):
             left, right = queries[i][0], queries[i][1] + 1
-            t = float('inf')
+            t = inf
             last = -1
             for j in range(1, 101):
                 if pre_sum[right][j] - pre_sum[left][j] > 0:
                     if last != -1:
                         t = min(t, j - last)
                     last = j
-            if t == float('inf'):
+            if t == inf:
                 t = -1
             ans.append(t)
         return ans

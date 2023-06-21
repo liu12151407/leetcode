@@ -1,4 +1,4 @@
-# [剑指 Offer II 008. 和大于等于 target 的最短子数组](https://leetcode-cn.com/problems/2VG8Kg)
+# [剑指 Offer II 008. 和大于等于 target 的最短子数组](https://leetcode.cn/problems/2VG8Kg)
 
 ## 题目描述
 
@@ -52,7 +52,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 209&nbsp;题相同：<a href="https://leetcode-cn.com/problems/minimum-size-subarray-sum/">https://leetcode-cn.com/problems/minimum-size-subarray-sum/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 209&nbsp;题相同：<a href="https://leetcode.cn/problems/minimum-size-subarray-sum/">https://leetcode.cn/problems/minimum-size-subarray-sum/</a></p>
 
 ## 解法
 
@@ -68,7 +68,7 @@
 class Solution:
     def minSubArrayLen(self, target: int, nums: List[int]) -> int:
         n = len(nums)
-        ans = float('inf')
+        ans = inf
         sum = 0
         left, right = 0, 0
         while right < n:
@@ -78,7 +78,7 @@ class Solution:
                 ans = min(ans, right - left)
                 sum -= nums[left]
                 left += 1
-        return 0 if ans == float('inf') else ans
+        return 0 if ans == inf else ans
 ```
 
 ### **Java**

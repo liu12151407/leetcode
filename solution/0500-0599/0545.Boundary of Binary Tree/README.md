@@ -1,4 +1,4 @@
-# [545. 二叉树的边界](https://leetcode-cn.com/problems/boundary-of-binary-tree)
+# [545. 二叉树的边界](https://leetcode.cn/problems/boundary-of-binary-tree)
 
 [English Version](/solution/0500-0599/0545.Boundary%20of%20Binary%20Tree/README_EN.md)
 
@@ -26,7 +26,7 @@
 <p> </p>
 
 <p><strong>示例 1：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0545.Boundary%20of%20Binary%20Tree/images/boundary1.jpg" style="width: 299px; height: 290px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0545.Boundary%20of%20Binary%20Tree/images/boundary1.jpg" style="width: 299px; height: 290px;" />
 <pre>
 <strong>输入：</strong>root = [1,null,2,3,4]
 <strong>输出：</strong>[1,3,4,2]
@@ -37,7 +37,7 @@
 按题目要求依序连接得到结果 [1] + [] + [3,4] + [2] = [1,3,4,2] 。</pre>
 
 <p><strong>示例 2：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0545.Boundary%20of%20Binary%20Tree/images/boundary2.jpg" style="width: 599px; height: 411px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0545.Boundary%20of%20Binary%20Tree/images/boundary2.jpg" style="width: 599px; height: 411px;" />
 <pre>
 <strong>输入：</strong>root = [1,2,3,4,5,6,null,null,null,7,8,9,10]
 <strong>输出：</strong>[1,2,4,7,8,9,10,6,3]
@@ -120,7 +120,6 @@ class Solution:
 
     def is_leaf(self, node) -> bool:
         return node and node.left is None and node.right is None
-
 ```
 
 ### **Java**

@@ -1,4 +1,4 @@
-# [1445. 苹果和桔子](https://leetcode-cn.com/problems/apples-oranges)
+# [1445. 苹果和桔子](https://leetcode.cn/problems/apples-oranges)
 
 [English Version](/solution/1400-1499/1445.Apples%20%26%20Oranges/README_EN.md)
 
@@ -74,10 +74,12 @@ Result 表:
 SELECT
     sale_date AS SALE_DATE,
     sum(
-        CASE WHEN fruit = 'oranges' THEN -sold_num ELSE sold_num END
+        CASE
+            WHEN fruit = 'oranges' THEN -sold_num
+            ELSE sold_num
+        END
     ) AS DIFF
-FROM
-    Sales
+FROM Sales
 GROUP BY sale_date
 ORDER BY sale_date;
 ```

@@ -19,7 +19,7 @@
 <p>Given an integer array <code>nums</code>​​​, return <em>the <strong>minimum</strong> number of elements to remove to make </em><code>nums<em>​​​</em></code><em> </em><em>a <strong>mountain array</strong>.</em></p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,3,1]
@@ -27,26 +27,12 @@
 <strong>Explanation:</strong> The array itself is a mountain array so we do not need to remove any elements.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [2,1,1,5,6,2,3,1]
 <strong>Output:</strong> 3
 <strong>Explanation:</strong> One solution is to remove the elements at indices 0, 1, and 5, making the array nums = [1,5,6,3,1].
-</pre>
-
-<p><strong>Example 3:</strong></p>
-
-<pre>
-<strong>Input:</strong> nums = [4,3,2,1,1,2,3,1]
-<strong>Output:</strong> 4
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> nums = [1,2,3,4,4,3,2,1]
-<strong>Output:</strong> 1
 </pre>
 
 <p>&nbsp;</p>
@@ -65,13 +51,159 @@
 ### **Python3**
 
 ```python
-
+class Solution:
+    def minimumMountainRemovals(self, nums: List[int]) -> int:
+        n = len(nums)
+        left = [1] * n
+        right = [1] * n
+        for i in range(1, n):
+            for j in range(i):
+                if nums[i] > nums[j]:
+                    left[i] = max(left[i], left[j] + 1)
+        for i in range(n - 2, -1, -1):
+            for j in range(i + 1, n):
+                if nums[i] > nums[j]:
+                    right[i] = max(right[i], right[j] + 1)
+        return n - max(a + b - 1 for a, b in zip(left, right) if a > 1 and b > 1)
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int minimumMountainRemovals(int[] nums) {
+        int n = nums.length;
+        int[] left = new int[n];
+        int[] right = new int[n];
+        Arrays.fill(left, 1);
+        Arrays.fill(right, 1);
+        for (int i = 1; i < n; ++i) {
+            for (int j = 0; j < i; ++j) {
+                if (nums[i] > nums[j]) {
+                    left[i] = Math.max(left[i], left[j] + 1);
+                }
+            }
+        }
+        for (int i = n - 2; i >= 0; --i) {
+            for (int j = i + 1; j < n; ++j) {
+                if (nums[i] > nums[j]) {
+                    right[i] = Math.max(right[i], right[j] + 1);
+                }
+            }
+        }
+        int ans = 0;
+        for (int i = 0; i < n; ++i) {
+            if (left[i] > 1 && right[i] > 1) {
+                ans = Math.max(ans, left[i] + right[i] - 1);
+            }
+        }
+        return n - ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int minimumMountainRemovals(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> left(n, 1), right(n, 1);
+        for (int i = 1; i < n; ++i) {
+            for (int j = 0; j < i; ++j) {
+                if (nums[i] > nums[j]) {
+                    left[i] = max(left[i], left[j] + 1);
+                }
+            }
+        }
+        for (int i = n - 2; i >= 0; --i) {
+            for (int j = i + 1; j < n; ++j) {
+                if (nums[i] > nums[j]) {
+                    right[i] = max(right[i], right[j] + 1);
+                }
+            }
+        }
+        int ans = 0;
+        for (int i = 0; i < n; ++i) {
+            if (left[i] > 1 && right[i] > 1) {
+                ans = max(ans, left[i] + right[i] - 1);
+            }
+        }
+        return n - ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func minimumMountainRemovals(nums []int) int {
+	n := len(nums)
+	left, right := make([]int, n), make([]int, n)
+	for i := range left {
+		left[i], right[i] = 1, 1
+	}
+	for i := 1; i < n; i++ {
+		for j := 0; j < i; j++ {
+			if nums[i] > nums[j] {
+				left[i] = max(left[i], left[j]+1)
+			}
+		}
+	}
+	for i := n - 2; i >= 0; i-- {
+		for j := i + 1; j < n; j++ {
+			if nums[i] > nums[j] {
+				right[i] = max(right[i], right[j]+1)
+			}
+		}
+	}
+	ans := 0
+	for i := range left {
+		if left[i] > 1 && right[i] > 1 {
+			ans = max(ans, left[i]+right[i]-1)
+		}
+	}
+	return n - ans
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+```
+
+### **TypeScript**
+
+```ts
+function minimumMountainRemovals(nums: number[]): number {
+    const n = nums.length;
+    const left = new Array(n).fill(1);
+    const right = new Array(n).fill(1);
+    for (let i = 1; i < n; ++i) {
+        for (let j = 0; j < i; ++j) {
+            if (nums[i] > nums[j]) {
+                left[i] = Math.max(left[i], left[j] + 1);
+            }
+        }
+    }
+    for (let i = n - 2; i >= 0; --i) {
+        for (let j = i + 1; j < n; ++j) {
+            if (nums[i] > nums[j]) {
+                right[i] = Math.max(right[i], right[j] + 1);
+            }
+        }
+    }
+    let ans = 0;
+    for (let i = 0; i < n; ++i) {
+        if (left[i] > 1 && right[i] > 1) {
+            ans = Math.max(ans, left[i] + right[i] - 1);
+        }
+    }
+    return n - ans;
+}
 ```
 
 ### **...**

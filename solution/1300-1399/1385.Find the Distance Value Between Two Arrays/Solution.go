@@ -1,16 +1,10 @@
-func findTheDistanceValue(arr1 []int, arr2 []int, d int) int {
-	res := 0
+func findTheDistanceValue(arr1 []int, arr2 []int, d int) (ans int) {
+	sort.Ints(arr2)
 	for _, a := range arr1 {
-		exist := false
-		for _, b := range arr2 {
-			if math.Abs(float64(a-b)) <= float64(d) {
-				exist = true
-				break
-			}
-		}
-		if !exist {
-			res++
+		i := sort.SearchInts(arr2, a-d)
+		if i == len(arr2) || arr2[i] > a+d {
+			ans++
 		}
 	}
-	return res
+	return
 }

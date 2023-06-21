@@ -1,4 +1,4 @@
-# [1400. 构造 K 个回文字符串](https://leetcode-cn.com/problems/construct-k-palindrome-strings)
+# [1400. 构造 K 个回文字符串](https://leetcode.cn/problems/construct-k-palindrome-strings)
 
 [English Version](/solution/1400-1499/1400.Construct%20K%20Palindrome%20Strings/README_EN.md)
 
@@ -67,6 +67,14 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：计数**
+
+我们先判断字符串 $s$ 的长度是否小于 $k$，如果是，那么一定无法构造出 $k$ 个回文串，可以直接返回 `false`。
+
+否则，我们用一个哈希表或数组 $cnt$ 统计字符串 $s$ 中每个字符出现的次数。最后，我们只需要统计 $cnt$ 中奇数次数的字符个数 $x$，如果 $x$ 大于 $k$，那么一定无法构造出 $k$ 个回文串，返回 `false`；否则，返回 `true`。
+
+时间复杂度 $O(n)$，空间复杂度 $O(C)$。其中 $n$ 是字符串 $s$ 的长度；而 $C$ 是字符集大小，这里 $C=26$。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -74,7 +82,12 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def canConstruct(self, s: str, k: int) -> bool:
+        if len(s) < k:
+            return False
+        cnt = Counter(s)
+        return sum(v & 1 for v in cnt.values()) <= k
 ```
 
 ### **Java**
@@ -82,7 +95,83 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public boolean canConstruct(String s, int k) {
+        int n = s.length();
+        if (n < k) {
+            return false;
+        }
+        int[] cnt = new int[26];
+        for (int i = 0; i < n; ++i) {
+            ++cnt[s.charAt(i) - 'a'];
+        }
+        int x = 0;
+        for (int v : cnt) {
+            x += v & 1;
+        }
+        return x <= k;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool canConstruct(string s, int k) {
+        if (s.size() < k) {
+            return false;
+        }
+        int cnt[26]{};
+        for (char& c : s) {
+            ++cnt[c - 'a'];
+        }
+        int x = 0;
+        for (int v : cnt) {
+            x += v & 1;
+        }
+        return x <= k;
+    }
+};
+```
+
+### **Go**
+
+```go
+func canConstruct(s string, k int) bool {
+	if len(s) < k {
+		return false
+	}
+	cnt := [26]int{}
+	for _, c := range s {
+		cnt[c-'a']++
+	}
+	x := 0
+	for _, v := range cnt {
+		x += v & 1
+	}
+	return x <= k
+}
+```
+
+### **TypeScript**
+
+```ts
+function canConstruct(s: string, k: number): boolean {
+    if (s.length < k) {
+        return false;
+    }
+    const cnt: number[] = new Array(26).fill(0);
+    for (const c of s) {
+        ++cnt[c.charCodeAt(0) - 'a'.charCodeAt(0)];
+    }
+    let x = 0;
+    for (const v of cnt) {
+        x += v & 1;
+    }
+    return x <= k;
+}
 ```
 
 ### **...**

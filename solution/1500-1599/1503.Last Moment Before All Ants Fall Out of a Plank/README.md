@@ -1,4 +1,4 @@
-# [1503. 所有蚂蚁掉下来前的最后一刻](https://leetcode-cn.com/problems/last-moment-before-all-ants-fall-out-of-a-plank)
+# [1503. 所有蚂蚁掉下来前的最后一刻](https://leetcode.cn/problems/last-moment-before-all-ants-fall-out-of-a-plank)
 
 [English Version](/solution/1500-1599/1503.Last%20Moment%20Before%20All%20Ants%20Fall%20Out%20of%20a%20Plank/README_EN.md)
 
@@ -20,9 +20,10 @@
 
 <p>&nbsp;</p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1503.Last%20Moment%20Before%20All%20Ants%20Fall%20Out%20of%20a%20Plank/images/ants.jpg" style="height: 610px; width: 450px;"></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1503.Last%20Moment%20Before%20All%20Ants%20Fall%20Out%20of%20a%20Plank/images/ants.jpg" style="height: 610px; width: 450px;" /></p>
 
-<pre><strong>输入：</strong>n = 4, left = [4,3], right = [0,1]
+<pre>
+<strong>输入：</strong>n = 4, left = [4,3], right = [0,1]
 <strong>输出：</strong>4
 <strong>解释：</strong>如上图所示：
 -下标 0 处的蚂蚁命名为 A 并向右移动。
@@ -33,33 +34,22 @@
 
 <p><strong>示例 2：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1503.Last%20Moment%20Before%20All%20Ants%20Fall%20Out%20of%20a%20Plank/images/ants2.jpg" style="height: 101px; width: 639px;"></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1503.Last%20Moment%20Before%20All%20Ants%20Fall%20Out%20of%20a%20Plank/images/ants2.jpg" style="height: 101px; width: 639px;" /></p>
 
-<pre><strong>输入：</strong>n = 7, left = [], right = [0,1,2,3,4,5,6,7]
+<pre>
+<strong>输入：</strong>n = 7, left = [], right = [0,1,2,3,4,5,6,7]
 <strong>输出：</strong>7
 <strong>解释：</strong>所有蚂蚁都向右移动，下标为 0 的蚂蚁需要 7 秒才能从木板上掉落。
 </pre>
 
 <p><strong>示例 3：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1503.Last%20Moment%20Before%20All%20Ants%20Fall%20Out%20of%20a%20Plank/images/ants3.jpg" style="height: 100px; width: 639px;"></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1503.Last%20Moment%20Before%20All%20Ants%20Fall%20Out%20of%20a%20Plank/images/ants3.jpg" style="height: 100px; width: 639px;" /></p>
 
-<pre><strong>输入：</strong>n = 7, left = [0,1,2,3,4,5,6,7], right = []
+<pre>
+<strong>输入：</strong>n = 7, left = [0,1,2,3,4,5,6,7], right = []
 <strong>输出：</strong>7
 <strong>解释：</strong>所有蚂蚁都向左移动，下标为 7 的蚂蚁需要 7 秒才能从木板上掉落。
-</pre>
-
-<p><strong>示例 4：</strong></p>
-
-<pre><strong>输入：</strong>n = 9, left = [5], right = [4]
-<strong>输出：</strong>5
-<strong>解释：</strong>t = 1 秒时，两只蚂蚁将回到初始位置，但移动方向与之前相反。
-</pre>
-
-<p><strong>示例 5：</strong></p>
-
-<pre><strong>输入：</strong>n = 6, left = [6], right = [0]
-<strong>输出：</strong>6
 </pre>
 
 <p>&nbsp;</p>
@@ -80,7 +70,13 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
-题目关键点在于两只蚂蚁相遇，然后分别调转方向的情况，实际上相当于两只蚂蚁继续往原来的方向移动。
+**方法一：脑筋急转弯**
+
+题目关键点在于两只蚂蚁相遇，然后分别调转方向的情况，实际上相当于两只蚂蚁继续往原来的方向移动。因此，我们只需要求出所有蚂蚁中最远的那只蚂蚁的移动距离即可。
+
+注意 $left$ 和 $right$ 数组的长度可能为 $0$。
+
+时间复杂度 $O(n)$，空间复杂度 $O(1)$。其中 $n$ 为木板的长度。
 
 <!-- tabs:start -->
 
@@ -92,10 +88,10 @@
 class Solution:
     def getLastMoment(self, n: int, left: List[int], right: List[int]) -> int:
         ans = 0
-        for t in left:
-            ans = max(ans, t)
-        for t in right:
-            ans = max(ans, n - t)
+        for x in left:
+            ans = max(ans, x)
+        for x in right:
+            ans = max(ans, n - x)
         return ans
 ```
 
@@ -107,11 +103,11 @@ class Solution:
 class Solution {
     public int getLastMoment(int n, int[] left, int[] right) {
         int ans = 0;
-        for (int t : left) {
-            ans = Math.max(ans, t);
+        for (int x : left) {
+            ans = Math.max(ans, x);
         }
-        for (int t : right) {
-            ans = Math.max(ans, n - t);
+        for (int x : right) {
+            ans = Math.max(ans, n - x);
         }
         return ans;
     }
@@ -125,8 +121,12 @@ class Solution {
 public:
     int getLastMoment(int n, vector<int>& left, vector<int>& right) {
         int ans = 0;
-        for (int t : left) ans = max(ans, t);
-        for (int t : right) ans = max(ans, n - t);
+        for (int& x : left) {
+            ans = max(ans, x);
+        }
+        for (int& x : right) {
+            ans = max(ans, n - x);
+        }
         return ans;
     }
 };
@@ -135,15 +135,14 @@ public:
 ### **Go**
 
 ```go
-func getLastMoment(n int, left []int, right []int) int {
-	ans := 0
-	for _, t := range left {
-		ans = max(ans, t)
+func getLastMoment(n int, left []int, right []int) (ans int) {
+	for _, x := range left {
+		ans = max(ans, x)
 	}
-	for _, t := range right {
-		ans = max(ans, n-t)
+	for _, x := range right {
+		ans = max(ans, n-x)
 	}
-	return ans
+	return
 }
 
 func max(a, b int) int {
@@ -151,6 +150,21 @@ func max(a, b int) int {
 		return a
 	}
 	return b
+}
+```
+
+### **TypeScript**
+
+```ts
+function getLastMoment(n: number, left: number[], right: number[]): number {
+    let ans = 0;
+    for (const x of left) {
+        ans = Math.max(ans, x);
+    }
+    for (const x of right) {
+        ans = Math.max(ans, n - x);
+    }
+    return ans;
 }
 ```
 

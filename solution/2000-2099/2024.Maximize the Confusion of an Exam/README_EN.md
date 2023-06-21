@@ -15,7 +15,7 @@
 <p>Return <em>the <strong>maximum</strong> number of consecutive</em> <code>&#39;T&#39;</code>s or <code>&#39;F&#39;</code>s <em>in the answer key after performing the operation at most</em> <code>k</code> <em>times</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> answerKey = &quot;TTFF&quot;, k = 2
@@ -24,7 +24,7 @@
 There are four consecutive &#39;T&#39;s.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> answerKey = &quot;TFFT&quot;, k = 1
@@ -34,7 +34,7 @@ Alternatively, we can replace the second &#39;T&#39; with an &#39;F&#39; to make
 In both cases, there are three consecutive &#39;F&#39;s.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> answerKey = &quot;TTFTTFTT&quot;, k = 1
@@ -110,10 +110,9 @@ public:
         return max(get('T', k, answerKey), get('F', k, answerKey));
     }
 
-    int get(char c, int k, string answerKey) {
+    int get(char c, int k, string& answerKey) {
         int l = 0, r = 0;
-        while (r < answerKey.size())
-        {
+        while (r < answerKey.size()) {
             if (answerKey[r++] == c) --k;
             if (k < 0 && answerKey[l++] == c) ++k;
         }
@@ -150,6 +149,56 @@ func max(a, b int) int {
 		return a
 	}
 	return b
+}
+```
+
+### **TypeScript**
+
+```ts
+function maxConsecutiveAnswers(answerKey: string, k: number): number {
+    const n = answerKey.length;
+    const getMaxCount = (target: 'T' | 'F'): number => {
+        let l = 0;
+        let u = k;
+        for (const c of answerKey) {
+            if (c !== target) {
+                u--;
+            }
+            if (u < 0 && answerKey[l++] !== target) {
+                u++;
+            }
+        }
+        return n - l;
+    };
+    return Math.max(getMaxCount('T'), getMaxCount('F'));
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn max_consecutive_answers(answer_key: String, k: i32) -> i32 {
+        let bs = answer_key.as_bytes();
+        let n = bs.len();
+        let get_max_count = |target| {
+            let mut l = 0;
+            let mut u = k;
+            for b in bs.iter() {
+                if b != &target {
+                    u -= 1;
+                }
+                if u < 0 {
+                    if bs[l] != target {
+                        u += 1;
+                    }
+                    l += 1;
+                }
+            }
+            n - l
+        };
+        get_max_count(b'T').max(get_max_count(b'F')) as i32
+    }
 }
 ```
 

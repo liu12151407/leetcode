@@ -1,20 +1,15 @@
-using System.Collections.Generic;
-
 public class Solution {
     public int[] TwoSum(int[] nums, int target) {
-        var dict = new Dictionary<int, int>();
-        for (var i = 0; i < nums.Length; ++i)
-        {
-            int index;
-            if (dict.TryGetValue(target - nums[i], out index))
-            {
-                return new [] { index, i};
+        var m = new Dictionary<int, int>();
+        for (int i = 0, j; ; ++i) {
+            int x = nums[i];
+            int y = target - x;
+            if (m.TryGetValue(y, out j)) {
+                return new [] {j, i};
             }
-            if (!dict.ContainsKey(nums[i]))
-            {
-                dict.Add(nums[i], i);
+            if (!m.ContainsKey(x)) {
+                m.Add(x, i);
             }
         }
-        return null;
     }
 }

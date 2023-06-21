@@ -1,4 +1,4 @@
-# [1305. 两棵二叉搜索树中的所有元素](https://leetcode-cn.com/problems/all-elements-in-two-binary-search-trees)
+# [1305. 两棵二叉搜索树中的所有元素](https://leetcode.cn/problems/all-elements-in-two-binary-search-trees)
 
 [English Version](/solution/1300-1399/1305.All%20Elements%20in%20Two%20Binary%20Search%20Trees/README_EN.md)
 
@@ -6,43 +6,25 @@
 
 <!-- 这里写题目描述 -->
 
-<p>给你&nbsp;<code>root1</code> 和 <code>root2</code>&nbsp;这两棵二叉搜索树。</p>
-
-<p>请你返回一个列表，其中包含&nbsp;<strong>两棵树&nbsp;</strong>中的所有整数并按 <strong>升序</strong> 排序。.</p>
+<p>给你&nbsp;<code>root1</code> 和 <code>root2</code>&nbsp;这两棵二叉搜索树。请你返回一个列表，其中包含&nbsp;<strong>两棵树&nbsp;</strong>中的所有整数并按 <strong>升序</strong> 排序。.</p>
 
 <p>&nbsp;</p>
 
 <p><strong>示例 1：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1300-1399/1305.All%20Elements%20in%20Two%20Binary%20Search%20Trees/images/q2-e1.png"></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1300-1399/1305.All%20Elements%20in%20Two%20Binary%20Search%20Trees/images/q2-e1.png" /></p>
 
-<pre><strong>输入：</strong>root1 = [2,1,4], root2 = [1,0,3]
+<pre>
+<strong>输入：</strong>root1 = [2,1,4], root2 = [1,0,3]
 <strong>输出：</strong>[0,1,1,2,3,4]
 </pre>
 
 <p><strong>示例 2：</strong></p>
 
-<pre><strong>输入：</strong>root1 = [0,-10,10], root2 = [5,1,7,0,2]
-<strong>输出：</strong>[-10,0,0,1,2,5,7,10]
-</pre>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1300-1399/1305.All%20Elements%20in%20Two%20Binary%20Search%20Trees/images/q2-e5-.png" /></p>
 
-<p><strong>示例 3：</strong></p>
-
-<pre><strong>输入：</strong>root1 = [], root2 = [5,1,7,0,2]
-<strong>输出：</strong>[0,1,2,5,7]
-</pre>
-
-<p><strong>示例 4：</strong></p>
-
-<pre><strong>输入：</strong>root1 = [0,-10,10], root2 = []
-<strong>输出：</strong>[-10,0,10]
-</pre>
-
-<p><strong>示例 5：</strong></p>
-
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1300-1399/1305.All%20Elements%20in%20Two%20Binary%20Search%20Trees/images/q2-e5-.png"></p>
-
-<pre><strong>输入：</strong>root1 = [1,null,8], root2 = [8,1]
+<pre>
+<strong>输入：</strong>root1 = [1,null,8], root2 = [8,1]
 <strong>输出：</strong>[1,1,8,8]
 </pre>
 
@@ -51,8 +33,8 @@
 <p><strong>提示：</strong></p>
 
 <ul>
-	<li>每棵树最多有&nbsp;<code>5000</code>&nbsp;个节点。</li>
-	<li>每个节点的值在&nbsp;<code>[-10^5, 10^5]</code>&nbsp;之间。</li>
+	<li>每棵树的节点数在&nbsp;<code>[0, 5000]</code> 范围内</li>
+	<li><code>-10<sup>5</sup>&nbsp;&lt;= Node.val &lt;= 10<sup>5</sup></code></li>
 </ul>
 
 ## 解法
@@ -200,10 +182,11 @@ public:
     vector<int> merge(vector<int>& t1, vector<int>& t2) {
         vector<int> ans;
         int i = 0, j = 0;
-        while (i < t1.size() && j < t2.size())
-        {
-            if (t1[i] <= t2[j]) ans.push_back(t1[i++]);
-            else ans.push_back(t2[j++]);
+        while (i < t1.size() && j < t2.size()) {
+            if (t1[i] <= t2[j])
+                ans.push_back(t1[i++]);
+            else
+                ans.push_back(t2[j++]);
         }
         while (i < t1.size()) ans.push_back(t1[i++]);
         while (j < t2.size()) ans.push_back(t2[j++]);
@@ -259,6 +242,126 @@ func getAllElements(root1 *TreeNode, root2 *TreeNode) []int {
 	}
 	t1, t2 := dfs(root1), dfs(root2)
 	return merge(t1, t2)
+}
+```
+
+### **Rust**
+
+```rust
+// Definition for a binary tree node.
+// #[derive(Debug, PartialEq, Eq)]
+// pub struct TreeNode {
+//   pub val: i32,
+//   pub left: Option<Rc<RefCell<TreeNode>>>,
+//   pub right: Option<Rc<RefCell<TreeNode>>>,
+// }
+//
+// impl TreeNode {
+//   #[inline]
+//   pub fn new(val: i32) -> Self {
+//     TreeNode {
+//       val,
+//       left: None,
+//       right: None
+//     }
+//   }
+// }
+use std::cell::RefCell;
+use std::rc::Rc;
+impl Solution {
+    pub fn get_all_elements(
+        root1: Option<Rc<RefCell<TreeNode>>>,
+        root2: Option<Rc<RefCell<TreeNode>>>,
+    ) -> Vec<i32> {
+        fn dfs(root: &Option<Rc<RefCell<TreeNode>>>, t: &mut Vec<i32>) {
+            if let Some(root) = root {
+                dfs(&root.borrow().left, t);
+                t.push(root.borrow().val);
+                dfs(&root.borrow().right, t);
+            }
+        }
+
+        let mut t1 = Vec::new();
+        let mut t2 = Vec::new();
+        dfs(&root1, &mut t1);
+        dfs(&root2, &mut t2);
+
+        let mut ans = Vec::new();
+        let mut i = 0;
+        let mut j = 0;
+        while i < t1.len() && j < t2.len() {
+            if t1[i] < t2[j] {
+                ans.push(t1[i]);
+                i += 1;
+            } else {
+                ans.push(t2[j]);
+                j += 1;
+            }
+        }
+        while i < t1.len() {
+            ans.push(t1[i]);
+            i += 1;
+        }
+        while j < t2.len() {
+            ans.push(t2[j]);
+            j += 1;
+        }
+        ans
+    }
+}
+```
+
+### **TypeScript**
+
+```ts
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function getAllElements(
+    root1: TreeNode | null,
+    root2: TreeNode | null,
+): number[] {
+    const res = [];
+    const stacks = [[], []];
+    while (
+        root1 != null ||
+        stacks[0].length !== 0 ||
+        root2 != null ||
+        stacks[1].length !== 0
+    ) {
+        if (root1 != null) {
+            stacks[0].push(root1);
+            root1 = root1.left;
+        } else if (root2 != null) {
+            stacks[1].push(root2);
+            root2 = root2.left;
+        } else {
+            if (
+                (stacks[0][stacks[0].length - 1] ?? { val: Infinity }).val <
+                (stacks[1][stacks[1].length - 1] ?? { val: Infinity }).val
+            ) {
+                const { val, right } = stacks[0].pop();
+                res.push(val);
+                root1 = right;
+            } else {
+                const { val, right } = stacks[1].pop();
+                res.push(val);
+                root2 = right;
+            }
+        }
+    }
+    return res;
 }
 ```
 

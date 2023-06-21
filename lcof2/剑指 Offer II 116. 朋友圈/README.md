@@ -1,4 +1,4 @@
-# [剑指 Offer II 116. 朋友圈](https://leetcode-cn.com/problems/bLyHh0)
+# [剑指 Offer II 116. 朋友圈](https://leetcode.cn/problems/bLyHh0)
 
 ## 题目描述
 
@@ -16,14 +16,14 @@
 <p>&nbsp;</p>
 
 <p><strong>示例 1：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20116.%20%E6%9C%8B%E5%8F%8B%E5%9C%88/images/graph1.jpg" style="width: 222px; height: 142px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20116.%20%E6%9C%8B%E5%8F%8B%E5%9C%88/images/graph1.jpg" style="width: 222px; height: 142px;" />
 <pre>
 <strong>输入：</strong><code>isConnected</code> = [[1,1,0],[1,1,0],[0,0,1]]
 <strong>输出：</strong>2
 </pre>
 
 <p><strong>示例 2：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20116.%20%E6%9C%8B%E5%8F%8B%E5%9C%88/images/graph2.jpg" style="width: 222px; height: 142px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20116.%20%E6%9C%8B%E5%8F%8B%E5%9C%88/images/graph2.jpg" style="width: 222px; height: 142px;" />
 <pre>
 <strong>输入：</strong><code>isConnected</code><strong> </strong>= [[1,0,0],[0,1,0],[0,0,1]]
 <strong>输出：</strong>3
@@ -45,7 +45,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 547&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/number-of-provinces/">https://leetcode-cn.com/problems/number-of-provinces/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 547&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/number-of-provinces/">https://leetcode.cn/problems/number-of-provinces/</a></p>
 
 ## 解法
 
@@ -63,12 +63,14 @@
 # 初始化，p存储每个点的父节点
 p = list(range(n))
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
         # 路径压缩
         p[x] = find(p[x])
     return p[x]
+
 
 # 合并a和b所在的两个集合
 p[find(a)] = find(b)
@@ -81,12 +83,14 @@ p[find(a)] = find(b)
 p = list(range(n))
 size = [1] * n
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
         # 路径压缩
         p[x] = find(p[x])
     return p[x]
+
 
 # 合并a和b所在的两个集合
 if find(a) != find(b):
@@ -101,6 +105,7 @@ if find(a) != find(b):
 p = list(range(n))
 d = [0] * n
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
@@ -108,6 +113,7 @@ def find(x):
         d[x] += d[p[x]]
         p[x] = t
     return p[x]
+
 
 # 合并a和b所在的两个集合
 p[find(a)] = find(b)
@@ -126,19 +132,19 @@ d[find(a)] = distance
 class Solution:
     def findCircleNum(self, isConnected: List[List[int]]) -> int:
         def dfs(i):
+            vis[i] = True
             for j in range(n):
-                if not visited[j] and isConnected[i][j] == 1:
-                    visited[j] = True
+                if not vis[j] and isConnected[i][j]:
                     dfs(j)
 
         n = len(isConnected)
-        visited = [False] * n
-        num = 0
+        vis = [False] * n
+        ans = 0
         for i in range(n):
-            if not visited[i]:
+            if not vis[i]:
                 dfs(i)
-                num += 1
-        return num
+                ans += 1
+        return ans
 ```
 
 并查集：
@@ -146,19 +152,18 @@ class Solution:
 ```python
 class Solution:
     def findCircleNum(self, isConnected: List[List[int]]) -> int:
-        n = len(isConnected)
-        p = list(range(n))
-
         def find(x):
             if p[x] != x:
                 p[x] = find(p[x])
             return p[x]
 
+        n = len(isConnected)
+        p = list(range(n))
         for i in range(n):
-            for j in range(n):
-                if i != j and isConnected[i][j] == 1:
+            for j in range(i + 1, n):
+                if isConnected[i][j]:
                     p[find(i)] = find(j)
-        return sum(i == find(i) for i in range(n))
+        return sum(i == v for i, v in enumerate(p))
 ```
 
 ### **Java**
@@ -169,24 +174,29 @@ class Solution:
 
 ```java
 class Solution {
+    private int[][] isConnected;
+    private boolean[] vis;
+    private int n;
+
     public int findCircleNum(int[][] isConnected) {
-        int n = isConnected.length;
-        boolean[] visited = new boolean[n];
-        int num = 0;
+        n = isConnected.length;
+        vis = new boolean[n];
+        this.isConnected = isConnected;
+        int ans = 0;
         for (int i = 0; i < n; ++i) {
-            if (!visited[i]) {
-                dfs(isConnected, visited, i, n);
-                ++num;
+            if (!vis[i]) {
+                dfs(i);
+                ++ans;
             }
         }
-        return num;
+        return ans;
     }
 
-    private void dfs(int[][] isConnected, boolean[] visited, int i, int n) {
+    private void dfs(int i) {
+        vis[i] = true;
         for (int j = 0; j < n; ++j) {
-            if (!visited[j] && isConnected[i][j] == 1) {
-                visited[j] = true;
-                dfs(isConnected, visited, j, n);
+            if (!vis[j] && isConnected[i][j] == 1) {
+                dfs(j);
             }
         }
     }
@@ -206,19 +216,19 @@ class Solution {
             p[i] = i;
         }
         for (int i = 0; i < n; ++i) {
-            for (int j = 0; j < n; ++j) {
+            for (int j = i + 1; j < n; ++j) {
                 if (isConnected[i][j] == 1) {
                     p[find(i)] = find(j);
                 }
             }
         }
-        int cnt = 0;
+        int ans = 0;
         for (int i = 0; i < n; ++i) {
-            if (i == find(i)) {
-                ++cnt;
+            if (i == p[i]) {
+                ++ans;
             }
         }
-        return cnt;
+        return ans;
     }
 
     private int find(int x) {
@@ -232,42 +242,62 @@ class Solution {
 
 ### **C++**
 
+深度优先搜索：
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> isConnected;
+    vector<bool> vis;
+    int n;
+
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        n = isConnected.size();
+        vis.resize(n);
+        this->isConnected = isConnected;
+        int ans = 0;
+        for (int i = 0; i < n; ++i) {
+            if (!vis[i]) {
+                dfs(i);
+                ++ans;
+            }
+        }
+        return ans;
+    }
+
+    void dfs(int i) {
+        vis[i] = true;
+        for (int j = 0; j < n; ++j)
+            if (!vis[j] && isConnected[i][j])
+                dfs(j);
+    }
+};
+```
+
+并查集：
+
 ```cpp
 class Solution {
 public:
     vector<int> p;
 
-    int findCircleNum(vector<vector<int>> &isConnected) {
+    int findCircleNum(vector<vector<int>>& isConnected) {
         int n = isConnected.size();
         p.resize(n);
+        for (int i = 0; i < n; ++i) p[i] = i;
         for (int i = 0; i < n; ++i)
-        {
-            p[i] = i;
-        }
-        for (int i = 0; i < n; ++i)
-        {
-            for (int j = 0; j < n; ++j)
-            {
+            for (int j = i + 1; j < n; ++j)
                 if (isConnected[i][j])
-                {
                     p[find(i)] = find(j);
-                }
-            }
-        }
-        int cnt = 0;
+        int ans = 0;
         for (int i = 0; i < n; ++i)
-        {
-            if (i == find(i))
-                ++cnt;
-        }
-        return cnt;
+            if (i == p[i])
+                ++ans;
+        return ans;
     }
 
     int find(int x) {
-        if (p[x] != x)
-        {
-            p[x] = find(p[x]);
-        }
+        if (p[x] != x) p[x] = find(p[x]);
         return p[x];
     }
 };
@@ -275,36 +305,62 @@ public:
 
 ### **Go**
 
-```go
-var p []int
+深度优先搜索：
 
+```go
 func findCircleNum(isConnected [][]int) int {
 	n := len(isConnected)
-	p = make([]int, n)
-	for i := 1; i < n; i++ {
+	vis := make([]bool, n)
+	var dfs func(i int)
+	dfs = func(i int) {
+		vis[i] = true
+		for j := 0; j < n; j++ {
+			if !vis[j] && isConnected[i][j] == 1 {
+				dfs(j)
+			}
+		}
+	}
+	ans := 0
+	for i := 0; i < n; i++ {
+		if !vis[i] {
+			dfs(i)
+			ans++
+		}
+	}
+	return ans
+}
+```
+
+并查集：
+
+```go
+func findCircleNum(isConnected [][]int) int {
+	n := len(isConnected)
+	p := make([]int, n)
+	for i := range p {
 		p[i] = i
 	}
+	var find func(x int) int
+	find = func(x int) int {
+		if p[x] != x {
+			p[x] = find(p[x])
+		}
+		return p[x]
+	}
 	for i := 0; i < n; i++ {
-		for j := 0; j < n; j++ {
+		for j := i + 1; j < n; j++ {
 			if isConnected[i][j] == 1 {
 				p[find(i)] = find(j)
 			}
 		}
 	}
-	cnt := 0
-	for i := 0; i < n; i++ {
-		if i == find(i) {
-			cnt++
+	ans := 0
+	for i := range p {
+		if p[i] == i {
+			ans++
 		}
 	}
-	return cnt
-}
-
-func find(x int) int {
-	if p[x] != x {
-		p[x] = find(p[x])
-	}
-	return p[x]
+	return ans
 }
 ```
 

@@ -5,28 +5,32 @@ public:
     }
 
     void addNum(int num) {
-        if (maxHeap.size() == minHeap.size()) {
-            maxHeap.push(num);
-            int temp = maxHeap.top();
-            maxHeap.pop();
-            minHeap.push(temp);
+        if (q1.size() > q2.size()) {
+            q1.push(num);
+            q2.push(q1.top());
+            q1.pop();
         } else {
-            minHeap.push(num);
-            int temp = minHeap.top();
-            minHeap.pop();
-            maxHeap.push(temp);
+            q2.push(num);
+            q1.push(q2.top());
+            q2.pop();
         }
     }
 
     double findMedian() {
-        if (maxHeap.size() == minHeap.size()) {
-            return (maxHeap.top() + minHeap.top()) / 2.0;
+        if (q1.size() > q2.size()) {
+            return q1.top();
         }
-        return minHeap.top();
+        return (q1.top() + q2.top()) / 2.0;
     }
 
 private:
-    priority_queue<int> maxHeap;
-    priority_queue<int, vector<int>, greater<int>> minHeap;
-
+    priority_queue<int, vector<int>, greater<int>> q1;
+    priority_queue<int> q2;
 };
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder* obj = new MedianFinder();
+ * obj->addNum(num);
+ * double param_2 = obj->findMedian();
+ */

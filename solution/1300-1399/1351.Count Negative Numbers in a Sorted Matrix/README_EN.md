@@ -7,7 +7,7 @@
 <p>Given a <code>m x n</code> matrix <code>grid</code> which is sorted in non-increasing order both row-wise and column-wise, return <em>the number of <strong>negative</strong> numbers in</em> <code>grid</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> grid = [[4,3,2,-1],[3,2,1,-1],[1,1,-1,-2],[-1,-1,-2,-3]]
@@ -15,25 +15,11 @@
 <strong>Explanation:</strong> There are 8 negatives number in the matrix.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> grid = [[3,2],[1,0]]
 <strong>Output:</strong> 0
-</pre>
-
-<p><strong>Example 3:</strong></p>
-
-<pre>
-<strong>Input:</strong> grid = [[1,-1],[-1,-1]]
-<strong>Output:</strong> 3
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> grid = [[-1]]
-<strong>Output:</strong> 1
 </pre>
 
 <p>&nbsp;</p>
@@ -58,15 +44,22 @@
 ```python
 class Solution:
     def countNegatives(self, grid: List[List[int]]) -> int:
-        m, n, cnt = len(grid), len(grid[0]), 0
-        i, j = 0, n - 1
-        while i < m and j >= 0:
+        m, n = len(grid), len(grid[0])
+        i, j = m - 1, 0
+        ans = 0
+        while i >= 0 and j < n:
             if grid[i][j] < 0:
-                cnt += (m - i)
-                j -= 1
+                ans += n - j
+                i -= 1
             else:
-                i += 1
-        return cnt
+                j += 1
+        return ans
+```
+
+```python
+class Solution:
+    def countNegatives(self, grid: List[List[int]]) -> int:
+        return sum(bisect_left(row[::-1], 0) for row in grid)
 ```
 
 ### **Java**
@@ -75,39 +68,39 @@ class Solution:
 class Solution {
     public int countNegatives(int[][] grid) {
         int m = grid.length, n = grid[0].length;
-        int cnt = 0;
-        for (int i = 0, j = n - 1; j >= 0 && i < m;) {
+        int ans = 0;
+        for (int i = m - 1, j = 0; i >= 0 && j < n;) {
             if (grid[i][j] < 0) {
-                cnt += (m - i);
-                --j;
+                ans += n - j;
+                --i;
             } else {
-                ++i;
+                ++j;
             }
         }
-        return cnt;
+        return ans;
     }
 }
 ```
 
-### **TypeScript**
-
-```ts
-function countNegatives(grid: number[][]): number {
-    let m = grid.length,
-        n = grid[0].length;
-    let i = 0,
-        j = n - 1;
-    let ans = 0;
-    while (i < m && j > -1) {
-        let cur = grid[i][j];
-        if (cur < 0) {
-            j--;
-            ans += m - i;
-        } else {
-            i++;
+```java
+class Solution {
+    public int countNegatives(int[][] grid) {
+        int ans = 0;
+        int n = grid[0].length;
+        for (int[] row : grid) {
+            int left = 0, right = n;
+            while (left < right) {
+                int mid = (left + right) >> 1;
+                if (row[mid] < 0) {
+                    right = mid;
+                } else {
+                    left = mid + 1;
+                }
+            }
+            ans += n - left;
         }
+        return ans;
     }
-    return ans;
 }
 ```
 
@@ -118,16 +111,28 @@ class Solution {
 public:
     int countNegatives(vector<vector<int>>& grid) {
         int m = grid.size(), n = grid[0].size();
-        int i = 0, j = n - 1, cnt = 0;
-        while (i < m && j >= 0) {
+        int ans = 0;
+        for (int i = m - 1, j = 0; i >= 0 && j < n;) {
             if (grid[i][j] < 0) {
-                cnt += (m - i);
-                --j;
-            } else {
-                ++i;
-            }
+                ans += n - j;
+                --i;
+            } else
+                ++j;
         }
-        return cnt;
+        return ans;
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    int countNegatives(vector<vector<int>>& grid) {
+        int ans = 0;
+        for (auto& row : grid) {
+            ans += lower_bound(row.rbegin(), row.rend(), 0) - row.rbegin();
+        }
+        return ans;
     }
 };
 ```
@@ -137,16 +142,169 @@ public:
 ```go
 func countNegatives(grid [][]int) int {
 	m, n := len(grid), len(grid[0])
-	i, j, cnt := 0, n-1, 0
-	for i < m && j >= 0 {
+	ans := 0
+	for i, j := m-1, 0; i >= 0 && j < n; {
 		if grid[i][j] < 0 {
-			cnt += (m - i)
-			j--
+			ans += n - j
+			i--
 		} else {
-			i++
+			j++
 		}
 	}
-	return cnt
+	return ans
+}
+```
+
+```go
+func countNegatives(grid [][]int) int {
+	ans, n := 0, len(grid[0])
+	for _, row := range grid {
+		left, right := 0, n
+		for left < right {
+			mid := (left + right) >> 1
+			if row[mid] < 0 {
+				right = mid
+			} else {
+				left = mid + 1
+			}
+		}
+		ans += n - left
+	}
+	return ans
+}
+```
+
+### **TypeScript**
+
+```ts
+function countNegatives(grid: number[][]): number {
+    const m = grid.length,
+        n = grid[0].length;
+    let ans = 0;
+    for (let i = m - 1, j = 0; i >= 0 && j < n; ) {
+        if (grid[i][j] < 0) {
+            ans += n - j;
+            --i;
+        } else {
+            ++j;
+        }
+    }
+    return ans;
+}
+```
+
+```ts
+function countNegatives(grid: number[][]): number {
+    const n = grid[0].length;
+    let ans = 0;
+    for (let row of grid) {
+        let left = 0,
+            right = n;
+        while (left < right) {
+            const mid = (left + right) >> 1;
+            if (row[mid] < 0) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        ans += n - left;
+    }
+    return ans;
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+var countNegatives = function (grid) {
+    const m = grid.length,
+        n = grid[0].length;
+    let ans = 0;
+    for (let i = m - 1, j = 0; i >= 0 && j < n; ) {
+        if (grid[i][j] < 0) {
+            ans += n - j;
+            --i;
+        } else {
+            ++j;
+        }
+    }
+    return ans;
+};
+```
+
+```js
+/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+var countNegatives = function (grid) {
+    const n = grid[0].length;
+    let ans = 0;
+    for (let row of grid) {
+        let left = 0,
+            right = n;
+        while (left < right) {
+            const mid = (left + right) >> 1;
+            if (row[mid] < 0) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        ans += n - left;
+    }
+    return ans;
+};
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn count_negatives(grid: Vec<Vec<i32>>) -> i32 {
+        let n = grid[0].len();
+        grid.into_iter()
+            .map(|nums| {
+                let mut left = 0;
+                let mut right = n;
+                while left < right {
+                    let mid = left + (right - left) / 2;
+                    if nums[mid] >= 0 {
+                        left = mid + 1;
+                    } else {
+                        right = mid;
+                    }
+                }
+                (n - left) as i32
+            })
+            .sum()
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn count_negatives(grid: Vec<Vec<i32>>) -> i32 {
+        let m = grid.len();
+        let n = grid[0].len();
+        let mut i = m;
+        let mut j = 0;
+        let mut res = 0;
+        while i > 0 && j < n {
+            if grid[i - 1][j] >= 0 {
+                j += 1;
+            } else {
+                res += n - j;
+                i -= 1;
+            }
+        }
+        res as i32
+    }
 }
 ```
 

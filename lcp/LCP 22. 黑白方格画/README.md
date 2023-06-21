@@ -1,4 +1,4 @@
-# [LCP 22. 黑白方格画](https://leetcode-cn.com/problems/ccw6C7)
+# [LCP 22. 黑白方格画](https://leetcode.cn/problems/ccw6C7)
 
 ## 题目描述
 
@@ -40,8 +40,8 @@
 
 **限制：**
 
-- `1 <= n <= 6`
-- `0 <= k <= n * n`
+-   `1 <= n <= 6`
+-   `0 <= k <= n * n`
 
 ## 解法
 

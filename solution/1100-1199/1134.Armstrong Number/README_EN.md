@@ -9,7 +9,7 @@
 <p>The <code>k</code>-digit number <code>n</code> is an Armstrong number if and only if the <code>k<sup>th</sup></code> power of each digit sums to <code>n</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 153
@@ -17,7 +17,7 @@
 <strong>Explanation:</strong> 153 is a 3-digit number, and 153 = 1<sup>3</sup> + 5<sup>3</sup> + 3<sup>3</sup>.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 123
@@ -42,11 +42,11 @@
 class Solution:
     def isArmstrong(self, n: int) -> bool:
         k = len(str(n))
-        s, t = 0, n
-        while t:
-            t, v = divmod(t, 10)
-            s += pow(v, k)
-        return n == s
+        s, x = 0, n
+        while x:
+            s += (x % 10) ** k
+            x //= 10
+        return s == n
 ```
 
 ### **Java**
@@ -54,14 +54,45 @@ class Solution:
 ```java
 class Solution {
     public boolean isArmstrong(int n) {
-        int k = String.valueOf(n).length();
-        int s = 0, t = n;
-        while (t != 0) {
-            s += Math.pow(t % 10, k);
-            t /= 10;
+        int k = (n + "").length();
+        int s = 0;
+        for (int x = n; x > 0; x /= 10) {
+            s += Math.pow(x % 10, k);
         }
-        return n == s;
+        return s == n;
     }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool isArmstrong(int n) {
+        int k = to_string(n).size();
+        int s = 0;
+        for (int x = n; x; x /= 10) {
+            s += pow(x % 10, k);
+        }
+        return s == n;
+    }
+};
+```
+
+### **Go**
+
+```go
+func isArmstrong(n int) bool {
+	k := 0
+	for x := n; x > 0; x /= 10 {
+		k++
+	}
+	s := 0
+	for x := n; x > 0; x /= 10 {
+		s += int(math.Pow(float64(x%10), float64(k)))
+	}
+	return s == n
 }
 ```
 
@@ -75,13 +106,24 @@ class Solution {
 var isArmstrong = function (n) {
     const k = String(n).length;
     let s = 0;
-    let t = n;
-    while (t) {
-        s += Math.pow(t % 10, k);
-        t = Math.floor(t / 10);
+    for (let x = n; x; x = Math.floor(x / 10)) {
+        s += Math.pow(x % 10, k);
     }
-    return n == s;
+    return s == n;
 };
+```
+
+### **TypeScript**
+
+```ts
+function isArmstrong(n: number): boolean {
+    const k = String(n).length;
+    let s = 0;
+    for (let x = n; x; x = Math.floor(x / 10)) {
+        s += Math.pow(x % 10, k);
+    }
+    return s == n;
+}
 ```
 
 ### **...**

@@ -1,4 +1,4 @@
-# [剑指 Offer II 017. 含有所有字符的最短字符串](https://leetcode-cn.com/problems/M1oyTv)
+# [剑指 Offer II 017. 含有所有字符的最短字符串](https://leetcode.cn/problems/M1oyTv)
 
 ## 题目描述
 
@@ -50,7 +50,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 76&nbsp;题相似（本题答案不唯一）：<a href="https://leetcode-cn.com/problems/minimum-window-substring/">https://leetcode-cn.com/problems/minimum-window-substring/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 76&nbsp;题相似（本题答案不唯一）：<a href="https://leetcode.cn/problems/minimum-window-substring/">https://leetcode.cn/problems/minimum-window-substring/</a></p>
 
 ## 解法
 
@@ -75,7 +75,7 @@ class Solution:
         need, window = defaultdict(int), defaultdict(int)
         for c in t:
             need[c] += 1
-        start, minLen = 0, float('inf')
+        start, minLen = 0, inf
         left, right = 0, 0
         while right < m:
             window[s[right]] += 1
@@ -86,7 +86,7 @@ class Solution:
                     start = left
                 window[s[left]] -= 1
                 left += 1
-        return "" if minLen == float('inf') else s[start:start + minLen]
+        return "" if minLen == inf else s[start : start + minLen]
 
     def check(self, need, window):
         for k, v in need.items():
@@ -109,7 +109,7 @@ class Solution:
             if need[c] == 0:
                 needCount += 1
             need[c] += 1
-        start, minLen = 0, float('inf')
+        start, minLen = 0, inf
         left, right = 0, 0
         while right < m:
             ch = s[right]
@@ -128,7 +128,7 @@ class Solution:
                     if window[ch] == need[ch]:
                         windowCount -= 1
                     window[ch] -= 1
-        return "" if minLen == float('inf') else s[start:start + minLen]
+        return "" if minLen == inf else s[start : start + minLen]
 ```
 
 ### **Java**

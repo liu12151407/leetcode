@@ -19,7 +19,7 @@ candidate_id is the primary key column for this table.
 Each row of this table indicates the name of a candidate, their number of years of experience, and their interview ID.
 </pre>
 
-<p> </p>
+<p>&nbsp;</p>
 
 <p>Table: <code>Rounds</code></p>
 
@@ -35,16 +35,16 @@ Each row of this table indicates the name of a candidate, their number of years 
 Each row of this table indicates the score of one round of an interview.
 </pre>
 
-<p> </p>
+<p>&nbsp;</p>
 
-<p>Write an SQL query to report the IDs of the candidates who have <strong>at least two</strong> years of experience and the sum of the score of their interview rounds is <strong>strictly greater than <code>16</code></strong>.</p>
+<p>Write an SQL query to report the IDs of the candidates who have <strong>at least two</strong> years of experience and the sum of the score of their interview rounds is <strong>strictly greater than <code>15</code></strong>.</p>
 
 <p>Return the result table in <strong>any order</strong>.</p>
 
 <p>The query result format is in the following example.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> 

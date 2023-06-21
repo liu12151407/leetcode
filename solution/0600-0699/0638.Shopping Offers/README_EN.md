@@ -13,7 +13,7 @@
 <p>Return <em>the lowest price you have to pay for exactly certain items as given, where you could make optimal use of the special offers</em>. You are not allowed to buy more items than you want, even if that would lower the overall price. You could use any of the special offers as many times as you want.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> price = [2,5], special = [[3,0,5],[1,2,10]], needs = [3,2]
@@ -24,7 +24,7 @@ In special offer 2, you can pay $10 for 1A and 2B.
 You need to buy 3A and 2B, so you may pay $10 for 1A and 2B (special offer #2), and $4 for 2A.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> price = [2,3,4], special = [[1,1,0,4],[2,2,1,9]], needs = [1,2,1]
@@ -39,11 +39,9 @@ You cannot add more items, though only $9 for 2A ,2B and 1C.
 <p><strong>Constraints:</strong></p>
 
 <ul>
-	<li><code>n == price.length</code></li>
-	<li><code>n == needs.length</code></li>
+	<li><code>n == price.length == needs.length</code></li>
 	<li><code>1 &lt;= n &lt;= 6</code></li>
-	<li><code>0 &lt;= price[i] &lt;= 10</code></li>
-	<li><code>0 &lt;= needs[i] &lt;= 10</code></li>
+	<li><code>0 &lt;= price[i], needs[i] &lt;= 10</code></li>
 	<li><code>1 &lt;= special.length &lt;= 100</code></li>
 	<li><code>special[i].length == n + 1</code></li>
 	<li><code>0 &lt;= special[i][j] &lt;= 50</code></li>
@@ -57,7 +55,9 @@ You cannot add more items, though only $9 for 2A ,2B and 1C.
 
 ```python
 class Solution:
-    def shoppingOffers(self, price: List[int], special: List[List[int]], needs: List[int]) -> int:
+    def shoppingOffers(
+        self, price: List[int], special: List[List[int]], needs: List[int]
+    ) -> int:
         def total(price, needs):
             return sum(price[i] * needs[i] for i in range(len(needs)))
 
@@ -71,8 +71,7 @@ class Solution:
                     break
                 t.append(needs[j] - offer[j])
             if t:
-                ans = min(ans, offer[-1] +
-                          self.shoppingOffers(price, special, t))
+                ans = min(ans, offer[-1] + self.shoppingOffers(price, special, t))
         return ans
 ```
 
@@ -80,7 +79,8 @@ class Solution:
 
 ```java
 class Solution {
-    public int shoppingOffers(List<Integer> price, List<List<Integer>> special, List<Integer> needs) {
+    public int shoppingOffers(
+        List<Integer> price, List<List<Integer>> special, List<Integer> needs) {
         int ans = total(price, needs);
         List<Integer> t = new ArrayList<>();
         for (List<Integer> offer : special) {
@@ -93,7 +93,8 @@ class Solution {
                 t.add(needs.get(j) - offer.get(j));
             }
             if (!t.isEmpty()) {
-                ans = Math.min(ans, offer.get(offer.size() - 1) + shoppingOffers(price, special, t));
+                ans = Math.min(
+                    ans, offer.get(offer.size() - 1) + shoppingOffers(price, special, t));
             }
         }
         return ans;
@@ -117,13 +118,10 @@ public:
     int shoppingOffers(vector<int>& price, vector<vector<int>>& special, vector<int>& needs) {
         int ans = total(price, needs);
         vector<int> t;
-        for (auto& offer : special)
-        {
+        for (auto& offer : special) {
             t.clear();
-            for (int j = 0; j < needs.size(); ++j)
-            {
-                if (offer[j] > needs[j])
-                {
+            for (int j = 0; j < needs.size(); ++j) {
+                if (offer[j] > needs[j]) {
                     t.clear();
                     break;
                 }

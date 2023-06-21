@@ -1,4 +1,4 @@
-# [1225. 报告系统状态的连续日期](https://leetcode-cn.com/problems/report-contiguous-dates)
+# [1225. 报告系统状态的连续日期](https://leetcode.cn/problems/report-contiguous-dates)
 
 [English Version](/solution/1200-1299/1225.Report%20Contiguous%20Dates/README_EN.md)
 
@@ -85,7 +85,39 @@ Result table:
 ### **SQL**
 
 ```sql
-
+# Write your MySQL query statement below
+SELECT
+    state AS period_state,
+    min(dt) AS start_date,
+    max(dt) AS end_date
+FROM
+    (
+        SELECT
+            *,
+            subdate(
+                dt,
+                rank() OVER (
+                    PARTITION BY state
+                    ORDER BY dt
+                )
+            ) AS dif
+        FROM
+            (
+                SELECT
+                    'failed' AS state,
+                    fail_date AS dt
+                FROM failed
+                WHERE fail_date BETWEEN '2019-01-01' AND '2019-12-31'
+                UNION ALL
+                SELECT
+                    'succeeded' AS state,
+                    success_date AS dt
+                FROM succeeded
+                WHERE success_date BETWEEN '2019-01-01' AND '2019-12-31'
+            ) AS t1
+    ) AS t2
+GROUP BY state, dif
+ORDER BY dt;
 ```
 
 <!-- tabs:end -->

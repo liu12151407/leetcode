@@ -31,14 +31,14 @@
 <p>Return an <code>answer</code> array (of length <code>seq.length</code>) that encodes such a&nbsp;choice of <code>A</code> and <code>B</code>:&nbsp; <code>answer[i] = 0</code> if <code>seq[i]</code> is part of <code>A</code>, else <code>answer[i] = 1</code>.&nbsp; Note that even though multiple answers may exist, you may return any of them.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> seq = &quot;(()())&quot;
 <strong>Output:</strong> [0,1,1,1,1,0]
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> seq = &quot;()(())()&quot;
@@ -59,13 +59,93 @@
 ### **Python3**
 
 ```python
-
+class Solution:
+    def maxDepthAfterSplit(self, seq: str) -> List[int]:
+        ans = [0] * len(seq)
+        x = 0
+        for i, c in enumerate(seq):
+            if c == "(":
+                ans[i] = x & 1
+                x += 1
+            else:
+                x -= 1
+                ans[i] = x & 1
+        return ans
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int[] maxDepthAfterSplit(String seq) {
+        int n = seq.length();
+        int[] ans = new int[n];
+        for (int i = 0, x = 0; i < n; ++i) {
+            if (seq.charAt(i) == '(') {
+                ans[i] = x++ & 1;
+            } else {
+                ans[i] = --x & 1;
+            }
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    vector<int> maxDepthAfterSplit(string seq) {
+        int n = seq.size();
+        vector<int> ans(n);
+        for (int i = 0, x = 0; i < n; ++i) {
+            if (seq[i] == '(') {
+                ans[i] = x++ & 1;
+            } else {
+                ans[i] = --x & 1;
+            }
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func maxDepthAfterSplit(seq string) []int {
+	n := len(seq)
+	ans := make([]int, n)
+	for i, x := 0, 0; i < n; i++ {
+		if seq[i] == '(' {
+			ans[i] = x & 1
+			x++
+		} else {
+			x--
+			ans[i] = x & 1
+		}
+	}
+	return ans
+}
+```
+
+### **TypeScript**
+
+```ts
+function maxDepthAfterSplit(seq: string): number[] {
+    const n = seq.length;
+    const ans: number[] = new Array(n);
+    for (let i = 0, x = 0; i < n; ++i) {
+        if (seq[i] === '(') {
+            ans[i] = x++ & 1;
+        } else {
+            ans[i] = --x & 1;
+        }
+    }
+    return ans;
+}
 ```
 
 ### **...**

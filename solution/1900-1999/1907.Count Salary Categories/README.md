@@ -1,4 +1,4 @@
-# [1907. Count Salary Categories](https://leetcode-cn.com/problems/count-salary-categories)
+# [1907. 按分类统计薪水](https://leetcode.cn/problems/count-salary-categories)
 
 [English Version](/solution/1900-1999/1907.Count%20Salary%20Categories/README_EN.md)
 
@@ -6,37 +6,44 @@
 
 <!-- 这里写题目描述 -->
 
-<p>Table: <code>Accounts</code></p>
+<p>表: <code>Accounts</code></p>
 
 <pre>
 +-------------+------+
-| Column Name | Type |
+| 列名        | 类型  |
 +-------------+------+
 | account_id  | int  |
 | income      | int  |
 +-------------+------+
-account_id is the primary key for this table.
-Each row contains information about the monthly income for one bank account.
+account_id&nbsp;是这个表的主键。
+每一行都包含一个银行帐户的月收入的信息。
 </pre>
 
 <p>&nbsp;</p>
 
-<p>Write an SQL query to report the number of bank accounts of each salary category. The salary categories are:</p>
+<p>写出一个&nbsp;SQL&nbsp;查询，来报告每个工资类别的银行账户数量。&nbsp;工资类别如下：</p>
 
 <ul>
-	<li><code>&quot;Low Salary&quot;</code>: All the salaries <strong>strictly less</strong> than <code>$20000</code>.</li>
-	<li><code>&quot;Average Salary&quot;</code>: All the salaries in the <strong>inclusive</strong> range <code>[$20000, $50000]</code>.</li>
-	<li><code>&quot;High Salary&quot;</code>: All the salaries <strong>strictly greater</strong> than <code>$50000</code>.</li>
+	<li><code>"Low Salary"</code>：所有工资 <strong>严格低于</strong> <code>20000</code> 美元。</li>
+	<li><code>"Average Salary"</code>： <strong>包含</strong> 范围内的所有工资&nbsp;<code>[$20000,&nbsp;$50000]</code> 。</li>
+	<li>
+	<p><code>"High Salary"</code>：所有工资 <strong>严格大于</strong> <code>50000</code> 美元。</p>
+	</li>
 </ul>
 
-<p>The result table <strong>must</strong> contain all three categories. If there are no accounts in a category, then report <code>0</code>. Return the result table in <strong>any order</strong>.</p>
+<p>结果表 <strong>必须</strong> 包含所有三个类别。&nbsp;如果某个类别中没有帐户，则报告&nbsp;<code>0</code> 。</p>
 
-<p>The query result format is in the following example.</p>
+<p>按 <strong>任意顺序</strong> 返回结果表。</p>
+
+<p>查询结果格式如下示例。</p>
 
 <p>&nbsp;</p>
 
+<p><strong>示例 1：</strong></p>
+
 <pre>
-Accounts table:
+<b>输入：</b>
+Accounts 表:
 +------------+--------+
 | account_id | income |
 +------------+--------+
@@ -45,8 +52,7 @@ Accounts table:
 | 8          | 87709  |
 | 6          | 91796  |
 +------------+--------+
-
-Result table:
+<strong>输出：</strong>
 +----------------+----------------+
 | category       | accounts_count |
 +----------------+----------------+
@@ -54,11 +60,10 @@ Result table:
 | Average Salary | 0              |
 | High Salary    | 3              |
 +----------------+----------------+
-
-Low Salary: Account 2.
-Average Salary: No accounts.
-High Salary: Accounts 3, 6, and 8.
-</pre>
+<strong>解释：</strong>
+低薪: 数量为 2.
+中等薪水: 没有.
+高薪: 有三个账户，他们是 3, 6和 8.</pre>
 
 ## 解法
 

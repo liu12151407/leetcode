@@ -8,19 +8,19 @@
 
 <p>The <strong>path sum</strong> of a path is the sum of the node&#39;s values in the path.</p>
 
-<p>Given the <code>root</code> of a binary tree, return <em>the maximum <strong>path sum</strong> of any path</em>.</p>
+<p>Given the <code>root</code> of a binary tree, return <em>the maximum <strong>path sum</strong> of any <strong>non-empty</strong> path</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0124.Binary%20Tree%20Maximum%20Path%20Sum/images/exx1.jpg" style="width: 322px; height: 182px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0124.Binary%20Tree%20Maximum%20Path%20Sum/images/exx1.jpg" style="width: 322px; height: 182px;" />
 <pre>
 <strong>Input:</strong> root = [1,2,3]
 <strong>Output:</strong> 6
 <strong>Explanation:</strong> The optimal path is 2 -&gt; 1 -&gt; 3 with a path sum of 2 + 1 + 3 = 6.
 </pre>
 
-<p><strong>Example 2:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0124.Binary%20Tree%20Maximum%20Path%20Sum/images/exx2.jpg" />
+<p><strong class="example">Example 2:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0124.Binary%20Tree%20Maximum%20Path%20Sum/images/exx2.jpg" />
 <pre>
 <strong>Input:</strong> root = [-10,9,20,null,null,15,7]
 <strong>Output:</strong> 42
@@ -37,6 +37,28 @@
 
 ## Solutions
 
+**Solution 1: Recursion**
+
+We think about the classic routine of binary tree recursion problem:
+
+1. Termination condition (when to terminate recursion)
+2. Recursion processing left and right subtrees
+3. Combine the calculation results of the left and right subtrees
+
+For this topic, we design a function $dfs(root)$, which returns the maximum path sum of the binary tree with $root$ as the root node.
+
+The execution logic of the function $dfs(root)$ is as follows:
+
+If $root$ does not exist, then $dfs(root)$ returns $0$;
+
+Otherwise, we recursively calculate the maximum path sum of the left subtree and the right subtree of $root$, denoted as $left$ and $right$, respectively. If $left$ is less than $0$, then we set it to $0$, similarly, if $right$ is less than $0$, then we set it to $0$.
+
+Then, we update the answer with $root.val + left + right$. Finally, the function returns $root.val + \max(left, right)$.
+
+In the main function, we call $dfs(root)$ to get the maximum path sum of each node, and the maximum value in it is the answer.
+
+Time complexity $O(n)$, space complexity $O(n)$. Where $n$ is the number of nodes in the binary tree.
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -49,18 +71,17 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def maxPathSum(self, root: TreeNode) -> int:
-        ans = float("-inf")
-
-        def dfs(node: TreeNode) -> int:
-            if not node:
+    def maxPathSum(self, root: Optional[TreeNode]) -> int:
+        def dfs(root: Optional[TreeNode]) -> int:
+            if root is None:
                 return 0
-            left = max(0, dfs(node.left))
-            right = max(0, dfs(node.right))
+            left = max(0, dfs(root.left))
+            right = max(0, dfs(root.right))
             nonlocal ans
-            ans = max(ans, node.val + left + right)
-            return node.val + max(left, right)
+            ans = max(ans, root.val + left + right)
+            return root.val + max(left, right)
 
+        ans = -inf
         dfs(root)
         return ans
 ```
@@ -84,59 +105,22 @@ class Solution:
  * }
  */
 class Solution {
-    private int ans = Integer.MIN_VALUE;
+    private int ans = -1001;
 
     public int maxPathSum(TreeNode root) {
         dfs(root);
         return ans;
     }
 
-    private int dfs(TreeNode node) {
-        if (node == null) {
+    private int dfs(TreeNode root) {
+        if (root == null) {
             return 0;
         }
-        int left = Math.max(0, dfs(node.left));
-        int right = Math.max(0, dfs(node.right));
-        ans = Math.max(ans, node.val + left + right);
-        return node.val + Math.max(left, right);
+        int left = Math.max(0, dfs(root.left));
+        int right = Math.max(0, dfs(root.right));
+        ans = Math.max(ans, root.val + left + right);
+        return root.val + Math.max(left, right);
     }
-}
-```
-
-### **Go**
-
-```go
-/**
- * Definition for a binary tree node.
- * type TreeNode struct {
- *     Val int
- *     Left *TreeNode
- *     Right *TreeNode
- * }
- */
-func maxPathSum(root *TreeNode) int {
-	ans := math.MinInt32
-
-	var dfs func(*TreeNode) int
-	dfs = func(node *TreeNode) int {
-		if node == nil {
-			return 0
-		}
-		left := max(0, dfs(node.Left))
-		right := max(0, dfs(node.Right))
-		ans = max(ans, node.Val+left+right)
-		return node.Val + max(left, right)
-	}
-
-	dfs(root)
-	return ans
-}
-
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
 }
 ```
 
@@ -157,22 +141,88 @@ func max(a, b int) int {
 class Solution {
 public:
     int maxPathSum(TreeNode* root) {
-        int ans = INT_MIN;
-
-        function<int(TreeNode*)> dfs = [&](TreeNode* node) {
-            if (node == nullptr) {
+        int ans = -1001;
+        function<int(TreeNode*)> dfs = [&](TreeNode* root) {
+            if (!root) {
                 return 0;
             }
-            int left = max(0, dfs(node->left));
-            int right = max(0, dfs(node->right));
-            ans = max(ans, node->val + left + right);
-            return node->val + max(left, right);
+            int left = max(0, dfs(root->left));
+            int right = max(0, dfs(root->right));
+            ans = max(ans, left + right + root->val);
+            return root->val + max(left, right);
         };
-
         dfs(root);
         return ans;
     }
 };
+```
+
+### **Go**
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func maxPathSum(root *TreeNode) int {
+	ans := -1001
+	var dfs func(*TreeNode) int
+	dfs = func(root *TreeNode) int {
+		if root == nil {
+			return 0
+		}
+		left := max(0, dfs(root.Left))
+		right := max(0, dfs(root.Right))
+		ans = max(ans, left+right+root.Val)
+		return max(left, right) + root.Val
+	}
+	dfs(root)
+	return ans
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+```
+
+### **TypeScript**
+
+```ts
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function maxPathSum(root: TreeNode | null): number {
+    let ans = -1001;
+    const dfs = (root: TreeNode | null): number => {
+        if (!root) {
+            return 0;
+        }
+        const left = Math.max(0, dfs(root.left));
+        const right = Math.max(0, dfs(root.right));
+        ans = Math.max(ans, left + right + root.val);
+        return Math.max(left, right) + root.val;
+    };
+    dfs(root);
+    return ans;
+}
 ```
 
 ### **JavaScript**
@@ -191,15 +241,15 @@ public:
  * @return {number}
  */
 var maxPathSum = function (root) {
-    let ans = -1000;
-    let dfs = function (root) {
+    let ans = -1001;
+    const dfs = root => {
         if (!root) {
             return 0;
         }
         const left = Math.max(0, dfs(root.left));
         const right = Math.max(0, dfs(root.right));
         ans = Math.max(ans, left + right + root.val);
-        return root.val + Math.max(left, right);
+        return Math.max(left, right) + root.val;
     };
     dfs(root);
     return ans;
@@ -223,21 +273,64 @@ var maxPathSum = function (root) {
  * }
  */
 public class Solution {
-    private int ans;
+    private int ans = -1001;
 
     public int MaxPathSum(TreeNode root) {
-        ans = int.MinValue;
         dfs(root);
         return ans;
     }
 
-    private int dfs(TreeNode root)
-    {
-        if (root == null) return 0;
+    private int dfs(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
         int left = Math.Max(0, dfs(root.left));
         int right = Math.Max(0, dfs(root.right));
         ans = Math.Max(ans, left + right + root.val);
         return root.val + Math.Max(left, right);
+    }
+}
+```
+
+### **Rust**
+
+```rust
+// Definition for a binary tree node.
+// #[derive(Debug, PartialEq, Eq)]
+// pub struct TreeNode {
+//   pub val: i32,
+//   pub left: Option<Rc<RefCell<TreeNode>>>,
+//   pub right: Option<Rc<RefCell<TreeNode>>>,
+// }
+//
+// impl TreeNode {
+//   #[inline]
+//   pub fn new(val: i32) -> Self {
+//     TreeNode {
+//       val,
+//       left: None,
+//       right: None
+//     }
+//   }
+// }
+use std::rc::Rc;
+use std::cell::RefCell;
+impl Solution {
+    fn dfs(root: &Option<Rc<RefCell<TreeNode>>>, res: &mut i32) -> i32 {
+        if root.is_none() {
+            return 0;
+        }
+        let node = root.as_ref().unwrap().borrow();
+        let left = 0.max(Self::dfs(&node.left, res));
+        let right = 0.max(Self::dfs(&node.right, res));
+        *res = (node.val + left + right).max(*res);
+        node.val + left.max(right)
+    }
+
+    pub fn max_path_sum(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
+        let mut res = -1000;
+        Self::dfs(&root, &mut res);
+        res
     }
 }
 ```

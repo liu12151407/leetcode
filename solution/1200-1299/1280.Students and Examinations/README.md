@@ -1,4 +1,4 @@
-# [1280. 学生们参加各科测试的次数](https://leetcode-cn.com/problems/students-and-examinations)
+# [1280. 学生们参加各科测试的次数](https://leetcode.cn/problems/students-and-examinations)
 
 [English Version](/solution/1200-1299/1280.Students%20and%20Examinations/README_EN.md)
 
@@ -115,7 +115,19 @@ John  参加了数学、物理、编程测试各 1 次。
 ### **SQL**
 
 ```sql
-
+# Write your MySQL query statement below
+SELECT
+    a.student_id,
+    student_name,
+    b.subject_name,
+    count(c.subject_name) AS attended_exams
+FROM
+    Students AS a
+    CROSS JOIN Subjects AS b
+    LEFT JOIN Examinations AS c
+        ON a.student_id = c.student_id AND b.subject_name = c.subject_name
+GROUP BY a.student_id, b.subject_name
+ORDER BY a.student_id, b.subject_name;
 ```
 
 <!-- tabs:end -->

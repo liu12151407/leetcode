@@ -1,4 +1,4 @@
-# [1797. 设计一个验证系统](https://leetcode-cn.com/problems/design-authentication-manager)
+# [1797. 设计一个验证系统](https://leetcode.cn/problems/design-authentication-manager)
 
 [English Version](/solution/1700-1799/1797.Design%20Authentication%20Manager/README_EN.md)
 
@@ -22,7 +22,7 @@
 <p> </p>
 
 <p><strong>示例 1：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1700-1799/1797.Design%20Authentication%20Manager/images/copy-of-pc68_q2.png" style="width: 500px; height: 287px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1700-1799/1797.Design%20Authentication%20Manager/images/copy-of-pc68_q2.png" style="width: 500px; height: 287px;" />
 <pre>
 <strong>输入：</strong>
 ["AuthenticationManager", "<code>renew</code>", "generate", "<code>countUnexpiredTokens</code>", "generate", "<code>renew</code>", "<code>renew</code>", "<code>countUnexpiredTokens</code>"]
@@ -60,7 +60,17 @@ authenticationManager.<code>countUnexpiredTokens</code>(15); // tokenId 为 "bbb
 
 <!-- 这里可写通用的实现逻辑 -->
 
-用哈希表存放 token 与对应的过期时间。
+**方法一：哈希表**
+
+我们可以简单维护一个哈希表 $d$，键为 `tokenId`，值为过期时间。
+
+-   `generate` 操作时，将 `tokenId` 作为键，`currentTime + timeToLive` 作为值存入哈希表 $d$ 中。
+-   `renew` 操作时，如果 `tokenId` 不在哈希表 $d$ 中，或者 `currentTime >= d[tokenId]`，则忽略该操作；否则，更新 `d[tokenId]` 为 `currentTime + timeToLive`。
+-   `countUnexpiredTokens` 操作时，遍历哈希表 $d$，统计未过期的 `tokenId` 个数。
+
+时间复杂度方面，`generate` 和 `renew` 操作的时间复杂度均为 $O(1)$，`countUnexpiredTokens` 操作的时间复杂度为 $O(n)$，其中 $n$ 为哈希表 $d$ 的键值对个数。
+
+空间复杂度为 $O(n)$，其中 $n$ 为哈希表 $d$ 的键值对个数。
 
 <!-- tabs:start -->
 
@@ -70,26 +80,20 @@ authenticationManager.<code>countUnexpiredTokens</code>(15); // tokenId 为 "bbb
 
 ```python
 class AuthenticationManager:
-
     def __init__(self, timeToLive: int):
-        self.timeToLive = timeToLive
-        self.tokens = {}
+        self.t = timeToLive
+        self.d = defaultdict(int)
 
     def generate(self, tokenId: str, currentTime: int) -> None:
-        self.tokens[tokenId] = currentTime + self.timeToLive
+        self.d[tokenId] = currentTime + self.t
 
     def renew(self, tokenId: str, currentTime: int) -> None:
-        expire_time = self.tokens.get(tokenId)
-        if expire_time is None or expire_time <= currentTime:
+        if self.d[tokenId] <= currentTime:
             return
-        self.tokens[tokenId] = currentTime + self.timeToLive
+        self.d[tokenId] = currentTime + self.t
 
     def countUnexpiredTokens(self, currentTime: int) -> int:
-        unexpiredCount = 0
-        for val in self.tokens.values():
-            if val > currentTime:
-                unexpiredCount += 1
-        return unexpiredCount
+        return sum(exp > currentTime for exp in self.d.values())
 
 
 # Your AuthenticationManager object will be instantiated and called as such:
@@ -105,34 +109,32 @@ class AuthenticationManager:
 
 ```java
 class AuthenticationManager {
-    private int timeToLive;
-    private Map<String, Integer> tokens;
+    private int t;
+    private Map<String, Integer> d = new HashMap<>();
 
     public AuthenticationManager(int timeToLive) {
-        this.timeToLive = timeToLive;
-        tokens = new HashMap<>();
+        t = timeToLive;
     }
 
     public void generate(String tokenId, int currentTime) {
-        tokens.put(tokenId, currentTime + timeToLive);
+        d.put(tokenId, currentTime + t);
     }
 
     public void renew(String tokenId, int currentTime) {
-        Integer expireTime = tokens.get(tokenId);
-        if (expireTime == null || expireTime <= currentTime) {
+        if (d.getOrDefault(tokenId, 0) <= currentTime) {
             return;
         }
-        tokens.put(tokenId, currentTime + timeToLive);
+        generate(tokenId, currentTime);
     }
 
     public int countUnexpiredTokens(int currentTime) {
-        int unexpiredCount = 0;
-        for (Integer val : tokens.values()) {
-            if (val > currentTime) {
-                ++unexpiredCount;
+        int ans = 0;
+        for (int exp : d.values()) {
+            if (exp > currentTime) {
+                ++ans;
             }
         }
-        return unexpiredCount;
+        return ans;
     }
 }
 
@@ -142,6 +144,176 @@ class AuthenticationManager {
  * obj.generate(tokenId,currentTime);
  * obj.renew(tokenId,currentTime);
  * int param_3 = obj.countUnexpiredTokens(currentTime);
+ */
+```
+
+### **C++**
+
+```cpp
+class AuthenticationManager {
+public:
+    AuthenticationManager(int timeToLive) {
+        t = timeToLive;
+    }
+
+    void generate(string tokenId, int currentTime) {
+        d[tokenId] = currentTime + t;
+    }
+
+    void renew(string tokenId, int currentTime) {
+        if (d[tokenId] <= currentTime) return;
+        generate(tokenId, currentTime);
+    }
+
+    int countUnexpiredTokens(int currentTime) {
+        int ans = 0;
+        for (auto& [_, v] : d) ans += v > currentTime;
+        return ans;
+    }
+
+private:
+    int t;
+    unordered_map<string, int> d;
+};
+
+/**
+ * Your AuthenticationManager object will be instantiated and called as such:
+ * AuthenticationManager* obj = new AuthenticationManager(timeToLive);
+ * obj->generate(tokenId,currentTime);
+ * obj->renew(tokenId,currentTime);
+ * int param_3 = obj->countUnexpiredTokens(currentTime);
+ */
+```
+
+### **Go**
+
+```go
+type AuthenticationManager struct {
+	t int
+	d map[string]int
+}
+
+func Constructor(timeToLive int) AuthenticationManager {
+	return AuthenticationManager{timeToLive, map[string]int{}}
+}
+
+func (this *AuthenticationManager) Generate(tokenId string, currentTime int) {
+	this.d[tokenId] = currentTime + this.t
+}
+
+func (this *AuthenticationManager) Renew(tokenId string, currentTime int) {
+	if v, ok := this.d[tokenId]; !ok || v <= currentTime {
+		return
+	}
+	this.Generate(tokenId, currentTime)
+}
+
+func (this *AuthenticationManager) CountUnexpiredTokens(currentTime int) int {
+	ans := 0
+	for _, exp := range this.d {
+		if exp > currentTime {
+			ans++
+		}
+	}
+	return ans
+}
+
+/**
+ * Your AuthenticationManager object will be instantiated and called as such:
+ * obj := Constructor(timeToLive);
+ * obj.Generate(tokenId,currentTime);
+ * obj.Renew(tokenId,currentTime);
+ * param_3 := obj.CountUnexpiredTokens(currentTime);
+ */
+```
+
+### **TypeScript**
+
+```ts
+class AuthenticationManager {
+    private timeToLive: number;
+    private map: Map<string, number>;
+
+    constructor(timeToLive: number) {
+        this.timeToLive = timeToLive;
+        this.map = new Map<string, number>();
+    }
+
+    generate(tokenId: string, currentTime: number): void {
+        this.map.set(tokenId, currentTime + this.timeToLive);
+    }
+
+    renew(tokenId: string, currentTime: number): void {
+        if ((this.map.get(tokenId) ?? 0) <= currentTime) {
+            return;
+        }
+        this.map.set(tokenId, currentTime + this.timeToLive);
+    }
+
+    countUnexpiredTokens(currentTime: number): number {
+        let res = 0;
+        for (const time of this.map.values()) {
+            if (time > currentTime) {
+                res++;
+            }
+        }
+        return res;
+    }
+}
+
+/**
+ * Your AuthenticationManager object will be instantiated and called as such:
+ * var obj = new AuthenticationManager(timeToLive)
+ * obj.generate(tokenId,currentTime)
+ * obj.renew(tokenId,currentTime)
+ * var param_3 = obj.countUnexpiredTokens(currentTime)
+ */
+```
+
+### **Rust**
+
+```rust
+use std::collections::HashMap;
+struct AuthenticationManager {
+    time_to_live: i32,
+    map: HashMap<String, i32>,
+}
+
+/**
+ * `&self` means the method takes an immutable reference.
+ * If you need a mutable reference, change it to `&mut self` instead.
+ */
+impl AuthenticationManager {
+    fn new(timeToLive: i32) -> Self {
+        Self {
+            time_to_live: timeToLive,
+            map: HashMap::new(),
+        }
+    }
+
+    fn generate(&mut self, token_id: String, current_time: i32) {
+        self.map.insert(token_id, current_time + self.time_to_live);
+    }
+
+    fn renew(&mut self, token_id: String, current_time: i32) {
+        if self.map.get(&token_id).unwrap_or(&0) <= &current_time {
+            return;
+        }
+        self.map.insert(token_id, current_time + self.time_to_live);
+    }
+
+    fn count_unexpired_tokens(&self, current_time: i32) -> i32 {
+        self.map.values().filter(|&time| *time > current_time).count() as i32
+    }
+}
+
+
+/**
+ * Your AuthenticationManager object will be instantiated and called as such:
+ * let obj = AuthenticationManager::new(timeToLive);
+ * obj.generate(tokenId, currentTime);
+ * obj.renew(tokenId, currentTime);
+ * let ret_3: i32 = obj.count_unexpired_tokens(currentTime);
  */
 ```
 

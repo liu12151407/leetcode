@@ -8,68 +8,42 @@
 
 <p>You are given a <strong>0-indexed</strong> integer array <code>chalk</code> and an integer <code>k</code>. There are initially <code>k</code> pieces of chalk. When the student number <code>i</code> is given a problem to solve, they will use <code>chalk[i]</code> pieces of chalk to solve that problem. However, if the current number of chalk pieces is <strong>strictly less</strong> than <code>chalk[i]</code>, then the student number <code>i</code> will be asked to <strong>replace</strong> the chalk.</p>
 
-<p>Return <em>the <strong>index</strong> of the student that will <strong>replace</strong> the chalk</em>.</p>
+<p>Return <em>the <strong>index</strong> of the student that will <strong>replace</strong> the chalk pieces</em>.</p>
 
 <p>&nbsp;</p>
-
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
-
 <strong>Input:</strong> chalk = [5,1,5], k = 22
-
 <strong>Output:</strong> 0
-
 <strong>Explanation: </strong>The students go in turns as follows:
-
 - Student number 0 uses 5 chalk, so k = 17.
-
 - Student number 1 uses 1 chalk, so k = 16.
-
 - Student number 2 uses 5 chalk, so k = 11.
-
 - Student number 0 uses 5 chalk, so k = 6.
-
 - Student number 1 uses 1 chalk, so k = 5.
-
 - Student number 2 uses 5 chalk, so k = 0.
-
 Student number 0 does not have enough chalk, so they will have to replace it.</pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
-
 <strong>Input:</strong> chalk = [3,4,1,2], k = 25
-
 <strong>Output:</strong> 1
-
 <strong>Explanation: </strong>The students go in turns as follows:
-
 - Student number 0 uses 3 chalk so k = 22.
-
 - Student number 1 uses 4 chalk so k = 18.
-
 - Student number 2 uses 1 chalk so k = 17.
-
 - Student number 3 uses 2 chalk so k = 15.
-
 - Student number 0 uses 3 chalk so k = 12.
-
 - Student number 1 uses 4 chalk so k = 8.
-
 - Student number 2 uses 1 chalk so k = 7.
-
 - Student number 3 uses 2 chalk so k = 5.
-
 - Student number 0 uses 3 chalk so k = 2.
-
 Student number 1 does not have enough chalk, so they will have to replace it.
-
 </pre>
 
 <p>&nbsp;</p>
-
 <p><strong>Constraints:</strong></p>
 
 <ul>
@@ -90,16 +64,9 @@ PreSum and Binary search.
 ```python
 class Solution:
     def chalkReplacer(self, chalk: List[int], k: int) -> int:
-        pre_sum = list(itertools.accumulate(chalk))
-        k %= pre_sum[-1]
-        left, right = 0, len(chalk) - 1
-        while left < right:
-            mid = (left + right) >> 1
-            if pre_sum[mid] > k:
-                right = mid
-            else:
-                left = mid + 1
-        return left
+        s = list(accumulate(chalk))
+        k %= s[-1]
+        return bisect_right(s, k)
 ```
 
 ### **Java**
@@ -134,21 +101,10 @@ class Solution {
 public:
     int chalkReplacer(vector<int>& chalk, int k) {
         int n = chalk.size();
-        vector<long long> preSum(n + 1);
-        for (int i = 0; i < n; ++i) {
-            preSum[i + 1] = preSum[i] + chalk[i];
-        }
-        k %= preSum[n];
-        int left = 0, right = n - 1;
-        while (left < right) {
-            int mid = left + (right - left >> 1);
-            if (preSum[mid + 1] > k) {
-                right = mid;
-            } else {
-                left = mid + 1;
-            }
-        }
-        return left;
+        vector<long long> s(n, chalk[0]);
+        for (int i = 1; i < n; ++i) s[i] = s[i - 1] + chalk[i];
+        k %= s[n - 1];
+        return upper_bound(s.begin(), s.end(), k) - s.begin();
     }
 };
 ```
@@ -158,21 +114,33 @@ public:
 ```go
 func chalkReplacer(chalk []int, k int) int {
 	n := len(chalk)
-	preSum := make([]int, n+1)
+	s := make([]int, n+1)
 	for i := 0; i < n; i++ {
-		preSum[i+1] = preSum[i] + chalk[i]
+		s[i+1] = s[i] + chalk[i]
 	}
-	k %= preSum[n]
-	left, right := 0, n-1
-	for left < right {
-		mid := left + ((right - left) >> 1)
-		if preSum[mid+1] > k {
-			right = mid
-		} else {
-			left = mid + 1
-		}
-	}
-	return left
+	k %= s[n]
+	return sort.Search(n, func(i int) bool { return s[i+1] > k })
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn chalk_replacer(chalk: Vec<i32>, k: i32) -> i32 {
+        let pre_sum: Vec<i64> = chalk
+            .into_iter()
+            .map(|x| x as i64)
+            .scan(0, |state, x| {
+                *state += x;
+                Some(*state)
+            })
+            .collect();
+
+        pre_sum
+            .binary_search(&(k as i64 % pre_sum.last().unwrap()))
+            .map_or_else(|e| e, |v| v + 1) as i32
+    }
 }
 ```
 

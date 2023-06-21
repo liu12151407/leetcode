@@ -18,43 +18,30 @@
 <p>Return the maximum possible beauty of some <strong>valid</strong> garden after you have removed any (possibly none) flowers.</p>
 
 <p>&nbsp;</p>
-
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
-
 <strong>Input:</strong> flowers = [1,2,3,1,2]
-
 <strong>Output:</strong> 8
-
 <strong>Explanation:</strong> You can produce the valid garden [2,3,1,2] to have a total beauty of 2 + 3 + 1 + 2 = 8.</pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
-
 <strong>Input:</strong> flowers = [100,1,1,-3,1]
-
 <strong>Output:</strong> 3
-
 <strong>Explanation:</strong> You can produce the valid garden [1,1,1] to have a total beauty of 1 + 1 + 1 = 3.
-
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
-
 <strong>Input:</strong> flowers = [-1,-2,0,-1]
-
 <strong>Output:</strong> -2
-
 <strong>Explanation:</strong> You can produce the valid garden [-1,-1] to have a total beauty of -1 + -1 = -2.
-
 </pre>
 
 <p>&nbsp;</p>
-
 <p><strong>Constraints:</strong></p>
 
 <ul>
@@ -70,13 +57,91 @@
 ### **Python3**
 
 ```python
-
+class Solution:
+    def maximumBeauty(self, flowers: List[int]) -> int:
+        s = [0] * (len(flowers) + 1)
+        d = {}
+        ans = -inf
+        for i, v in enumerate(flowers):
+            if v in d:
+                ans = max(ans, s[i] - s[d[v] + 1] + v * 2)
+            else:
+                d[v] = i
+            s[i + 1] = s[i] + max(v, 0)
+        return ans
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int maximumBeauty(int[] flowers) {
+        int[] s = new int[flowers.length + 1];
+        Map<Integer, Integer> d = new HashMap<>();
+        int ans = Integer.MIN_VALUE;
+        for (int i = 0; i < flowers.length; ++i) {
+            int v = flowers[i];
+            if (d.containsKey(v)) {
+                ans = Math.max(ans, s[i] - s[d.get(v) + 1] + v * 2);
+            } else {
+                d.put(v, i);
+            }
+            s[i + 1] = s[i] + Math.max(v, 0);
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int maximumBeauty(vector<int>& flowers) {
+        int n = flowers.size();
+        vector<int> s(n + 1);
+        unordered_map<int, int> d;
+        int ans = INT_MIN;
+        for (int i = 0; i < n; ++i) {
+            int v = flowers[i];
+            if (d.count(v)) {
+                ans = max(ans, s[i] - s[d[v] + 1] + v * 2);
+            } else {
+                d[v] = i;
+            }
+            s[i + 1] = s[i] + max(v, 0);
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func maximumBeauty(flowers []int) int {
+	n := len(flowers)
+	s := make([]int, n+1)
+	d := map[int]int{}
+	ans := math.MinInt32
+	for i, v := range flowers {
+		if j, ok := d[v]; ok {
+			ans = max(ans, s[i]-s[j+1]+v*2)
+		} else {
+			d[v] = i
+		}
+		s[i+1] = s[i] + max(v, 0)
+	}
+	return ans
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
 ```
 
 ### **...**

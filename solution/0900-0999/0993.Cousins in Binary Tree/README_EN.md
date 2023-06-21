@@ -4,51 +4,43 @@
 
 ## Description
 
-<p>In a binary tree, the root node is at depth <code>0</code>, and children of each depth <code>k</code> node are at depth <code>k+1</code>.</p>
+<p>Given the <code>root</code> of a binary tree with unique values and the values of two different nodes of the tree <code>x</code> and <code>y</code>, return <code>true</code> <em>if the nodes corresponding to the values </em><code>x</code><em> and </em><code>y</code><em> in the tree are <strong>cousins</strong>, or </em><code>false</code><em> otherwise.</em></p>
 
-<p>Two nodes of a binary tree are <em>cousins</em> if they have the same depth, but have <strong>different parents</strong>.</p>
+<p>Two nodes of a binary tree are <strong>cousins</strong> if they have the same depth with different parents.</p>
 
-<p>We are given the <code>root</code> of a binary tree with unique values, and the values <code>x</code>&nbsp;and <code>y</code>&nbsp;of two different nodes in the tree.</p>
-
-<p>Return&nbsp;<code>true</code>&nbsp;if and only if the nodes corresponding to the values <code>x</code> and <code>y</code> are cousins.</p>
+<p>Note that in a binary tree, the root node is at the depth <code>0</code>, and children of each depth <code>k</code> node are at the depth <code>k + 1</code>.</p>
 
 <p>&nbsp;</p>
-
-<p><strong>Example 1:<br />
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0993.Cousins%20in%20Binary%20Tree/images/q1248-01.png" style="width: 180px; height: 160px;" /></strong></p>
-
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0993.Cousins%20in%20Binary%20Tree/images/q1248-01.png" style="width: 304px; height: 270px;" />
 <pre>
-<strong>Input: </strong>root = <span id="example-input-1-1">[1,2,3,4]</span>, x = <span id="example-input-1-2">4</span>, y = <span id="example-input-1-3">3</span>
-<strong>Output: </strong><span id="example-output-1">false</span>
+<strong>Input:</strong> root = [1,2,3,4], x = 4, y = 3
+<strong>Output:</strong> false
 </pre>
 
-<div>
-<p><strong>Example 2:<br />
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0993.Cousins%20in%20Binary%20Tree/images/q1248-02.png" style="width: 201px; height: 160px;" /></strong></p>
-
+<p><strong class="example">Example 2:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0993.Cousins%20in%20Binary%20Tree/images/q1248-02.png" style="width: 334px; height: 266px;" />
 <pre>
-<strong>Input: </strong>root = <span id="example-input-2-1">[1,2,3,null,4,null,5]</span>, x = <span id="example-input-2-2">5</span>, y = <span id="example-input-2-3">4</span>
-<strong>Output: </strong><span id="example-output-2">true</span>
+<strong>Input:</strong> root = [1,2,3,null,4,null,5], x = 5, y = 4
+<strong>Output:</strong> true
 </pre>
 
-<div>
-<p><strong>Example 3:</strong></p>
-
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0993.Cousins%20in%20Binary%20Tree/images/q1248-03.png" style="width: 156px; height: 160px;" /></strong></p>
-
+<p><strong class="example">Example 3:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0993.Cousins%20in%20Binary%20Tree/images/q1248-03.png" style="width: 267px; height: 258px;" />
 <pre>
-<strong>Input: </strong>root = <span id="example-input-3-1">[1,2,3,null,4]</span>, x = 2, y = 3
-<strong>Output: </strong><span id="example-output-3">false</span>
+<strong>Input:</strong> root = [1,2,3,null,4], x = 2, y = 3
+<strong>Output:</strong> false
 </pre>
-</div>
-</div>
 
 <p>&nbsp;</p>
 <p><strong>Constraints:</strong></p>
 
 <ul>
-	<li>The number of nodes in the tree will be between <code>2</code> and <code>100</code>.</li>
-	<li>Each node has a unique integer value from <code>1</code> to <code>100</code>.</li>
+	<li>The number of nodes in the tree is in the range <code>[2, 100]</code>.</li>
+	<li><code>1 &lt;= Node.val &lt;= 100</code></li>
+	<li>Each node has a <strong>unique</strong> value.</li>
+	<li><code>x != y</code></li>
+	<li><code>x</code> and <code>y</code> are exist in the tree.</li>
 </ul>
 
 ## Solutions
@@ -69,24 +61,24 @@ BFS:
 #         self.left = left
 #         self.right = right
 class Solution:
-    def isCousins(self, root: TreeNode, x: int, y: int) -> bool:
-        p = list(range(110))
-        d = list(range(110))
-        q = deque([root])
-        i = 0
+    def isCousins(self, root: Optional[TreeNode], x: int, y: int) -> bool:
+        q = deque([(root, None)])
+        d = 0
+        p1 = p2 = None
+        d1 = d2 = 0
         while q:
-            n = len(q)
-            for _ in range(n):
-                node = q.popleft()
-                d[node.val] = i
+            for _ in range(len(q)):
+                node, fa = q.popleft()
+                if node.val == x:
+                    p1, d1 = fa, d
+                if node.val == y:
+                    p2, d2 = fa, d
                 if node.left:
-                    p[node.left.val] = node.val
-                    q.append(node.left)
+                    q.append((node.left, node))
                 if node.right:
-                    q.append(node.right)
-                    p[node.right.val] = node.val
-            i += 1
-        return p[x] != p[y] and d[x] == d[y]
+                    q.append((node.right, node))
+            d += 1
+        return p1 != p2 and d1 == d2
 ```
 
 DFS:
@@ -99,22 +91,20 @@ DFS:
 #         self.left = left
 #         self.right = right
 class Solution:
-    def isCousins(self, root: TreeNode, x: int, y: int) -> bool:
-        p1 = p2 = d1 = d2 = None
-
-        def dfs(root, p, d):
+    def isCousins(self, root: Optional[TreeNode], x: int, y: int) -> bool:
+        def dfs(root, fa, d):
             if root is None:
                 return
-            nonlocal p1, p2, d1, d2, x, y
             if root.val == x:
-                p1, d1 = p, d
+                t[0] = (fa, d)
             if root.val == y:
-                p2, d2 = p, d
+                t[1] = (fa, d)
             dfs(root.left, root, d + 1)
             dfs(root.right, root, d + 1)
 
+        t = [None, None]
         dfs(root, None, 0)
-        return p1 != p2 and d1 == d2
+        return t[0][0] != t[1][0] and t[0][1] == t[1][1]
 ```
 
 ### **Java**
@@ -139,28 +129,33 @@ BFS:
  */
 class Solution {
     public boolean isCousins(TreeNode root, int x, int y) {
-        int[] p = new int[110];
-        int[] d = new int[110];
-        Deque<TreeNode> q = new ArrayDeque<>();
-        q.offer(root);
-        int i = 0;
+        TreeNode p1 = null, p2 = null;
+        int d1 = 0, d2 = 0;
+        Deque<TreeNode[]> q = new ArrayDeque<>();
+        q.offer(new TreeNode[] {root, null});
+        int d = 0;
         while (!q.isEmpty()) {
-            int n = q.size();
-            while (n-- > 0) {
-                TreeNode node = q.poll();
-                d[node.val] = i;
+            for (int n = q.size(); n > 0; --n) {
+                var p = q.poll();
+                TreeNode node = p[0], fa = p[1];
+                if (node.val == x) {
+                    p1 = fa;
+                    d1 = d;
+                }
+                if (node.val == y) {
+                    p2 = fa;
+                    d2 = d;
+                }
                 if (node.left != null) {
-                    q.offer(node.left);
-                    p[node.left.val] = node.val;
+                    q.offer(new TreeNode[] {node.left, node});
                 }
                 if (node.right != null) {
-                    q.offer(node.right);
-                    p[node.right.val] = node.val;
+                    q.offer(new TreeNode[] {node.right, node});
                 }
             }
-            ++i;
+            ++d;
         }
-        return p[x] != p[y] && d[x] == d[y];
+        return p1 != p2 && d1 == d2;
     }
 }
 ```
@@ -219,7 +214,7 @@ BFS:
 
 ```cpp
 /**
- * Definition for a binary tree node->
+ * Definition for a binary tree node.
  * struct TreeNode {
  *     int val;
  *     TreeNode *left;
@@ -232,33 +227,34 @@ BFS:
 class Solution {
 public:
     bool isCousins(TreeNode* root, int x, int y) {
-        vector<int> p(110);
-        vector<int> d(110);
-        queue<TreeNode*> q;
-        q.push(root);
-        int i = 0;
-        while (!q.empty())
-        {
-            int n = q.size();
-            while (n--)
-            {
-                auto node = q.front();
-                d[node->val] = i;
+        TreeNode* p1 = nullptr;
+        TreeNode* p2 = nullptr;
+        int d1 = 0, d2 = 0;
+        queue<pair<TreeNode*, TreeNode*>> q;
+        q.emplace(root, nullptr);
+        int d = 0;
+        while (!q.empty()) {
+            for (int n = q.size(); n; --n) {
+                auto [node, fa] = q.front();
                 q.pop();
-                if (node->left)
-                {
-                    q.push(node->left);
-                    p[node->left->val] = node->val;
+                if (node->val == x) {
+                    p1 = fa;
+                    d1 = d;
                 }
-                if (node->right)
-                {
-                    q.push(node->right);
-                    p[node->right->val] = node->val;
+                if (node->val == y) {
+                    p2 = fa;
+                    d2 = d;
+                }
+                if (node->left) {
+                    q.emplace(node->left, node);
+                }
+                if (node->right) {
+                    q.emplace(node->right, node);
                 }
             }
-            ++i;
+            ++d;
         }
-        return p[x] != p[y] && d[x] == d[y];
+        return p1 != p2 && d1 == d2;
     }
 };
 ```
@@ -279,32 +275,26 @@ DFS:
  */
 class Solution {
 public:
-    TreeNode* p1;
-    TreeNode* p2;
-    int d1, d2;
-    int x, y;
-
     bool isCousins(TreeNode* root, int x, int y) {
-        this->x = x;
-        this->y = y;
+        TreeNode *p1, *p2;
+        int d1, d2;
+        function<void(TreeNode*, TreeNode*, int)> dfs = [&](TreeNode* root, TreeNode* fa, int d) {
+            if (!root) {
+                return;
+            }
+            if (root->val == x) {
+                p1 = fa;
+                d1 = d;
+            }
+            if (root->val == y) {
+                p2 = fa;
+                d2 = d;
+            }
+            dfs(root->left, root, d + 1);
+            dfs(root->right, root, d + 1);
+        };
         dfs(root, nullptr, 0);
         return p1 != p2 && d1 == d2;
-    }
-
-    void dfs(TreeNode* root, TreeNode* p, int d) {
-        if (!root) return;
-        if (root->val == x)
-        {
-            p1 = p;
-            d1 = d;
-        }
-        if (root->val == y)
-        {
-            p2 = p;
-            d2 = d;
-        }
-        dfs(root->left, root, d + 1);
-        dfs(root->right, root, d + 1);
     }
 };
 ```
@@ -323,30 +313,31 @@ BFS:
  * }
  */
 func isCousins(root *TreeNode, x int, y int) bool {
-	p := make([]int, 110)
-	d := make([]int, 110)
-	var q []*TreeNode
-	q = append(q, root)
-	i := 0
+	type pair struct{ node, fa *TreeNode }
+	q := []pair{pair{root, nil}}
+	var p1, p2 *TreeNode
+	var d, d1, d2 int
 	for len(q) > 0 {
-		n := len(q)
-		for n > 0 {
-			node := q[0]
+		for n := len(q); n > 0; n-- {
+			p := q[0]
 			q = q[1:]
-			n--
-			d[node.Val] = i
+			node, fa := p.node, p.fa
+			if node.Val == x {
+				p1, d1 = fa, d
+			}
+			if node.Val == y {
+				p2, d2 = fa, d
+			}
 			if node.Left != nil {
-				q = append(q, node.Left)
-				p[node.Left.Val] = node.Val
+				q = append(q, pair{node.Left, node})
 			}
 			if node.Right != nil {
-				q = append(q, node.Right)
-				p[node.Right.Val] = node.Val
+				q = append(q, pair{node.Right, node})
 			}
 		}
-		i++
+		d++
 	}
-	return p[x] != p[y] && d[x] == d[y]
+	return p1 != p2 && d1 == d2
 }
 ```
 
@@ -361,30 +352,25 @@ DFS:
  *     Right *TreeNode
  * }
  */
-var p1 *TreeNode
-var p2 *TreeNode
-var d1 int
-var d2 int
-
 func isCousins(root *TreeNode, x int, y int) bool {
-	dfs(root, nil, x, y, 0)
+	var p1, p2 *TreeNode
+	var d1, d2 int
+	var dfs func(*TreeNode, *TreeNode, int)
+	dfs = func(root *TreeNode, fa *TreeNode, d int) {
+		if root == nil {
+			return
+		}
+		if root.Val == x {
+			p1, d1 = fa, d
+		}
+		if root.Val == y {
+			p2, d2 = fa, d
+		}
+		dfs(root.Left, root, d+1)
+		dfs(root.Right, root, d+1)
+	}
+	dfs(root, nil, 0)
 	return p1 != p2 && d1 == d2
-}
-
-func dfs(root, p *TreeNode, x, y, d int) {
-	if root == nil {
-		return
-	}
-	if root.Val == x {
-		p1 = p
-		d1 = d
-	}
-	if root.Val == y {
-		p2 = p
-		d2 = d
-	}
-	dfs(root.Left, root, x, y, d+1)
-	dfs(root.Right, root, x, y, d+1)
 }
 ```
 

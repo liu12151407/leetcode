@@ -5,12 +5,12 @@
  *     Next *ListNode
  * }
  */
-//insert to the front
-func reversePrint(head *ListNode) []int {
-	res := []int{}
-	for head != nil {
-		res = append([]int{head.Val}, res...)
-		head = head.Next
+func reversePrint(head *ListNode) (ans []int) {
+	for ; head != nil; head = head.Next {
+		ans = append(ans, head.Val)
 	}
-	return res
+	for i, j := 0, len(ans)-1; i < j; i, j = i+1, j-1 {
+		ans[i], ans[j] = ans[j], ans[i]
+	}
+	return
 }

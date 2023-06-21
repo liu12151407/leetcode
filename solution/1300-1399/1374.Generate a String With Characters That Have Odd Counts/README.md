@@ -1,4 +1,4 @@
-# [1374. 生成每种字符都是奇数个的字符串](https://leetcode-cn.com/problems/generate-a-string-with-characters-that-have-odd-counts)
+# [1374. 生成每种字符都是奇数个的字符串](https://leetcode.cn/problems/generate-a-string-with-characters-that-have-odd-counts)
 
 [English Version](/solution/1300-1399/1374.Generate%20a%20String%20With%20Characters%20That%20Have%20Odd%20Counts/README_EN.md)
 
@@ -44,6 +44,14 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：构造**
+
+如果 $n$ 为奇数，那么直接构造 $n$ 个 `'a'` 即可。
+
+如果 $n$ 为偶数，那么构造 $n-1$ 个 `'a'` 和 $1$ 个 `'b'` 即可。
+
+时间复杂度 $O(n)$，空间复杂度 $O(n)$。其中 $n$ 为字符串长度。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -51,7 +59,9 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def generateTheString(self, n: int) -> str:
+        return 'a' * n if n & 1 else 'a' * (n - 1) + 'b'
 ```
 
 ### **Java**
@@ -59,7 +69,52 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public String generateTheString(int n) {
+        return (n % 2 == 1) ? "a".repeat(n) : "a".repeat(n - 1) + "b";
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    string generateTheString(int n) {
+        string ans(n, 'a');
+        if (n % 2 == 0) {
+            ans[0] = 'b';
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func generateTheString(n int) string {
+	ans := strings.Repeat("a", n-1)
+	if n%2 == 0 {
+		ans += "b"
+	} else {
+		ans += "a"
+	}
+	return ans
+}
+```
+
+### **TypeScript**
+
+```ts
+function generateTheString(n: number): string {
+    const ans = Array(n).fill('a');
+    if (n % 2 === 0) {
+        ans[0] = 'b';
+    }
+    return ans.join('');
+}
 ```
 
 ### **...**

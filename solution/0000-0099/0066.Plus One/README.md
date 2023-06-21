@@ -1,4 +1,4 @@
-# [66. 加一](https://leetcode-cn.com/problems/plus-one)
+# [66. 加一](https://leetcode.cn/problems/plus-one)
 
 [English Version](/solution/0000-0099/0066.Plus%20One/README_EN.md)
 
@@ -60,7 +60,7 @@
 class Solution:
     def plusOne(self, digits: List[int]) -> List[int]:
         n = len(digits)
-        for i in range(n - 1, -1 , -1):
+        for i in range(n - 1, -1, -1):
             digits[i] += 1
             digits[i] %= 10
             if digits[i] != 0:
@@ -115,8 +115,7 @@ var plusOne = function (digits) {
 class Solution {
 public:
     vector<int> plusOne(vector<int>& digits) {
-        for (int i = digits.size() - 1; i >= 0; --i)
-        {
+        for (int i = digits.size() - 1; i >= 0; --i) {
             ++digits[i];
             digits[i] %= 10;
             if (digits[i] != 0) return digits;
@@ -140,6 +139,40 @@ func plusOne(digits []int) []int {
 		}
 	}
 	return append([]int{1}, digits...)
+}
+```
+
+### **TypeScript**
+
+```ts
+function plusOne(digits: number[]): number[] {
+    const n = digits.length;
+    for (let i = n - 1; i >= 0; i--) {
+        if (10 > ++digits[i]) {
+            return digits;
+        }
+        digits[i] %= 10;
+    }
+    return [1, ...digits];
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn plus_one(mut digits: Vec<i32>) -> Vec<i32> {
+        let n = digits.len();
+        for i in (0..n).rev() {
+            digits[i] += 1;
+            if 10 > digits[i] {
+                return digits;
+            }
+            digits[i] %= 10;
+        }
+        digits.insert(0, 1);
+        digits
+    }
 }
 ```
 

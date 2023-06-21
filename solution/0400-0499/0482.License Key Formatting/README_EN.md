@@ -11,7 +11,7 @@
 <p>Return <em>the reformatted license key</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;5F3Z-2e-9-w&quot;, k = 4
@@ -20,7 +20,7 @@
 Note that the two extra dashes are not needed and can be removed.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;2-5g-3-J&quot;, k = 2
@@ -96,8 +96,7 @@ class Solution {
 public:
     string licenseKeyFormatting(string s, int k) {
         string ss = "";
-        for (char c : s)
-        {
+        for (char c : s) {
             if (c == '-') continue;
             if ('a' <= c && c <= 'z') c += 'A' - 'a';
             ss += c;
@@ -106,12 +105,10 @@ public:
         if (cnt == 0) cnt = k;
         int t = 0;
         string res = "";
-        for (int i = 0; i < ss.size(); ++i)
-        {
+        for (int i = 0; i < ss.size(); ++i) {
             res += ss[i];
             ++t;
-            if (t == cnt)
-            {
+            if (t == cnt) {
                 t = 0;
                 cnt = k;
                 if (i != ss.size() - 1) res += '-';

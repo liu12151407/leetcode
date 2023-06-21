@@ -1,4 +1,4 @@
-# [512. 游戏玩法分析 II](https://leetcode-cn.com/problems/game-play-analysis-ii)
+# [512. 游戏玩法分析 II](https://leetcode.cn/problems/game-play-analysis-ii)
 
 [English Version](/solution/0500-0599/0512.Game%20Play%20Analysis%20II/README_EN.md)
 
@@ -56,7 +56,19 @@ Result table:
 ### **SQL**
 
 ```sql
-
+# Write your MySQL query statement below
+SELECT
+    player_id,
+    device_id
+FROM Activity
+WHERE
+    (player_id, event_date) IN (
+        SELECT
+            player_id,
+            min(event_date) AS event_date
+        FROM Activity
+        GROUP BY player_id
+    );
 ```
 
 <!-- tabs:end -->

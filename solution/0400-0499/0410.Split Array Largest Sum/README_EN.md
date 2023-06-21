@@ -4,34 +4,29 @@
 
 ## Description
 
-<p>Given an array <code>nums</code> which consists of non-negative integers and an integer <code>m</code>, you can split the array into <code>m</code> non-empty continuous subarrays.</p>
+<p>Given an integer array <code>nums</code> and an integer <code>k</code>, split <code>nums</code> into <code>k</code> non-empty subarrays such that the largest sum of any subarray is <strong>minimized</strong>.</p>
 
-<p>Write an algorithm to minimize the largest sum among these <code>m</code> subarrays.</p>
+<p>Return <em>the minimized largest sum of the split</em>.</p>
+
+<p>A <strong>subarray</strong> is a contiguous part of the array.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
-<strong>Input:</strong> nums = [7,2,5,10,8], m = 2
+<strong>Input:</strong> nums = [7,2,5,10,8], k = 2
 <strong>Output:</strong> 18
-<strong>Explanation:</strong>
-There are four ways to split nums into two subarrays.
-The best way is to split it into [7,2,5] and [10,8],
-where the largest sum among the two subarrays is only 18.
+<strong>Explanation:</strong> There are four ways to split nums into two subarrays.
+The best way is to split it into [7,2,5] and [10,8], where the largest sum among the two subarrays is only 18.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
-<strong>Input:</strong> nums = [1,2,3,4,5], m = 2
+<strong>Input:</strong> nums = [1,2,3,4,5], k = 2
 <strong>Output:</strong> 9
-</pre>
-
-<p><strong>Example 3:</strong></p>
-
-<pre>
-<strong>Input:</strong> nums = [1,4,4], m = 3
-<strong>Output:</strong> 4
+<strong>Explanation:</strong> There are four ways to split nums into two subarrays.
+The best way is to split it into [1,2,3] and [4,5], where the largest sum among the two subarrays is only 9.
 </pre>
 
 <p>&nbsp;</p>
@@ -40,7 +35,7 @@ where the largest sum among the two subarrays is only 18.
 <ul>
 	<li><code>1 &lt;= nums.length &lt;= 1000</code></li>
 	<li><code>0 &lt;= nums[i] &lt;= 10<sup>6</sup></code></li>
-	<li><code>1 &lt;= m &lt;= min(50, nums.length)</code></li>
+	<li><code>1 &lt;= k &lt;= min(50, nums.length)</code></li>
 </ul>
 
 ## Solutions
@@ -53,40 +48,33 @@ Binary search.
 
 ```python
 class Solution:
-    def splitArray(self, nums: List[int], m: int) -> int:
-        def check(x):
-            s, cnt = 0, 1
-            for num in nums:
-                if s + num > x:
+    def splitArray(self, nums: List[int], k: int) -> int:
+        def check(mx):
+            s, cnt = inf, 0
+            for x in nums:
+                s += x
+                if s > mx:
+                    s = x
                     cnt += 1
-                    s = num
-                else:
-                    s += num
-            return cnt <= m
+            return cnt <= k
 
         left, right = max(nums), sum(nums)
-        while left < right:
-            mid = (left + right) >> 1
-            if check(mid):
-                right = mid
-            else:
-                left = mid + 1
-        return left
+        return left + bisect_left(range(left, right + 1), True, key=check)
 ```
 
 ### **Java**
 
 ```java
 class Solution {
-    public int splitArray(int[] nums, int m) {
-        int mx = -1;
-        for (int num : nums) {
-            mx = Math.max(mx, num);
+    public int splitArray(int[] nums, int k) {
+        int left = 0, right = 0;
+        for (int x : nums) {
+            left = Math.max(left, x);
+            right += x;
         }
-        int left = mx, right = (int) 1e9;
         while (left < right) {
             int mid = (left + right) >> 1;
-            if (check(nums, m, mid)) {
+            if (check(nums, mid, k)) {
                 right = mid;
             } else {
                 left = mid + 1;
@@ -95,17 +83,16 @@ class Solution {
         return left;
     }
 
-    private boolean check(int[] nums, int m, int x) {
-        int s = 0, cnt = 1;
-        for (int num : nums) {
-            if (s + num > x) {
+    private boolean check(int[] nums, int mx, int k) {
+        int s = 1 << 30, cnt = 0;
+        for (int x : nums) {
+            s += x;
+            if (s > mx) {
                 ++cnt;
-                s = num;
-            } else {
-                s += num;
+                s = x;
             }
         }
-        return cnt <= m;
+        return cnt <= k;
     }
 }
 ```
@@ -115,27 +102,32 @@ class Solution {
 ```cpp
 class Solution {
 public:
-    int splitArray(vector<int>& nums, int m) {
-        int left = *max_element(nums.begin(), nums.end()), right = (int) 1e9;
-        while (left < right) {
-            int mid = left + right >> 1;
-            if (check(nums, m, mid)) right = mid;
-            else left = mid + 1;
+    int splitArray(vector<int>& nums, int k) {
+        int left = 0, right = 0;
+        for (int& x : nums) {
+            left = max(left, x);
+            right += x;
         }
-        return left;
-    }
-
-    bool check(vector<int>& nums, int m, int x) {
-        int s = 0, cnt = 1;
-        for (int num : nums) {
-            if (s + num > x) {
-                ++cnt;
-                s = num;
+        auto check = [&](int mx) {
+            int s = 1 << 30, cnt = 0;
+            for (int& x : nums) {
+                s += x;
+                if (s > mx) {
+                    s = x;
+                    ++cnt;
+                }
+            }
+            return cnt <= k;
+        };
+        while (left < right) {
+            int mid = (left + right) >> 1;
+            if (check(mid)) {
+                right = mid;
             } else {
-                s += num;
+                left = mid + 1;
             }
         }
-        return cnt <= m;
+        return left;
     }
 };
 ```
@@ -143,34 +135,24 @@ public:
 ### **Go**
 
 ```go
-func splitArray(nums []int, m int) int {
-	mx := -1
-	for _, num := range nums {
-		mx = max(mx, num)
+func splitArray(nums []int, k int) int {
+	left, right := 0, 0
+	for _, x := range nums {
+		left = max(left, x)
+		right += x
 	}
-	left, right := mx, int(1e9)
-	for left < right {
-		mid := (left + right) >> 1
-		if check(nums, m, mid) {
-			right = mid
-		} else {
-			left = mid + 1
+	return left + sort.Search(right-left, func(mx int) bool {
+		mx += left
+		s, cnt := 1<<30, 0
+		for _, x := range nums {
+			s += x
+			if s > mx {
+				s = x
+				cnt++
+			}
 		}
-	}
-	return left
-}
-
-func check(nums []int, m, x int) bool {
-	s, cnt := 0, 1
-	for _, num := range nums {
-		if s+num > x {
-			cnt++
-			s = num
-		} else {
-			s += num
-		}
-	}
-	return cnt <= m
+		return cnt <= k
+	})
 }
 
 func max(a, b int) int {
@@ -178,6 +160,40 @@ func max(a, b int) int {
 		return a
 	}
 	return b
+}
+```
+
+### **TypeScript**
+
+```ts
+function splitArray(nums: number[], k: number): number {
+    let left = 0;
+    let right = 0;
+    for (const x of nums) {
+        left = Math.max(left, x);
+        right += x;
+    }
+    const check = (mx: number) => {
+        let s = 1 << 30;
+        let cnt = 0;
+        for (const x of nums) {
+            s += x;
+            if (s > mx) {
+                s = x;
+                ++cnt;
+            }
+        }
+        return cnt <= k;
+    };
+    while (left < right) {
+        const mid = (left + right) >> 1;
+        if (check(mid)) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+    return left;
 }
 ```
 

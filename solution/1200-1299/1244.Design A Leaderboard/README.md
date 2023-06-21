@@ -1,4 +1,4 @@
-# [1244. 力扣排行榜](https://leetcode-cn.com/problems/design-a-leaderboard)
+# [1244. 力扣排行榜](https://leetcode.cn/problems/design-a-leaderboard)
 
 [English Version](/solution/1200-1299/1244.Design%20A%20Leaderboard/README_EN.md)
 
@@ -12,13 +12,13 @@
 
 <ol>
 	<li><code>addScore(playerId, score)</code>：
-	<ul>
-		<li>假如参赛者已经在排行榜上，就给他的当前得分增加 <code>score</code> 点分值并更新排行。</li>
-		<li>假如该参赛者不在排行榜上，就把他添加到榜单上，并且将分数设置为 <code>score</code>。</li>
-	</ul>
-	</li>
-	<li><code>top(K)</code>：返回前 <code>K</code> 名参赛者的 <strong>得分总和</strong>。</li>
-	<li><code>reset(playerId)</code>：将指定参赛者的成绩清零（换句话说，将其从排行榜中删除）。题目保证在调用此函数前，该参赛者已有成绩，并且在榜单上。</li>
+    <ul>
+    	<li>假如参赛者已经在排行榜上，就给他的当前得分增加 <code>score</code> 点分值并更新排行。</li>
+    	<li>假如该参赛者不在排行榜上，就把他添加到榜单上，并且将分数设置为 <code>score</code>。</li>
+    </ul>
+    </li>
+    <li><code>top(K)</code>：返回前 <code>K</code> 名参赛者的 <strong>得分总和</strong>。</li>
+    <li><code>reset(playerId)</code>：将指定参赛者的成绩清零（换句话说，将其从排行榜中删除）。题目保证在调用此函数前，该参赛者已有成绩，并且在榜单上。</li>
 </ol>
 
 <p>请注意，在初始状态下，排行榜是空的。</p>
@@ -63,9 +63,17 @@ leaderboard.top(3);           // returns 141 = 51 + 51 + 39;
 
 <!-- 这里可写通用的实现逻辑 -->
 
-用哈希表存放每个 playerId 所对应的分数。
+**方法一：哈希表 + 有序列表**
 
-计算 topK 时，取出所有的分数，进行排序，获取前 K 个分数，累加得到结果。
+我们用哈希表 $d$ 记录每个参赛者的分数，用有序列表 $rank$ 记录所有参赛者的分数。
+
+当调用 `addScore` 函数时，我们先判断参赛者是否在哈希表 $d$ 中，如果不在，我们将其分数加入有序列表 $rank$ 中，否则我们先将其分数从有序列表 $rank$ 中删除，再将其分数加入有序列表 $rank$ 中，最后更新哈希表 $d$ 中的分数。时间复杂度 $O(\log n)$。
+
+当调用 `top` 函数时，我们直接返回有序列表 $rank$ 中前 $K$ 个元素的和。时间复杂度 $O(K \times \log n)$。
+
+当调用 `reset` 函数时，我们先移除哈希表 $d$ 中的参赛者，再将其分数从有序列表 $rank$ 中移除。时间复杂度 $O(\log n)$。
+
+空间复杂度 $O(n)$。其中 $n$ 为参赛者的数量。
 
 <!-- tabs:start -->
 
@@ -74,20 +82,28 @@ leaderboard.top(3);           // returns 141 = 51 + 51 + 39;
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-class Leaderboard:
+from sortedcontainers import SortedList
 
+
+class Leaderboard:
     def __init__(self):
-        self.player_scores = {}
+        self.d = defaultdict(int)
+        self.rank = SortedList()
 
     def addScore(self, playerId: int, score: int) -> None:
-        self.player_scores[playerId] = self.player_scores.get(playerId, 0) + score
+        if playerId not in self.d:
+            self.d[playerId] = score
+            self.rank.add(score)
+        else:
+            self.rank.remove(self.d[playerId])
+            self.d[playerId] += score
+            self.rank.add(self.d[playerId])
 
     def top(self, K: int) -> int:
-        scores = sorted(list(self.player_scores.values()), reverse=True)
-        return sum(scores[:K])
+        return sum(self.rank[-K:])
 
     def reset(self, playerId: int) -> None:
-        self.player_scores[playerId] = 0
+        self.rank.remove(self.d.pop(playerId))
 
 
 # Your Leaderboard object will be instantiated and called as such:
@@ -103,28 +119,40 @@ class Leaderboard:
 
 ```java
 class Leaderboard {
-    private Map<Integer, Integer> playerScores;
+    private Map<Integer, Integer> d = new HashMap<>();
+    private TreeMap<Integer, Integer> rank = new TreeMap<>((a, b) -> b - a);
 
     public Leaderboard() {
-        playerScores = new HashMap<>();
     }
 
     public void addScore(int playerId, int score) {
-        playerScores.put(playerId, playerScores.getOrDefault(playerId, 0) + score);
+        d.merge(playerId, score, Integer::sum);
+        int newScore = d.get(playerId);
+        if (newScore != score) {
+            rank.merge(newScore - score, -1, Integer::sum);
+        }
+        rank.merge(newScore, 1, Integer::sum);
     }
 
     public int top(int K) {
-        List<Integer> scores = new ArrayList<>(playerScores.values());
-        Collections.sort(scores, Collections.reverseOrder());
-        int res = 0;
-        for (int i = 0; i < K; ++i) {
-            res += scores.get(i);
+        int ans = 0;
+        for (var e : rank.entrySet()) {
+            int score = e.getKey(), cnt = e.getValue();
+            cnt = Math.min(cnt, K);
+            ans += score * cnt;
+            K -= cnt;
+            if (K == 0) {
+                break;
+            }
         }
-        return res;
+        return ans;
     }
 
     public void reset(int playerId) {
-        playerScores.put(playerId, 0);
+        int score = d.remove(playerId);
+        if (rank.merge(score, -1, Integer::sum) == 0) {
+            rank.remove(score);
+        }
     }
 }
 
@@ -134,6 +162,54 @@ class Leaderboard {
  * obj.addScore(playerId,score);
  * int param_2 = obj.top(K);
  * obj.reset(playerId);
+ */
+```
+
+### **C++**
+
+```cpp
+class Leaderboard {
+public:
+    Leaderboard() {
+    }
+
+    void addScore(int playerId, int score) {
+        d[playerId] += score;
+        int newScore = d[playerId];
+        if (newScore != score) {
+            rank.erase(rank.find(newScore - score));
+        }
+        rank.insert(newScore);
+    }
+
+    int top(int K) {
+        int ans = 0;
+        for (auto& x : rank) {
+            ans += x;
+            if (--K == 0) {
+                break;
+            }
+        }
+        return ans;
+    }
+
+    void reset(int playerId) {
+        int score = d[playerId];
+        d.erase(playerId);
+        rank.erase(rank.find(score));
+    }
+
+private:
+    unordered_map<int, int> d;
+    multiset<int, greater<int>> rank;
+};
+
+/**
+ * Your Leaderboard object will be instantiated and called as such:
+ * Leaderboard* obj = new Leaderboard();
+ * obj->addScore(playerId,score);
+ * int param_2 = obj->top(K);
+ * obj->reset(playerId);
  */
 ```
 

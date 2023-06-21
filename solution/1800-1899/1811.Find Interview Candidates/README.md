@@ -1,4 +1,4 @@
-# [1811. Find Interview Candidates](https://leetcode-cn.com/problems/find-interview-candidates)
+# [1811. 寻找面试候选人](https://leetcode.cn/problems/find-interview-candidates)
 
 [English Version](/solution/1800-1899/1811.Find%20Interview%20Candidates/README_EN.md)
 
@@ -6,7 +6,7 @@
 
 <!-- 这里写题目描述 -->
 
-<p>Table: <code>Contests</code></p>
+<p>表: <code>Contests</code></p>
 
 <pre>
 +--------------+------+
@@ -17,11 +17,11 @@
 | silver_medal | int  |
 | bronze_medal | int  |
 +--------------+------+
-contest_id is the primary key for this table.
-This table contains the LeetCode contest ID and the user IDs of the gold, silver, and bronze medalists.
-It is guaranteed that any consecutive contests have consecutive IDs and that no ID is skipped.</pre>
+contest_id 是该表的主键.
+该表包含LeetCode竞赛的ID和该场比赛中金牌、银牌、铜牌的用户id。
+可以保证，所有连续的比赛都有连续的ID，没有ID被跳过。
 
-<p>&nbsp;</p>
+</pre>
 
 <p>Table: <code>Users</code></p>
 
@@ -33,27 +33,29 @@ It is guaranteed that any consecutive contests have consecutive IDs and that no 
 | mail        | varchar |
 | name        | varchar |
 +-------------+---------+
-user_id is the primary key for this table.
-This table contains information about the users.
-</pre>
+user_id 是该表的主键.
+该表包含用户信息。</pre>
 
 <p>&nbsp;</p>
 
-<p>Write an SQL query to report the <code>name</code> and the <code>mail</code> of all <strong>interview candidates</strong>. A user is an <strong>interview candidate</strong> if <strong>at least one</strong> of these two conditions is true:</p>
+<p>编写 SQL 语句来返回 <strong>所有面试候选人</strong> 的姓名&nbsp;<code>name</code>&nbsp;和邮件&nbsp;<code>mail</code>&nbsp;。当用户满足以下两个要求中的 <strong>任意一条 </strong>，其成为 <strong>面试候选人 </strong>:</p>
 
 <ul>
-	<li>The user won <strong>any</strong> medal in <strong>three or more consecutive</strong> contests.</li>
-	<li>The user won the <strong>gold</strong> medal in <strong>three or more different</strong> contests (not necessarily consecutive).</li>
+	<li>该用户在 <strong>连续三场及更多</strong> 比赛中赢得 <strong>任意</strong> 奖牌。</li>
+	<li>该用户在 <strong>三场及更多不同的</strong> 比赛中赢得 <strong>金牌</strong>（这些比赛可以不是连续的）</li>
 </ul>
 
-<p>Return the result table in <strong>any order</strong>.</p>
+<p>可以以 <strong>任何顺序</strong> 返回结果。</p>
 
-<p>The query result format is in the following example:</p>
+<p>查询结果格式如下例所示。</p>
 
 <p>&nbsp;</p>
 
+<p><strong>示例 1：</strong></p>
+
 <pre>
-Contests table:
+<strong>输入：</strong>
+Contests表:
 +------------+------------+--------------+--------------+
 | contest_id | gold_medal | silver_medal | bronze_medal |
 +------------+------------+--------------+--------------+
@@ -65,8 +67,7 @@ Contests table:
 | 195        | 4          | 2            | 1            |
 | 196        | 1          | 5            | 2            |
 +------------+------------+--------------+--------------+
-
-Users table:
+Users表:
 +---------+--------------------+-------+
 | user_id | mail               | name  |
 +---------+--------------------+-------+
@@ -76,8 +77,7 @@ Users table:
 | 4       | hercy@leetcode.com | Hercy |
 | 5       | quarz@leetcode.com | Quarz |
 +---------+--------------------+-------+
-
-Result table:
+<strong>输出：</strong>
 +-------+--------------------+
 | name  | mail               |
 +-------+--------------------+
@@ -86,20 +86,21 @@ Result table:
 | Alice | alice@leetcode.com |
 | Quarz | quarz@leetcode.com |
 +-------+--------------------+
-
-Sarah won 3 gold medals (190, 193, and 196), so we include her in the result table.
-Bob won a medal in 3 consecutive contests (190, 191, and 192), so we include him in the result table.
-    - Note that he also won a medal in 3 other consecutive contests (194, 195, and 196).
-Alice won a medal in 3 consecutive contests (191, 192, and 193), so we include her in the result table.
-Quarz won a medal in 5 consecutive contests (190, 191, 192, 193, and 194), so we include them in the result table.
+<strong>解释：</strong>
+Sarah 赢得了3块金牌 (190, 193, and 196),所以我们将她列入结果表。
+Bob在连续3场竞赛中赢得了奖牌(190, 191, and 192), 所以我们将他列入结果表。
+    - 注意他在另外的连续3场竞赛中也赢得了奖牌(194, 195, and 196).
+Alice在连续3场竞赛中赢得了奖牌 (191, 192, and 193), 所以我们将她列入结果表。
+Quarz在连续5场竞赛中赢得了奖牌(190, 191, 192, 193, and 194), 所以我们将他列入结果表。
 </pre>
 
 <p>&nbsp;</p>
-<p><strong>Follow up:</strong></p>
+
+<p><strong>进阶：</strong></p>
 
 <ul>
-	<li>What if the first condition changed to be &quot;any medal in <code>n</code><strong> or more</strong> consecutive contests&quot;? How would you change your solution to get the interview candidates? Imagine that <code>n</code> is the parameter of a stored procedure.</li>
-	<li>Some users may not participate in every contest but still perform well in the ones they do. How would you change your solution to only consider contests where the user <strong>was a participant</strong>? Suppose the registered users for each contest are given in another table.</li>
+	<li>如果第一个条件变成“该用户在连续 <code>n</code> 场及比赛中赢得任意奖牌。”呢？你如何更改你的解法，来选出面试候选人？可以把 <code>n</code> 想象成存储过程中的参数。</li>
+	<li>有的用户可能没有参加每一场竞赛，但是在参加的每一场竞赛中都表现得不错。你如何更改你的解法，以达到只考虑那些&nbsp;<strong>用户参与了的&nbsp;</strong>比赛？可假设另一张表给出了每场比赛的注册用户信息。</li>
 </ul>
 
 ## 解法

@@ -1,4 +1,4 @@
-# [剑指 Offer II 071. 按权重生成随机数](https://leetcode-cn.com/problems/cuyjEf)
+# [剑指 Offer II 071. 按权重生成随机数](https://leetcode.cn/problems/cuyjEf)
 
 ## 题目描述
 
@@ -65,7 +65,7 @@ solution.pickIndex(); // 返回 0，返回下标 0，返回该下标概率为 1/
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 528&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/random-pick-with-weight/">https://leetcode-cn.com/problems/random-pick-with-weight/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 528&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/random-pick-with-weight/">https://leetcode.cn/problems/random-pick-with-weight/</a></p>
 
 ## 解法
 
@@ -81,7 +81,6 @@ solution.pickIndex(); // 返回 0，返回下标 0，返回该下标概率为 1/
 
 ```python
 class Solution:
-
     def __init__(self, w: List[int]):
         n = len(w)
         self.presum = [0] * (n + 1)
@@ -99,6 +98,7 @@ class Solution:
             else:
                 left = mid + 1
         return left
+
 
 # Your Solution object will be instantiated and called as such:
 # obj = Solution(w)
@@ -161,11 +161,12 @@ public:
         int n = presum.size();
         int x = rand() % presum[n - 1] + 1;
         int left = 0, right = n - 2;
-        while (left < right)
-        {
+        while (left < right) {
             int mid = left + right >> 1;
-            if (presum[mid + 1] >= x) right = mid;
-            else left = mid + 1;
+            if (presum[mid + 1] >= x)
+                right = mid;
+            else
+                left = mid + 1;
         }
         return left;
     }

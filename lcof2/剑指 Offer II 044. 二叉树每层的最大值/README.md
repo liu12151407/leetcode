@@ -1,4 +1,4 @@
-# [剑指 Offer II 044. 二叉树每层的最大值](https://leetcode-cn.com/problems/hPov7L)
+# [剑指 Offer II 044. 二叉树每层的最大值](https://leetcode.cn/problems/hPov7L)
 
 ## 题目描述
 
@@ -68,7 +68,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 515&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/find-largest-value-in-each-tree-row/">https://leetcode-cn.com/problems/find-largest-value-in-each-tree-row/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 515&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/find-largest-value-in-each-tree-row/">https://leetcode.cn/problems/find-largest-value-in-each-tree-row/</a></p>
 
 ## 解法
 
@@ -96,9 +96,8 @@ class Solution:
         q = deque([root])
         ans = []
         while q:
-            n = len(q)
-            t = float('-inf')
-            for _ in range(n):
+            t = -inf
+            for _ in range(len(q)):
                 node = q.popleft()
                 t = max(t, node.val)
                 if node.left:
@@ -131,15 +130,15 @@ class Solution:
  */
 class Solution {
     public List<Integer> largestValues(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
         if (root == null) {
-            return Collections.emptyList();
+            return ans;
         }
         Deque<TreeNode> q = new ArrayDeque<>();
         q.offer(root);
-        List<Integer> ans = new ArrayList<>();
         while (!q.isEmpty()) {
             int t = Integer.MIN_VALUE;
-            for (int i = 0, n = q.size(); i < n; ++i) {
+            for (int i = q.size(); i > 0; --i) {
                 TreeNode node = q.poll();
                 t = Math.max(t, node.val);
                 if (node.left != null) {
@@ -176,11 +175,9 @@ public:
         if (!root) return {};
         queue<TreeNode*> q{{root}};
         vector<int> ans;
-        while (!q.empty())
-        {
+        while (!q.empty()) {
             int t = INT_MIN;
-            for (int i = 0, n = q.size(); i < n; ++i)
-            {
+            for (int i = q.size(); i > 0; --i) {
                 auto node = q.front();
                 q.pop();
                 t = max(t, node->val);
@@ -212,9 +209,8 @@ func largestValues(root *TreeNode) []int {
 	}
 	var q = []*TreeNode{root}
 	for len(q) > 0 {
-		n := len(q)
 		t := math.MinInt32
-		for i := 0; i < n; i++ {
+		for i := len(q); i > 0; i-- {
 			node := q[0]
 			q = q[1:]
 			t = max(t, node.Val)

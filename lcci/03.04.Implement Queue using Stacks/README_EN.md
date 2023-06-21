@@ -1,4 +1,4 @@
-# [03.04. Implement Queue using Stacks](https://leetcode-cn.com/problems/implement-queue-using-stacks-lcci)
+# [03.04. Implement Queue using Stacks](https://leetcode.cn/problems/implement-queue-using-stacks-lcci)
 
 [中文文档](/lcci/03.04.Implement%20Queue%20using%20Stacks/README.md)
 
@@ -46,20 +46,17 @@ queue.empty(); // return false</pre>
 
 ```python
 class MyQueue:
-
     def __init__(self):
         """
         Initialize your data structure here.
         """
         self._s1, self._s2 = [], []
 
-
     def push(self, x: int) -> None:
         """
         Push element x to the back of queue.
         """
         self._s1.append(x)
-
 
     def pop(self) -> int:
         """
@@ -70,7 +67,6 @@ class MyQueue:
                 self._s2.append(self._s1.pop())
         return self._s2.pop()
 
-
     def peek(self) -> int:
         """
         Get the front element.
@@ -80,13 +76,11 @@ class MyQueue:
                 self._s2.append(self._s1.pop())
         return self._s2[-1]
 
-
     def empty(self) -> bool:
         """
         Returns whether the queue is empty.
         """
         return len(self._s1) + len(self._s2) == 0
-
 
 
 # Your MyQueue object will be instantiated and called as such:
@@ -208,6 +202,57 @@ func (this *MyQueue) transfer() {
  * param_2 := obj.Pop();
  * param_3 := obj.Peek();
  * param_4 := obj.Empty();
+ */
+```
+
+### **TypeScript**
+
+```ts
+class MyQueue {
+    private inStack: number[];
+    private outStack: number[];
+
+    constructor() {
+        this.inStack = [];
+        this.outStack = [];
+    }
+
+    push(x: number): void {
+        this.inStack.push(x);
+    }
+
+    pop(): number {
+        if (this.outStack.length === 0) {
+            this.inToOut();
+        }
+        return this.outStack.pop() ?? -1;
+    }
+
+    peek(): number {
+        if (this.outStack.length === 0) {
+            this.inToOut();
+        }
+        return this.outStack[this.outStack.length - 1] ?? -1;
+    }
+
+    empty(): boolean {
+        return this.inStack.length === 0 && this.outStack.length === 0;
+    }
+
+    inToOut() {
+        while (this.inStack.length !== 0) {
+            this.outStack.push(this.inStack.pop());
+        }
+    }
+}
+
+/**
+ * Your MyQueue object will be instantiated and called as such:
+ * var obj = new MyQueue()
+ * obj.push(x)
+ * var param_2 = obj.pop()
+ * var param_3 = obj.peek()
+ * var param_4 = obj.empty()
  */
 ```
 

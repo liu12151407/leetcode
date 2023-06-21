@@ -1,4 +1,4 @@
-# [1816. 截断句子](https://leetcode-cn.com/problems/truncate-sentence)
+# [1816. 截断句子](https://leetcode.cn/problems/truncate-sentence)
 
 [English Version](/solution/1800-1899/1816.Truncate%20Sentence/README_EN.md)
 
@@ -57,6 +57,14 @@ s 中的单词为 ["What", "is" "the", "solution", "to", "this", "problem"]
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：模拟**
+
+我们从前往后遍历字符串 $s$，对于当前遍历到的字符 $s[i]$，如果 $s[i]$ 是空格，那么 $k$ 自减 1，当 $k$ 为 0 时，说明已经截取了 $k$ 个单词，截取字符串 $s[0:i]$ 返回即可。
+
+遍历结束，返回 $s$ 即可。
+
+时间复杂度 $O(n)$，其中 $n$ 为字符串 $s$ 的长度。忽略答案的空间消耗，空间复杂度 $O(1)$。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -73,8 +81,7 @@ class Solution:
 class Solution:
     def truncateSentence(self, s: str, k: int) -> str:
         for i, c in enumerate(s):
-            if c == ' ':
-                k -= 1
+            k -= c == ' '
             if k == 0:
                 return s[:i]
         return s
@@ -139,7 +146,7 @@ func truncateSentence(s string, k int) string {
  */
 var truncateSentence = function (s, k) {
     for (let i = 0; i < s.length; ++i) {
-        if (s[i] == " " && --k == 0) {
+        if (s[i] == ' ' && --k == 0) {
             return s.slice(0, i);
         }
     }

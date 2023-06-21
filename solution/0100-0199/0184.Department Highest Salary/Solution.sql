@@ -1,13 +1,21 @@
-SELECT
-	Department.NAME AS Department,
-	Employee.NAME AS Employee,
-	Salary
-FROM
-	Employee,
-	Department
-WHERE
-	Employee.DepartmentId = Department.Id
-	AND ( Employee.DepartmentId, Salary )
-    IN (SELECT DepartmentId, max( Salary )
+# Write your MySQL query statement below
+WITH
+    t AS (
+        SELECT
+            departmentId,
+            name,
+            salary,
+            rank() OVER (
+                PARTITION BY departmentId
+                ORDER BY salary DESC
+            ) AS rk
         FROM Employee
-        GROUP BY DepartmentId )
+    )
+SELECT
+    d.name AS Department,
+    t.name AS Employee,
+    salary AS Salary
+FROM
+    t
+    JOIN Department AS d ON t.departmentId = d.id
+WHERE rk = 1;

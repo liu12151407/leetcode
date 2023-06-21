@@ -7,14 +7,14 @@
 <p>Given an integer <code>n</code>, return the <code>n<sup>th</sup></code> digit of the infinite integer sequence <code>[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ...]</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 3
 <strong>Output:</strong> 3
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 11
@@ -55,17 +55,15 @@ class Solution:
 ```java
 class Solution {
     public int findNthDigit(int n) {
-        int bits = 1, t = 9;
-        while (n / bits > t) {
-            n -= bits * t;
-            ++bits;
-            t *= 10;
+        int k = 1, cnt = 9;
+        while ((long) k * cnt < n) {
+            n -= k * cnt;
+            ++k;
+            cnt *= 10;
         }
-        int start = (int) Math.pow(10, bits - 1) + (n / bits) - 1;
-        if (n % bits == 0) {
-            return start % 10;
-        }
-        return String.valueOf(start + 1).charAt((n % bits) - 1) - '0';
+        int num = (int) Math.pow(10, k - 1) + (n - 1) / k;
+        int idx = (n - 1) % k;
+        return String.valueOf(num).charAt(idx) - '0';
     }
 }
 ```
@@ -76,18 +74,72 @@ class Solution {
 class Solution {
 public:
     int findNthDigit(int n) {
-        int bits = 1, t = 9;
-        while (n / bits > t)
-        {
-            n -= bits * t;
-            ++bits;
-            t *= 10;
+        int k = 1, cnt = 9;
+        while (1ll * k * cnt < n) {
+            n -= k * cnt;
+            ++k;
+            cnt *= 10;
         }
-        int start = pow(10, bits - 1) + (n / bits) - 1;
-        if (n % bits == 0) return start % 10;
-        return to_string(start + 1)[(n % bits) - 1] - '0';
+        int num = pow(10, k - 1) + (n - 1) / k;
+        int idx = (n - 1) % k;
+        return to_string(num)[idx] - '0';
     }
 };
+```
+
+### **Go**
+
+```go
+func findNthDigit(n int) int {
+	k, cnt := 1, 9
+	for k*cnt < n {
+		n -= k * cnt
+		k++
+		cnt *= 10
+	}
+	num := int(math.Pow10(k-1)) + (n-1)/k
+	idx := (n - 1) % k
+	return int(strconv.Itoa(num)[idx] - '0')
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var findNthDigit = function (n) {
+    let k = 1,
+        cnt = 9;
+    while (k * cnt < n) {
+        n -= k * cnt;
+        ++k;
+        cnt *= 10;
+    }
+    const num = Math.pow(10, k - 1) + (n - 1) / k;
+    const idx = (n - 1) % k;
+    return num.toString()[idx];
+};
+```
+
+### **C#**
+
+```cs
+public class Solution {
+    public int FindNthDigit(int n) {
+        int k = 1, cnt = 9;
+        while ((long) k * cnt < n) {
+            n -= k * cnt;
+            ++k;
+            cnt *= 10;
+        }
+        int num = (int) Math.Pow(10, k - 1) + (n - 1) / k;
+        int idx = (n - 1) % k;
+        return num.ToString()[idx] - '0';
+    }
+}
 ```
 
 ### **...**

@@ -19,15 +19,15 @@ L<sub>0</sub> &rarr; L<sub>n</sub> &rarr; L<sub>1</sub> &rarr; L<sub>n - 1</sub>
 <p>You may not modify the values in the list&#39;s nodes. Only nodes themselves may be changed.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0143.Reorder%20List/images/reorder1linked-list.jpg" style="width: 422px; height: 222px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0143.Reorder%20List/images/reorder1linked-list.jpg" style="width: 422px; height: 222px;" />
 <pre>
 <strong>Input:</strong> head = [1,2,3,4]
 <strong>Output:</strong> [1,4,2,3]
 </pre>
 
-<p><strong>Example 2:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0143.Reorder%20List/images/reorder2-linked-list.jpg" style="width: 542px; height: 222px;" />
+<p><strong class="example">Example 2:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0143.Reorder%20List/images/reorder2-linked-list.jpg" style="width: 542px; height: 222px;" />
 <pre>
 <strong>Input:</strong> head = [1,2,3,4,5]
 <strong>Output:</strong> [1,5,2,4,3]
@@ -193,32 +193,32 @@ public class Solution {
  *     Next *ListNode
  * }
  */
- func reorderList(head *ListNode)  {
-    if head == nil || head.Next == nil {
-        return
-    }
-    slow, fast := head, head.Next
-    for fast != nil && fast.Next != nil {
-        slow, fast = slow.Next, fast.Next.Next
-    }
+func reorderList(head *ListNode) {
+	if head == nil || head.Next == nil {
+		return
+	}
+	slow, fast := head, head.Next
+	for fast != nil && fast.Next != nil {
+		slow, fast = slow.Next, fast.Next.Next
+	}
 
-    cur := slow.Next
-    slow.Next = nil
+	cur := slow.Next
+	slow.Next = nil
 
-    var pre *ListNode
-    for cur != nil {
-        t := cur.Next
-        cur.Next = pre
-        pre, cur = cur, t
-    }
-    cur = head
+	var pre *ListNode
+	for cur != nil {
+		t := cur.Next
+		cur.Next = pre
+		pre, cur = cur, t
+	}
+	cur = head
 
-    for pre != nil {
-        t := pre.Next
-        pre.Next = cur.Next
-        cur.Next = pre
-        cur, pre = pre.Next, t
-    }
+	for pre != nil {
+		t := pre.Next
+		pre.Next = cur.Next
+		cur.Next = pre
+		cur, pre = pre.Next, t
+	}
 }
 ```
 
@@ -267,6 +267,130 @@ var reorderList = function (head) {
         pre = t;
     }
 };
+```
+
+### **TypeScript**
+
+```ts
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+/**
+ Do not return anything, modify head in-place instead.
+ */
+function reorderList(head: ListNode | null): void {
+    const arr = [];
+    let node = head;
+    while (node.next != null) {
+        arr.push(node);
+        node = node.next;
+    }
+    let l = 0;
+    let r = arr.length - 1;
+    while (l < r) {
+        const start = arr[l];
+        const end = arr[r];
+        [end.next.next, start.next, end.next] = [start.next, end.next, null];
+        l++;
+        r--;
+    }
+}
+```
+
+```ts
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+/**
+ Do not return anything, modify head in-place instead.
+ */
+function reorderList(head: ListNode | null): void {
+    let slow = head;
+    let fast = head;
+
+    while (fast != null && fast.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+
+    let next = slow.next;
+    slow.next = null;
+    while (next != null) {
+        [next.next, slow, next] = [slow, next, next.next];
+    }
+
+    let left = head;
+    let right = slow;
+    while (right.next != null) {
+        const next = left.next;
+        left.next = right;
+        right = right.next;
+        left.next.next = next;
+        left = left.next.next;
+    }
+}
+```
+
+### **Rust**
+
+```rust
+// Definition for singly-linked list.
+// #[derive(PartialEq, Eq, Clone, Debug)]
+// pub struct ListNode {
+//   pub val: i32,
+//   pub next: Option<Box<ListNode>>
+// }
+//
+// impl ListNode {
+//   #[inline]
+//   fn new(val: i32) -> Self {
+//     ListNode {
+//       next: None,
+//       val
+//     }
+//   }
+// }
+use std::collections::VecDeque;
+impl Solution {
+    pub fn reorder_list(head: &mut Option<Box<ListNode>>) {
+        let mut tail = &mut head.as_mut().unwrap().next;
+        let mut head = tail.take();
+        let mut deque = VecDeque::new();
+        while head.is_some() {
+            let next = head.as_mut().unwrap().next.take();
+            deque.push_back(head);
+            head = next;
+        }
+        let mut flag = false;
+        while !deque.is_empty() {
+            *tail = if flag {
+                deque.pop_front().unwrap()
+            } else {
+                deque.pop_back().unwrap()
+            };
+            tail = &mut tail.as_mut().unwrap().next;
+            flag = !flag;
+        }
+    }
+}
 ```
 
 ### **...**

@@ -1,4 +1,4 @@
-# [550. 游戏玩法分析 IV](https://leetcode-cn.com/problems/game-play-analysis-iv)
+# [550. 游戏玩法分析 IV](https://leetcode.cn/problems/game-play-analysis-iv)
 
 [English Version](/solution/0500-0599/0550.Game%20Play%20Analysis%20IV/README_EN.md)
 
@@ -56,7 +56,19 @@ Result table:
 ### **SQL**
 
 ```sql
-
+# Write your MySQL query statement below
+SELECT round(AVG(b.event_date IS NOT NULL), 2) AS fraction
+FROM
+    (
+        SELECT
+            player_id,
+            MIN(event_date) AS event_date
+        FROM activity
+        GROUP BY player_id
+    ) AS a
+    LEFT JOIN activity AS b
+        ON a.player_id = b.player_id
+        AND DATEDIFF(a.event_date, b.event_date) = -1;
 ```
 
 <!-- tabs:end -->

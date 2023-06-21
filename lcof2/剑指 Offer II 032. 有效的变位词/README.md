@@ -1,4 +1,4 @@
-# [剑指 Offer II 032. 有效的变位词](https://leetcode-cn.com/problems/dKk3P7)
+# [剑指 Offer II 032. 有效的变位词](https://leetcode.cn/problems/dKk3P7)
 
 ## 题目描述
 
@@ -44,7 +44,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 242&nbsp;题相似（字母异位词定义不同）：<a href="https://leetcode-cn.com/problems/valid-anagram/">https://leetcode-cn.com/problems/valid-anagram/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 242&nbsp;题相似（字母异位词定义不同）：<a href="https://leetcode.cn/problems/valid-anagram/">https://leetcode.cn/problems/valid-anagram/</a></p>
 
 ## 解法
 
@@ -109,13 +109,11 @@ public:
         if (s.size() != t.size() || s == t)
             return false;
         vector<int> chars(26, 0);
-        for (int i = 0, n = s.size(); i < n; ++i)
-        {
+        for (int i = 0, n = s.size(); i < n; ++i) {
             ++chars[s[i] - 'a'];
             --chars[t[i] - 'a'];
         }
-        for (int c : chars)
-        {
+        for (int c : chars) {
             if (c != 0)
                 return false;
         }
@@ -128,20 +126,20 @@ public:
 
 ```go
 func isAnagram(s string, t string) bool {
-    if len(s) != len(t) || s == t {
-        return false
-    }
-    var chars [26]int
-    for i := 0; i < len(s); i++ {
-        chars[s[i]-'a']++
-        chars[t[i]-'a']--
-    }
-    for _, c := range chars {
-        if c != 0 {
-            return false
-        }
-    }
-    return true
+	if len(s) != len(t) || s == t {
+		return false
+	}
+	var chars [26]int
+	for i := 0; i < len(s); i++ {
+		chars[s[i]-'a']++
+		chars[t[i]-'a']--
+	}
+	for _, c := range chars {
+		if c != 0 {
+			return false
+		}
+	}
+	return true
 }
 ```
 

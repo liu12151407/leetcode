@@ -11,7 +11,7 @@
 <p><strong>Note:</strong> You may not engage in multiple transactions simultaneously (i.e., you must sell the stock before you buy again).</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> prices = [3,3,5,0,0,3,1,4]
@@ -19,7 +19,7 @@
 <strong>Explanation:</strong> Buy on day 4 (price = 0) and sell on day 6 (price = 3), profit = 3-0 = 3.
 Then buy on day 7 (price = 1) and sell on day 8 (price = 4), profit = 4-1 = 3.</pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> prices = [1,2,3,4,5]
@@ -28,19 +28,12 @@ Then buy on day 7 (price = 1) and sell on day 8 (price = 4), profit = 4-1 = 3.</
 Note that you cannot buy on day 1, buy on day 2 and sell them later, as you are engaging multiple transactions at the same time. You must sell before buying again.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> prices = [7,6,4,3,1]
 <strong>Output:</strong> 0
 <strong>Explanation:</strong> In this case, no transaction is done, i.e. max profit = 0.
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> prices = [1]
-<strong>Output:</strong> 0
 </pre>
 
 <p>&nbsp;</p>
@@ -108,21 +101,21 @@ public:
 
 ```go
 func maxProfit(prices []int) int {
-    f1, f2, f3, f4 := -prices[0], 0, -prices[0], 0
-    for i := 1; i < len(prices); i++ {
-        f1 = max(f1, -prices[i])
-        f2 = max(f2, f1 + prices[i])
-        f3 = max(f3, f2 - prices[i])
-        f4 = max(f4, f3 + prices[i])
-    }
-    return f4
+	f1, f2, f3, f4 := -prices[0], 0, -prices[0], 0
+	for i := 1; i < len(prices); i++ {
+		f1 = max(f1, -prices[i])
+		f2 = max(f2, f1+prices[i])
+		f3 = max(f3, f2-prices[i])
+		f4 = max(f4, f3+prices[i])
+	}
+	return f4
 }
 
 func max(a, b int) int {
-    if a > b {
-        return a
-    }
-    return b
+	if a > b {
+		return a
+	}
+	return b
 }
 ```
 

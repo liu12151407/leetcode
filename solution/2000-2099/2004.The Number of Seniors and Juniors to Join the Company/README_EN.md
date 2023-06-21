@@ -35,7 +35,7 @@ Each row of this table indicates the id of a candidate, their monthly salary, an
 <p>The query result format is in the following example.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> 
@@ -62,7 +62,7 @@ We can hire 2 seniors with IDs (2, 11). Since the budget is $70000 and the sum o
 We can hire 2 juniors with IDs (1, 9). Since the remaining budget is $30000 and the sum of their salaries is $20000, we still have $10000 but they are not enough to hire the junior candidate with ID 4.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> 
@@ -96,7 +96,39 @@ We can hire all three juniors with the remaining budget.
 ### **SQL**
 
 ```sql
-
+# Write your MySQL query statement below
+WITH
+    s AS (
+        SELECT
+            employee_id,
+            sum(salary) OVER (ORDER BY salary) AS cur
+        FROM Candidates
+        WHERE experience = 'Senior'
+    ),
+    j AS (
+        SELECT
+            employee_id,
+            ifnull(
+                SELECT
+                    max(cur)
+                FROM s
+                WHERE cur <= 70000,
+                0
+            ) + sum(salary) OVER (ORDER BY salary) AS cur
+        FROM Candidates
+        WHERE experience = 'Junior'
+    )
+SELECT
+    'Senior' AS experience,
+    count(employee_id) AS accepted_candidates
+FROM s
+WHERE cur <= 70000
+UNION ALL
+SELECT
+    'Junior' AS experience,
+    count(employee_id) AS accepted_candidates
+FROM j
+WHERE cur <= 70000;
 ```
 
 <!-- tabs:end -->

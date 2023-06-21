@@ -4,37 +4,35 @@
 
 ## Description
 
-<p>Given an array <code>A</code> of integers, return the number of (contiguous, non-empty) subarrays that have a sum divisible by <code>K</code>.</p>
+<p>Given an integer array <code>nums</code> and an integer <code>k</code>, return <em>the number of non-empty <strong>subarrays</strong> that have a sum divisible by </em><code>k</code>.</p>
+
+<p>A <strong>subarray</strong> is a <strong>contiguous</strong> part of an array.</p>
 
 <p>&nbsp;</p>
-
-<div>
-
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
-
-<strong>Input: </strong>A = <span id="example-input-1-1">[4,5,0,-2,-3,1]</span>, K = <span id="example-input-1-2">5</span>
-
-<strong>Output: </strong><span id="example-output-1">7</span>
-
-<strong>Explanation: </strong>There are 7 subarrays with a sum divisible by K = 5:
-
+<strong>Input:</strong> nums = [4,5,0,-2,-3,1], k = 5
+<strong>Output:</strong> 7
+<strong>Explanation:</strong> There are 7 subarrays with a sum divisible by k = 5:
 [4, 5, 0, -2, -3, 1], [5], [5, 0], [5, 0, -2, -3], [0], [0, -2, -3], [-2, -3]
+</pre>
 
+<p><strong class="example">Example 2:</strong></p>
+
+<pre>
+<strong>Input:</strong> nums = [5], k = 9
+<strong>Output:</strong> 0
 </pre>
 
 <p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
 
-<p><strong>Note:</strong></p>
-
-<ol>
-	<li><code>1 &lt;= A.length &lt;= 30000</code></li>
-	<li><code>-10000 &lt;= A[i] &lt;= 10000</code></li>
-	<li><code>2 &lt;= K &lt;= 10000</code></li>
-</ol>
-
-</div>
+<ul>
+	<li><code>1 &lt;= nums.length &lt;= 3 * 10<sup>4</sup></code></li>
+	<li><code>-10<sup>4</sup> &lt;= nums[i] &lt;= 10<sup>4</sup></code></li>
+	<li><code>2 &lt;= k &lt;= 10<sup>4</sup></code></li>
+</ul>
 
 ## Solutions
 
@@ -45,12 +43,12 @@
 ```python
 class Solution:
     def subarraysDivByK(self, nums: List[int], k: int) -> int:
+        cnt = Counter({0: 1})
         ans = s = 0
-        counter = Counter({0: 1})
-        for num in nums:
-            s += num
-            ans += counter[s % k]
-            counter[s % k] += 1
+        for x in nums:
+            s = (s + x) % k
+            ans += cnt[s]
+            cnt[s] += 1
         return ans
 ```
 
@@ -59,14 +57,13 @@ class Solution:
 ```java
 class Solution {
     public int subarraysDivByK(int[] nums, int k) {
-        Map<Integer, Integer> counter = new HashMap<>();
-        counter.put(0, 1);
-        int s = 0, ans = 0;
-        for (int num : nums) {
-            s += num;
-            int t = (s % k + k) % k;
-            ans += counter.getOrDefault(t, 0);
-            counter.put(t, counter.getOrDefault(t, 0) + 1);
+        Map<Integer, Integer> cnt = new HashMap<>();
+        cnt.put(0, 1);
+        int ans = 0, s = 0;
+        for (int x : nums) {
+            s = ((s + x) % k + k) % k;
+            ans += cnt.getOrDefault(s, 0);
+            cnt.merge(s, 1, Integer::sum);
         }
         return ans;
     }
@@ -79,15 +76,11 @@ class Solution {
 class Solution {
 public:
     int subarraysDivByK(vector<int>& nums, int k) {
-        unordered_map<int, int> counter;
-        counter[0] = 1;
-        int s = 0, ans = 0;
-        for (int& num : nums)
-        {
-            s += num;
-            int t = (s % k + k) % k;
-            ans += counter[t];
-            ++counter[t];
+        unordered_map<int, int> cnt{{0, 1}};
+        int ans = 0, s = 0;
+        for (int& x : nums) {
+            s = ((s + x) % k + k) % k;
+            ans += cnt[s]++;
         }
         return ans;
     }
@@ -97,16 +90,33 @@ public:
 ### **Go**
 
 ```go
-func subarraysDivByK(nums []int, k int) int {
-	counter := map[int]int{0: 1}
-	ans, s := 0, 0
-	for _, num := range nums {
-		s += num
-		t := (s%k + k) % k
-		ans += counter[t]
-		counter[t]++
+func subarraysDivByK(nums []int, k int) (ans int) {
+	cnt := map[int]int{0: 1}
+	s := 0
+	for _, x := range nums {
+		s = ((s+x)%k + k) % k
+		ans += cnt[s]
+		cnt[s]++
 	}
-	return ans
+	return
+}
+```
+
+### **TypeScript**
+
+```ts
+function subarraysDivByK(nums: number[], k: number): number {
+    const counter = new Map();
+    counter.set(0, 1);
+    let s = 0,
+        ans = 0;
+    for (const num of nums) {
+        s += num;
+        const t = ((s % k) + k) % k;
+        ans += counter.get(t) || 0;
+        counter.set(t, (counter.get(t) || 0) + 1);
+    }
+    return ans;
 }
 ```
 

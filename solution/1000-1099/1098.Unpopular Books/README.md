@@ -1,4 +1,4 @@
-# [1098. 小众书籍](https://leetcode-cn.com/problems/unpopular-books)
+# [1098. 小众书籍](https://leetcode.cn/problems/unpopular-books)
 
 [English Version](/solution/1000-1099/1098.Unpopular%20Books/README_EN.md)
 
@@ -82,26 +82,24 @@ Result 表：
 
 <!-- tabs:start -->
 
-### **Python3**
+### **SQL**
 
-<!-- 这里可写当前语言的特殊实现逻辑 -->
-
-```python
-
-```
-
-### **Java**
-
-<!-- 这里可写当前语言的特殊实现逻辑 -->
-
-```java
-
-```
-
-### **...**
-
-```
-
+```sql
+# Write your MySQL query statement below
+SELECT
+	b.book_id,
+	b.NAME
+FROM
+	books b
+	LEFT JOIN orders o ON b.book_id = o.book_id
+WHERE
+	b.available_from < '2019-05-23'
+GROUP BY
+	b.book_id
+HAVING
+	ifnull( sum( IF ( o.dispatch_date < '2018-06-23', 0, quantity )), 0 )< 10
+ORDER BY
+	b.book_id
 ```
 
 <!-- tabs:end -->

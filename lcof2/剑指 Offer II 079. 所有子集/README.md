@@ -1,4 +1,4 @@
-# [剑指 Offer II 079. 所有子集](https://leetcode-cn.com/problems/TVdhkn)
+# [剑指 Offer II 079. 所有子集](https://leetcode.cn/problems/TVdhkn)
 
 ## 题目描述
 
@@ -36,7 +36,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 78&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/subsets/">https://leetcode-cn.com/problems/subsets/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 78&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/subsets/">https://leetcode.cn/problems/subsets/</a></p>
 
 ## 解法
 
@@ -124,8 +124,7 @@ public:
     void dfs(int i, vector<int>& nums, vector<int> t, vector<vector<int>>& res) {
         res.push_back(t);
         if (i == nums.size()) return;
-        for (int j = i; j < nums.size(); ++j)
-        {
+        for (int j = i; j < nums.size(); ++j) {
             t.push_back(nums[j]);
             dfs(j + 1, nums, t, res);
             t.pop_back();
@@ -156,6 +155,48 @@ func dfs(i int, nums, t []int, res *[][]int) {
 		dfs(j+1, nums, t, res)
 		t = t[:len(t)-1]
 	}
+}
+```
+
+### **TypeScipt**
+
+```ts
+function subsets(nums: number[]): number[][] {
+    const n = nums.length;
+    const ans = [];
+    const dfs = (i: number, t: number[]) => {
+        ans.push([...t]);
+        while (i < n) {
+            t.push(nums[i++]);
+            dfs(i, t);
+            t.pop();
+        }
+    };
+    dfs(0, []);
+    return ans;
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    fn dfs(mut i: usize, t: &mut Vec<i32>, ans: &mut Vec<Vec<i32>>, nums: &Vec<i32>) {
+        ans.push(t.clone());
+        while i < nums.len() {
+            t.push(nums[i]);
+            i += 1;
+            Self::dfs(i, t, ans, nums);
+            t.pop();
+        }
+    }
+
+    pub fn subsets(nums: Vec<i32>) -> Vec<Vec<i32>> {
+        let mut ans = Vec::new();
+        let mut t = Vec::new();
+        Self::dfs(0, &mut t, &mut ans, &nums);
+        ans
+    }
 }
 ```
 

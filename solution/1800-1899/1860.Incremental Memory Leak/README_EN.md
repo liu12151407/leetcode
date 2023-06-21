@@ -11,7 +11,7 @@
 <p>Return <em>an array containing </em><code>[crashTime, memory1<sub>crash</sub>, memory2<sub>crash</sub>]</code><em>, where </em><code>crashTime</code><em> is the time (in seconds) when the program crashed and </em><code>memory1<sub>crash</sub></code><em> and </em><code>memory2<sub>crash</sub></code><em> are the available bits of memory in the first and second sticks respectively</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> memory1 = 2, memory2 = 2
@@ -22,7 +22,7 @@
 - At the 3<sup>rd</sup> second, the program crashes. The sticks have 1 and 0 bits available respectively.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> memory1 = 8, memory2 = 11
@@ -53,7 +53,7 @@
 class Solution:
     def memLeak(self, memory1: int, memory2: int) -> List[int]:
         i = 1
-        while memory1 >= i or memory2 >= i:
+        while i <= max(memory1, memory2):
             if memory1 >= memory2:
                 memory1 -= i
             else:
@@ -68,15 +68,14 @@ class Solution:
 class Solution {
     public int[] memLeak(int memory1, int memory2) {
         int i = 1;
-        while (memory1 >= i || memory2 >= i) {
+        for (; i <= Math.max(memory1, memory2); ++i) {
             if (memory1 >= memory2) {
                 memory1 -= i;
             } else {
                 memory2 -= i;
             }
-            ++i;
         }
-        return new int[]{i, memory1, memory2};
+        return new int[] {i, memory1, memory2};
     }
 }
 ```
@@ -91,13 +90,12 @@ class Solution {
  */
 var memLeak = function (memory1, memory2) {
     let i = 1;
-    while (memory1 >= i || memory2 >= i) {
+    for (; i <= Math.max(memory1, memory2); ++i) {
         if (memory1 >= memory2) {
             memory1 -= i;
         } else {
             memory2 -= i;
         }
-        i++;
     }
     return [i, memory1, memory2];
 };
@@ -110,17 +108,48 @@ class Solution {
 public:
     vector<int> memLeak(int memory1, int memory2) {
         int i = 1;
-        while (memory1 >= i || memory2 >= i) {
+        for (; i <= max(memory1, memory2); ++i) {
             if (memory1 >= memory2) {
                 memory1 -= i;
             } else {
                 memory2 -= i;
             }
-            ++i;
         }
         return {i, memory1, memory2};
     }
 };
+```
+
+### **Go**
+
+```go
+func memLeak(memory1 int, memory2 int) []int {
+	i := 1
+	for ; i <= memory1 || i <= memory2; i++ {
+		if memory1 >= memory2 {
+			memory1 -= i
+		} else {
+			memory2 -= i
+		}
+	}
+	return []int{i, memory1, memory2}
+}
+```
+
+### **TypeScript**
+
+```ts
+function memLeak(memory1: number, memory2: number): number[] {
+    let i = 1;
+    for (; i <= Math.max(memory1, memory2); ++i) {
+        if (memory1 >= memory2) {
+            memory1 -= i;
+        } else {
+            memory2 -= i;
+        }
+    }
+    return [i, memory1, memory2];
+}
 ```
 
 ### **...**

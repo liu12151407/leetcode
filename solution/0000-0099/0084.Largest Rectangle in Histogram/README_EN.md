@@ -7,8 +7,8 @@
 <p>Given an array of integers <code>heights</code> representing the histogram&#39;s bar height where the width of each bar is <code>1</code>, return <em>the area of the largest rectangle in the histogram</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0000-0099/0084.Largest%20Rectangle%20in%20Histogram/images/histogram.jpg" style="width: 522px; height: 242px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0000-0099/0084.Largest%20Rectangle%20in%20Histogram/images/histogram.jpg" style="width: 522px; height: 242px;" />
 <pre>
 <strong>Input:</strong> heights = [2,1,5,6,2,3]
 <strong>Output:</strong> 10
@@ -16,8 +16,8 @@
 The largest rectangle is shown in the red area, which has an area = 10 units.
 </pre>
 
-<p><strong>Example 2:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0000-0099/0084.Largest%20Rectangle%20in%20Histogram/images/histogram-1.jpg" style="width: 202px; height: 362px;" />
+<p><strong class="example">Example 2:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0000-0099/0084.Largest%20Rectangle%20in%20Histogram/images/histogram-1.jpg" style="width: 202px; height: 362px;" />
 <pre>
 <strong>Input:</strong> heights = [2,4]
 <strong>Output:</strong> 4
@@ -40,7 +40,7 @@ The largest rectangle is shown in the red area, which has an area = 10 units.
 ```python
 class Solution:
     def largestRectangleArea(self, heights: List[int]) -> int:
-        res, n = 0, len(heights)
+        n = len(heights)
         stk = []
         left = [-1] * n
         right = [n] * n
@@ -51,9 +51,31 @@ class Solution:
             if stk:
                 left[i] = stk[-1]
             stk.append(i)
+        return max(h * (right[i] - left[i] - 1) for i, h in enumerate(heights))
+```
+
+```python
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        n = len(heights)
+        stk = []
+        left = [-1] * n
+        right = [n] * n
         for i, h in enumerate(heights):
-            res = max(res, h * (right[i] - left[i] - 1))
-        return res
+            while stk and heights[stk[-1]] >= h:
+                stk.pop()
+            if stk:
+                left[i] = stk[-1]
+            stk.append(i)
+        stk = []
+        for i in range(n - 1, -1, -1):
+            h = heights[i]
+            while stk and heights[stk[-1]] >= h:
+                stk.pop()
+            if stk:
+                right[i] = stk[-1]
+            stk.append(i)
+        return max(h * (right[i] - left[i] - 1) for i, h in enumerate(heights))
 ```
 
 ### **Java**
@@ -91,10 +113,8 @@ public:
         stack<int> stk;
         vector<int> left(n, -1);
         vector<int> right(n, n);
-        for (int i = 0; i < n; ++i)
-        {
-            while (!stk.empty() && heights[stk.top()] >= heights[i])
-            {
+        for (int i = 0; i < n; ++i) {
+            while (!stk.empty() && heights[stk.top()] >= heights[i]) {
                 right[stk.top()] = i;
                 stk.pop();
             }

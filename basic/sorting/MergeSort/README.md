@@ -164,17 +164,17 @@ public class Main {
 ### **JavaScript**
 
 ```js
-var buf = "";
+var buf = '';
 
-process.stdin.on("readable", function () {
+process.stdin.on('readable', function () {
     var chunk = process.stdin.read();
     if (chunk) buf += chunk.toString();
 });
 
 let getInputArgs = line => {
     return line
-        .split(" ")
-        .filter(s => s !== "")
+        .split(' ')
+        .filter(s => s !== '')
         .map(x => parseInt(x));
 };
 
@@ -207,12 +207,12 @@ function mergeSort(nums, left, right) {
     }
 }
 
-process.stdin.on("end", function () {
-    buf.split("\n").forEach(function (line, lineIdx) {
+process.stdin.on('end', function () {
+    buf.split('\n').forEach(function (line, lineIdx) {
         if (lineIdx % 2 === 1) {
             nums = getInputArgs(line);
             mergeSort(nums, 0, nums.length - 1);
-            console.log(nums.join(" "));
+            console.log(nums.join(' '));
         }
     });
 });
@@ -276,78 +276,38 @@ func main() {
 
 ```cpp
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
-void printvec( const vector<int> &vec, const string &strbegin = "", const string &strend = "" )
-{
-    cout << strbegin << endl;
-    for ( auto val : vec )
-    {
-        cout << val << "\t";
-    }
+const int N = 1e6 + 10;
 
-    cout << endl;
-    cout << strend << endl;
+int n;
+int nums[N];
+int tmp[N];
+
+void merge_sort(int nums[], int left, int right) {
+    if (left >= right) return;
+    int mid = (left + right) >> 1;
+    merge_sort(nums, left, mid);
+    merge_sort(nums, mid + 1, right);
+    int i = left, j = mid + 1, k = 0;
+    while (i <= mid && j <= right) {
+        if (nums[i] <= nums[j])
+            tmp[k++] = nums[i++];
+        else
+            tmp[k++] = nums[j++];
+    }
+    while (i <= mid) tmp[k++] = nums[i++];
+    while (j <= right) tmp[k++] = nums[j++];
+    for (i = left, j = 0; i <= right; ++i, ++j) nums[i] = tmp[j];
 }
 
-
-void mergesort( vector<int> & vec, int left, int right )
-{
-    if ( left >= right )
-    {
-        return;
-    }
-
-    int mid = left + (right - left) / 2;
-    mergesort( vec, left, mid );
-    mergesort( vec, mid + 1, right );
-
-    int i = left;
-    int j = mid + 1;
-    int k = 0;
-    vector<int>	vecTmp;
-    while ( i <= mid && j <= right )
-    {
-        if ( vec[i] < vec[j] )
-        {
-            vecTmp.push_back( vec[i] );
-            i++;
-        }else  {
-            vecTmp.push_back( vec[j] );
-            j++;
-        }
-    }
-
-    while ( i <= mid )
-    {
-        vecTmp.push_back( vec[i] );
-        i++;
-    }
-
-    while ( j <= right )
-    {
-        vecTmp.push_back( vec[j] );
-        j++;
-    }
-
-    for ( int i = left; i <= right; i++ )
-    {
-        vec[i] = vecTmp[i - left];
-    }
-
-    return;
-}
-
-
-int main( void )
-{
-    vector<int> vec = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-    printvec( vec );
-    mergesort( vec, 0, vec.size() - 1 );
-    printvec( vec, "after insert sort" );
-    return(0);
+int main() {
+    int n;
+    scanf("%d", &n);
+    for (int i = 0; i < n; ++i) scanf("%d", &nums[i]);
+    merge_sort(nums, 0, n - 1);
+    for (int i = 0; i < n; ++i) printf("%d ", nums[i]);
 }
 ```
 

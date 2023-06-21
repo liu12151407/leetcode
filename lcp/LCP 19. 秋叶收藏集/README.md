@@ -1,4 +1,4 @@
-# [LCP 19. 秋叶收藏集](https://leetcode-cn.com/problems/UlBDOe)
+# [LCP 19. 秋叶收藏集](https://leetcode.cn/problems/UlBDOe)
 
 ## 题目描述
 
@@ -34,9 +34,9 @@
 
 **提示：**
 
-- `3 <= leaves.length <= 10^5`
+-   `3 <= leaves.length <= 10^5`
 
-- `leaves` 中只包含字符 `'r'` 和字符 `'y'`
+-   `leaves` 中只包含字符 `'r'` 和字符 `'y'`
 
 ## 解法
 

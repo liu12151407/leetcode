@@ -1,4 +1,4 @@
-# [613. 直线上的最近距离](https://leetcode-cn.com/problems/shortest-distance-in-a-line)
+# [613. 直线上的最近距离](https://leetcode.cn/problems/shortest-distance-in-a-line)
 
 [English Version](/solution/0600-0699/0613.Shortest%20Distance%20in%20a%20Line/README_EN.md)
 
@@ -51,7 +51,12 @@
 ### **SQL**
 
 ```sql
-
+# Write your MySQL query statement below
+SELECT
+    min(abs(p1.x - p2.x)) AS shortest
+FROM
+    Point AS p1
+    JOIN Point AS p2 ON p1.x != p2.x;
 ```
 
 <!-- tabs:end -->

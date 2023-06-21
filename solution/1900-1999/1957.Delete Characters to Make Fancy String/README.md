@@ -1,4 +1,4 @@
-# [1957. 删除字符使字符串变好](https://leetcode-cn.com/problems/delete-characters-to-make-fancy-string)
+# [1957. 删除字符使字符串变好](https://leetcode.cn/problems/delete-characters-to-make-fancy-string)
 
 [English Version](/solution/1900-1999/1957.Delete%20Characters%20to%20Make%20Fancy%20String/README_EN.md)
 
@@ -63,7 +63,14 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def makeFancyString(self, s: str) -> str:
+        ans = []
+        for c in s:
+            if len(ans) > 1 and ans[-1] == ans[-2] == c:
+                continue
+            ans.append(c)
+        return ''.join(ans)
 ```
 
 ### **Java**
@@ -71,7 +78,74 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public String makeFancyString(String s) {
+        StringBuilder ans = new StringBuilder();
+        for (char c : s.toCharArray()) {
+            int n = ans.length();
+            if (n > 1 && ans.charAt(n - 1) == c && ans.charAt(n - 2) == c) {
+                continue;
+            }
+            ans.append(c);
+        }
+        return ans.toString();
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    string makeFancyString(string s) {
+        string ans = "";
+        for (char& c : s) {
+            int n = ans.size();
+            if (n > 1 && ans[n - 1] == c && ans[n - 2] == c) continue;
+            ans.push_back(c);
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func makeFancyString(s string) string {
+	ans := []rune{}
+	for _, c := range s {
+		n := len(ans)
+		if n > 1 && ans[n-1] == c && ans[n-2] == c {
+			continue
+		}
+		ans = append(ans, c)
+	}
+	return string(ans)
+}
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param String $s
+     * @return String
+     */
+    function makeFancyString($s) {
+        $rs = '';
+        for ($i = 0; $i < strlen($s); $i++) {
+            if ($s[$i] == $s[$i + 1] && $s[$i] == $s[$i + 2]) {
+                continue;
+            } else {
+                $rs .= $s[$i];
+            }
+        }
+        return $rs;
+    }
+}
 ```
 
 ### **...**

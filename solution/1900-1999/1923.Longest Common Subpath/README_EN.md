@@ -13,7 +13,7 @@
 <p>A <strong>subpath</strong> of a path is a contiguous sequence of cities within that path.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 5, paths = [[0,1,<u>2,3</u>,4],
@@ -23,7 +23,7 @@
 <strong>Explanation:</strong> The longest common subpath is [2,3].
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 3, paths = [[0],[1],[2]]
@@ -31,7 +31,7 @@
 <strong>Explanation:</strong> There is no common subpath shared by the three paths.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 5, paths = [[<u>0</u>,1,2,3,4],
@@ -58,7 +58,43 @@
 ### **Python3**
 
 ```python
+class Solution:
+    def longestCommonSubpath(self, n: int, paths: List[List[int]]) -> int:
+        def check(k: int) -> bool:
+            cnt = Counter()
+            for h in hh:
+                vis = set()
+                for i in range(1, len(h) - k + 1):
+                    j = i + k - 1
+                    x = (h[j] - h[i - 1] * p[j - i + 1]) % mod
+                    if x not in vis:
+                        vis.add(x)
+                        cnt[x] += 1
+            return max(cnt.values()) == m
 
+        m = len(paths)
+        mx = max(len(path) for path in paths)
+        base = 133331
+        mod = 2**64 + 1
+        p = [0] * (mx + 1)
+        p[0] = 1
+        for i in range(1, len(p)):
+            p[i] = p[i - 1] * base % mod
+        hh = []
+        for path in paths:
+            k = len(path)
+            h = [0] * (k + 1)
+            for i, x in enumerate(path, 1):
+                h[i] = h[i - 1] * base % mod + x
+            hh.append(h)
+        l, r = 0, min(len(path) for path in paths)
+        while l < r:
+            mid = (l + r + 1) >> 1
+            if check(mid):
+                l = mid
+            else:
+                r = mid - 1
+        return l
 ```
 
 ### **Java**

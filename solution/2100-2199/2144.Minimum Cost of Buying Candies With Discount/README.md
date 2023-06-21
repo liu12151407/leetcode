@@ -1,4 +1,4 @@
-# [2144. 打折购买糖果的最小开销](https://leetcode-cn.com/problems/minimum-cost-of-buying-candies-with-discount)
+# [2144. 打折购买糖果的最小开销](https://leetcode.cn/problems/minimum-cost-of-buying-candies-with-discount)
 
 [English Version](/solution/2100-2199/2144.Minimum%20Cost%20of%20Buying%20Candies%20With%20Discount/README_EN.md)
 
@@ -107,8 +107,7 @@ public:
     int minimumCost(vector<int>& cost) {
         sort(cost.begin(), cost.end());
         int ans = 0, n = cost.size();
-        for (int i = n - 1; i >= 0; i -= 3)
-        {
+        for (int i = n - 1; i >= 0; i -= 3) {
             ans += cost[i];
             if (i >= 1) ans += cost[i - 1];
         }

@@ -18,7 +18,7 @@
 <p>Return <em>the <strong>minimum</strong> initial amount of energy you will need</em> <em>to finish all the tasks</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> tasks = [[1,2],[2,4],[4,8]]
@@ -30,7 +30,7 @@ Starting with 8 energy, we finish the tasks in the following order:
     - 1st task. Now energy = 2 - 1 = 1.
 Notice that even though we have leftover energy, starting with 7 energy does not work because we cannot do the 3rd task.</pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> tasks = [[1,3],[2,4],[10,11],[10,12],[8,9]]
@@ -43,7 +43,7 @@ Starting with 32 energy, we finish the tasks in the following order:
     - 4th task. Now energy = 19 - 10 = 9.
     - 5th task. Now energy = 9 - 8 = 1.</pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> tasks = [[1,7],[2,8],[3,9],[4,10],[5,11],[6,12]]
@@ -73,13 +73,92 @@ Starting with 27 energy, we finish the tasks in the following order:
 ### **Python3**
 
 ```python
-
+class Solution:
+    def minimumEffort(self, tasks: List[List[int]]) -> int:
+        ans = cur = 0
+        for a, m in sorted(tasks, key=lambda x: x[0] - x[1]):
+            if cur < m:
+                ans += m - cur
+                cur = m
+            cur -= a
+        return ans
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int minimumEffort(int[][] tasks) {
+        Arrays.sort(tasks, (a, b) -> a[0] - b[0] - (a[1] - b[1]));
+        int ans = 0, cur = 0;
+        for (var task : tasks) {
+            int a = task[0], m = task[1];
+            if (cur < m) {
+                ans += m - cur;
+                cur = m;
+            }
+            cur -= a;
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int minimumEffort(vector<vector<int>>& tasks) {
+        sort(tasks.begin(), tasks.end(), [&](const auto& a, const auto& b) { return a[0] - a[1] < b[0] - b[1]; });
+        int ans = 0, cur = 0;
+        for (auto& task : tasks) {
+            int a = task[0], m = task[1];
+            if (cur < m) {
+                ans += m - cur;
+                cur = m;
+            }
+            cur -= a;
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func minimumEffort(tasks [][]int) (ans int) {
+	sort.Slice(tasks, func(i, j int) bool { return tasks[i][0]-tasks[i][1] < tasks[j][0]-tasks[j][1] })
+	cur := 0
+	for _, task := range tasks {
+		a, m := task[0], task[1]
+		if cur < m {
+			ans += m - cur
+			cur = m
+		}
+		cur -= a
+	}
+	return
+}
+```
+
+### **TypeScript**
+
+```ts
+function minimumEffort(tasks: number[][]): number {
+    tasks.sort((a, b) => a[0] - a[1] - (b[0] - b[1]));
+    let ans = 0;
+    let cur = 0;
+    for (const [a, m] of tasks) {
+        if (cur < m) {
+            ans += m - cur;
+            cur = m;
+        }
+        cur -= a;
+    }
+    return ans;
+}
 ```
 
 ### **...**

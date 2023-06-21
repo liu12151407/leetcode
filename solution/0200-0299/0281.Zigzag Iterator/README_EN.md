@@ -15,7 +15,7 @@
 </ul>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> v1 = [1,2], v2 = [3,4,5,6]
@@ -23,14 +23,14 @@
 <strong>Explanation:</strong> By calling next repeatedly until hasNext returns false, the order of elements returned by next should be: [1,3,2,4,5,6].
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> v1 = [1], v2 = []
 <strong>Output:</strong> [1]
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> v1 = [], v2 = [1]
@@ -53,7 +53,7 @@
 
 <p>The &quot;Zigzag&quot; order is not clearly defined and is ambiguous for <code>k &gt; 2</code> cases. If &quot;Zigzag&quot; does not look right to you, replace &quot;Zigzag&quot; with &quot;Cyclic&quot;.</p>
 
-<p><strong>Example:</strong></p>
+<p><strong>Follow-up Example:</strong></p>
 
 <pre>
 <strong>Input:</strong> v1 = [1,2,3], v2 = [4,5,6,7], v3 = [8,9]

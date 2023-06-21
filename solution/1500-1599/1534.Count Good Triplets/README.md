@@ -1,4 +1,4 @@
-# [1534. 统计好三元组](https://leetcode-cn.com/problems/count-good-triplets)
+# [1534. 统计好三元组](https://leetcode.cn/problems/count-good-triplets)
 
 [English Version](/solution/1500-1599/1534.Count%20Good%20Triplets/README_EN.md)
 
@@ -51,6 +51,14 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：枚举**
+
+我们可以枚举所有的 $i$, $j$ 和 $k$，其中 $i \lt j \lt k$，判断是否同时满足 $|arr[i] - arr[j]| \le a$，$|arr[j] - arr[k]| \le b$ 和 $|arr[i] - arr[k]| \le c$，如果满足则将答案加一。
+
+枚举结束后，即可得到答案。
+
+时间复杂度 $O(n^3)$，空间复杂度 $O(1)$。其中 $n$ 为数组 $arr$ 的长度。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -58,7 +66,18 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def countGoodTriplets(self, arr: List[int], a: int, b: int, c: int) -> int:
+        ans, n = 0, len(arr)
+        for i in range(n):
+            for j in range(i + 1, n):
+                for k in range(j + 1, n):
+                    ans += (
+                        abs(arr[i] - arr[j]) <= a
+                        and abs(arr[j] - arr[k]) <= b
+                        and abs(arr[i] - arr[k]) <= c
+                    )
+        return ans
 ```
 
 ### **Java**
@@ -66,7 +85,68 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public int countGoodTriplets(int[] arr, int a, int b, int c) {
+        int n = arr.length;
+        int ans = 0;
+        for (int i = 0; i < n; ++i) {
+            for (int j = i + 1; j < n; ++j) {
+                for (int k = j + 1; k < n; ++k) {
+                    if (Math.abs(arr[i] - arr[j]) <= a && Math.abs(arr[j] - arr[k]) <= b
+                        && Math.abs(arr[i] - arr[k]) <= c) {
+                        ++ans;
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int countGoodTriplets(vector<int>& arr, int a, int b, int c) {
+        int n = arr.size();
+        int ans = 0;
+        for (int i = 0; i < n; ++i) {
+            for (int j = i + 1; j < n; ++j) {
+                for (int k = j + 1; k < n; ++k) {
+                    ans += abs(arr[i] - arr[j]) <= a && abs(arr[j] - arr[k]) <= b && abs(arr[i] - arr[k]) <= c;
+                }
+            }
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func countGoodTriplets(arr []int, a int, b int, c int) (ans int) {
+	n := len(arr)
+	for i := 0; i < n; i++ {
+		for j := i + 1; j < n; j++ {
+			for k := j + 1; k < n; k++ {
+				if abs(arr[i]-arr[j]) <= a && abs(arr[j]-arr[k]) <= b && abs(arr[i]-arr[k]) <= c {
+					ans++
+				}
+			}
+		}
+	}
+	return
+}
+
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
 ```
 
 ### **...**

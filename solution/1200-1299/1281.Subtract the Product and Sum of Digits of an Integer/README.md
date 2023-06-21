@@ -1,4 +1,4 @@
-# [1281. 整数的各位积和之差](https://leetcode-cn.com/problems/subtract-the-product-and-sum-of-digits-of-an-integer)
+# [1281. 整数的各位积和之差](https://leetcode.cn/problems/subtract-the-product-and-sum-of-digits-of-an-integer)
 
 [English Version](/solution/1200-1299/1281.Subtract%20the%20Product%20and%20Sum%20of%20Digits%20of%20an%20Integer/README_EN.md)
 
@@ -109,6 +109,56 @@ func subtractProductAndSum(n int) int {
 		p *= t
 	}
 	return p - s
+}
+```
+
+### **TypeScript**
+
+```ts
+function subtractProductAndSum(n: number): number {
+    let p = 1;
+    let s = 0;
+    while (n) {
+        const num = n % 10;
+        n = Math.floor(n / 10);
+        p *= num;
+        s += num;
+    }
+    return p - s;
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn subtract_product_and_sum(mut n: i32) -> i32 {
+        let mut p = 1;
+        let mut s = 0;
+        while n != 0 {
+            let num = n % 10;
+            n /= 10;
+            p *= num;
+            s += num;
+        }
+        p - s
+    }
+}
+```
+
+### **C**
+
+```c
+int subtractProductAndSum(int n) {
+    int p = 1;
+    int s = 0;
+    while (n) {
+        int num = n % 10;
+        n /= 10;
+        p *= num;
+        s += num;
+    }
+    return p - s;
 }
 ```
 

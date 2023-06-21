@@ -1,4 +1,4 @@
-# [1370. 上升下降字符串](https://leetcode-cn.com/problems/increasing-decreasing-string)
+# [1370. 上升下降字符串](https://leetcode.cn/problems/increasing-decreasing-string)
 
 [English Version](/solution/1300-1399/1370.Increasing%20Decreasing%20String/README_EN.md)
 
@@ -138,20 +138,15 @@ public:
         vector<int> counter(26);
         for (char c : s) ++counter[c - 'a'];
         string ans = "";
-        while (ans.size() < s.size())
-        {
-            for (int i = 0; i < 26; ++i)
-            {
-                if (counter[i])
-                {
+        while (ans.size() < s.size()) {
+            for (int i = 0; i < 26; ++i) {
+                if (counter[i]) {
                     ans += (i + 'a');
                     --counter[i];
                 }
             }
-            for (int i = 25; i >= 0; --i)
-            {
-                if (counter[i])
-                {
+            for (int i = 25; i >= 0; --i) {
+                if (counter[i]) {
                     ans += (i + 'a');
                     --counter[i];
                 }
@@ -187,6 +182,39 @@ func sortString(s string) string {
 	}
 	return string(ans)
 }
+```
+
+### **Javascript**
+
+```js
+/**
+ * @param {string} s
+ * @return {string}
+ */
+var sortString = function (s) {
+    let rs = '';
+    const m = new Map();
+    for (let i = 0; i < s.length; i++) {
+        m.set(s[i], (m.get(s[i]) || 0) + 1);
+    }
+    const keys = [...m.keys()];
+    keys.sort();
+    while (rs.length < s.length) {
+        for (let j = 0; j < keys.length; j++) {
+            if (m.get(keys[j]) != 0) {
+                rs += keys[j];
+                m.set(keys[j], m.get(keys[j]) - 1);
+            }
+        }
+        for (let j = keys.length - 1; j >= 0; j--) {
+            if (m.get(keys[j]) != 0) {
+                rs += keys[j];
+                m.set(keys[j], m.get(keys[j]) - 1);
+            }
+        }
+    }
+    return rs;
+};
 ```
 
 ### **...**

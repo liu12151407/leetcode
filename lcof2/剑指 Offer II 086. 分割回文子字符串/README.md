@@ -1,4 +1,4 @@
-# [剑指 Offer II 086. 分割回文子字符串](https://leetcode-cn.com/problems/M99OJA)
+# [剑指 Offer II 086. 分割回文子字符串](https://leetcode.cn/problems/M99OJA)
 
 ## 题目描述
 
@@ -41,7 +41,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 131&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/palindrome-partitioning/">https://leetcode-cn.com/problems/palindrome-partitioning/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 131&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/palindrome-partitioning/">https://leetcode.cn/problems/palindrome-partitioning/</a></p>
 
 ## 解法
 
@@ -70,7 +70,7 @@ class Solution:
                 return
             for j in range(i, n):
                 if dp[i][j]:
-                    t.append(s[i: j + 1])
+                    t.append(s[i : j + 1])
                     dfs(s, j + 1, t)
                     t.pop(-1)
 
@@ -101,7 +101,7 @@ class Solution {
             }
         }
         dfs(s, 0, new ArrayList<>());
-        String [][] res = new String [ans.size()][];
+        String[][] res = new String[ans.size()][];
         for (int i = 0; i < ans.size(); ++i) {
             res[i] = ans.get(i).toArray(new String[0]);
         }
@@ -136,10 +136,8 @@ public:
     vector<vector<string>> partition(string s) {
         n = s.size();
         dp.assign(n, vector<bool>(n, true));
-        for (int i = n - 1; i >= 0; --i)
-        {
-            for (int j = i + 1; j < n; ++j)
-            {
+        for (int i = n - 1; i >= 0; --i) {
+            for (int j = i + 1; j < n; ++j) {
                 dp[i][j] = s[i] == s[j] && dp[i + 1][j - 1];
             }
         }
@@ -149,15 +147,12 @@ public:
     }
 
     void dfs(string& s, int i, vector<string> t) {
-        if (i == n)
-        {
+        if (i == n) {
             ans.push_back(t);
             return;
         }
-        for (int j = i; j < n; ++j)
-        {
-            if (dp[i][j])
-            {
+        for (int j = i; j < n; ++j) {
+            if (dp[i][j]) {
                 t.push_back(s.substr(i, j - i + 1));
                 dfs(s, j + 1, t);
                 t.pop_back();

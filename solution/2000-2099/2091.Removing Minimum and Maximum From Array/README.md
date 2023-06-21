@@ -1,4 +1,4 @@
-# [2091. 从数组中移除最大值和最小值](https://leetcode-cn.com/problems/removing-minimum-and-maximum-from-array)
+# [2091. 从数组中移除最大值和最小值](https://leetcode.cn/problems/removing-minimum-and-maximum-from-array)
 
 [English Version](/solution/2000-2099/2091.Removing%20Minimum%20and%20Maximum%20From%20Array/README_EN.md)
 
@@ -144,13 +144,11 @@ class Solution {
 public:
     int minimumDeletions(vector<int>& nums) {
         int mi = 0, mx = 0, n = nums.size();
-        for (int i = 0; i < n; ++i)
-        {
+        for (int i = 0; i < n; ++i) {
             if (nums[i] < nums[mi]) mi = i;
             if (nums[i] > nums[mx]) mx = i;
         }
-        if (mi > mx)
-        {
+        if (mi > mx) {
             int t = mi;
             mi = mx;
             mx = t;

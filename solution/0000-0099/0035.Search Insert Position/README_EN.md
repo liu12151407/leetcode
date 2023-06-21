@@ -6,23 +6,30 @@
 
 <p>Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.</p>
 
+<p>You must&nbsp;write an algorithm with&nbsp;<code>O(log n)</code> runtime complexity.</p>
+
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<pre><strong>Input:</strong> nums = [1,3,5,6], target = 5
+<p><strong class="example">Example 1:</strong></p>
+
+<pre>
+<strong>Input:</strong> nums = [1,3,5,6], target = 5
 <strong>Output:</strong> 2
-</pre><p><strong>Example 2:</strong></p>
-<pre><strong>Input:</strong> nums = [1,3,5,6], target = 2
-<strong>Output:</strong> 1
-</pre><p><strong>Example 3:</strong></p>
-<pre><strong>Input:</strong> nums = [1,3,5,6], target = 7
-<strong>Output:</strong> 4
-</pre><p><strong>Example 4:</strong></p>
-<pre><strong>Input:</strong> nums = [1,3,5,6], target = 0
-<strong>Output:</strong> 0
-</pre><p><strong>Example 5:</strong></p>
-<pre><strong>Input:</strong> nums = [1], target = 0
-<strong>Output:</strong> 0
 </pre>
+
+<p><strong class="example">Example 2:</strong></p>
+
+<pre>
+<strong>Input:</strong> nums = [1,3,5,6], target = 2
+<strong>Output:</strong> 1
+</pre>
+
+<p><strong class="example">Example 3:</strong></p>
+
+<pre>
+<strong>Input:</strong> nums = [1,3,5,6], target = 7
+<strong>Output:</strong> 4
+</pre>
+
 <p>&nbsp;</p>
 <p><strong>Constraints:</strong></p>
 
@@ -54,6 +61,12 @@ class Solution:
         return left
 ```
 
+```python
+class Solution:
+    def searchInsert(self, nums: List[int], target: int) -> int:
+        return bisect_left(nums, target)
+```
+
 ### **Java**
 
 ```java
@@ -80,13 +93,23 @@ class Solution {
 public:
     int searchInsert(vector<int>& nums, int target) {
         int left = 0, right = nums.size();
-        while (left < right)
-        {
+        while (left < right) {
             int mid = left + right >> 1;
-            if (nums[mid] >= target) right = mid;
-            else left = mid + 1;
+            if (nums[mid] >= target)
+                right = mid;
+            else
+                left = mid + 1;
         }
         return left;
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    int searchInsert(vector<int>& nums, int target) {
+        return lower_bound(nums.begin(), nums.end(), target) - nums.begin();
     }
 };
 ```
@@ -105,6 +128,12 @@ func searchInsert(nums []int, target int) int {
 		}
 	}
 	return left
+}
+```
+
+```go
+func searchInsert(nums []int, target int) int {
+	return sort.Search(len(nums), func(i int) bool { return nums[i] >= target })
 }
 ```
 
@@ -129,6 +158,27 @@ var searchInsert = function (nums, target) {
     }
     return left;
 };
+```
+
+### **Rust**
+
+```rust
+use std::cmp::Ordering;
+impl Solution {
+    pub fn search_insert(nums: Vec<i32>, target: i32) -> i32 {
+        let mut left = 0;
+        let mut right = nums.len();
+        while left < right {
+            let mid = left + (right - left) / 2;
+            match nums[mid].cmp(&target) {
+                Ordering::Less => left = mid + 1,
+                Ordering::Greater => right = mid,
+                Ordering::Equal => return mid as i32,
+            }
+        }
+        left as i32
+    }
+}
 ```
 
 ### **...**

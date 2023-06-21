@@ -1,4 +1,4 @@
-# [1898. 可移除字符的最大数目](https://leetcode-cn.com/problems/maximum-number-of-removable-characters)
+# [1898. 可移除字符的最大数目](https://leetcode.cn/problems/maximum-number-of-removable-characters)
 
 [English Version](/solution/1800-1899/1898.Maximum%20Number%20of%20Removable%20Characters/README_EN.md)
 
@@ -61,7 +61,60 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
-“二分法 + 判断子序列”实现。
+**方法一：二分查找 + 判断子序列**
+
+二分枚举整数 k，找到满足要求的最大 k 即可。
+
+以下是二分查找的两个通用模板：
+
+模板 1：
+
+```java
+boolean check(int x) {
+}
+
+int search(int left, int right) {
+    while (left < right) {
+        int mid = (left + right) >> 1;
+        if (check(mid)) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+    return left;
+}
+```
+
+模板 2：
+
+```java
+boolean check(int x) {
+}
+
+int search(int left, int right) {
+    while (left < right) {
+        int mid = (left + right + 1) >> 1;
+        if (check(mid)) {
+            left = mid;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return left;
+}
+```
+
+做二分题目时，可以按照以下步骤：
+
+1. 写出循环条件：`while (left < right)`，注意是 `left < right`，而非 `left <= right`；
+1. 循环体内，先无脑写出 `mid = (left + right) >> 1`；
+1. 根据具体题目，实现 `check()` 函数（有时很简单的逻辑，可以不定义 `check`），想一下究竟要用 `right = mid`（模板 1） 还是 `left = mid`（模板 2）；
+    - 如果 `right = mid`，那么无脑写出 else 语句 `left = mid + 1`，并且不需要更改 mid 的计算，即保持 `mid = (left + right) >> 1`；
+    - 如果 `left = mid`，那么无脑写出 else 语句 `right = mid - 1`，并且在 mid 计算时补充 +1，即 `mid = (left + right + 1) >> 1`。
+1. 循环结束时，left 与 right 相等。
+
+注意，这两个模板的优点是始终保持答案位于二分区间内，二分结束条件对应的值恰好在答案所处的位置。 对于可能无解的情况，只要判断二分结束后的 left 或者 right 是否满足题意即可。
 
 <!-- tabs:start -->
 
@@ -72,15 +125,16 @@
 ```python
 class Solution:
     def maximumRemovals(self, s: str, p: str, removable: List[int]) -> int:
-        def check(mid):
-            m, n, i, j = len(s), len(p), 0, 0
-            ids = set(removable[:mid])
+        def check(k):
+            i = j = 0
+            ids = set(removable[:k])
             while i < m and j < n:
                 if i not in ids and s[i] == p[j]:
                     j += 1
                 i += 1
             return j == n
 
+        m, n = len(s), len(p)
         left, right = 0, len(removable)
         while left < right:
             mid = (left + right + 1) >> 1
@@ -198,10 +252,25 @@ public:
 
 ```go
 func maximumRemovals(s string, p string, removable []int) int {
+	check := func(k int) bool {
+		ids := make(map[int]bool)
+		for _, r := range removable[:k] {
+			ids[r] = true
+		}
+		var i, j int
+		for i < len(s) && j < len(p) {
+			if !ids[i] && s[i] == p[j] {
+				j++
+			}
+			i++
+		}
+		return j == len(p)
+	}
+
 	left, right := 0, len(removable)
 	for left < right {
 		mid := (left + right + 1) >> 1
-		if check(s, p, removable, mid) {
+		if check(mid) {
 			left = mid
 		} else {
 			right = mid - 1
@@ -209,20 +278,49 @@ func maximumRemovals(s string, p string, removable []int) int {
 	}
 	return left
 }
+```
 
-func check(s string, p string, removable []int, mid int) bool {
-	m, n, i, j := len(s), len(p), 0, 0
-	ids := make(map[int]bool)
-	for k := 0; k < mid; k++ {
-		ids[removable[k]] = true
-	}
-	for i < m && j < n {
-		if !ids[i] && s[i] == p[j] {
-			j++
-		}
-		i++
-	}
-	return j == n
+### **Rust**
+
+```rust
+use std::collections::HashSet;
+
+impl Solution {
+    pub fn maximum_removals(s: String, p: String, removable: Vec<i32>) -> i32 {
+        let m = s.len();
+        let n = p.len();
+        let s = s.as_bytes();
+        let p = p.as_bytes();
+
+        let check = |k| {
+            let mut i = 0;
+            let mut j = 0;
+            let ids: HashSet<i32> = removable[..k].iter().cloned().collect();
+            while i < m && j < n {
+                if !ids.contains(&(i as i32)) && s[i] == p[j] {
+                    j += 1;
+                }
+                i += 1;
+            }
+            j == n
+        };
+
+        let mut left = 0;
+        let mut right = removable.len();
+        while left + 1 < right {
+            let mid = left + (right - left) / 2;
+            if check(mid) {
+                left = mid;
+            } else {
+                right = mid;
+            }
+        }
+
+        if check(right) {
+            return right as i32;
+        }
+        left as i32
+    }
 }
 ```
 

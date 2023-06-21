@@ -15,14 +15,22 @@
 | grade         | int     |
 +---------------+---------+
 (student_id, course_id) is the primary key of this table.
-
+grade is never NULL.
 </pre>
 
-<p>Write a SQL query to find the highest grade with its corresponding course for each student. In case of a tie, you should find the course with the smallest&nbsp;<code>course_id</code>. The output must be sorted by increasing <code>student_id</code>.</p>
+<p>&nbsp;</p>
 
-<p>The query result format is in the following example:</p>
+<p>Write a SQL query to find the highest grade with its corresponding course for each student. In case of a tie, you should find the course with the smallest <code>course_id</code>.</p>
+
+<p>Return the result table ordered by <code>student_id</code> in <strong>ascending order</strong>.</p>
+
+<p>The query result format is in the following example.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
+<strong>Input:</strong> 
 Enrollments table:
 +------------+-------------------+
 | student_id | course_id | grade |
@@ -35,8 +43,7 @@ Enrollments table:
 | 3          | 2         | 75    |
 | 3          | 3         | 82    |
 +------------+-----------+-------+
-
-Result table:
+<strong>Output:</strong> 
 +------------+-------------------+
 | student_id | course_id | grade |
 +------------+-----------+-------+
@@ -53,7 +60,21 @@ Result table:
 ### **SQL**
 
 ```sql
-
+SELECT
+    student_id,
+    course_id,
+    grade
+FROM
+    (
+        SELECT
+            *,
+            RANK() OVER (
+                PARTITION BY student_id
+                ORDER BY grade DESC, course_id
+            ) AS rk
+        FROM Enrollments
+    ) AS a
+WHERE a.rk = 1;
 ```
 
 <!-- tabs:end -->

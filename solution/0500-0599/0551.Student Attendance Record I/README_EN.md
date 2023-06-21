@@ -22,7 +22,7 @@
 <p>Return <code>true</code><em> if the student is eligible for an attendance award, or </em><code>false</code><em> otherwise</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;PPALLP&quot;
@@ -30,7 +30,7 @@
 <strong>Explanation:</strong> The student has fewer than 2 absences and was never late 3 or more consecutive days.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;PPALLL&quot;
@@ -55,7 +55,7 @@
 ```python
 class Solution:
     def checkRecord(self, s: str) -> bool:
-        return s.count('A') <= 1 and 'LLL' not in s
+        return s.count('A') < 2 and 'LLL' not in s
 ```
 
 ### **Java**
@@ -63,9 +63,35 @@ class Solution:
 ```java
 class Solution {
     public boolean checkRecord(String s) {
-        int i = s.indexOf("A");
-        return (i == -1 || s.lastIndexOf("A") == i) && !s.contains("LLL");
+        return s.indexOf("A") == s.lastIndexOf("A") && !s.contains("LLL");
     }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool checkRecord(string s) {
+        return count(s.begin(), s.end(), 'A') < 2 && s.find("LLL") == string::npos;
+    }
+};
+```
+
+### **Go**
+
+```go
+func checkRecord(s string) bool {
+	return strings.Count(s, "A") < 2 && !strings.Contains(s, "LLL")
+}
+```
+
+### **TypeScript**
+
+```ts
+function checkRecord(s: string): boolean {
+    return s.indexOf('A') === s.lastIndexOf('A') && s.indexOf('LLL') === -1;
 }
 ```
 

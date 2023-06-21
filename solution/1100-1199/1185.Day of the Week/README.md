@@ -1,4 +1,4 @@
-# [1185. 一周中的第几天](https://leetcode-cn.com/problems/day-of-the-week)
+# [1185. 一周中的第几天](https://leetcode.cn/problems/day-of-the-week)
 
 [English Version](/solution/1100-1199/1185.Day%20of%20the%20Week/README_EN.md)
 
@@ -46,7 +46,7 @@
 
 直接调库或者应用蔡勒公式。
 
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1100-1199/1185.Day%20of%20the%20Week/images/zeller.svg">
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1100-1199/1185.Day%20of%20the%20Week/images/zeller.svg">
 
 -   `w`: 星期（从 Sunday 开始）
 -   `c`: 年份前两位
@@ -77,7 +77,15 @@ class Solution:
         c = y // 100
         y = y % 100
         w = (c // 4 - 2 * c + y + y // 4 + 13 * (m + 1) // 5 + d - 1) % 7
-        return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][w]
+        return [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+        ][w]
 ```
 
 ### **Java**
@@ -88,7 +96,8 @@ class Solution:
 import java.util.Calendar;
 
 class Solution {
-    private static final String[] WEEK = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    private static final String[] WEEK
+        = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
     public static String dayOfTheWeek(int day, int month, int year) {
         Calendar calendar = Calendar.getInstance();
@@ -108,7 +117,8 @@ class Solution {
         int c = y / 100;
         y %= 100;
         int w = (c / 4 - 2 * c + y + y / 4 + 13 * (m + 1) / 5 + d - 1) % 7;
-        return new String[]{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"}[(w + 7) % 7];
+        return new String[] {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
+            "Saturday"}[(w + 7) % 7];
     }
 }
 ```
@@ -119,8 +129,7 @@ class Solution {
 class Solution {
 public:
     string dayOfTheWeek(int d, int m, int y) {
-        if (m < 3)
-        {
+        if (m < 3) {
             m += 12;
             y -= 1;
         }

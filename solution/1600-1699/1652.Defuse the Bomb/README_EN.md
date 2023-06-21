@@ -19,7 +19,7 @@
 <p>Given the <strong>circular</strong> array <code>code</code> and an integer key <code>k</code>, return <em>the decrypted code to defuse the bomb</em>!</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> code = [5,7,1,4], k = 3
@@ -27,7 +27,7 @@
 <strong>Explanation:</strong> Each number is replaced by the sum of the next 3 numbers. The decrypted code is [7+1+4, 1+4+5, 4+5+7, 5+7+1]. Notice that the numbers wrap around.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> code = [1,2,3,4], k = 0
@@ -35,7 +35,7 @@
 <strong>Explanation:</strong> When k is zero, the numbers are replaced by 0. 
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> code = [2,4,9,3], k = -2
@@ -63,17 +63,33 @@
 class Solution:
     def decrypt(self, code: List[int], k: int) -> List[int]:
         n = len(code)
-        res = [0] * n
+        ans = [0] * n
         if k == 0:
-            return res
+            return ans
         for i in range(n):
             if k > 0:
                 for j in range(i + 1, i + k + 1):
-                    res[i] += code[j % n]
+                    ans[i] += code[j % n]
             else:
                 for j in range(i + k, i):
-                    res[i] += code[(j + n) % n]
-        return res
+                    ans[i] += code[(j + n) % n]
+        return ans
+```
+
+```python
+class Solution:
+    def decrypt(self, code: List[int], k: int) -> List[int]:
+        n = len(code)
+        ans = [0] * n
+        if k == 0:
+            return ans
+        s = list(accumulate(code + code, initial=0))
+        for i in range(n):
+            if k > 0:
+                ans[i] = s[i + k + 1] - s[i + 1]
+            else:
+                ans[i] = s[i + n] - s[i + k + n]
+        return ans
 ```
 
 ### **Java**
@@ -82,21 +98,181 @@ class Solution:
 class Solution {
     public int[] decrypt(int[] code, int k) {
         int n = code.length;
-        int[] res = new int[n];
-        if (k == 0) return res;
+        int[] ans = new int[n];
+        if (k == 0) {
+            return ans;
+        }
         for (int i = 0; i < n; ++i) {
             if (k > 0) {
-                for (int j = i + 1; j <= i + k; ++j) {
-                    res[i] += code[j % n];
+                for (int j = i + 1; j < i + k + 1; ++j) {
+                    ans[i] += code[j % n];
                 }
             } else {
-                for (int j = i + k; j <= i - 1; ++j) {
-                    res[i] += code[(j + n) % n];
+                for (int j = i + k; j < i; ++j) {
+                    ans[i] += code[(j + n) % n];
                 }
             }
         }
-        return res;
+        return ans;
     }
+}
+```
+
+```java
+class Solution {
+    public int[] decrypt(int[] code, int k) {
+        int n = code.length;
+        int[] ans = new int[n];
+        if (k == 0) {
+            return ans;
+        }
+        int[] s = new int[n << 1 | 1];
+        for (int i = 0; i < n << 1; ++i) {
+            s[i + 1] = s[i] + code[i % n];
+        }
+        for (int i = 0; i < n; ++i) {
+            if (k > 0) {
+                ans[i] = s[i + k + 1] - s[i + 1];
+            } else {
+                ans[i] = s[i + n] - s[i + k + n];
+            }
+        }
+        return ans;
+    }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    vector<int> decrypt(vector<int>& code, int k) {
+        int n = code.size();
+        vector<int> ans(n);
+        if (k == 0) {
+            return ans;
+        }
+        for (int i = 0; i < n; ++i) {
+            if (k > 0) {
+                for (int j = i + 1; j < i + k + 1; ++j) {
+                    ans[i] += code[j % n];
+                }
+            } else {
+                for (int j = i + k; j < i; ++j) {
+                    ans[i] += code[(j + n) % n];
+                }
+            }
+        }
+        return ans;
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    vector<int> decrypt(vector<int>& code, int k) {
+        int n = code.size();
+        vector<int> ans(n);
+        if (k == 0) {
+            return ans;
+        }
+        vector<int> s(n << 1 | 1);
+        for (int i = 0; i < n << 1; ++i) {
+            s[i + 1] = s[i] + code[i % n];
+        }
+        for (int i = 0; i < n; ++i) {
+            if (k > 0) {
+                ans[i] = s[i + k + 1] - s[i + 1];
+            } else {
+                ans[i] = s[i + n] - s[i + k + n];
+            }
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func decrypt(code []int, k int) []int {
+	n := len(code)
+	ans := make([]int, n)
+	if k == 0 {
+		return ans
+	}
+	for i := 0; i < n; i++ {
+		if k > 0 {
+			for j := i + 1; j < i+k+1; j++ {
+				ans[i] += code[j%n]
+			}
+		} else {
+			for j := i + k; j < i; j++ {
+				ans[i] += code[(j+n)%n]
+			}
+		}
+	}
+	return ans
+}
+```
+
+```go
+func decrypt(code []int, k int) []int {
+	n := len(code)
+	ans := make([]int, n)
+	if k == 0 {
+		return ans
+	}
+	s := make([]int, n<<1|1)
+	for i := 0; i < n<<1; i++ {
+		s[i+1] = s[i] + code[i%n]
+	}
+	for i := range code {
+		if k > 0 {
+			ans[i] = s[i+k+1] - s[i+1]
+		} else {
+			ans[i] = s[i+n] - s[i+k+n]
+		}
+	}
+	return ans
+}
+```
+
+### **TypeScript**
+
+```ts
+function decrypt(code: number[], k: number): number[] {
+    const n = code.length;
+    if (k === 0) {
+        return code.fill(0);
+    }
+    const isPrefix = k < 0;
+    if (isPrefix) {
+        k *= -1;
+    }
+    const map = new Map<number, [number, number]>();
+    let prefix = 0;
+    let suffix = 0;
+    for (let i = 1; i <= k; i++) {
+        prefix += code[n - i];
+        suffix += code[i];
+    }
+    map.set(0, [prefix, suffix]);
+
+    for (let i = 1; i < n; i++) {
+        let [p, s] = map.get(i - 1);
+        p -= code[n - k - 1 + i] ?? code[i - k - 1];
+        p += code[i - 1];
+        s -= code[i];
+        s += code[i + k] ?? code[i + k - n];
+        map.set(i, [p, s]);
+    }
+    for (let i = 0; i < n; i++) {
+        code[i] = map.get(i)[Number(!isPrefix)];
+    }
+    return code;
 }
 ```
 

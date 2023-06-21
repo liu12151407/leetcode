@@ -1,4 +1,4 @@
-# [剑指 Offer II 006. 排序数组中两个数字之和](https://leetcode-cn.com/problems/kLl5u1)
+# [剑指 Offer II 006. 排序数组中两个数字之和](https://leetcode.cn/problems/kLl5u1)
 
 ## 题目描述
 
@@ -48,7 +48,7 @@
 
 <p>&nbsp;</p>
 
-<p>注意：本题与主站 167 题相似（下标起点不同）：<a href="https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/">https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/</a></p>
+<p>注意：本题与主站 167 题相似（下标起点不同）：<a href="https://leetcode.cn/problems/two-sum-ii-input-array-is-sorted/">https://leetcode.cn/problems/two-sum-ii-input-array-is-sorted/</a></p>
 
 ## 解法
 
@@ -89,7 +89,7 @@ class Solution {
             } else if (numbers[i] + numbers[j] > target) {
                 j--;
             } else {
-                return new int[]{i, j};
+                return new int[] {i, j};
             }
         }
     }
@@ -115,37 +115,75 @@ func twoSum(numbers []int, target int) []int {
 ### **C++**
 
 ```cpp
-class Solution
-{
-    public:
-        vector<int> twoSum( vector<int> & numbers, int target )
-        {
-            int i = 0;
-            int j = numbers.size() - 1;
-            vector<int> res;
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& numbers, int target) {
+        int i = 0;
+        int j = numbers.size() - 1;
+        vector<int> res;
 
-            while (i < j)
-            {
-                int sum = numbers[i] + numbers[j];
-                if(sum < target)
-                {
-                    i++;
-                }
-                else if (sum > target)
-                {
-                    j--;
-                }
-                else
-                {
-                    res.push_back(i);
-                    res.push_back(j);
-                    break;
+        while (i < j) {
+            int sum = numbers[i] + numbers[j];
+            if (sum < target) {
+                i++;
+            } else if (sum > target) {
+                j--;
+            } else {
+                res.push_back(i);
+                res.push_back(j);
+                break;
+            }
+        }
+
+        return res;
+    }
+};
+```
+
+### **Rust**
+
+```rust
+use std::cmp::Ordering;
+
+impl Solution {
+    pub fn two_sum(numbers: Vec<i32>, target: i32) -> Vec<i32> {
+        let n = numbers.len();
+        let mut l = 0;
+        let mut r = n - 1;
+        loop {
+            match target.cmp(&(numbers[l] + numbers[r])) {
+                Ordering::Less => r -= 1,
+                Ordering::Greater => l += 1,
+                Ordering::Equal => break,
+            }
+        }
+        vec![l as i32, r as i32]
+    }
+}
+```
+
+```rust
+use std::cmp::Ordering;
+
+impl Solution {
+    pub fn two_sum(numbers: Vec<i32>, target: i32) -> Vec<i32> {
+        let n = numbers.len();
+        for i in 0..n - 1 {
+            let num = target - numbers[i];
+            let mut l = i + 1;
+            let mut r = n - 1;
+            while l <= r {
+                let mid = l + (r - l) / 2;
+                match num.cmp(&numbers[mid]) {
+                    Ordering::Less => r = mid - 1,
+                    Ordering::Greater => l = mid + 1,
+                    Ordering::Equal => return vec![i as i32, mid as i32],
                 }
             }
-
-            return res;
         }
-};
+        vec![-1, -1]
+    }
+}
 ```
 
 ### **...**

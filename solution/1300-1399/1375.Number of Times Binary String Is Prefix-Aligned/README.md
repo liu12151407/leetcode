@@ -1,4 +1,4 @@
-# [1375. 二进制字符串前缀一致的次数](https://leetcode-cn.com/problems/number-of-times-binary-string-is-prefix-aligned)
+# [1375. 二进制字符串前缀一致的次数](https://leetcode.cn/problems/number-of-times-binary-string-is-prefix-aligned)
 
 [English Version](/solution/1300-1399/1375.Number%20of%20Times%20Binary%20String%20Is%20Prefix-Aligned/README_EN.md)
 
@@ -56,6 +56,14 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：直接遍历**
+
+我们可以遍历数组 $flips$，记录当前遍历过的元素的最大值 $mx$，若 $mx$ 等于当前遍历到的下标 $i$，则说明前 $i$ 个元素都被翻转过了，即前缀一致，答案累加。
+
+遍历结束后，返回答案即可。
+
+时间复杂度 $O(n)$，其中 $n$ 为数组 $flips$ 的长度。空间复杂度 $O(1)$。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -63,7 +71,13 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def numTimesAllBlue(self, flips: List[int]) -> int:
+        ans = mx = 0
+        for i, x in enumerate(flips, 1):
+            mx = max(mx, x)
+            ans += mx == i
+        return ans
 ```
 
 ### **Java**
@@ -71,15 +85,72 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public int numTimesAllBlue(int[] flips) {
+        int ans = 0, mx = 0;
+        for (int i = 1; i <= flips.length; ++i) {
+            mx = Math.max(mx, flips[i - 1]);
+            if (mx == i) {
+                ++ans;
+            }
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int numTimesAllBlue(vector<int>& flips) {
+        int ans = 0, mx = 0;
+        for (int i = 1; i <= flips.size(); ++i) {
+            mx = max(mx, flips[i - 1]);
+            ans += mx == i;
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func numTimesAllBlue(flips []int) (ans int) {
+	mx := 0
+	for i, x := range flips {
+		mx = max(mx, x)
+		if mx == i+1 {
+			ans++
+		}
+	}
+	return
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
 ```
 
 ### **TypeScript**
 
-<!-- 这里可写当前语言的特殊实现逻辑 -->
-
 ```ts
-
+function numTimesAllBlue(flips: number[]): number {
+    let ans = 0;
+    let mx = 0;
+    for (let i = 1; i <= flips.length; ++i) {
+        mx = Math.max(mx, flips[i - 1]);
+        if (mx === i) {
+            ++ans;
+        }
+    }
+    return ans;
+}
 ```
 
 ### **...**

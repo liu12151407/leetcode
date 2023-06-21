@@ -1,4 +1,4 @@
-# [1266. 访问所有点的最小时间](https://leetcode-cn.com/problems/minimum-time-visiting-all-points)
+# [1266. 访问所有点的最小时间](https://leetcode.cn/problems/minimum-time-visiting-all-points)
 
 [English Version](/solution/1200-1299/1266.Minimum%20Time%20Visiting%20All%20Points/README_EN.md)
 
@@ -26,7 +26,7 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1200-1299/1266.Minimum%20Time%20Visiting%20All%20Points/images/1626_example_1.png" style="height: 428px; width: 500px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1200-1299/1266.Minimum%20Time%20Visiting%20All%20Points/images/1626_example_1.png" style="height: 428px; width: 500px;" /></p>
 
 <pre>
 <strong>输入：</strong>points = [[1,1],[3,4],[-1,0]]
@@ -58,7 +58,15 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
-两个点 `(x0, y0)`, `(x1, y1)`，横坐标的差值 `dx = abs(x0 - x1)`, 纵坐标的差值 `dy = abs(y0 - y1)`，最小移动时间 = `max(dx, dy)`。
+**方法一：模拟**
+
+对于两个点 $p1=(x_1, y_1)$ 和 $p2=(x_2, y_2)$，横坐标和纵坐标分别移动的距离分别为 $dx = |x_1 - x_2|$ 和 $dy = |y_1 - y_2|$。
+
+如果 $dx \ge dy$，则沿对角线移动 $dy$，再沿水平方向移动 $dx - dy$；如果 $dx < dy$，则沿对角线移动 $dx$，再沿竖直方向移动 $dy - dx$。因此，两个点之间的最短距离为 $max(dx, dy)$。
+
+我们可以遍历所有的点对，计算出每个点对之间的最短距离，然后求和即可。
+
+时间复杂度 $O(n)$，空间复杂度 $O(1)$。其中 $n$ 为点的个数。
 
 <!-- tabs:start -->
 
@@ -69,12 +77,9 @@
 ```python
 class Solution:
     def minTimeToVisitAllPoints(self, points: List[List[int]]) -> int:
-        res = 0
-        x0, y0 = points[0][0], points[0][1]
-        for x1, y1 in points[1:]:
-            res += max(abs(x0 - x1), abs(y0 - y1))
-            x0, y0 = x1, y1
-        return res
+        return sum(
+            max(abs(p1[0] - p2[0]), abs(p1[1] - p2[1])) for p1, p2 in pairwise(points)
+        )
 ```
 
 ### **Java**
@@ -84,14 +89,58 @@ class Solution:
 ```java
 class Solution {
     public int minTimeToVisitAllPoints(int[][] points) {
-        int res = 0;
+        int ans = 0;
         for (int i = 1; i < points.length; ++i) {
-            int x0 = points[i - 1][0], y0 = points[i - 1][1];
-            int x1 = points[i][0], y1 = points[i][1];
-            res += Math.max(Math.abs(x0 - x1), Math.abs(y0 - y1));
+            int dx = Math.abs(points[i][0] - points[i - 1][0]);
+            int dy = Math.abs(points[i][1] - points[i - 1][1]);
+            ans += Math.max(dx, dy);
         }
-        return res;
+        return ans;
     }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int minTimeToVisitAllPoints(vector<vector<int>>& points) {
+        int ans = 0;
+        for (int i = 1; i < points.size(); ++i) {
+            int dx = abs(points[i][0] - points[i - 1][0]);
+            int dy = abs(points[i][1] - points[i - 1][1]);
+            ans += max(dx, dy);
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func minTimeToVisitAllPoints(points [][]int) (ans int) {
+	for i, p := range points[1:] {
+		dx := abs(p[0] - points[i][0])
+		dy := abs(p[1] - points[i][1])
+		ans += max(dx, dy)
+	}
+	return
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
 }
 ```
 
@@ -109,48 +158,36 @@ function minTimeToVisitAllPoints(points: number[][]): number {
 }
 ```
 
-### **C++**
+### **Rust**
 
-```cpp
-class Solution {
-public:
-    int minTimeToVisitAllPoints(vector<vector<int>>& points) {
-        int res = 0;
-        for (int i = 1; i < points.size(); ++i) {
-            int x0 = points[i - 1][0], y0 = points[i - 1][1];
-            int x1 = points[i][0], y1 = points[i][1];
-            res += max(abs(x0 - x1), abs(y0 - y1));
+```rust
+impl Solution {
+    pub fn min_time_to_visit_all_points(points: Vec<Vec<i32>>) -> i32 {
+        let n = points.len();
+        let mut ans = 0;
+        for i in 1..n {
+            let x = (points[i - 1][0] - points[i][0]).abs();
+            let y = (points[i - 1][1] - points[i][1]).abs();
+            ans += x.max(y);
         }
-        return res;
+        ans
     }
-};
+}
 ```
 
-### **Go**
+### **C**
 
-```go
-func minTimeToVisitAllPoints(points [][]int) int {
-	res := 0
-	for i := 1; i < len(points); i++ {
-		x0, y0 := points[i-1][0], points[i-1][1]
-		x1, y1 := points[i][0], points[i][1]
-		res += max(abs(x0-x1), abs(y0-y1))
-	}
-	return res
-}
+```c
+#define max(a, b) (((a) > (b)) ? (a) : (b))
 
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
-}
-
-func abs(a int) int {
-	if a > 0 {
-		return a
-	}
-	return -a
+int minTimeToVisitAllPoints(int** points, int pointsSize, int* pointsColSize) {
+    int ans = 0;
+    for (int i = 1; i < pointsSize; i++) {
+        int x = abs(points[i - 1][0] - points[i][0]);
+        int y = abs(points[i - 1][1] - points[i][1]);
+        ans += max(x, y);
+    }
+    return ans;
 }
 ```
 

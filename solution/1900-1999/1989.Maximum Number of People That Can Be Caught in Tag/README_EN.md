@@ -11,7 +11,7 @@
 <p>Return <em>the <strong>maximum</strong> number of people that the people who are &quot;it&quot; can catch</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> team = [0,1,0,1,0], dist = 3
@@ -23,7 +23,7 @@ The person who is &quot;it&quot; at index 3 can catch people in the range [i-dis
 They can catch the person who is not &quot;it&quot; at index 0.
 The person who is not &quot;it&quot; at index 4 will not be caught because the people at indices 1 and 3 are already catching one person.</pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> team = [1], dist = 1
@@ -32,7 +32,7 @@ The person who is not &quot;it&quot; at index 4 will not be caught because the p
 There are no people who are not &quot;it&quot; to catch.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> team = [0], dist = 1
@@ -57,13 +57,92 @@ There are no people who are not &quot;it&quot; to catch.
 ### **Python3**
 
 ```python
-
+class Solution:
+    def catchMaximumAmountofPeople(self, team: List[int], dist: int) -> int:
+        ans = j = 0
+        n = len(team)
+        for i, x in enumerate(team):
+            if x:
+                while j < n and (team[j] or i - j > dist):
+                    j += 1
+                if j < n and abs(i - j) <= dist:
+                    ans += 1
+                    j += 1
+        return ans
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int catchMaximumAmountofPeople(int[] team, int dist) {
+        int ans = 0;
+        int n = team.length;
+        for (int i = 0, j = 0; i < n; ++i) {
+            if (team[i] == 1) {
+                while (j < n && (team[j] == 1 || i - j > dist)) {
+                    ++j;
+                }
+                if (j < n && Math.abs(i - j) <= dist) {
+                    ++ans;
+                    ++j;
+                }
+            }
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int catchMaximumAmountofPeople(vector<int>& team, int dist) {
+        int ans = 0;
+        int n = team.size();
+        for (int i = 0, j = 0; i < n; ++i) {
+            if (team[i]) {
+                while (j < n && (team[j] || i - j > dist)) {
+                    ++j;
+                }
+                if (j < n && abs(i - j) <= dist) {
+                    ++ans;
+                    ++j;
+                }
+            }
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func catchMaximumAmountofPeople(team []int, dist int) (ans int) {
+	n := len(team)
+	for i, j := 0, 0; i < n; i++ {
+		if team[i] == 1 {
+			for j < n && (team[j] == 1 || i-j > dist) {
+				j++
+			}
+			if j < n && abs(i-j) <= dist {
+				ans++
+				j++
+			}
+		}
+	}
+	return
+}
+
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
 ```
 
 ### **...**

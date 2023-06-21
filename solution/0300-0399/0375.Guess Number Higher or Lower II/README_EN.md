@@ -17,8 +17,8 @@
 <p>Given a particular&nbsp;<code>n</code>, return&nbsp;<em>the minimum amount of money you need to&nbsp;<strong>guarantee a win regardless of what number I pick</strong></em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0300-0399/0375.Guess%20Number%20Higher%20or%20Lower%20II/images/graph.png" style="width: 505px; height: 388px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0300-0399/0375.Guess%20Number%20Higher%20or%20Lower%20II/images/graph.png" style="width: 505px; height: 388px;" />
 <pre>
 <strong>Input:</strong> n = 10
 <strong>Output:</strong> 16
@@ -41,7 +41,7 @@
 The worst case in all these scenarios is that you pay $16. Hence, you only need $16 to guarantee a win.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 1
@@ -49,7 +49,7 @@ The worst case in all these scenarios is that you pay $16. Hence, you only need 
 <strong>Explanation:</strong>&nbsp;There is only one possible number, so you can guess 1 and not have to pay anything.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 2
@@ -81,7 +81,7 @@ class Solution:
         for l in range(2, n + 1):
             for i in range(1, n - l + 2):
                 j = i + l - 1
-                dp[i][j] = float('inf')
+                dp[i][j] = inf
                 for k in range(i, j + 1):
                     t = max(dp[i][k - 1], dp[k + 1][j]) + k
                     dp[i][j] = min(dp[i][j], t)
@@ -116,14 +116,11 @@ class Solution {
 public:
     int getMoneyAmount(int n) {
         vector<vector<int>> dp(n + 10, vector<int>(n + 10));
-        for (int l = 2; l <= n; ++l)
-        {
-            for (int i = 1; i + l - 1 <= n; ++i)
-            {
+        for (int l = 2; l <= n; ++l) {
+            for (int i = 1; i + l - 1 <= n; ++i) {
                 int j = i + l - 1;
                 dp[i][j] = INT_MAX;
-                for (int k = i; k <= j; ++k)
-                {
+                for (int k = i; k <= j; ++k) {
                     int t = max(dp[i][k - 1], dp[k + 1][j]) + k;
                     dp[i][j] = min(dp[i][j], t);
                 }

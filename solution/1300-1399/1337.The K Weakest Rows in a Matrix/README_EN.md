@@ -16,7 +16,7 @@
 <p>Return <em>the indices of the </em><code>k</code><em> <strong>weakest</strong> rows in the matrix ordered from weakest to strongest</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> mat = 
@@ -37,7 +37,7 @@ The number of soldiers in each row is:
 The rows ordered from weakest to strongest are [2,0,3,1,4].
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> mat = 
@@ -79,18 +79,9 @@ Binary search & sort.
 class Solution:
     def kWeakestRows(self, mat: List[List[int]], k: int) -> List[int]:
         m, n = len(mat), len(mat[0])
-        res = []
-        for row in mat:
-            left, right = 0, n
-            while left < right:
-                mid = (left + right) >> 1
-                if row[mid] == 0:
-                    right = mid
-                else:
-                    left = mid + 1
-            res.append(left)
+        ans = [n - bisect_right(row[::-1], 0) for row in mat]
         idx = list(range(m))
-        idx.sort(key=lambda x: res[x])
+        idx.sort(key=lambda i: ans[i])
         return idx[:k]
 ```
 
@@ -146,6 +137,67 @@ function kWeakestRows(mat: number[][], k: number): number[] {
         ans.push(sumMap[i][1]);
     }
     return ans;
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int search(vector<int>& m) {
+        int l = 0;
+        int h = m.size() - 1;
+        while (l <= h) {
+            int mid = l + (h - l) / 2;
+            if (m[mid] == 0)
+                h = mid - 1;
+            else
+                l = mid + 1;
+        }
+        return l;
+    }
+
+    vector<int> kWeakestRows(vector<vector<int>>& mat, int k) {
+        vector<pair<int, int>> p;
+        vector<int> res;
+        for (int i = 0; i < mat.size(); i++) {
+            int count = search(mat[i]);
+            p.push_back({count, i});
+        }
+        sort(p.begin(), p.end());
+        for (int i = 0; i < k; i++) {
+            res.push_back(p[i].second);
+        }
+        return res;
+    }
+};
+```
+
+### **Go**
+
+```go
+func kWeakestRows(mat [][]int, k int) []int {
+	m, n := len(mat), len(mat[0])
+	res := make([]int, m)
+	var idx []int
+	for i, row := range mat {
+		idx = append(idx, i)
+		left, right := 0, n
+		for left < right {
+			mid := (left + right) >> 1
+			if row[mid] == 0 {
+				right = mid
+			} else {
+				left = mid + 1
+			}
+		}
+		res[i] = left
+	}
+	sort.Slice(idx, func(i, j int) bool {
+		return res[idx[i]] < res[idx[j]] || (res[idx[i]] == res[idx[j]] && idx[i] < idx[j])
+	})
+	return idx[:k]
 }
 ```
 

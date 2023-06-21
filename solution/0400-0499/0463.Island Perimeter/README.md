@@ -1,4 +1,4 @@
-# [463. 岛屿的周长](https://leetcode-cn.com/problems/island-perimeter)
+# [463. 岛屿的周长](https://leetcode.cn/problems/island-perimeter)
 
 [English Version](/solution/0400-0499/0463.Island%20Perimeter/README_EN.md)
 
@@ -16,7 +16,7 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><img src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0400-0499/0463.Island%20Perimeter/images/island.png" /></p>
+<p><img src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0400-0499/0463.Island%20Perimeter/images/island.png" /></p>
 
 <pre>
 <strong>输入：</strong>grid = [[0,1,0,0],[1,1,1,0],[0,1,0,0],[1,1,0,0]]
@@ -71,7 +71,7 @@ class Solution:
                     ans += 4
                     if i < m - 1 and grid[i + 1][j] == 1:
                         ans -= 2
-                    if j < n -1 and grid[i][j + 1] == 1:
+                    if j < n - 1 and grid[i][j + 1] == 1:
                         ans -= 2
         return ans
 ```
@@ -145,12 +145,9 @@ public:
     int islandPerimeter(vector<vector<int>>& grid) {
         int m = grid.size(), n = grid[0].size();
         int ans = 0;
-        for (int i = 0; i < m; ++i)
-        {
-            for (int j = 0; j < n; ++j)
-            {
-                if (grid[i][j] == 1)
-                {
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (grid[i][j] == 1) {
                     ans += 4;
                     if (i < m - 1 && grid[i + 1][j] == 1) ans -= 2;
                     if (j < n - 1 && grid[i][j + 1] == 1) ans -= 2;

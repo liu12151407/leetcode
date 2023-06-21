@@ -9,7 +9,7 @@
 <p>For each step, you may move to an adjacent number of the row below. More formally, if you are on index <code>i</code> on the current row, you may move to either index <code>i</code> or index <code>i + 1</code> on the next row.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> triangle = [[2],[3,4],[6,5,7],[4,1,8,3]]
@@ -22,7 +22,7 @@
 The minimum path sum from top to bottom is 2 + 3 + 5 + 1 = 11 (underlined above).
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> triangle = [[-10]]
@@ -98,12 +98,8 @@ public:
         int n = triangle.size();
         vector<int> dp(n + 1);
         for (int i = n - 1; i >= 0; --i)
-        {
             for (int j = 0; j <= i; ++j)
-            {
                 dp[j] = min(dp[j], dp[j + 1]) + triangle[i][j];
-            }
-        }
         return dp[0];
     }
 };
@@ -128,6 +124,39 @@ func min(a, b int) int {
 		return a
 	}
 	return b
+}
+```
+
+### **TypeScript**
+
+```ts
+function minimumTotal(triangle: number[][]): number {
+    const n = triangle.length;
+    for (let i = n - 2; i >= 0; i--) {
+        for (let j = 0; j < i + 1; j++) {
+            triangle[i][j] += Math.min(
+                triangle[i + 1][j],
+                triangle[i + 1][j + 1],
+            );
+        }
+    }
+    return triangle[0][0];
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn minimum_total(mut triangle: Vec<Vec<i32>>) -> i32 {
+        let n = triangle.len();
+        for i in (0..n - 1).rev() {
+            for j in 0..i + 1 {
+                triangle[i][j] += triangle[i + 1][j].min(triangle[i + 1][j + 1]);
+            }
+        }
+        triangle[0][0]
+    }
 }
 ```
 

@@ -4,17 +4,17 @@
 
 ## Description
 
-<p>A robot is located at the top-left corner of a <code>m x n</code> grid (marked &#39;Start&#39; in the diagram below).</p>
+<p>You are given an <code>m x n</code> integer array <code>grid</code>. There is a robot initially located at the <b>top-left corner</b> (i.e., <code>grid[0][0]</code>). The robot tries to move to the <strong>bottom-right corner</strong> (i.e., <code>grid[m - 1][n - 1]</code>). The robot can only move either down or right at any point in time.</p>
 
-<p>The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked &#39;Finish&#39; in the diagram below).</p>
+<p>An obstacle and space are marked as <code>1</code> or <code>0</code> respectively in <code>grid</code>. A path that the robot takes cannot include <strong>any</strong> square that is an obstacle.</p>
 
-<p>Now consider if some obstacles are added to the grids. How many unique paths would there be?</p>
+<p>Return <em>the number of possible unique paths that the robot can take to reach the bottom-right corner</em>.</p>
 
-<p>An obstacle and space is marked as <code>1</code> and <code>0</code> respectively in the grid.</p>
+<p>The testcases are generated so that the answer will be less than or equal to <code>2 * 10<sup>9</sup></code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0000-0099/0063.Unique%20Paths%20II/images/robot1.jpg" style="width: 242px; height: 242px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0000-0099/0063.Unique%20Paths%20II/images/robot1.jpg" style="width: 242px; height: 242px;" />
 <pre>
 <strong>Input:</strong> obstacleGrid = [[0,0,0],[0,1,0],[0,0,0]]
 <strong>Output:</strong> 2
@@ -24,8 +24,8 @@ There are two ways to reach the bottom-right corner:
 2. Down -&gt; Down -&gt; Right -&gt; Right
 </pre>
 
-<p><strong>Example 2:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0000-0099/0063.Unique%20Paths%20II/images/robot2.jpg" style="width: 162px; height: 162px;" />
+<p><strong class="example">Example 2:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0000-0099/0063.Unique%20Paths%20II/images/robot2.jpg" style="width: 162px; height: 162px;" />
 <pre>
 <strong>Input:</strong> obstacleGrid = [[0,1],[0,0]]
 <strong>Output:</strong> 1
@@ -35,8 +35,8 @@ There are two ways to reach the bottom-right corner:
 <p><strong>Constraints:</strong></p>
 
 <ul>
-	<li><code>m ==&nbsp;obstacleGrid.length</code></li>
-	<li><code>n ==&nbsp;obstacleGrid[i].length</code></li>
+	<li><code>m == obstacleGrid.length</code></li>
+	<li><code>n == obstacleGrid[i].length</code></li>
 	<li><code>1 &lt;= m, n &lt;= 100</code></li>
 	<li><code>obstacleGrid[i][j]</code> is <code>0</code> or <code>1</code>.</li>
 </ul>
@@ -143,6 +143,73 @@ func uniquePathsWithObstacles(obstacleGrid [][]int) int {
 		}
 	}
 	return dp[m-1][n-1]
+}
+```
+
+### **TypeScript**
+
+```ts
+function uniquePathsWithObstacles(obstacleGrid: number[][]): number {
+    const m = obstacleGrid.length;
+    const n = obstacleGrid[0].length;
+    const dp = Array.from({ length: m }, () => new Array(n).fill(0));
+    for (let i = 0; i < m; i++) {
+        if (obstacleGrid[i][0] === 1) {
+            break;
+        }
+        dp[i][0] = 1;
+    }
+    for (let i = 0; i < n; i++) {
+        if (obstacleGrid[0][i] === 1) {
+            break;
+        }
+        dp[0][i] = 1;
+    }
+    for (let i = 1; i < m; i++) {
+        for (let j = 1; j < n; j++) {
+            if (obstacleGrid[i][j] === 1) {
+                continue;
+            }
+            dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+        }
+    }
+    return dp[m - 1][n - 1];
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn unique_paths_with_obstacles(obstacle_grid: Vec<Vec<i32>>) -> i32 {
+        let m = obstacle_grid.len();
+        let n = obstacle_grid[0].len();
+        if obstacle_grid[0][0] == 1 || obstacle_grid[m - 1][n - 1] == 1 {
+            return 0;
+        }
+        let mut dp = vec![vec![0; n]; m];
+        for i in 0..n {
+            if obstacle_grid[0][i] == 1 {
+                break;
+            }
+            dp[0][i] = 1;
+        }
+        for i in 0..m {
+            if obstacle_grid[i][0] == 1 {
+                break;
+            }
+            dp[i][0] = 1;
+        }
+        for i in 1..m {
+            for j in 1..n {
+                if obstacle_grid[i][j] == 1 {
+                    continue;
+                }
+                dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+            }
+        }
+        dp[m - 1][n - 1]
+    }
 }
 ```
 

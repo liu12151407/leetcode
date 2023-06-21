@@ -11,7 +11,7 @@
 <p>Return <em>the minimum number of operations needed to make </em><code>s</code><em> equal to </em><code>target</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> target = &quot;10111&quot;
@@ -23,7 +23,7 @@ Choose index i = 1: &quot;1<u>1000</u>&quot; -&gt; &quot;1<u>0111</u>&quot;
 We need at least 3 flip operations to form target.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> target = &quot;101&quot;
@@ -35,7 +35,7 @@ Choose index i = 2: &quot;10<u>0</u>&quot; -&gt; &quot;10<u>1</u>&quot;
 We need at least 3 flip operations to form target.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> target = &quot;00000&quot;
@@ -59,13 +59,63 @@ We need at least 3 flip operations to form target.
 ### **Python3**
 
 ```python
-
+class Solution:
+    def minFlips(self, target: str) -> int:
+        ans = 0
+        for v in target:
+            if (ans & 1) ^ int(v):
+                ans += 1
+        return ans
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int minFlips(String target) {
+        int ans = 0;
+        for (int i = 0; i < target.length(); ++i) {
+            int v = target.charAt(i) - '0';
+            if (((ans & 1) ^ v) != 0) {
+                ++ans;
+            }
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int minFlips(string target) {
+        int ans = 0;
+        for (char c : target) {
+            int v = c - '0';
+            if ((ans & 1) ^ v) {
+                ++ans;
+            }
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func minFlips(target string) int {
+	ans := 0
+	for _, c := range target {
+		v := int(c - '0')
+		if ((ans & 1) ^ v) != 0 {
+			ans++
+		}
+	}
+	return ans
+}
 ```
 
 ### **TypeScript**

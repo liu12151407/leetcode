@@ -15,7 +15,7 @@
 <p>Given the integer <code>n</code>, return <em>the last number that remains in</em> <code>arr</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 9
@@ -27,7 +27,7 @@ arr = [<u>2</u>, 6]
 arr = [6]
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 1
@@ -98,15 +98,11 @@ class Solution {
 public:
     int lastRemaining(int n) {
         int a1 = 1, an = n, step = 1;
-        for (int i = 0, cnt = n; cnt > 1; cnt >>= 1, step <<= 1, ++i)
-        {
-            if (i % 2)
-            {
+        for (int i = 0, cnt = n; cnt > 1; cnt >>= 1, step <<= 1, ++i) {
+            if (i % 2) {
                 an -= step;
                 if (cnt % 2) a1 += step;
-            }
-            else
-            {
+            } else {
                 a1 += step;
                 if (cnt % 2) an -= step;
             }

@@ -1,4 +1,4 @@
-# [1250. 检查「好数组」](https://leetcode-cn.com/problems/check-if-it-is-a-good-array)
+# [1250. 检查「好数组」](https://leetcode.cn/problems/check-if-it-is-a-good-array)
 
 [English Version](/solution/1200-1299/1250.Check%20If%20It%20Is%20a%20Good%20Array/README_EN.md)
 
@@ -47,6 +47,18 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：数学（裴蜀定理）**
+
+我们先可以考虑选取两个数的情况，若选取的数是 $a$ 和 $b$，那么根据题目的要求，我们需要满足 $a \times x + b \times y = 1$，其中 $x$ 和 $y$ 是任意整数。
+
+根据裴蜀定理，可以得知，如果 $a$ 和 $b$ 互质，那么上述等式一定有解。实际上，裴蜀定理也可以推广到多个数的情况，即如果 $a_1, a_2, \cdots, a_i$ 互质，那么 $a_1 \times x_1 + a_2 \times x_2 + \cdots + a_i \times x_i = 1$ 一定有解，其中 $x_1, x_2, \cdots, x_i$ 是任意整数。
+
+因此，我们只需要判断在数组 `nums` 中是否存在 $i$ 个互质的数即可。两个数互质的充要条件是它们的最大公约数为 $1$。如果数组 `nums` 存在 $i$ 个互质的数，那么数组 `nums` 中的所有数的最大公约数也为 $1$。
+
+所以我们将题目转化为：判断数组 `nums` 中的所有数的最大公约数是否为 $1$。遍历数组 `nums`，求出数组 `nums` 中的所有数的最大公约数即可。
+
+时间复杂度 $O(n + log m)$，空间复杂度 $O(1)$，其中 $n$ 是数组 `nums` 的长度，而 $m$ 是数组 `nums` 中的最大值。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -54,7 +66,9 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def isGoodArray(self, nums: List[int]) -> bool:
+        return reduce(gcd, nums) == 1
 ```
 
 ### **Java**
@@ -62,7 +76,53 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public boolean isGoodArray(int[] nums) {
+        int g = 0;
+        for (int x : nums) {
+            g = gcd(x, g);
+        }
+        return g == 1;
+    }
 
+    private int gcd(int a, int b) {
+        return b == 0 ? a : gcd(b, a % b);
+    }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool isGoodArray(vector<int>& nums) {
+        int g = 0;
+        for (int x : nums) {
+            g = gcd(x, g);
+        }
+        return g == 1;
+    }
+};
+```
+
+### **Go**
+
+```go
+func isGoodArray(nums []int) bool {
+	g := 0
+	for _, x := range nums {
+		g = gcd(x, g)
+	}
+	return g == 1
+}
+
+func gcd(a, b int) int {
+	if b == 0 {
+		return a
+	}
+	return gcd(b, a%b)
+}
 ```
 
 ### **...**

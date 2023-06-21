@@ -4,64 +4,32 @@
 
 ## Description
 
-<p>Given the <code>root</code> of a Binary Search Tree (BST), convert it to a Greater Tree such that every key of the original BST is changed to the original key plus sum of all keys greater than the original key in BST.</p>
+<p>Given the <code>root</code> of a Binary Search Tree (BST), convert it to a Greater Tree such that every key of the original BST is changed to the original key plus the sum of all keys greater than the original key in BST.</p>
 
 <p>As a reminder, a <em>binary search tree</em> is a tree that satisfies these constraints:</p>
 
 <ul>
-	<li>The left subtree of a node contains only nodes with keys&nbsp;<strong>less than</strong>&nbsp;the node&#39;s key.</li>
-	<li>The right subtree of a node contains only nodes with keys&nbsp;<strong>greater than</strong>&nbsp;the node&#39;s key.</li>
+	<li>The left subtree of a node contains only nodes with keys <strong>less than</strong> the node&#39;s key.</li>
+	<li>The right subtree of a node contains only nodes with keys <strong>greater than</strong> the node&#39;s key.</li>
 	<li>Both the left and right subtrees must also be binary search trees.</li>
 </ul>
 
-<p><strong>Note:</strong> This question is the same as&nbsp;1038:&nbsp;<a href="https://leetcode.com/problems/binary-search-tree-to-greater-sum-tree/">https://leetcode.com/problems/binary-search-tree-to-greater-sum-tree/</a></p>
-
 <p>&nbsp;</p>
-
-<p><strong>Example 1:</strong></p>
-
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0538.Convert%20BST%20to%20Greater%20Tree/images/tree.png" style="width: 550px; height: 375px;" />
-
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0538.Convert%20BST%20to%20Greater%20Tree/images/tree.png" style="width: 500px; height: 341px;" />
 <pre>
-
 <strong>Input:</strong> root = [4,1,6,0,2,5,7,null,null,null,3,null,null,null,8]
-
 <strong>Output:</strong> [30,36,21,36,35,26,15,null,null,null,33,null,null,null,8]
-
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
-
 <strong>Input:</strong> root = [0,null,1]
-
 <strong>Output:</strong> [1,null,1]
-
-</pre>
-
-<p><strong>Example 3:</strong></p>
-
-<pre>
-
-<strong>Input:</strong> root = [1,0,2]
-
-<strong>Output:</strong> [3,3,2]
-
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-
-<strong>Input:</strong> root = [3,2,4,1]
-
-<strong>Output:</strong> [7,9,4,10]
-
 </pre>
 
 <p>&nbsp;</p>
-
 <p><strong>Constraints:</strong></p>
 
 <ul>
@@ -70,6 +38,9 @@
 	<li>All the values in the tree are <strong>unique</strong>.</li>
 	<li><code>root</code> is guaranteed to be a valid binary search tree.</li>
 </ul>
+
+<p>&nbsp;</p>
+<p><strong>Note:</strong> This question is the same as 1038: <a href="https://leetcode.com/problems/binary-search-tree-to-greater-sum-tree/" target="_blank">https://leetcode.com/problems/binary-search-tree-to-greater-sum-tree/</a></p>
 
 ## Solutions
 
@@ -85,13 +56,18 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    add = 0
     def convertBST(self, root: TreeNode) -> TreeNode:
-        if root:
-            self.convertBST(root.right)
-            root.val += self.add
-            self.add = root.val
-            self.convertBST(root.left)
+        def dfs(root):
+            nonlocal s
+            if root is None:
+                return
+            dfs(root.right)
+            s += root.val
+            root.val = s
+            dfs(root.left)
+
+        s = 0
+        dfs(root)
         return root
 ```
 
@@ -129,16 +105,37 @@ class Solution:
 ### **Java**
 
 ```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
 class Solution {
-    int add = 0;
+    private int s;
+
     public TreeNode convertBST(TreeNode root) {
-        if (root != null) {
-            convertBST(root.right);
-            root.val += add;
-            add = root.val;
-            convertBST(root.left);
-        }
+        dfs(root);
         return root;
+    }
+
+    private void dfs(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        dfs(root.right);
+        s += root.val;
+        root.val = s;
+        dfs(root.left);
     }
 }
 ```
@@ -205,15 +202,19 @@ class Solution {
  */
 class Solution {
 public:
-    int add = 0;
+    int s = 0;
+
     TreeNode* convertBST(TreeNode* root) {
-        if (root) {
-            convertBST(root->right);
-            root->val += add;
-            add = root->val;
-            convertBST(root->left);
-        }
+        dfs(root);
         return root;
+    }
+
+    void dfs(TreeNode* root) {
+        if (!root) return;
+        dfs(root->right);
+        s += root->val;
+        root->val = s;
+        dfs(root->left);
     }
 };
 ```
@@ -232,31 +233,23 @@ public:
  */
 class Solution {
 public:
-    TreeNode *convertBST(TreeNode *root) {
+    TreeNode* convertBST(TreeNode* root) {
         int s = 0;
-        TreeNode *node = root;
-        while (root)
-        {
-            if (root->right == nullptr)
-            {
+        TreeNode* node = root;
+        while (root) {
+            if (root->right == nullptr) {
                 s += root->val;
                 root->val = s;
                 root = root->left;
-            }
-            else
-            {
-                TreeNode *next = root->right;
-                while (next->left && next->left != root)
-                {
+            } else {
+                TreeNode* next = root->right;
+                while (next->left && next->left != root) {
                     next = next->left;
                 }
-                if (next->left == nullptr)
-                {
+                if (next->left == nullptr) {
                     next->left = root;
                     root = root->right;
-                }
-                else
-                {
+                } else {
                     s += root->val;
                     root->val = s;
                     next->left = nullptr;
@@ -331,6 +324,37 @@ func convertBST(root *TreeNode) *TreeNode {
 	}
 	return node
 }
+```
+
+### **JavaScript**
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {TreeNode}
+ */
+var convertBST = function (root) {
+    let s = 0;
+    function dfs(root) {
+        if (!root) {
+            return;
+        }
+        dfs(root.right);
+        s += root.val;
+        root.val = s;
+        dfs(root.left);
+    }
+    dfs(root);
+    return root;
+};
 ```
 
 ### **...**

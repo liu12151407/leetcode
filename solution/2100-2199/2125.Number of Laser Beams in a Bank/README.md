@@ -1,4 +1,4 @@
-# [2125. 银行中的激光束数量](https://leetcode-cn.com/problems/number-of-laser-beams-in-a-bank)
+# [2125. 银行中的激光束数量](https://leetcode.cn/problems/number-of-laser-beams-in-a-bank)
 
 [English Version](/solution/2100-2199/2125.Number%20of%20Laser%20Beams%20in%20a%20Bank/README_EN.md)
 
@@ -23,7 +23,7 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2100-2199/2125.Number%20of%20Laser%20Beams%20in%20a%20Bank/images/laser1.jpg" style="width: 400px; height: 368px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2100-2199/2125.Number%20of%20Laser%20Beams%20in%20a%20Bank/images/laser1.jpg" style="width: 400px; height: 368px;" /></p>
 
 <pre>
 <strong>输入：</strong>bank = ["011001","000000","010100","001000"]
@@ -43,7 +43,7 @@
 
 <p><strong>示例 2：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2100-2199/2125.Number%20of%20Laser%20Beams%20in%20a%20Bank/images/laser2.jpg" style="width: 244px; height: 325px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2100-2199/2125.Number%20of%20Laser%20Beams%20in%20a%20Bank/images/laser2.jpg" style="width: 244px; height: 325px;" /></p>
 
 <pre>
 <strong>输入：</strong>bank = ["000","111","000"]
@@ -62,10 +62,11 @@
 	<li><code>bank[i][j]</code> 为 <code>'0'</code> 或 <code>'1'</code></li>
 </ul>
 
-
 ## 解法
 
 <!-- 这里可写通用的实现逻辑 -->
+
+直接计数。
 
 <!-- tabs:start -->
 
@@ -74,7 +75,14 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def numberOfBeams(self, bank: List[str]) -> int:
+        last = ans = 0
+        for b in bank:
+            if (t := b.count('1')) > 0:
+                ans += last * t
+                last = t
+        return ans
 ```
 
 ### **Java**
@@ -82,7 +90,64 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public int numberOfBeams(String[] bank) {
+        int last = 0;
+        int ans = 0;
+        for (String b : bank) {
+            int t = 0;
+            for (char c : b.toCharArray()) {
+                if (c == '1') {
+                    ++t;
+                }
+            }
+            if (t > 0) {
+                ans += last * t;
+                last = t;
+            }
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int numberOfBeams(vector<string>& bank) {
+        int ans = 0;
+        int last = 0;
+        for (auto& b : bank) {
+            int t = 0;
+            for (char& c : b)
+                if (c == '1')
+                    ++t;
+            if (t) {
+                ans += last * t;
+                last = t;
+            }
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func numberOfBeams(bank []string) int {
+	ans, last := 0, 0
+	for _, b := range bank {
+		t := strings.Count(b, "1")
+		if t > 0 {
+			ans += t * last
+			last = t
+		}
+	}
+	return ans
+}
 ```
 
 ### **TypeScript**
@@ -90,7 +155,69 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```ts
+function numberOfBeams(bank: string[]): number {
+    let last = 0;
+    let ans = 0;
+    for (const r of bank) {
+        let t = 0;
+        for (const v of r) {
+            if (v === '1') {
+                t++;
+            }
+        }
+        if (t !== 0) {
+            ans += last * t;
+            last = t;
+        }
+    }
+    return ans;
+}
+```
 
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn number_of_beams(bank: Vec<String>) -> i32 {
+        let mut last = 0;
+        let mut ans = 0;
+        for r in bank.iter() {
+            let mut t = 0;
+            for &v in r.as_bytes() {
+                if v == b'1' {
+                    t += 1;
+                }
+            }
+            if t != 0 {
+                ans += last * t;
+                last = t;
+            }
+        }
+        ans
+    }
+}
+```
+
+### **C**
+
+```c
+int numberOfBeams(char** bank, int bankSize) {
+    int last = 0;
+    int ans = 0;
+    for (int i = 0; i < bankSize; i++) {
+        int t = 0;
+        for (int j = 0; bank[i][j]; j++) {
+            if (bank[i][j] == '1') {
+                t++;
+            }
+        }
+        if (t != 0) {
+            ans += last * t;
+            last = t;
+        }
+    }
+    return ans;
+}
 ```
 
 ### **...**

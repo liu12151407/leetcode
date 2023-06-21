@@ -1,4 +1,4 @@
-# [1126. 查询活跃业务](https://leetcode-cn.com/problems/active-businesses)
+# [1126. 查询活跃业务](https://leetcode.cn/problems/active-businesses)
 
 [English Version](/solution/1100-1199/1126.Active%20Businesses/README_EN.md)
 
@@ -60,7 +60,21 @@ id 为 1 的业务有 7 个 &#39;reviews&#39; 事件（大于 5）和 11 个 &#3
 ### **SQL**
 
 ```sql
-
+# Write your MySQL query statement below
+SELECT business_id
+FROM
+    EVENTS AS t1
+    JOIN (
+        SELECT
+            event_type,
+            AVG(occurences) AS occurences
+        FROM EVENTS
+        GROUP BY event_type
+    ) AS t2
+        ON t1.event_type = t2.event_type
+WHERE t1.occurences > t2.occurences
+GROUP BY business_id
+HAVING COUNT(1) > 1;
 ```
 
 <!-- tabs:end -->

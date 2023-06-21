@@ -11,7 +11,7 @@
 <p>Return <em>the <strong>minimum</strong> number of moves required so that all the characters of </em><code>s</code><em> are converted to </em><code>&#39;O&#39;</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;XXX&quot;
@@ -20,7 +20,7 @@
 We select all the 3 characters and convert them in one move.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;XXOX&quot;
@@ -29,7 +29,7 @@ We select all the 3 characters and convert them in one move.
 We select the first 3 characters in the first move, and convert them to <code>&#39;O&#39;</code>.
 Then we select the last 3 characters and convert them so that the final string contains all <code>&#39;O&#39;</code>s.</pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;OOOO&quot;
@@ -52,13 +52,125 @@ Then we select the last 3 characters and convert them so that the final string c
 ### **Python3**
 
 ```python
-
+class Solution:
+    def minimumMoves(self, s: str) -> int:
+        ans = i = 0
+        while i < len(s):
+            if s[i] == "X":
+                ans += 1
+                i += 3
+            else:
+                i += 1
+        return ans
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int minimumMoves(String s) {
+        int ans = 0;
+        for (int i = 0; i < s.length(); ++i) {
+            if (s.charAt(i) == 'X') {
+                ++ans;
+                i += 2;
+            }
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int minimumMoves(string s) {
+        int ans = 0;
+        for (int i = 0; i < s.size(); ++i) {
+            if (s[i] == 'X') {
+                ++ans;
+                i += 2;
+            }
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func minimumMoves(s string) (ans int) {
+	for i := 0; i < len(s); i++ {
+		if s[i] == 'X' {
+			ans++
+			i += 2
+		}
+	}
+	return
+}
+```
+
+### **TypeScript**
+
+```ts
+function minimumMoves(s: string): number {
+    const n = s.length;
+    let ans = 0;
+    let i = 0;
+    while (i < n) {
+        if (s[i] === 'X') {
+            ans++;
+            i += 3;
+        } else {
+            i++;
+        }
+    }
+    return ans;
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn minimum_moves(s: String) -> i32 {
+        let s = s.as_bytes();
+        let n = s.len();
+        let mut ans = 0;
+        let mut i = 0;
+        while i < n {
+            if s[i] == b'X' {
+                ans += 1;
+                i += 3;
+            } else {
+                i += 1;
+            }
+        }
+        ans
+    }
+}
+```
+
+### **C**
+
+```c
+int minimumMoves(char* s) {
+    int n = strlen(s);
+    int ans = 0;
+    int i = 0;
+    while (i < n) {
+        if (s[i] == 'X') {
+            ans++;
+            i += 3;
+        } else {
+            i++;
+        }
+    }
+    return ans;
+}
 ```
 
 ### **...**

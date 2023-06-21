@@ -16,7 +16,7 @@
 </ul>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input</strong>
@@ -52,7 +52,6 @@ trie.search(&quot;app&quot;);     // return True
 
 ```python
 class Trie:
-
     def __init__(self):
         self.children = [None] * 26
         self.is_end = False
@@ -82,6 +81,7 @@ class Trie:
                 return None
             node = node.children[idx]
         return node
+
 
 # Your Trie object will be instantiated and called as such:
 # obj = Trie()
@@ -218,8 +218,7 @@ private:
 
     Trie* searchPrefix(string s) {
         Trie* node = this;
-        for (char c : s)
-        {
+        for (char c : s) {
             int idx = c - 'a';
             if (!node->children[idx]) return nullptr;
             node = node->children[idx];
@@ -228,12 +227,13 @@ private:
     }
 
 public:
-    Trie() : children(26), isEnd(false) {}
+    Trie()
+        : children(26)
+        , isEnd(false) {}
 
     void insert(string word) {
         Trie* node = this;
-        for (char c : word)
-        {
+        for (char c : word) {
             int idx = c - 'a';
             if (!node->children[idx]) node->children[idx] = new Trie();
             node = node->children[idx];

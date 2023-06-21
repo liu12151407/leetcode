@@ -1,4 +1,4 @@
-# [剑指 Offer II 014. 字符串中的变位词](https://leetcode-cn.com/problems/MPnaiL)
+# [剑指 Offer II 014. 字符串中的变位词](https://leetcode.cn/problems/MPnaiL)
 
 ## 题目描述
 
@@ -36,7 +36,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 567&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/permutation-in-string/">https://leetcode-cn.com/problems/permutation-in-string/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 567&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/permutation-in-string/">https://leetcode.cn/problems/permutation-in-string/</a></p>
 
 ## 解法
 
@@ -60,11 +60,13 @@ class Solution:
         for i in range(n1):
             window[ord(s1[i]) - ord('a')] += 1
             window[ord(s2[i]) - ord('a')] -= 1
-        if self.check(window): return True
+        if self.check(window):
+            return True
         for i in range(n1, n2):
             window[ord(s2[i]) - ord('a')] -= 1
             window[ord(s2[i - n1]) - ord('a')] += 1
-            if self.check(window): return True
+            if self.check(window):
+                return True
         return False
 
     def check(self, window: List[int]) -> bool:
@@ -140,6 +142,57 @@ func check(window []int) bool {
 	}
 	return true
 }
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool checkInclusion(string s1, string s2) {
+
+        int len1 = s1.size();
+        int len2 = s2.size();
+
+        if (len2 < len1) {
+            return false;
+        }
+
+        int count[30] = {0};
+
+        for (int i = 0; i < len1; ++i) {
+            ++count[s1[i] - 'a'];
+            --count[s2[i] - 'a'];
+        }
+
+        int l = 0;
+        int r = len1 - 1;
+
+        while (r < len2) {
+
+            bool flag = true;
+
+            for (int i : count) {
+                if (i != 0) {
+                    flag = false;
+                }
+            }
+
+            if (flag) {
+                return true;
+            }
+
+            if (r + 1 >= len2) {
+                break;
+            }
+
+            ++count[s2[l++] - 'a'];
+            --count[s2[++r] - 'a'];
+        }
+
+        return false;
+    }
+};
 ```
 
 ### **...**

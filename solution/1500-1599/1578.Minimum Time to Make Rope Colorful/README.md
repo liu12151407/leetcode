@@ -1,4 +1,4 @@
-# [1578. 使绳子变成彩色的最短时间](https://leetcode-cn.com/problems/minimum-time-to-make-rope-colorful)
+# [1578. 使绳子变成彩色的最短时间](https://leetcode.cn/problems/minimum-time-to-make-rope-colorful)
 
 [English Version](/solution/1500-1599/1578.Minimum%20Time%20to%20Make%20Rope%20Colorful/README_EN.md)
 
@@ -15,7 +15,7 @@
 <p>&nbsp;</p>
 
 <p><strong>示例 1：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1578.Minimum%20Time%20to%20Make%20Rope%20Colorful/images/balloon1.jpg" style="width: 404px; height: 243px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1578.Minimum%20Time%20to%20Make%20Rope%20Colorful/images/ballon1.jpg" style="width: 404px; height: 243px;" />
 <pre>
 <strong>输入：</strong>colors = "abaac", neededTime = [1,2,3,4,5]
 <strong>输出：</strong>3
@@ -24,7 +24,7 @@ Bob 可以移除下标 2 的蓝色气球。这将花费 3 秒。
 移除后，不存在两个连续的气球涂着相同的颜色。总时间 = 3 。</pre>
 
 <p><strong>示例 2：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1578.Minimum%20Time%20to%20Make%20Rope%20Colorful/images/balloon2.jpg" style="width: 244px; height: 243px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1578.Minimum%20Time%20to%20Make%20Rope%20Colorful/images/balloon2.jpg" style="width: 244px; height: 243px;" />
 <pre>
 <strong>输入：</strong>colors = "abc", neededTime = [1,2,3]
 <strong>输出：</strong>0
@@ -32,7 +32,7 @@ Bob 可以移除下标 2 的蓝色气球。这将花费 3 秒。
 </pre>
 
 <p><strong>示例 3：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1578.Minimum%20Time%20to%20Make%20Rope%20Colorful/images/balloon3.jpg" style="width: 404px; height: 243px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1500-1599/1578.Minimum%20Time%20to%20Make%20Rope%20Colorful/images/balloon3.jpg" style="width: 404px; height: 243px;" />
 <pre>
 <strong>输入：</strong>colors = "aabaa", neededTime = [1,2,3,4,1]
 <strong>输出：</strong>2
@@ -55,6 +55,12 @@ Bob 可以移除下标 2 的蓝色气球。这将花费 3 秒。
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：双指针 + 贪心**
+
+我们可以用双指针指向当前连续相同颜色的气球的首尾，然后计算出当前连续相同颜色的气球的总时间 $s$，以及最大的时间 $mx$。如果当前连续相同颜色的气球个数大于 $1$，那么我们可以贪心地选择保留时间最大的气球，然后移除其它相同颜色的气球，耗时 $s - mx$，累加到答案中。接下来继续遍历，直到遍历完所有气球。
+
+时间复杂度 $O(n)$，空间复杂度 $O(1)$。其中 $n$ 为气球的个数。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -62,7 +68,22 @@ Bob 可以移除下标 2 的蓝色气球。这将花费 3 秒。
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def minCost(self, colors: str, neededTime: List[int]) -> int:
+        ans = i = 0
+        n = len(colors)
+        while i < n:
+            j = i
+            s = mx = 0
+            while j < n and colors[j] == colors[i]:
+                s += neededTime[j]
+                if mx < neededTime[j]:
+                    mx = neededTime[j]
+                j += 1
+            if j - i > 1:
+                ans += s - mx
+            i = j
+        return ans
 ```
 
 ### **Java**
@@ -70,12 +91,76 @@ Bob 可以移除下标 2 的蓝色气球。这将花费 3 秒。
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public int minCost(String colors, int[] neededTime) {
+        int ans = 0;
+        int n = neededTime.length;
+        for (int i = 0, j = 0; i < n; i = j) {
+            j = i;
+            int s = 0, mx = 0;
+            while (j < n && colors.charAt(j) == colors.charAt(i)) {
+                s += neededTime[j];
+                mx = Math.max(mx, neededTime[j]);
+                ++j;
+            }
+            if (j - i > 1) {
+                ans += s - mx;
+            }
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int minCost(string colors, vector<int>& neededTime) {
+        int ans = 0;
+        int n = colors.size();
+        for (int i = 0, j = 0; i < n; i = j) {
+            j = i;
+            int s = 0, mx = 0;
+            while (j < n && colors[j] == colors[i]) {
+                s += neededTime[j];
+                mx = max(mx, neededTime[j]);
+                ++j;
+            }
+            if (j - i > 1) {
+                ans += s - mx;
+            }
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func minCost(colors string, neededTime []int) (ans int) {
+	n := len(colors)
+	for i, j := 0, 0; i < n; i = j {
+		j = i
+		s, mx := 0, 0
+		for j < n && colors[j] == colors[i] {
+			s += neededTime[j]
+			if mx < neededTime[j] {
+				mx = neededTime[j]
+			}
+			j++
+		}
+		if j-i > 1 {
+			ans += s - mx
+		}
+	}
+	return
+}
 ```
 
 ### **TypeScript**
-
-<!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```ts
 

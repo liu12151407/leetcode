@@ -1,4 +1,4 @@
-# [08.12. Eight Queens](https://leetcode-cn.com/problems/eight-queens-lcci)
+# [08.12. Eight Queens](https://leetcode.cn/problems/eight-queens-lcci)
 
 [中文文档](/lcci/08.12.Eight%20Queens/README.md)
 
@@ -94,7 +94,8 @@ class Solution {
         return res;
     }
 
-    private void dfs(int u, int n, boolean[] col, boolean[] dg, boolean[] udg, String[][] g, List<List<String>> res) {
+    private void dfs(int u, int n, boolean[] col, boolean[] dg, boolean[] udg, String[][] g,
+        List<List<String>> res) {
         if (u == n) {
             List<String> t = new ArrayList<>();
             for (String[] e : g) {
@@ -132,15 +133,12 @@ public:
     }
 
     void dfs(int u, int n, vector<bool>& col, vector<bool>& dg, vector<bool>& udg, vector<string>& g, vector<vector<string>>& res) {
-        if (u == n)
-        {
+        if (u == n) {
             res.push_back(g);
             return;
         }
-        for (int i = 0; i < n; ++i)
-        {
-            if (!col[i] && !dg[u + i] && !udg[n - u + i])
-            {
+        for (int i = 0; i < n; ++i) {
+            if (!col[i] && !dg[u + i] && !udg[n - u + i]) {
                 g[u][i] = 'Q';
                 col[i] = dg[u + i] = udg[n - u + i] = true;
                 dfs(u + 1, n, col, dg, udg, g, res);

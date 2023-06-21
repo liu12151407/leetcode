@@ -1,4 +1,4 @@
-# [剑指 Offer II 080. 含有 k 个元素的组合](https://leetcode-cn.com/problems/uUsW3B)
+# [剑指 Offer II 080. 含有 k 个元素的组合](https://leetcode.cn/problems/uUsW3B)
 
 ## 题目描述
 
@@ -39,7 +39,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 77&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/combinations/">https://leetcode-cn.com/problems/combinations/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 77&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/combinations/">https://leetcode.cn/problems/combinations/</a></p>
 
 ## 解法
 
@@ -110,13 +110,11 @@ public:
     }
 
     void dfs(int i, int n, int k, vector<int> t, vector<vector<int>>& res) {
-        if (t.size() == k)
-        {
+        if (t.size() == k) {
             res.push_back(t);
             return;
         }
-        for (int j = i; j <= n; ++j)
-        {
+        for (int j = i; j <= n; ++j) {
             t.push_back(j);
             dfs(j + 1, n, k, t, res);
             t.pop_back();

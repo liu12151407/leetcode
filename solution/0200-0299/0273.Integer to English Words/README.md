@@ -1,4 +1,4 @@
-# [273. 整数转换英文表示](https://leetcode-cn.com/problems/integer-to-english-words)
+# [273. 整数转换英文表示](https://leetcode.cn/problems/integer-to-english-words)
 
 [English Version](/solution/0200-0299/0273.Integer%20to%20English%20Words/README_EN.md)
 
@@ -8,7 +8,7 @@
 
 <p>将非负整数 <code>num</code> 转换为其对应的英文表示。</p>
 
-<p> </p>
+<p>&nbsp;</p>
 
 <p><strong>示例 1：</strong></p>
 
@@ -31,19 +31,12 @@
 <strong>输出：</strong>"One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven"
 </pre>
 
-<p><strong>示例 4：</strong></p>
-
-<pre>
-<strong>输入：</strong>num = 1234567891
-<strong>输出：</strong>"One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Thousand Eight Hundred Ninety One"
-</pre>
-
-<p> </p>
+<p>&nbsp;</p>
 
 <p><strong>提示：</strong></p>
 
 <ul>
-	<li><code>0 <= num <= 2<sup>31</sup> - 1</code></li>
+	<li><code>0 &lt;= num &lt;= 2<sup>31</sup> - 1</code></li>
 </ul>
 
 ## 解法
@@ -62,8 +55,40 @@ class Solution:
         if num == 0:
             return 'Zero'
 
-        lt20 = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen']
-        tens = ['', 'Ten', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety']
+        lt20 = [
+            '',
+            'One',
+            'Two',
+            'Three',
+            'Four',
+            'Five',
+            'Six',
+            'Seven',
+            'Eight',
+            'Nine',
+            'Ten',
+            'Eleven',
+            'Twelve',
+            'Thirteen',
+            'Fourteen',
+            'Fifteen',
+            'Sixteen',
+            'Seventeen',
+            'Eighteen',
+            'Nineteen',
+        ]
+        tens = [
+            '',
+            'Ten',
+            'Twenty',
+            'Thirty',
+            'Forty',
+            'Fifty',
+            'Sixty',
+            'Seventy',
+            'Eighty',
+            'Ninety',
+        ]
         thousands = ['Billion', 'Million', 'Thousand', '']
 
         def transfer(num):
@@ -168,8 +193,11 @@ class Solution {
 
 ```java
 class Solution {
-    private String[] lt20 = {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
-    private String[] tens = {"", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+    private String[] lt20 = {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight",
+        "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen",
+        "Seventeen", "Eighteen", "Nineteen"};
+    private String[] tens
+        = {"", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
     private String[] thousands = {"Billion", "Million", "Thousand", ""};
 
     public String numberToWords(int num) {

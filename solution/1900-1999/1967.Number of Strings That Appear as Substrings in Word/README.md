@@ -1,4 +1,4 @@
-# [1967. 作为子字符串出现在单词中的字符串数目](https://leetcode-cn.com/problems/number-of-strings-that-appear-as-substrings-in-word)
+# [1967. 作为子字符串出现在单词中的字符串数目](https://leetcode.cn/problems/number-of-strings-that-appear-as-substrings-in-word)
 
 [English Version](/solution/1900-1999/1967.Number%20of%20Strings%20That%20Appear%20as%20Substrings%20in%20Word/README_EN.md)
 
@@ -60,6 +60,14 @@ patterns 中有 2 个字符串作为子字符串出现在 word 中。
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：模拟**
+
+遍历字符串数组 $patterns$ 中的每个字符串 $p$，判断其是否为 $word$ 的子字符串，如果是，答案加一。
+
+遍历结束后，返回答案。
+
+时间复杂度 $O(n \times m)$，空间复杂度 $O(1)$。其中 $n$ 和 $m$ 分别为 $patterns$ 和 $word$ 的长度。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -69,7 +77,7 @@ patterns 中有 2 个字符串作为子字符串出现在 word 中。
 ```python
 class Solution:
     def numOfStrings(self, patterns: List[str], word: str) -> int:
-        return sum(1 for p in patterns if p in word)
+        return sum(p in word for p in patterns)
 ```
 
 ### **Java**
@@ -79,28 +87,14 @@ class Solution:
 ```java
 class Solution {
     public int numOfStrings(String[] patterns, String word) {
-        int res = 0;
+        int ans = 0;
         for (String p : patterns) {
             if (word.contains(p)) {
-                ++res;
+                ++ans;
             }
         }
-        return res;
+        return ans;
     }
-}
-```
-
-### **TypeScript**
-
-```ts
-function numOfStrings(patterns: string[], word: string): number {
-    let ans = 0;
-    for (let pattern of patterns) {
-        if (word.includes(pattern)) {
-            ans++;
-        }
-    }
-    return ans;
 }
 ```
 
@@ -109,12 +103,12 @@ function numOfStrings(patterns: string[], word: string): number {
 ```cpp
 class Solution {
 public:
-    int numOfStrings(vector<string> &patterns, string word) {
-        int res = 0;
-        for (auto p : patterns)
-            if (word.find(p) != string::npos)
-                ++res;
-        return res;
+    int numOfStrings(vector<string>& patterns, string word) {
+        int ans = 0;
+        for (auto& p : patterns) {
+            ans += word.find(p) != string::npos;
+        }
+        return ans;
     }
 };
 ```
@@ -122,14 +116,27 @@ public:
 ### **Go**
 
 ```go
-func numOfStrings(patterns []string, word string) int {
-    res := 0
-    for _, p := range patterns {
+func numOfStrings(patterns []string, word string) (ans int) {
+	for _, p := range patterns {
 		if strings.Contains(word, p) {
-			res++
+			ans++
 		}
 	}
-    return res
+	return
+}
+```
+
+### **TypeScript**
+
+```ts
+function numOfStrings(patterns: string[], word: string): number {
+    let ans = 0;
+    for (const p of patterns) {
+        if (word.includes(p)) {
+            ++ans;
+        }
+    }
+    return ans;
 }
 ```
 

@@ -9,19 +9,27 @@
 <p>A <strong>strobogrammatic number</strong> is a number that looks the same when rotated <code>180</code> degrees (looked at upside down).</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<pre><strong>Input:</strong> num = "69"
-<strong>Output:</strong> true
-</pre><p><strong>Example 2:</strong></p>
-<pre><strong>Input:</strong> num = "88"
-<strong>Output:</strong> true
-</pre><p><strong>Example 3:</strong></p>
-<pre><strong>Input:</strong> num = "962"
-<strong>Output:</strong> false
-</pre><p><strong>Example 4:</strong></p>
-<pre><strong>Input:</strong> num = "1"
+<p><strong class="example">Example 1:</strong></p>
+
+<pre>
+<strong>Input:</strong> num = &quot;69&quot;
 <strong>Output:</strong> true
 </pre>
+
+<p><strong class="example">Example 2:</strong></p>
+
+<pre>
+<strong>Input:</strong> num = &quot;88&quot;
+<strong>Output:</strong> true
+</pre>
+
+<p><strong class="example">Example 3:</strong></p>
+
+<pre>
+<strong>Input:</strong> num = &quot;962&quot;
+<strong>Output:</strong> false
+</pre>
+
 <p>&nbsp;</p>
 <p><strong>Constraints:</strong></p>
 
@@ -40,21 +48,13 @@
 ```python
 class Solution:
     def isStrobogrammatic(self, num: str) -> bool:
-        def match(a, b):
-            if a in {'0', '1', '8'}:
-                return a == b
-            if a == '6':
-                return b == '9'
-            if a == '9':
-                return b == '6'
-            return False
-        n = len(num)
-        i, j = 0, n - 1
+        d = [0, 1, -1, -1, -1, -1, 9, -1, 8, 6]
+        i, j = 0, len(num) - 1
         while i <= j:
-            if not match(num[i], num[j]):
+            a, b = int(num[i]), int(num[j])
+            if d[a] != b:
                 return False
-            i += 1
-            j -= 1
+            i, j = i + 1, j - 1
         return True
 ```
 
@@ -63,27 +63,48 @@ class Solution:
 ```java
 class Solution {
     public boolean isStrobogrammatic(String num) {
-        int n = num.length();
-        for (int i = 0, j = n - 1; i <= j; ++i, --j) {
-            if (!match(num.charAt(i), num.charAt(j))) return false;
+        int[] d = new int[] {0, 1, -1, -1, -1, -1, 9, -1, 8, 6};
+        for (int i = 0, j = num.length() - 1; i <= j; ++i, --j) {
+            int a = num.charAt(i) - '0', b = num.charAt(j) - '0';
+            if (d[a] != b) {
+                return false;
+            }
         }
         return true;
     }
+}
+```
 
-    private boolean match(char a, char b) {
-        switch (a) {
-            case '0':
-            case '1':
-            case '8':
-                return a == b;
-            case '6':
-                return b == '9';
-            case '9':
-                return b == '6';
-            default:
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool isStrobogrammatic(string num) {
+        vector<int> d = {0, 1, -1, -1, -1, -1, 9, -1, 8, 6};
+        for (int i = 0, j = num.size() - 1; i <= j; ++i, --j) {
+            int a = num[i] - '0', b = num[j] - '0';
+            if (d[a] != b) {
                 return false;
+            }
         }
+        return true;
     }
+};
+```
+
+### **Go**
+
+```go
+func isStrobogrammatic(num string) bool {
+	d := []int{0, 1, -1, -1, -1, -1, 9, -1, 8, 6}
+	for i, j := 0, len(num)-1; i <= j; i, j = i+1, j-1 {
+		a, b := int(num[i]-'0'), int(num[j]-'0')
+		if d[a] != b {
+			return false
+		}
+	}
+	return true
 }
 ```
 

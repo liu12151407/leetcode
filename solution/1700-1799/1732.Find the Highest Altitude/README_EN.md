@@ -9,7 +9,7 @@
 <p>You are given an integer array <code>gain</code> of length <code>n</code> where <code>gain[i]</code> is the <strong>net gain in altitude</strong> between points <code>i</code>​​​​​​ and <code>i + 1</code> for all (<code>0 &lt;= i &lt; n)</code>. Return <em>the <strong>highest altitude</strong> of a point.</em></p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> gain = [-5,1,5,0,-7]
@@ -17,7 +17,7 @@
 <strong>Explanation:</strong> The altitudes are [0,-5,-4,1,1,-6]. The highest is 1.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> gain = [-4,-3,-2,-1,4,3,2]
@@ -43,11 +43,17 @@
 ```python
 class Solution:
     def largestAltitude(self, gain: List[int]) -> int:
-        res = t = 0
-        for h in gain:
-            t += h
-            res = max(res, t)
-        return res
+        return max(accumulate(gain, initial=0))
+```
+
+```python
+class Solution:
+    def largestAltitude(self, gain: List[int]) -> int:
+        ans = h = 0
+        for v in gain:
+            h += v
+            ans = max(ans, h)
+        return ans
 ```
 
 ### **Java**
@@ -55,13 +61,12 @@ class Solution:
 ```java
 class Solution {
     public int largestAltitude(int[] gain) {
-        int res = 0;
-        int t = 0;
-        for (int h : gain) {
-            t += h;
-            res = Math.max(res, t);
+        int ans = 0, h = 0;
+        for (int v : gain) {
+            h += v;
+            ans = Math.max(ans, h);
         }
-        return res;
+        return ans;
     }
 }
 ```
@@ -72,13 +77,9 @@ class Solution {
 class Solution {
 public:
     int largestAltitude(vector<int>& gain) {
-        int res = 0, t = 0;
-        for (int h : gain)
-        {
-            t += h;
-            res = max(res, t);
-        }
-        return res;
+        int ans = 0, h = 0;
+        for (int v : gain) h += v, ans = max(ans, h);
+        return ans;
     }
 };
 ```
@@ -86,20 +87,86 @@ public:
 ### **Go**
 
 ```go
-func largestAltitude(gain []int) int {
-	res, t := 0, 0
-	for _, h := range gain {
-		t += h
-		res = max(res, t)
+func largestAltitude(gain []int) (ans int) {
+	h := 0
+	for _, v := range gain {
+		h += v
+		if ans < h {
+			ans = h
+		}
 	}
-	return res
+	return
 }
+```
 
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
+### **JavaScript**
+
+```js
+/**
+ * @param {number[]} gain
+ * @return {number}
+ */
+var largestAltitude = function (gain) {
+    let ans = 0;
+    let h = 0;
+    for (const v of gain) {
+        h += v;
+        ans = Math.max(ans, h);
+    }
+    return ans;
+};
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn largest_altitude(gain: Vec<i32>) -> i32 {
+        let mut ans = 0;
+        let mut h = 0;
+        for v in gain.iter() {
+            h += v;
+            ans = ans.max(h);
+        }
+        ans
+    }
+}
+```
+
+### **C**
+
+```c
+#define max(a, b) (((a) > (b)) ? (a) : (b))
+
+int largestAltitude(int* gain, int gainSize) {
+    int ans = 0;
+    int h = 0;
+    for (int i = 0; i < gainSize; i++) {
+        h += gain[i];
+        ans = max(ans, h);
+    }
+    return ans;
+}
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param Integer[] $gain
+     * @return Integer
+     */
+    function largestAltitude($gain) {
+        $max = 0;
+        for ($i = 0; $i < count($gain); $i++) {
+            $tmp += $gain[$i];
+            if ($tmp > $max) {
+                $max = $tmp;
+            }
+        }
+        return $max;
+    }
 }
 ```
 

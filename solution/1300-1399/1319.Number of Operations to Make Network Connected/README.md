@@ -1,4 +1,4 @@
-# [1319. 连通网络的操作次数](https://leetcode-cn.com/problems/number-of-operations-to-make-network-connected)
+# [1319. 连通网络的操作次数](https://leetcode.cn/problems/number-of-operations-to-make-network-connected)
 
 [English Version](/solution/1300-1399/1319.Number%20of%20Operations%20to%20Make%20Network%20Connected/README_EN.md)
 
@@ -16,7 +16,7 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1300-1399/1319.Number%20of%20Operations%20to%20Make%20Network%20Connected/images/sample_1_1677.png" style="height: 167px; width: 570px;"></strong></p>
+<p><strong><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1300-1399/1319.Number%20of%20Operations%20to%20Make%20Network%20Connected/images/sample_1_1677.png" style="height: 167px; width: 570px;"></strong></p>
 
 <pre><strong>输入：</strong>n = 4, connections = [[0,1],[0,2],[1,2]]
 <strong>输出：</strong>1
@@ -25,7 +25,7 @@
 
 <p><strong>示例 2：</strong></p>
 
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1300-1399/1319.Number%20of%20Operations%20to%20Make%20Network%20Connected/images/sample_2_1677.png" style="height: 175px; width: 660px;"></strong></p>
+<p><strong><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1300-1399/1319.Number%20of%20Operations%20to%20Make%20Network%20Connected/images/sample_2_1677.png" style="height: 175px; width: 660px;"></strong></p>
 
 <pre><strong>输入：</strong>n = 6, connections = [[0,1],[0,2],[0,3],[1,2],[1,3]]
 <strong>输出：</strong>2
@@ -69,12 +69,16 @@
 ```python
 # 初始化，p存储每个点的父节点
 p = list(range(n))
+
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
         # 路径压缩
         p[x] = find(p[x])
     return p[x]
+
+
 # 合并a和b所在的两个集合
 p[find(a)] = find(b)
 ```
@@ -86,12 +90,14 @@ p[find(a)] = find(b)
 p = list(range(n))
 size = [1] * n
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
         # 路径压缩
         p[x] = find(p[x])
     return p[x]
+
 
 # 合并a和b所在的两个集合
 if find(a) != find(b):
@@ -106,6 +112,7 @@ if find(a) != find(b):
 p = list(range(n))
 d = [0] * n
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
@@ -114,6 +121,7 @@ def find(x):
         p[x] = t
     return p[x]
 
+
 # 合并a和b所在的两个集合
 p[find(a)] = find(b)
 d[find(a)] = distance
@@ -121,8 +129,8 @@ d[find(a)] = distance
 
 对于本题，先遍历所有的边：
 
-- 如果边的两个节点已经属于同个集合，说明两个节点已经相连，不必再将此边加入到集合中，累加 cnt；
-- 否则将边加入集合中。
+-   如果边的两个节点已经属于同个集合，说明两个节点已经相连，不必再将此边加入到集合中，累加 cnt；
+-   否则将边加入集合中。
 
 最后判断集合的数量 total 与 cnt 的大小关系。
 
@@ -135,21 +143,20 @@ d[find(a)] = distance
 ```python
 class Solution:
     def makeConnected(self, n: int, connections: List[List[int]]) -> int:
-        p = list(range(n))
-
         def find(x):
             if p[x] != x:
                 p[x] = find(p[x])
             return p[x]
 
-        cnt = 0
+        cnt, size = 0, n
+        p = list(range(n))
         for a, b in connections:
             if find(a) == find(b):
                 cnt += 1
             else:
                 p[find(a)] = find(b)
-        total = sum(i == find(i) for i in range(n))
-        return -1 if total - 1 > cnt else total - 1
+                size -= 1
+        return -1 if size - 1 > cnt else size - 1
 ```
 
 ### **Java**
@@ -167,19 +174,16 @@ class Solution {
         }
         int cnt = 0;
         for (int[] e : connections) {
-            if (find(e[0]) == find(e[1])) {
+            int a = e[0];
+            int b = e[1];
+            if (find(a) == find(b)) {
                 ++cnt;
             } else {
-                p[find(e[0])] = find(e[1]);
+                p[find(a)] = find(b);
+                --n;
             }
         }
-        int total = 0;
-        for (int i = 0; i < n; ++i) {
-            if (i == find(i)) {
-                ++total;
-            }
-        }
-        return total - 1 > cnt ? -1 : total - 1;
+        return n - 1 > cnt ? -1 : n - 1;
     }
 
     private int find(int x) {
@@ -198,38 +202,24 @@ class Solution {
 public:
     vector<int> p;
 
-    int makeConnected(int n, vector<vector<int>> &connections) {
+    int makeConnected(int n, vector<vector<int>>& connections) {
         p.resize(n);
-        for (int i = 0; i < n; ++i)
-        {
-            p[i] = i;
-        }
+        for (int i = 0; i < n; ++i) p[i] = i;
         int cnt = 0;
-        for (auto e : connections)
-        {
-            if (find(e[0]) == find(e[1]))
-            {
+        for (auto& e : connections) {
+            int a = e[0], b = e[1];
+            if (find(a) == find(b))
                 ++cnt;
-            }
-            else
-            {
-                p[find(e[0])] = find(e[1]);
-            }
-        }
-        int total = 0;
-        for (int i = 0; i < n; ++i)
-        {
-            if (i == find(i))
-            {
-                ++total;
+            else {
+                p[find(a)] = find(b);
+                --n;
             }
         }
-        return total - 1 > cnt ? -1 : total - 1;
+        return n - 1 > cnt ? -1 : n - 1;
     }
 
     int find(int x) {
-        if (p[x] != x)
-            p[x] = find(p[x]);
+        if (p[x] != x) p[x] = find(p[x]);
         return p[x];
     }
 };
@@ -238,38 +228,32 @@ public:
 ### **Go**
 
 ```go
-var p []int
-
 func makeConnected(n int, connections [][]int) int {
-	p = make([]int, n)
-	for i := 0; i < n; i++ {
+	p := make([]int, n)
+	for i := range p {
 		p[i] = i
 	}
 	cnt := 0
+	var find func(x int) int
+	find = func(x int) int {
+		if p[x] != x {
+			p[x] = find(p[x])
+		}
+		return p[x]
+	}
 	for _, e := range connections {
-		if find(e[0]) == find(e[1]) {
+		a, b := e[0], e[1]
+		if find(a) == find(b) {
 			cnt++
 		} else {
-			p[find(e[0])] = find(e[1])
+			p[find(a)] = find(b)
+			n--
 		}
 	}
-	total := 0
-	for i := 0; i < n; i++ {
-		if i == find(i) {
-			total++
-		}
-	}
-	if total-1 > cnt {
+	if n-1 > cnt {
 		return -1
 	}
-	return total - 1
-}
-
-func find(x int) int {
-	if p[x] != x {
-		p[x] = find(p[x])
-	}
-	return p[x]
+	return n - 1
 }
 ```
 

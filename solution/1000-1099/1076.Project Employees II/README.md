@@ -1,4 +1,4 @@
-# [1076. 项目员工 II](https://leetcode-cn.com/problems/project-employees-ii)
+# [1076. 项目员工 II](https://leetcode.cn/problems/project-employees-ii)
 
 [English Version](/solution/1000-1099/1076.Project%20Employees%20II/README_EN.md)
 
@@ -73,7 +73,28 @@ Result table:
 ### **SQL**
 
 ```sql
+# Write your MySQL query statement below
+SELECT  project_id
+FROM Project p
+GROUP BY  project_id
+HAVING COUNT(employee_id) >= all(
+SELECT  COUNT(employee_id)
+FROM Project
+GROUP BY  project_id )
+```
 
+```sql
+# Write your MySQL query statement below
+SELECT project_id
+FROM
+    (
+        SELECT
+            project_id,
+            dense_rank() OVER (ORDER BY COUNT(employee_id) DESC) AS rk
+        FROM Project
+        GROUP BY project_id
+    ) AS t
+WHERE rk = 1;
 ```
 
 <!-- tabs:end -->

@@ -12,8 +12,10 @@ void quickSort(int[] nums, int left, int right) {
     int i = left - 1, j = right + 1;
     int x = nums[left];
     while (i < j) {
-        while (nums[++i] < x);
-        while (nums[--j] > x);
+        while (nums[++i] < x)
+            ;
+        while (nums[--j] > x)
+            ;
         if (i < j) {
             int t = nums[i];
             nums[i] = nums[j];
@@ -110,7 +112,7 @@ public class Main {
         }
         quickSort(nums, 0, n - 1);
         for (int i = 0; i < n; ++i) {
-            System.out.printf("%d ", nums[i]);
+            System.out.print(nums[i] + " ");
         }
     }
 
@@ -119,10 +121,12 @@ public class Main {
             return;
         }
         int i = left - 1, j = right + 1;
-        int x = nums[left];
+        int x = nums[(left + right) >> 1];
         while (i < j) {
-            while (nums[++i] < x);
-            while (nums[--j] > x);
+            while (nums[++i] < x)
+                ;
+            while (nums[--j] > x)
+                ;
             if (i < j) {
                 int t = nums[i];
                 nums[i] = nums[j];
@@ -138,17 +142,17 @@ public class Main {
 ### **JavaScript**
 
 ```js
-var buf = "";
+var buf = '';
 
-process.stdin.on("readable", function () {
+process.stdin.on('readable', function () {
     var chunk = process.stdin.read();
     if (chunk) buf += chunk.toString();
 });
 
 let getInputArgs = line => {
     return line
-        .split(" ")
-        .filter(s => s !== "")
+        .split(' ')
+        .filter(s => s !== '')
         .map(x => parseInt(x));
 };
 
@@ -173,12 +177,12 @@ function quickSort(nums, left, right) {
     quickSort(nums, j + 1, right);
 }
 
-process.stdin.on("end", function () {
-    buf.split("\n").forEach(function (line, lineIdx) {
+process.stdin.on('end', function () {
+    buf.split('\n').forEach(function (line, lineIdx) {
         if (lineIdx % 2 === 1) {
             nums = getInputArgs(line);
             quickSort(nums, 0, nums.length - 1);
-            console.log(nums.join(" "));
+            console.log(nums.join(' '));
         }
     });
 });
@@ -291,81 +295,35 @@ fn main() -> io::Result<()> {
 
 ```cpp
 #include <iostream>
-#include <vector>
 
 using namespace std;
-void printvec( const vector<int> &vec, const string &strbegin = "", const string &strend = "" )
-{
-	cout << strbegin << endl;
-	for ( auto val : vec )
-	{
-		cout << val << "\t";
-	}
 
-	cout << endl;
-	cout << strend << endl;
+const int N = 1e6 + 10;
+
+int n;
+int nums[N];
+
+void quick_sort(int nums[], int left, int right) {
+    if (left >= right) return;
+    int i = left - 1, j = right + 1;
+    int x = nums[left + right >> 1];
+    while (i < j) {
+        while (nums[++i] < x)
+            ;
+        while (nums[--j] > x)
+            ;
+        if (i < j) swap(nums[i], nums[j]);
+    }
+    quick_sort(nums, left, j);
+    quick_sort(nums, j + 1, right);
 }
 
-
-int partition( vector<int> & vec, int left, int right )
-{
-	if ( left >= right )
-	{
-		return left;
-	}
-
-	int base = vec[left];
-	while ( left < right )
-	{
-		while ( left < right && vec[right] >= base )
-		{
-			right--;
-		}
-		if ( left >= right )
-		{
-			break;
-		}
-
-		vec[left] = vec[right];
-
-		while ( left < right && vec[left] <= base )
-		{
-			left++;
-		}
-
-		if ( left >= right )
-		{
-			break;
-		}
-
-		vec[right] = vec[left];
-	}
-
-	vec[left] = base;
-	return left;
-}
-
-
-void quicksort( vector<int> & vec, int left, int right )
-{
-	if ( left >= right )
-	{
-		return;
-	}
-
-	int idx = partition( vec, left, right );
-	quicksort( vec, left, idx - 1 );
-	quicksort( vec, idx + 1, right );
-}
-
-
-int main( void )
-{
-	vector<int> vec = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-	printvec( vec );
-	quicksort( vec, 0, vec.size() - 1 );
-	printvec( vec, "after insert sort" );
-	return 0;
+int main() {
+    int n;
+    scanf("%d", &n);
+    for (int i = 0; i < n; ++i) scanf("%d", &nums[i]);
+    quick_sort(nums, 0, n - 1);
+    for (int i = 0; i < n; ++i) printf("%d ", nums[i]);
 }
 ```
 

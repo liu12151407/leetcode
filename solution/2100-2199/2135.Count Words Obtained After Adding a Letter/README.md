@@ -1,4 +1,4 @@
-# [2135. 统计追加字母可以获得的单词数](https://leetcode-cn.com/problems/count-words-obtained-after-adding-a-letter)
+# [2135. 统计追加字母可以获得的单词数](https://leetcode.cn/problems/count-words-obtained-after-adding-a-letter)
 
 [English Version](/solution/2100-2199/2135.Count%20Words%20Obtained%20After%20Adding%20a%20Letter/README_EN.md)
 
@@ -14,15 +14,17 @@
 
 <ol>
 	<li><strong>追加</strong> 任何 <strong>不存在</strong> 于当前字符串的任一小写字母到当前字符串的末尾。
-	<ul>
-		<li>例如，如果字符串为 <code>"abc"</code> ，那么字母 <code>'d'</code>、<code>'e'</code> 或 <code>'y'</code> 都可以加到该字符串末尾，但 <code>'a'</code> 就不行。如果追加的是 <code>'d'</code> ，那么结果字符串为 <code>"abcd"</code> 。</li>
-	</ul>
-	</li>
-	<li><strong>重排</strong> 新字符串中的字母，可以按 <strong>任意</strong> 顺序重新排布字母。
-	<ul>
-		<li>例如，<code>"abcd"</code> 可以重排为 <code>"acbd"</code>、<code>"bacd"</code>、<code>"cbda"</code>，以此类推。注意，它也可以重排为 <code>"abcd"</code> 自身。</li>
-	</ul>
-	</li>
+
+    <ul>
+    	<li>例如，如果字符串为 <code>"abc"</code> ，那么字母 <code>'d'</code>、<code>'e'</code> 或 <code>'y'</code> 都可以加到该字符串末尾，但 <code>'a'</code> 就不行。如果追加的是 <code>'d'</code> ，那么结果字符串为 <code>"abcd"</code> 。</li>
+    </ul>
+    </li>
+    <li><strong>重排</strong> 新字符串中的字母，可以按 <strong>任意</strong> 顺序重新排布字母。
+    <ul>
+    	<li>例如，<code>"abcd"</code> 可以重排为 <code>"acbd"</code>、<code>"bacd"</code>、<code>"cbda"</code>，以此类推。注意，它也可以重排为 <code>"abcd"</code> 自身。</li>
+    </ul>
+    </li>
+
 </ol>
 
 <p>找出 <code>targetWords</code> 中有多少字符串能够由&nbsp;<code>startWords</code> 中的 <strong>任一</strong> 字符串执行上述转换操作获得。返回<em> </em><code>targetWords</code><em> </em>中这类 <strong>字符串的数目</strong> 。</p>
@@ -81,14 +83,14 @@ class Solution:
         for word in startWords:
             mask = 0
             for c in word:
-                mask |= (1 << (ord(c) - ord('a')))
+                mask |= 1 << (ord(c) - ord('a'))
             s.add(mask)
 
         ans = 0
         for word in targetWords:
             mask = 0
             for c in word:
-                mask |= (1 << (ord(c) - ord('a')))
+                mask |= 1 << (ord(c) - ord('a'))
             for c in word:
                 t = mask ^ (1 << (ord(c) - ord('a')))
                 if t in s:
@@ -130,7 +132,6 @@ class Solution {
         return ans;
     }
 }
-
 ```
 
 ### **C++**
@@ -140,24 +141,20 @@ class Solution {
 public:
     int wordCount(vector<string>& startWords, vector<string>& targetWords) {
         unordered_set<int> s;
-        for (auto& word : startWords)
-        {
+        for (auto& word : startWords) {
             int mask = 0;
             for (char c : word)
                 mask |= (1 << (c - 'a'));
             s.insert(mask);
         }
         int ans = 0;
-        for (auto& word : targetWords)
-        {
+        for (auto& word : targetWords) {
             int mask = 0;
             for (char c : word)
                 mask |= (1 << (c - 'a'));
-            for (char c : word)
-            {
+            for (char c : word) {
                 int t = mask ^ (1 << (c - 'a'));
-                if (s.count(t))
-                {
+                if (s.count(t)) {
                     ++ans;
                     break;
                 }

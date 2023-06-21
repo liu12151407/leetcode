@@ -17,7 +17,7 @@
 <p>Return <code>s</code><em> after replacing all digits. It is <strong>guaranteed</strong> that </em><code>shift(s[i-1], s[i])</code><em> will never exceed </em><code>&#39;z&#39;</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;a1c1e1&quot;
@@ -27,7 +27,7 @@
 - s[3] -&gt; shift(&#39;c&#39;,1) = &#39;d&#39;
 - s[5] -&gt; shift(&#39;e&#39;,1) = &#39;f&#39;</pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;a1b2c3d4e&quot;
@@ -67,12 +67,81 @@ class Solution:
 ```java
 class Solution {
     public String replaceDigits(String s) {
-        char[] chars = s.toCharArray();
-        for (int i = 1; i < chars.length; i += 2) {
-            chars[i] = (char) (chars[i - 1] + (chars[i] - '0'));
+        char[] cs = s.toCharArray();
+        for (int i = 1; i < cs.length; i += 2) {
+            cs[i] = (char) (cs[i - 1] + (cs[i] - '0'));
         }
-        return new String(chars);
+        return String.valueOf(cs);
     }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    string replaceDigits(string s) {
+        int n = s.size();
+        for (int i = 1; i < n; i += 2) {
+            s[i] = s[i - 1] + s[i] - '0';
+        }
+        return s;
+    }
+};
+```
+
+### **Go**
+
+```go
+func replaceDigits(s string) string {
+	cs := []byte(s)
+	for i := 1; i < len(s); i += 2 {
+		cs[i] = cs[i-1] + cs[i] - '0'
+	}
+	return string(cs)
+}
+```
+
+### **TypeScript**
+
+```ts
+function replaceDigits(s: string): string {
+    const n = s.length;
+    const ans = [...s];
+    for (let i = 1; i < n; i += 2) {
+        ans[i] = String.fromCharCode(ans[i - 1].charCodeAt(0) + Number(ans[i]));
+    }
+    return ans.join('');
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn replace_digits(s: String) -> String {
+        let n = s.len();
+        let mut ans = s.into_bytes();
+        let mut i = 1;
+        while i < n {
+            ans[i] = ans[i - 1] + (ans[i] - b'0');
+            i += 2;
+        }
+        ans.into_iter().map(char::from).collect()
+    }
+}
+```
+
+### **C**
+
+```c
+char* replaceDigits(char* s) {
+    int n = strlen(s);
+    for (int i = 1; i < n; i += 2) {
+        s[i] = s[i - 1] + s[i] - '0';
+    }
+    return s;
 }
 ```
 

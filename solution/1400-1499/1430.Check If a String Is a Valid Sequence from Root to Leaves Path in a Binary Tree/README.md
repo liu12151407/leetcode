@@ -1,4 +1,4 @@
-# [1430. 判断给定的序列是否是二叉树从根到叶的路径](https://leetcode-cn.com/problems/check-if-a-string-is-a-valid-sequence-from-root-to-leaves-path-in-a-binary-tree)
+# [1430. 判断给定的序列是否是二叉树从根到叶的路径](https://leetcode.cn/problems/check-if-a-string-is-a-valid-sequence-from-root-to-leaves-path-in-a-binary-tree)
 
 [English Version](/solution/1400-1499/1430.Check%20If%20a%20String%20Is%20a%20Valid%20Sequence%20from%20Root%20to%20Leaves%20Path%20in%20a%20Binary%20Tree/README_EN.md)
 
@@ -14,7 +14,7 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1400-1499/1430.Check%20If%20a%20String%20Is%20a%20Valid%20Sequence%20from%20Root%20to%20Leaves%20Path%20in%20a%20Binary%20Tree/images/leetcode_testcase_1.png" style="height:250px; width:333px" /></strong></p>
+<p><strong><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1400-1499/1430.Check%20If%20a%20String%20Is%20a%20Valid%20Sequence%20from%20Root%20to%20Leaves%20Path%20in%20a%20Binary%20Tree/images/leetcode_testcase_1.png" style="height:250px; width:333px" /></strong></p>
 
 <pre>
 <strong>输入：</strong>root = [0,1,0,0,1,0,null,null,1,0,0], arr = [0,1,0,1]
@@ -28,7 +28,7 @@
 
 <p><strong>示例 2：</strong></p>
 
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1400-1499/1430.Check%20If%20a%20String%20Is%20a%20Valid%20Sequence%20from%20Root%20to%20Leaves%20Path%20in%20a%20Binary%20Tree/images/leetcode_testcase_2.png" style="height:250px; width:333px" /></strong></p>
+<p><strong><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1400-1499/1430.Check%20If%20a%20String%20Is%20a%20Valid%20Sequence%20from%20Root%20to%20Leaves%20Path%20in%20a%20Binary%20Tree/images/leetcode_testcase_2.png" style="height:250px; width:333px" /></strong></p>
 
 <pre>
 <strong>输入：</strong>root = [0,1,0,0,1,0,null,null,1,0,0], arr = [0,0,1]
@@ -38,7 +38,7 @@
 
 <p><strong>示例 3：</strong></p>
 
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1400-1499/1430.Check%20If%20a%20String%20Is%20a%20Valid%20Sequence%20from%20Root%20to%20Leaves%20Path%20in%20a%20Binary%20Tree/images/leetcode_testcase_3.png" style="height:250px; width:333px" /></strong></p>
+<p><strong><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1400-1499/1430.Check%20If%20a%20String%20Is%20a%20Valid%20Sequence%20from%20Root%20to%20Leaves%20Path%20in%20a%20Binary%20Tree/images/leetcode_testcase_3.png" style="height:250px; width:333px" /></strong></p>
 
 <pre>
 <strong>输入：</strong>root = [0,1,0,0,1,0,null,null,1,0,0], arr = [0,1,1]
@@ -60,7 +60,13 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
-DFS。
+**方法一：DFS**
+
+根据题目，我们设计一个递归函数 $dfs(root, u)$，表示从当前节点 $root$ 开始，且当前已经遍历到数组的第 $u$ 个元素，是否存在一条从根节点到叶子节点的路径，且路径上的元素与数组中的元素一一对应。那么答案就是 $dfs(root, 0)$。
+
+在递归函数中，如果当前节点为空，或者当前节点的值与数组中的值不相等，那么直接返回 $false$。如果当前节点是叶子节点，且当前节点的值与数组中的值相等，那么返回 $u$ 是否等于数组的长度减 $1$。否则，返回 $dfs(root.left, u + 1)$ 或者 $dfs(root.right, u + 1)$。
+
+时间复杂度 $O(n)$，空间复杂度 $O(\log n)$。其中 $n$ 是二叉树的节点个数。
 
 <!-- tabs:start -->
 
@@ -144,13 +150,12 @@ class Solution {
 class Solution {
 public:
     bool isValidSequence(TreeNode* root, vector<int>& arr) {
-        return dfs(root, arr, 0);
-    }
-
-    bool dfs(TreeNode* root, vector<int>& arr, int u) {
-        if (!root || root->val != arr[u]) return false;
-        if (u == arr.size() - 1) return !root->left && !root->right;
-        return dfs(root->left, arr, u + 1) || dfs(root->right, arr, u + 1);
+        function<bool(TreeNode*, int)> dfs = [&](TreeNode* root, int u) -> bool {
+            if (!root || root->val != arr[u]) return false;
+            if (u == arr.size() - 1) return !root->left && !root->right;
+            return dfs(root->left, u + 1) || dfs(root->right, u + 1);
+        };
+        return dfs(root, 0);
     }
 };
 ```

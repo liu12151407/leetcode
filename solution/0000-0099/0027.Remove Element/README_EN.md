@@ -4,46 +4,54 @@
 
 ## Description
 
-<p>Given an array <em>nums</em> and a value <code>val</code>, remove all instances of that value <a href="https://en.wikipedia.org/wiki/In-place_algorithm" target="_blank"><strong>in-place</strong></a> and return the new length.</p>
+<p>Given an integer array <code>nums</code> and an integer <code>val</code>, remove all occurrences of <code>val</code> in <code>nums</code> <a href="https://en.wikipedia.org/wiki/In-place_algorithm" target="_blank"><strong>in-place</strong></a>. The order of the elements may be changed. Then return <em>the number of elements in </em><code>nums</code><em> which are not equal to </em><code>val</code>.</p>
 
-<p>Do not allocate extra space for another array, you must do this by <strong>modifying the input array <a href="https://en.wikipedia.org/wiki/In-place_algorithm" target="_blank">in-place</a></strong> with <code>O(1)</code> extra memory.</p>
+<p>Consider the number of elements in <code>nums</code> which are not equal to <code>val</code> be <code>k</code>, to get accepted, you need to do the following things:</p>
 
-<p>The order of elements can be changed. It doesn&#39;t matter what you leave beyond the new length.</p>
+<ul>
+	<li>Change the array <code>nums</code> such that the first <code>k</code> elements of <code>nums</code> contain the elements which are not equal to <code>val</code>. The remaining elements of <code>nums</code> are not important as well as the size of <code>nums</code>.</li>
+	<li>Return <code>k</code>.</li>
+</ul>
 
-<p><strong>Clarification:</strong></p>
+<p><strong>Custom Judge:</strong></p>
 
-<p>Confused why the returned value is an integer but your answer is an array?</p>
-
-<p>Note that the input array is passed in by <strong>reference</strong>, which means a modification to the input array will be known to the caller as well.</p>
-
-<p>Internally you can think of this:</p>
+<p>The judge will test your solution with the following code:</p>
 
 <pre>
-// <strong>nums</strong> is passed in by reference. (i.e., without making a copy)
-int len = removeElement(nums, val);
+int[] nums = [...]; // Input array
+int val = ...; // Value to remove
+int[] expectedNums = [...]; // The expected answer with correct length.
+                            // It is sorted with no values equaling val.
 
-// any modification to <strong>nums</strong> in your function would be known by the caller.
-// using the length returned by your function, it prints the first <strong>len</strong> elements.
-for (int i = 0; i &lt; len; i++) {
-&nbsp; &nbsp; print(nums[i]);
-}</pre>
+int k = removeElement(nums, val); // Calls your implementation
+
+assert k == expectedNums.length;
+sort(nums, 0, k); // Sort the first k elements of nums
+for (int i = 0; i &lt; actualLength; i++) {
+    assert nums[i] == expectedNums[i];
+}
+</pre>
+
+<p>If all assertions pass, then your solution will be <strong>accepted</strong>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [3,2,2,3], val = 3
-<strong>Output:</strong> 2, nums = [2,2]
-<strong>Explanation:</strong> Your function should return length = <strong>2</strong>, with the first two elements of <em>nums</em> being <strong>2</strong>.
-It doesn&#39;t matter what you leave beyond the returned length. For example if you return 2 with nums = [2,2,3,3] or nums = [2,2,0,0], your answer will be accepted.
+<strong>Output:</strong> 2, nums = [2,2,_,_]
+<strong>Explanation:</strong> Your function should return k = 2, with the first two elements of nums being 2.
+It does not matter what you leave beyond the returned k (hence they are underscores).
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [0,1,2,2,3,0,4,2], val = 2
-<strong>Output:</strong> 5, nums = [0,1,4,0,3]
-<strong>Explanation:</strong> Your function should return length = <strong><code>5</code></strong>, with the first five elements of <em><code>nums</code></em> containing&nbsp;<strong><code>0</code></strong>, <strong><code>1</code></strong>, <strong><code>3</code></strong>, <strong><code>0</code></strong>, and&nbsp;<strong>4</strong>. Note that the order of those five elements can be arbitrary. It doesn&#39;t matter what values are set beyond&nbsp;the returned length.
+<strong>Output:</strong> 5, nums = [0,1,4,0,3,_,_,_]
+<strong>Explanation:</strong> Your function should return k = 5, with the first five elements of nums containing 0, 0, 1, 3, and 4.
+Note that the five elements can be returned in any order.
+It does not matter what you leave beyond the returned k (hence they are underscores).
 </pre>
 
 <p>&nbsp;</p>
@@ -57,6 +65,16 @@ It doesn&#39;t matter what you leave beyond the returned length. For example if 
 
 ## Solutions
 
+**Approach 1: One Pass**
+
+We use the variable $k$ to record the number of elements that are not equal to $val$.
+
+Traverse the array $nums$, if the current element $x$ is not equal to $val$, then assign $x$ to $nums[k]$, and increment $k$ by $1$.
+
+Finally, return $k$.
+
+The time complexity is $O(n)$ and the space complexity is $O(1)$, where $n$ is the length of the array $nums$.
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -64,13 +82,12 @@ It doesn&#39;t matter what you leave beyond the returned length. For example if 
 ```python
 class Solution:
     def removeElement(self, nums: List[int], val: int) -> int:
-        cnt, n = 0, len(nums)
-        for i in range(n):
-            if nums[i] == val:
-                cnt += 1
-            else:
-                nums[i - cnt] = nums[i]
-        return n - cnt
+        k = 0
+        for x in nums:
+            if x != val:
+                nums[k] = x
+                k += 1
+        return k
 ```
 
 ### **Java**
@@ -78,12 +95,13 @@ class Solution:
 ```java
 class Solution {
     public int removeElement(int[] nums, int val) {
-        int cnt = 0, n = nums.length;
-        for (int i = 0; i < n; ++i) {
-            if (nums[i] == val) ++cnt;
-            else nums[i - cnt] = nums[i];
+        int k = 0;
+        for (int x : nums) {
+            if (x != val) {
+                nums[k++] = x;
+            }
         }
-        return n - cnt;
+        return k;
     }
 }
 ```
@@ -94,14 +112,44 @@ class Solution {
 class Solution {
 public:
     int removeElement(vector<int>& nums, int val) {
-        int cnt = 0, n = nums.size();
-        for (int i = 0; i < n; ++i) {
-            if (nums[i] == val) ++cnt;
-            else nums[i - cnt] = nums[i];
+        int k = 0;
+        for (int x : nums) {
+            if (x != val) {
+                nums[k++] = x;
+            }
         }
-        return n - cnt;
+        return k;
     }
 };
+```
+
+### **Go**
+
+```go
+func removeElement(nums []int, val int) int {
+	k := 0
+	for _, x := range nums {
+		if x != val {
+			nums[k] = x
+			k++
+		}
+	}
+	return k
+}
+```
+
+### **TypeScript**
+
+```ts
+function removeElement(nums: number[], val: number): number {
+    let k: number = 0;
+    for (const x of nums) {
+        if (x !== val) {
+            nums[k++] = x;
+        }
+    }
+    return k;
+}
 ```
 
 ### **JavaScript**
@@ -113,30 +161,14 @@ public:
  * @return {number}
  */
 var removeElement = function (nums, val) {
-    let cnt = 0;
-    const n = nums.length;
-    for (let i = 0; i < n; ++i) {
-        if (nums[i] == val) ++cnt;
-        else nums[i - cnt] = nums[i];
-    }
-    return n - cnt;
-};
-```
-
-### **Go**
-
-```go
-func removeElement(nums []int, val int) int {
-    cnt, n := 0, len(nums)
-    for i := 0; i < n; i++ {
-        if (nums[i] == val) {
-            cnt++
-        } else {
-            nums[i - cnt] = nums[i]
+    let k = 0;
+    for (const x of nums) {
+        if (x !== val) {
+            nums[k++] = x;
         }
     }
-    return n - cnt
-}
+    return k;
+};
 ```
 
 ### **Rust**
@@ -144,14 +176,33 @@ func removeElement(nums []int, val int) int {
 ```rust
 impl Solution {
     pub fn remove_element(nums: &mut Vec<i32>, val: i32) -> i32 {
-        let mut len = 0;
+        let mut k = 0;
         for i in 0..nums.len() {
             if nums[i] != val {
-                nums[len] = nums[i];
-                len += 1;
+                nums[k] = nums[i];
+                k += 1;
             }
         }
-        len as i32
+        k as i32
+    }
+}
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param Integer[] $nums
+     * @param Integer $val
+     * @return Integer
+     */
+    function removeElement(&$nums, $val) {
+        for ($i = count($nums) - 1; $i >= 0; $i--) {
+            if ($nums[$i] == $val) {
+                array_splice($nums, $i, 1);
+            }
+        }
     }
 }
 ```

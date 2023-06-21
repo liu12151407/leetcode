@@ -22,7 +22,7 @@
 </ul>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> version1 = &quot;1.01&quot;, version2 = &quot;1.001&quot;
@@ -30,7 +30,7 @@
 <strong>Explanation:</strong> Ignoring leading zeroes, both &quot;01&quot; and &quot;001&quot; represent the same integer &quot;1&quot;.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> version1 = &quot;1.0&quot;, version2 = &quot;1.0.0&quot;
@@ -38,26 +38,12 @@
 <strong>Explanation:</strong> version1 does not specify revision 2, which means it is treated as &quot;0&quot;.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> version1 = &quot;0.1&quot;, version2 = &quot;1.1&quot;
 <strong>Output:</strong> -1
-<strong>Explanation:</strong>&nbsp;version1&#39;s revision 0 is &quot;0&quot;, while version2&#39;s revision 0 is &quot;1&quot;. 0 &lt; 1, so version1 &lt; version2.
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> version1 = &quot;1.0.1&quot;, version2 = &quot;1&quot;
-<strong>Output:</strong> 1
-</pre>
-
-<p><strong>Example 5:</strong></p>
-
-<pre>
-<strong>Input:</strong> version1 = &quot;7.5.2.4&quot;, version2 = &quot;7.5.3&quot;
-<strong>Output:</strong> -1
+<strong>Explanation:</strong> version1&#39;s revision 0 is &quot;0&quot;, while version2&#39;s revision 0 is &quot;1&quot;. 0 &lt; 1, so version1 &lt; version2.
 </pre>
 
 <p>&nbsp;</p>
@@ -79,7 +65,8 @@
 ```python
 class Solution:
     def compareVersion(self, version1: str, version2: str) -> int:
-        i, j, m, n = 0, 0, len(version1), len(version2)
+        m, n = len(version1), len(version2)
+        i = j = 0
         while i < m or j < n:
             a = b = 0
             while i < m and version1[i] != '.':
@@ -90,8 +77,7 @@ class Solution:
                 j += 1
             if a != b:
                 return -1 if a < b else 1
-            i += 1
-            j += 1
+            i, j = i + 1, j + 1
         return 0
 ```
 
@@ -100,13 +86,87 @@ class Solution:
 ```java
 class Solution {
     public int compareVersion(String version1, String version2) {
-        for (int i = 0, j = 0; i < version1.length() || j < version2.length(); ++i, ++j) {
+        int m = version1.length(), n = version2.length();
+        for (int i = 0, j = 0; i < m || j < n; ++i, ++j) {
             int a = 0, b = 0;
-            while (i < version1.length() && version1.charAt(i) != '.') {
-                a = a * 10 + version1.charAt(i++) - '0';
+            while (i < m && version1.charAt(i) != '.') {
+                a = a * 10 + (version1.charAt(i++) - '0');
             }
-            while (j < version2.length() && version2.charAt(j) != '.') {
-                b = b * 10 + version2.charAt(j++) - '0';
+            while (j < n && version2.charAt(j) != '.') {
+                b = b * 10 + (version2.charAt(j++) - '0');
+            }
+            if (a != b) {
+                return a < b ? -1 : 1;
+            }
+        }
+        return 0;
+    }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int compareVersion(string version1, string version2) {
+        int m = version1.size(), n = version2.size();
+        for (int i = 0, j = 0; i < m || j < n; ++i, ++j) {
+            int a = 0, b = 0;
+            while (i < m && version1[i] != '.') {
+                a = a * 10 + (version1[i++] - '0');
+            }
+            while (j < n && version2[j] != '.') {
+                b = b * 10 + (version2[j++] - '0');
+            }
+            if (a != b) {
+                return a < b ? -1 : 1;
+            }
+        }
+        return 0;
+    }
+};
+```
+
+### **Go**
+
+```go
+func compareVersion(version1 string, version2 string) int {
+	m, n := len(version1), len(version2)
+	for i, j := 0, 0; i < m || j < n; i, j = i+1, j+1 {
+		var a, b int
+		for i < m && version1[i] != '.' {
+			a = a*10 + int(version1[i]-'0')
+			i++
+		}
+		for j < n && version2[j] != '.' {
+			b = b*10 + int(version2[j]-'0')
+			j++
+		}
+		if a < b {
+			return -1
+		}
+		if a > b {
+			return 1
+		}
+	}
+	return 0
+}
+```
+
+### **C#**
+
+```cs
+public class Solution {
+    public int CompareVersion(string version1, string version2) {
+        int m = version1.Length, n = version2.Length;
+        for (int i = 0, j = 0; i < m || j < n; ++i, ++j) {
+            int a = 0, b = 0;
+            while (i < m && version1[i] != '.') {
+                a = a * 10 + (version1[i++] - '0');
+            }
+            while (j < n && version2[j] != '.') {
+                b = b * 10 + (version2[j++] - '0');
             }
             if (a != b) {
                 return a < b ? -1 : 1;
@@ -121,8 +181,8 @@ class Solution {
 
 ```ts
 function compareVersion(version1: string, version2: string): number {
-    let v1 = version1.split("."),
-        v2 = version2.split(".");
+    let v1 = version1.split('.'),
+        v2 = version2.split('.');
     for (let i = 0; i < Math.max(v1.length, v2.length); i++) {
         let c1 = Number(v1[i] || 0),
             c2 = Number(v2[i] || 0);
@@ -130,52 +190,6 @@ function compareVersion(version1: string, version2: string): number {
         if (c1 < c2) return -1;
     }
     return 0;
-}
-```
-
-### **C++**
-
-```cpp
-class Solution {
-public:
-    int compareVersion(string version1, string version2) {
-        for (int i = 0, j = 0; i < version1.size() || j < version2.size(); ++i, ++j)
-        {
-            int a = 0, b = 0;
-            while (i < version1.size() && version1[i] != '.')
-                a = a * 10 + version1[i++] - '0';
-            while (j < version2.size() && version2[j] != '.')
-                b = b * 10 + version2[j++] - '0';
-            if (a != b)
-                return a < b ? -1 : 1;
-        }
-        return 0;
-    }
-};
-```
-
-### **Go**
-
-```go
-func compareVersion(version1 string, version2 string) int {
-	for i, j := 0, 0; i < len(version1) || j < len(version2); i, j = i+1, j+1 {
-		a, b := 0, 0
-		for i < len(version1) && version1[i] != '.' {
-			a = a*10 + int(version1[i]-'0')
-			i++
-		}
-		for j < len(version2) && version2[j] != '.' {
-			b = b*10 + int(version2[j]-'0')
-			j++
-		}
-		if a < b {
-			return -1
-		}
-		if a > b {
-			return 1
-		}
-	}
-	return 0
 }
 ```
 

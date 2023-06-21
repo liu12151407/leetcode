@@ -1,31 +1,45 @@
 class Trie {
-    Trie[] children = new Trie[26];
-    String root;
+    private Trie[] children = new Trie[26];
+    private int ref = -1;
+
+    public void insert(String w, int i) {
+        Trie node = this;
+        for (int j = 0; j < w.length(); ++j) {
+            int idx = w.charAt(j) - 'a';
+            if (node.children[idx] == null) {
+                node.children[idx] = new Trie();
+            }
+            node = node.children[idx];
+        }
+        node.ref = i;
+    }
+
+    public int search(String w) {
+        Trie node = this;
+        for (int j = 0; j < w.length(); ++j) {
+            int idx = w.charAt(j) - 'a';
+            if (node.children[idx] == null) {
+                return -1;
+            }
+            node = node.children[idx];
+            if (node.ref != -1) {
+                return node.ref;
+            }
+        }
+        return -1;
+    }
 }
 
 class Solution {
     public String replaceWords(List<String> dictionary, String sentence) {
         Trie trie = new Trie();
-        for (String root : dictionary) {
-            Trie cur = trie;
-            for (char c : root.toCharArray()) {
-                if (cur.children[c - 'a'] == null) {
-                    cur.children[c - 'a'] = new Trie();
-                }
-                cur = cur.children[c - 'a'];
-            }
-            cur.root = root;
+        for (int i = 0; i < dictionary.size(); ++i) {
+            trie.insert(dictionary.get(i), i);
         }
         List<String> ans = new ArrayList<>();
-        for (String word : sentence.split("\\s+")) {
-            Trie cur = trie;
-            for (char c : word.toCharArray()) {
-                if (cur.children[c - 'a'] == null || cur.root != null) {
-                    break;
-                }
-                cur = cur.children[c - 'a'];
-            }
-            ans.add(cur.root == null ? word : cur.root);
+        for (String w : sentence.split("\\s")) {
+            int idx = trie.search(w);
+            ans.add(idx == -1 ? w : dictionary.get(idx));
         }
         return String.join(" ", ans);
     }

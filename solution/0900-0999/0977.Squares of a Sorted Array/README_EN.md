@@ -7,7 +7,7 @@
 <p>Given an integer array <code>nums</code> sorted in <strong>non-decreasing</strong> order, return <em>an array of <strong>the squares of each number</strong> sorted in non-decreasing order</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [-4,-1,0,3,10]
@@ -16,7 +16,7 @@
 After sorting, it becomes [0,1,9,16,100].
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [-7,-3,2,3,11]
@@ -142,6 +142,60 @@ var sortedSquares = function (nums) {
     }
     return res;
 };
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn sorted_squares(nums: Vec<i32>) -> Vec<i32> {
+        let n = nums.len();
+        let mut l = 0;
+        let mut r = n - 1;
+        let mut res = vec![0; n];
+        for i in (0..n).rev() {
+            let a = nums[l] * nums[l];
+            let b = nums[r] * nums[r];
+            if a < b {
+                res[i] = b;
+                r -= 1;
+            } else {
+                res[i] = a;
+                l += 1;
+            }
+        }
+        res
+    }
+}
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param Integer[] $nums
+     * @return Integer[]
+     */
+    function sortedSquares($nums) {
+        $i = 0;
+        $j = $k = count($nums) - 1;
+        $rs = array_fill(0, count($nums), -1);
+        while ($i <= $j) {
+            $max1 = $nums[$i] * $nums[$i];
+            $max2 = $nums[$j] * $nums[$j];
+            if ($max1 > $max2) {
+                $rs[$k] = $max1;
+                $i++;
+            } else {
+                $rs[$k] = $max2;
+                $j--;
+            }
+            $k--;
+        }
+        return $rs;
+    }
+}
 ```
 
 ### **...**

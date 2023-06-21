@@ -1,4 +1,4 @@
-# [686. 重复叠加字符串匹配](https://leetcode-cn.com/problems/repeated-string-match)
+# [686. 重复叠加字符串匹配](https://leetcode.cn/problems/repeated-string-match)
 
 [English Version](/solution/0600-0699/0686.Repeated%20String%20Match/README_EN.md)
 
@@ -105,8 +105,7 @@ public:
         int ans = (n + m - 1) / m;
         string t = "";
         for (int i = 0; i < ans; ++i) t += a;
-        for (int i = 0; i < 3; ++i)
-        {
+        for (int i = 0; i < 3; ++i) {
             if (t.find(b) != -1) return ans;
             ++ans;
             t += a;

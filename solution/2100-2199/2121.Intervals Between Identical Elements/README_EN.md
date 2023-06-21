@@ -13,7 +13,7 @@
 <p><strong>Note:</strong> <code>|x|</code> is the absolute value of <code>x</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> arr = [2,1,3,1,2,3,3]
@@ -28,7 +28,7 @@
 - Index 6: Two more 3s are found at indices 2 and 5. |6 - 2| + |6 - 5| = 5
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> arr = [10,5,10,10]
@@ -112,15 +112,13 @@ public:
         int n = arr.size();
         for (int i = 0; i < n; ++i) d[arr[i]].push_back(i);
         vector<long long> ans(n);
-        for (auto& item : d)
-        {
+        for (auto& item : d) {
             auto& v = item.second;
             int m = v.size();
             long long val = 0;
             for (int e : v) val += e;
             val -= m * v[0];
-            for (int i = 0; i < v.size(); ++i)
-            {
+            for (int i = 0; i < v.size(); ++i) {
                 int delta = i >= 1 ? v[i] - v[i - 1] : 0;
                 val += i * delta - (m - i) * delta;
                 ans[v[i]] = val;

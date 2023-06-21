@@ -37,7 +37,6 @@ public class SelectionSort {
         System.out.println(Arrays.toString(nums));
     }
 }
-
 ```
 
 ### **JavaScript**
@@ -97,11 +96,9 @@ func main() {
 
 using namespace std;
 
-void printvec( const vector<int> &vec, const string &strbegin = "", const string &strend = "" )
-{
+void printvec(const vector<int>& vec, const string& strbegin = "", const string& strend = "") {
     cout << strbegin << endl;
-    for ( auto val : vec )
-    {
+    for (auto val : vec) {
         cout << val << "\t";
     }
 
@@ -109,32 +106,25 @@ void printvec( const vector<int> &vec, const string &strbegin = "", const string
     cout << strend << endl;
 }
 
-
-void selectsort( vector<int> & vec )
-{
-    for ( int i = 0; i < vec.size() - 1; i++ )
-    {
+void selectsort(vector<int>& vec) {
+    for (int i = 0; i < vec.size() - 1; i++) {
         int minidx = i;
-        for ( int j = i + 1; j < vec.size(); j++ )
-        {
-            if ( vec[minidx] > vec[j] )
-            {
+        for (int j = i + 1; j < vec.size(); j++) {
+            if (vec[minidx] > vec[j]) {
                 minidx = j;
             }
         }
 
-        swap( vec[i], vec[minidx] );
+        swap(vec[i], vec[minidx]);
     }
 }
 
-
-int main( void )
-{
-    vector<int> vec = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-    printvec( vec );
-    selectsort( vec );
-    printvec( vec, "after insert sort" );
-    return(0);
+int main(void) {
+    vector<int> vec = {9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+    printvec(vec);
+    selectsort(vec);
+    printvec(vec, "after insert sort");
+    return (0);
 }
 ```
 
@@ -180,7 +170,7 @@ public class Program
         }
     }
     public static void SelectionSortNums(int[] nums)
-    {        
+    {
         for (int initial = 0; initial < nums.Length; initial++)
         {
             for (int second_sort = initial; second_sort < nums.Length; second_sort++)
@@ -205,11 +195,29 @@ public class Program
 
 ```
 
+### **Python3**
+
+```python
+def selection_sort(arr):
+    n = len(arr)
+    for i in range(n - 1):
+        min_index = i
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_index]:
+                min_index = j
+        arr[min_index], arr[i] = arr[i], arr[min_index]
+
+
+arr = [26, 11, 99, 33, 69, 77, 55, 56, 67]
+selection_sort(arr)
+print(arr)
+```
+
 <!-- tabs:end -->
 
 ## 算法分析
 
-空间复杂度 O(1)，时间复杂度 O(n²)。
+空间复杂度 $O(1)$，时间复杂度 $O(n^2)$。
 
 那选择排序是稳定的排序算法吗？
 

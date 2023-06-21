@@ -1,4 +1,4 @@
-# [114. 二叉树展开为链表](https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list)
+# [114. 二叉树展开为链表](https://leetcode.cn/problems/flatten-binary-tree-to-linked-list)
 
 [English Version](/solution/0100-0199/0114.Flatten%20Binary%20Tree%20to%20Linked%20List/README_EN.md)
 
@@ -16,7 +16,7 @@
 <p> </p>
 
 <p><strong>示例 1：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0114.Flatten%20Binary%20Tree%20to%20Linked%20List/images/flaten.jpg" style="width: 500px; height: 226px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0100-0199/0114.Flatten%20Binary%20Tree%20to%20Linked%20List/images/flaten.jpg" style="width: 500px; height: 226px;" />
 <pre>
 <strong>输入：</strong>root = [1,2,5,3,4,null,6]
 <strong>输出：</strong>[1,null,2,null,3,null,4,null,5,null,6]
@@ -53,6 +53,14 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：寻找前驱节点**
+
+先序遍历的访问顺序是“根、左子树、右子树”，左子树最后一个节点访问完后，接着会访问根节点的右子树节点。
+
+因此，对于当前节点，如果其左子节点不为空，我们找到左子树的最右节点，作为前驱节点，然后将当前节点的右子节点赋给前驱节点的右子节点。然后将当前节点的左子节点赋给当前节点的右子节点，并将当前节点的左子节点置为空。然后将当前节点的右子节点作为下一个节点，继续处理，直至所有节点处理完毕。
+
+时间复杂度 $O(n)$，空间复杂度 O(1)$。其中 $n$ 是树中节点的个数。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -67,7 +75,7 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def flatten(self, root: TreeNode) -> None:
+    def flatten(self, root: Optional[TreeNode]) -> None:
         """
         Do not return anything, modify root in-place instead.
         """
@@ -125,6 +133,91 @@ class Solution {
 }
 ```
 
+### **C++**
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        while (root) {
+            if (root->left) {
+                TreeNode* pre = root->left;
+                while (pre->right) {
+                    pre = pre->right;
+                }
+                pre->right = root->right;
+                root->right = root->left;
+                root->left = nullptr;
+            }
+            root = root->right;
+        }
+    }
+};
+```
+
+### **Go**
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func flatten(root *TreeNode) {
+	for root != nil {
+		if root.Left != nil {
+			pre := root.Left
+			for pre.Right != nil {
+				pre = pre.Right
+			}
+			pre.Right = root.Right
+			root.Right = root.Left
+			root.Left = nil
+		}
+		root = root.Right
+	}
+}
+```
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func flatten(root *TreeNode) {
+	for root != nil {
+		left, right := root.Left, root.Right
+		root.Left = nil
+		if left != nil {
+			root.Right = left
+			for left.Right != nil {
+				left = left.Right
+			}
+			left.Right = right
+		}
+		root = root.Right
+	}
+}
+```
+
 ### **TypeScript**
 
 ```ts
@@ -161,35 +254,33 @@ function flatten(root: TreeNode | null): void {
 }
 ```
 
-### **C++**
+### **JavaScript**
 
-```cpp
+```js
 /**
  * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
  */
-class Solution {
-public:
-    void flatten(TreeNode* root) {
-        while (root) {
-            if (root->left) {
-                TreeNode *pre = root->left;
-                while (pre->right) {
-                    pre = pre->right;
-                }
-                pre->right = root->right;
-                root->right = root->left;
-                root->left = nullptr;
+/**
+ * @param {TreeNode} root
+ * @return {void} Do not return anything, modify root in-place instead.
+ */
+var flatten = function (root) {
+    while (root) {
+        if (root.left) {
+            let pre = root.left;
+            while (pre.right) {
+                pre = pre.right;
             }
-            root = root->right;
+            pre.right = root.right;
+            root.right = root.left;
+            root.left = null;
         }
+        root = root.right;
     }
 };
 ```

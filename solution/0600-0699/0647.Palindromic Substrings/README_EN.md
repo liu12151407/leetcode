@@ -4,51 +4,54 @@
 
 ## Description
 
-<p>Given a string, your task is to count how many palindromic substrings in this string.</p>
+<p>Given a string <code>s</code>, return <em>the number of <strong>palindromic substrings</strong> in it</em>.</p>
 
-<p>The substrings with different start indexes or end indexes are counted as different substrings even they consist of same characters.</p>
+<p>A string is a <strong>palindrome</strong> when it reads the same backward as forward.</p>
 
-<p><b>Example 1:</b></p>
+<p>A <strong>substring</strong> is a contiguous sequence of characters within the string.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
+<strong>Input:</strong> s = &quot;abc&quot;
+<strong>Output:</strong> 3
+<strong>Explanation:</strong> Three palindromic strings: &quot;a&quot;, &quot;b&quot;, &quot;c&quot;.
+</pre>
 
-<b>Input:</b> &quot;abc&quot;
+<p><strong class="example">Example 2:</strong></p>
 
-<b>Output:</b> 3
-
-<b>Explanation:</b> Three palindromic strings: &quot;a&quot;, &quot;b&quot;, &quot;c&quot;.
-
+<pre>
+<strong>Input:</strong> s = &quot;aaa&quot;
+<strong>Output:</strong> 6
+<strong>Explanation:</strong> Six palindromic strings: &quot;a&quot;, &quot;a&quot;, &quot;a&quot;, &quot;aa&quot;, &quot;aa&quot;, &quot;aaa&quot;.
 </pre>
 
 <p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
 
-<p><b>Example 2:</b></p>
-
-<pre>
-
-<b>Input:</b> &quot;aaa&quot;
-
-<b>Output:</b> 6
-
-<b>Explanation:</b> Six palindromic strings: &quot;a&quot;, &quot;a&quot;, &quot;a&quot;, &quot;aa&quot;, &quot;aa&quot;, &quot;aaa&quot;.
-
-</pre>
-
-<p>&nbsp;</p>
-
-<p><b>Note:</b></p>
-
-<ol>
-	<li>The input string length won&#39;t exceed 1000.</li>
-</ol>
-
-<p>&nbsp;</p>
+<ul>
+	<li><code>1 &lt;= s.length &lt;= 1000</code></li>
+	<li><code>s</code> consists of lowercase English letters.</li>
+</ul>
 
 ## Solutions
 
 <!-- tabs:start -->
 
 ### **Python3**
+
+```python
+class Solution:
+    def countSubstrings(self, s: str) -> int:
+        ans, n = 0, len(s)
+        for k in range(n * 2 - 1):
+            i, j = k // 2, (k + 1) // 2
+            while ~i and j < n and s[i] == s[j]:
+                ans += 1
+                i, j = i - 1, j + 1
+        return ans
+```
 
 ```python
 class Solution:
@@ -70,6 +73,24 @@ class Solution:
 ```
 
 ### **Java**
+
+```java
+class Solution {
+    public int countSubstrings(String s) {
+        int ans = 0;
+        int n = s.length();
+        for (int k = 0; k < n * 2 - 1; ++k) {
+            int i = k / 2, j = (k + 1) / 2;
+            while (i >= 0 && j < n && s.charAt(i) == s.charAt(j)) {
+                ++ans;
+                --i;
+                ++j;
+            }
+        }
+        return ans;
+    }
+}
+```
 
 ```java
 class Solution {
@@ -97,6 +118,66 @@ class Solution {
         return ans;
     }
 }
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int countSubstrings(string s) {
+        int ans = 0;
+        int n = s.size();
+        for (int k = 0; k < n * 2 - 1; ++k) {
+            int i = k / 2, j = (k + 1) / 2;
+            while (~i && j < n && s[i] == s[j]) {
+                ++ans;
+                --i;
+                ++j;
+            }
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func countSubstrings(s string) int {
+	ans, n := 0, len(s)
+	for k := 0; k < n*2-1; k++ {
+		i, j := k/2, (k+1)/2
+		for i >= 0 && j < n && s[i] == s[j] {
+			ans++
+			i, j = i-1, j+1
+		}
+	}
+	return ans
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var countSubstrings = function (s) {
+    let ans = 0;
+    const n = s.length;
+    for (let k = 0; k < n * 2 - 1; ++k) {
+        let i = k >> 1;
+        let j = (k + 1) >> 1;
+        while (~i && j < n && s[i] == s[j]) {
+            ++ans;
+            --i;
+            ++j;
+        }
+    }
+    return ans;
+};
 ```
 
 ### **...**

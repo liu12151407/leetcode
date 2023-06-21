@@ -1,4 +1,4 @@
-# [372. 超级次方](https://leetcode-cn.com/problems/super-pow)
+# [372. 超级次方](https://leetcode.cn/problems/super-pow)
 
 [English Version](/solution/0300-0399/0372.Super%20Pow/README_EN.md)
 
@@ -108,11 +108,11 @@ class Solution {
 ```cpp
 class Solution {
     const int MOD = 1337;
+
 public:
     int superPow(int a, vector<int>& b) {
         int ans = 1;
-        for (int i = b.size() - 1; i >= 0; --i)
-        {
+        for (int i = b.size() - 1; i >= 0; --i) {
             ans = (long) ans * quickPowAndMod(a, b[i]) % MOD;
             a = quickPowAndMod(a, 10);
         }
@@ -121,10 +121,8 @@ public:
 
     int quickPowAndMod(int a, int b) {
         int ans = 1;
-        while (b)
-        {
-            if (b & 1)
-            {
+        while (b) {
+            if (b & 1) {
                 ans = (ans * (a % MOD)) % MOD;
             }
             b >>= 1;

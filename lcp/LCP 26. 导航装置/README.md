@@ -1,4 +1,4 @@
-# [LCP 26. 导航装置](https://leetcode-cn.com/problems/hSRGyL)
+# [LCP 26. 导航装置](https://leetcode.cn/problems/hSRGyL)
 
 ## 题目描述
 
@@ -22,7 +22,7 @@
 
 >
 
-> ![image.png](https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcp/LCP%2026.%20导航装置/images/1597996812-tqrgwu-image.png)
+> ![image.png](https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcp/LCP%2026.%20导航装置/images/1597996812-tqrgwu-image.png)
 
 **示例 2：**
 
@@ -38,13 +38,13 @@
 
 >
 
-> ![image.png](https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcp/LCP%2026.%20导航装置/images/1597996826-EUQRyz-image.png)
+> ![image.png](https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcp/LCP%2026.%20导航装置/images/1597996826-EUQRyz-image.png)
 
 **提示：**
 
-- `2 <= N <= 50000`
+-   `2 <= N <= 50000`
 
-- 二叉树的非空节点值为 `1~N` 的一个排列。
+-   二叉树的非空节点值为 `1~N` 的一个排列。
 
 ## 解法
 

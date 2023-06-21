@@ -1,4 +1,4 @@
-# [剑指 Offer II 001. 整数除法](https://leetcode-cn.com/problems/xoh6Oh)
+# [剑指 Offer II 001. 整数除法](https://leetcode.cn/problems/xoh6Oh)
 
 ## 题目描述
 
@@ -29,7 +29,7 @@
 
 <pre>
 <strong>输入：</strong>a = 7, b = -3
-<strong>输出：</strong><span style="white-space: pre-wrap;">0</span>
+<strong>输出：</strong><span style="white-space: pre-wrap;">-2</span>
 <strong><span style="white-space: pre-wrap;">解释：</span></strong>7/-3 = truncate(-2.33333..) = -2</pre>
 
 <p><strong>示例 3：</strong></p>
@@ -55,7 +55,7 @@
 
 <p>&nbsp;</p>
 
-<p>注意：本题与主站 29&nbsp;题相同：<a href="https://leetcode-cn.com/problems/divide-two-integers/">https://leetcode-cn.com/problems/divide-two-integers/</a></p>
+<p>注意：本题与主站 29&nbsp;题相同：<a href="https://leetcode.cn/problems/divide-two-integers/">https://leetcode.cn/problems/divide-two-integers/</a></p>
 
 <p>&nbsp;</p>
 

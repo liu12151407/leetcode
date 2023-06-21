@@ -1,4 +1,4 @@
-# [2080. 区间内查询数字的频率](https://leetcode-cn.com/problems/range-frequency-queries)
+# [2080. 区间内查询数字的频率](https://leetcode.cn/problems/range-frequency-queries)
 
 [English Version](/solution/2000-2099/2080.Range%20Frequency%20Queries/README_EN.md)
 
@@ -58,18 +58,16 @@ rangeFreqQuery.query(0, 11, 33); // 返回 2 。33 在整个子数组中出现 2
 
 ```python
 class RangeFreqQuery:
-
     def __init__(self, arr: List[int]):
         self.mp = defaultdict(list)
         for i, x in enumerate(arr):
             self.mp[x].append(i)
 
-
     def query(self, left: int, right: int, value: int) -> int:
         if value not in self.mp:
             return 0
         arr = self.mp[value]
-        l, r = bisect.bisect_right(arr, left - 1), bisect.bisect_right(arr, right)
+        l, r = bisect_right(arr, left - 1), bisect_right(arr, right)
         return r - l
 
 

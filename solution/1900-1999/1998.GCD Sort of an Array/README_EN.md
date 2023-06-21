@@ -13,7 +13,7 @@
 <p>Return <code>true</code> <em>if it is possible to sort </em><code>nums</code><em> in <strong>non-decreasing</strong> order using the above swap method, or </em><code>false</code><em> otherwise.</em></p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [7,21,3]
@@ -23,7 +23,7 @@
 - Swap 21 and 3 because gcd(21,3) = 3. nums = [<u><strong>3</strong></u>,7,<u><strong>21</strong></u>]
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [5,2,6,2]
@@ -31,7 +31,7 @@
 <strong>Explanation:</strong> It is impossible to sort the array because 5 cannot be swapped with any other element.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [10,5,9,3,15]
@@ -61,7 +61,7 @@ Union find.
 ```python
 class Solution:
     def gcdSort(self, nums: List[int]) -> bool:
-        n = 10 ** 5 + 10
+        n = 10**5 + 10
         p = list(range(n))
         f = defaultdict(list)
         mx = max(nums)
@@ -151,19 +151,16 @@ public:
         int mx = 0;
         for (auto num : nums) mx = max(mx, num);
         unordered_map<int, vector<int>> f;
-        for (int i = 2; i <= mx; ++i)
-        {
+        for (int i = 2; i <= mx; ++i) {
             if (!f[i].empty()) continue;
             for (int j = i; j <= mx; j += i) f[j].push_back(i);
         }
-        for (int i : nums)
-        {
+        for (int i : nums) {
             for (int j : f[i]) p[find(i)] = find(j);
         }
         vector<int> s = nums;
         sort(s.begin(), s.end());
-        for (int i = 0; i < nums.size(); ++i)
-        {
+        for (int i = 0; i < nums.size(); ++i) {
             if (s[i] != nums[i] && find(s[i]) != find(nums[i])) return false;
         }
         return true;

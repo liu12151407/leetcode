@@ -19,7 +19,7 @@
 <p>Return <em>the <strong>minimum</strong> number of swaps to make </em><code>s</code> <em><strong>balanced</strong></em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;][][&quot;
@@ -28,18 +28,18 @@
 The resulting string is &quot;[[]]&quot;.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;]]][[[&quot;
 <strong>Output:</strong> 2
 <strong>Explanation:</strong> You can do the following to make the string balanced:
-- Swap index 0 with index 4. s = &quot;[]][[]&quot;.
+- Swap index 0 with index 4. s = &quot;[]][][&quot;.
 - Swap index 1 with index 5. s = &quot;[[][]]&quot;.
 The resulting string is &quot;[[][]]&quot;.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;[]&quot;
@@ -65,13 +65,67 @@ The resulting string is &quot;[[][]]&quot;.
 ### **Python3**
 
 ```python
-
+class Solution:
+    def minSwaps(self, s: str) -> int:
+        ans = 0
+        for c in s:
+            if c == '[':
+                ans += 1
+            elif ans:
+                ans -= 1
+        return (ans + 1) >> 1
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int minSwaps(String s) {
+        int ans = 0;
+        for (char c : s.toCharArray()) {
+            if (c == '[') {
+                ++ans;
+            } else if (ans > 0) {
+                --ans;
+            }
+        }
+        return (ans + 1) >> 1;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int minSwaps(string s) {
+        int ans = 0;
+        for (char& c : s) {
+            if (c == '[')
+                ++ans;
+            else if (ans)
+                --ans;
+        }
+        return (ans + 1) >> 1;
+    }
+};
+```
+
+### **Go**
+
+```go
+func minSwaps(s string) int {
+	ans := 0
+	for _, c := range s {
+		if c == '[' {
+			ans++
+		} else if ans > 0 {
+			ans--
+		}
+	}
+	return (ans + 1) >> 1
+}
 ```
 
 ### **...**

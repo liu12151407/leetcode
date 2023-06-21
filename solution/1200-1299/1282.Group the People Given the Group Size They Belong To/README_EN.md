@@ -13,7 +13,7 @@
 <p>Each person should&nbsp;appear in&nbsp;<strong>exactly one group</strong>,&nbsp;and every person must be in a group. If there are&nbsp;multiple answers, <strong>return any of them</strong>. It is <strong>guaranteed</strong> that there will be <strong>at least one</strong> valid solution for the given input.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> groupSizes = [3,3,3,3,3,1,3]
@@ -25,7 +25,7 @@ The third group is [3,4,6]. The size is 3, and groupSizes[3] = groupSizes[4] = g
 Other possible solutions are [[2,1,6],[5],[0,4,3]] and [[5],[0,6,2],[4,3,1]].
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> groupSizes = [2,1,3,3,3,2]
@@ -50,15 +50,10 @@ Other possible solutions are [[2,1,6],[5],[0,4,3]] and [[5],[0,6,2],[4,3,1]].
 ```python
 class Solution:
     def groupThePeople(self, groupSizes: List[int]) -> List[List[int]]:
-        mp = defaultdict(list)
-        for i, x in enumerate(groupSizes):
-            mp[x].append(i)
-        res = []
-        for x, indexes in mp.items():
-            l = len(indexes)
-            for i in range(0, l, x):
-                res.append(indexes[i: i + x])
-        return res
+        g = defaultdict(list)
+        for i, v in enumerate(groupSizes):
+            g[v].append(i)
+        return [v[j : j + i] for i, v in g.items() for j in range(0, len(v), i)]
 ```
 
 ### **Java**
@@ -66,19 +61,20 @@ class Solution:
 ```java
 class Solution {
     public List<List<Integer>> groupThePeople(int[] groupSizes) {
-        Map<Integer, List<Integer>> mp = new HashMap<>();
-        for (int i = 0; i < groupSizes.length; ++i) {
-            mp.computeIfAbsent(groupSizes[i], k -> new ArrayList<>()).add(i);
+        int n = groupSizes.length;
+        List<Integer>[] g = new List[n + 1];
+        Arrays.setAll(g, k -> new ArrayList<>());
+        for (int i = 0; i < n; ++i) {
+            g[groupSizes[i]].add(i);
         }
-        List<List<Integer>> res = new ArrayList<>();
-        for (Map.Entry<Integer, List<Integer>> entry : mp.entrySet()) {
-            int x = entry.getKey();
-            List<Integer> indexes = entry.getValue();
-            for (int i = 0; i < indexes.size(); i += x) {
-                res.add(new ArrayList<>(indexes.subList(i, i + x)));
+        List<List<Integer>> ans = new ArrayList<>();
+        for (int i = 0; i < g.length; ++i) {
+            List<Integer> v = g[i];
+            for (int j = 0; j < v.size(); j += i) {
+                ans.add(v.subList(j, j + i));
             }
         }
-        return res;
+        return ans;
     }
 }
 ```
@@ -89,20 +85,17 @@ class Solution {
 class Solution {
 public:
     vector<vector<int>> groupThePeople(vector<int>& groupSizes) {
-        unordered_map<int, vector<int>> mp;
-        for (int i = 0; i < groupSizes.size(); ++i) mp[groupSizes[i]].push_back(i);
-        vector<vector<int>> res;
-        for (auto& entry : mp)
-        {
-            int x = entry.first;
-            auto indexes = entry.second;
-            for (int i = 0; i < indexes.size(); i += x)
-            {
-                vector<int> t(indexes.begin() + i, indexes.begin() + i + x);
-                res.push_back(t);
+        int n = groupSizes.size();
+        vector<vector<int>> g(n + 1);
+        for (int i = 0; i < n; ++i) g[groupSizes[i]].push_back(i);
+        vector<vector<int>> ans;
+        for (int i = 0; i < g.size(); ++i) {
+            for (int j = 0; j < g[i].size(); j += i) {
+                vector<int> t(g[i].begin() + j, g[i].begin() + j + i);
+                ans.push_back(t);
             }
         }
-        return res;
+        return ans;
     }
 };
 ```
@@ -111,17 +104,60 @@ public:
 
 ```go
 func groupThePeople(groupSizes []int) [][]int {
-	mp := make(map[int][]int)
-	for i, x := range groupSizes {
-		mp[x] = append(mp[x], i)
+	n := len(groupSizes)
+	g := make([][]int, n+1)
+	for i, v := range groupSizes {
+		g[v] = append(g[v], i)
 	}
-	var res [][]int
-	for x, indexes := range mp {
-		for i := 0; i < len(indexes); i += x {
-			res = append(res, indexes[i:i+x])
+	ans := [][]int{}
+	for i, v := range g {
+		for j := 0; j < len(v); j += i {
+			ans = append(ans, v[j:j+i])
 		}
 	}
-	return res
+	return ans
+}
+```
+
+### **TypeScript**
+
+```ts
+function groupThePeople(groupSizes: number[]): number[][] {
+    const res = [];
+    const map = new Map<number, number[]>();
+    const n = groupSizes.length;
+    for (let i = 0; i < n; i++) {
+        const size = groupSizes[i];
+        map.set(size, [...(map.get(size) ?? []), i]);
+        const arr = map.get(size);
+        if (arr.length === size) {
+            res.push(arr);
+            map.set(size, []);
+        }
+    }
+    return res;
+}
+```
+
+### **Rust**
+
+```rust
+use std::collections::HashMap;
+impl Solution {
+    pub fn group_the_people(group_sizes: Vec<i32>) -> Vec<Vec<i32>> {
+        let mut res = vec![];
+        let mut map = HashMap::new();
+        for i in 0..group_sizes.len() {
+            let size = group_sizes[i] as usize;
+            let arr = map.entry(size).or_insert(vec![]);
+            arr.push(i as i32);
+            if arr.len() == size {
+                res.push(arr.clone());
+                arr.clear();
+            }
+        }
+        res
+    }
 }
 ```
 

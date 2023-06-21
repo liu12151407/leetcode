@@ -1,4 +1,4 @@
-# [121. 买卖股票的最佳时机](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock)
+# [121. 买卖股票的最佳时机](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock)
 
 [English Version](/solution/0100-0199/0121.Best%20Time%20to%20Buy%20and%20Sell%20Stock/README_EN.md)
 
@@ -44,6 +44,16 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：枚举 + 维护前缀最小值**
+
+我们可以枚举数组 $nums$ 每个元素作为卖出价格，那么我们需要在前面找到一个最小值作为买入价格，这样才能使得利润最大化。
+
+因此，我们用一个变量 $mi$ 维护数组 $nums$ 的前缀最小值。接下来遍历数组 $nums$，对于每个元素 $v$，计算其与前面元素的最小值 $mi$ 的差值，更新答案为差值的最大值。然后更新 $mi = min(mi, v)$。继续遍历数组 $nums$，直到遍历结束。
+
+最后返回答案即可。
+
+时间复杂度 $O(n)$，其中 $n$ 是数组 $nums$ 的长度。空间复杂度 $O(1)$。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -53,11 +63,11 @@
 ```python
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
-        res, mi = 0, prices[0]
-        for price in prices[1:]:
-            res = max(res, price - mi)
-            mi = min(mi, price)
-        return res
+        ans, mi = 0, inf
+        for v in prices:
+            ans = max(ans, v - mi)
+            mi = min(mi, v)
+        return ans
 ```
 
 ### **Java**
@@ -67,12 +77,12 @@ class Solution:
 ```java
 class Solution {
     public int maxProfit(int[] prices) {
-        int res = 0, mi = prices[0];
-        for (int i = 1; i < prices.length; ++i) {
-            res = Math.max(res, prices[i] - mi);
-            mi = Math.min(mi, prices[i]);
+        int ans = 0, mi = prices[0];
+        for (int v : prices) {
+            ans = Math.max(ans, v - mi);
+            mi = Math.min(mi, v);
         }
-        return res;
+        return ans;
     }
 }
 ```
@@ -83,12 +93,12 @@ class Solution {
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
-        int res = 0, mi = prices[0];
-        for (int i = 1; i < prices.size(); ++i) {
-            res = max(res, prices[i] - mi);
-            mi = min(mi, prices[i]);
+        int ans = 0, mi = prices[0];
+        for (int& v : prices) {
+            ans = max(ans, v - mi);
+            mi = min(mi, v);
         }
-        return res;
+        return ans;
     }
 };
 ```
@@ -96,13 +106,13 @@ public:
 ### **Go**
 
 ```go
-func maxProfit(prices []int) int {
-	res, mi := 0, prices[0]
-	for i := 1; i < len(prices); i++ {
-		res = max(res, prices[i]-mi)
-		mi = min(min, prices[i])
+func maxProfit(prices []int) (ans int) {
+	mi := prices[0]
+	for _, v := range prices {
+		ans = max(ans, v-mi)
+		mi = min(mi, v)
 	}
-	return res
+	return
 }
 
 func max(a, b int) int {
@@ -128,13 +138,13 @@ func min(a, b int) int {
  * @return {number}
  */
 var maxProfit = function (prices) {
-    let res = 0;
+    let ans = 0;
     let mi = prices[0];
-    for (let i = 1; i < prices.length; ++i) {
-        res = Math.max(res, prices[i] - mi);
-        mi = Math.min(mi, prices[i]);
+    for (const v of prices) {
+        ans = Math.max(ans, v - mi);
+        mi = Math.min(mi, v);
     }
-    return res;
+    return ans;
 };
 ```
 
@@ -143,13 +153,63 @@ var maxProfit = function (prices) {
 ```cs
 public class Solution {
     public int MaxProfit(int[] prices) {
-        int res = 0, mi = prices[0];
-        for (int i = 1; i < prices.Length; ++i)
-        {
-            res = Math.Max(res, prices[i] - mi);
-            mi = Math.Min(mi, prices[i]);
+        int ans = 0, mi = prices[0];
+        foreach (int v in prices) {
+            ans = Math.Max(ans, v - mi);
+            mi = Math.Min(mi, v);
         }
-        return res;
+        return ans;
+    }
+}
+```
+
+### **TypeScript**
+
+```ts
+function maxProfit(prices: number[]): number {
+    let ans = 0;
+    let mi = prices[0];
+    for (const v of prices) {
+        ans = Math.max(ans, v - mi);
+        mi = Math.min(mi, v);
+    }
+    return ans;
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn max_profit(prices: Vec<i32>) -> i32 {
+        let mut res = 0;
+        let mut min = i32::MAX;
+        for price in prices {
+            res = res.max(price - min);
+            min = min.min(price);
+        }
+        res
+    }
+}
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param Integer[] $prices
+     * @return Integer
+     */
+    function maxProfit($prices) {
+        $win = 0;
+        $minPrice = $prices[0];
+        $len = count($prices);
+        for ($i = 1; $i < $len; $i++) {
+            $minPrice = min($minPrice, $prices[$i]);
+            $win = max($win, $prices[$i] - $minPrice);
+        }
+        return $win;
     }
 }
 ```

@@ -1,4 +1,4 @@
-# [1179. 重新格式化部门表](https://leetcode-cn.com/problems/reformat-department-table)
+# [1179. 重新格式化部门表](https://leetcode.cn/problems/reformat-department-table)
 
 [English Version](/solution/1100-1199/1179.Reformat%20Department%20Table/README_EN.md)
 
@@ -57,26 +57,74 @@ Department 表：
 
 <!-- tabs:start -->
 
-### **Python3**
+### **SQL**
 
-<!-- 这里可写当前语言的特殊实现逻辑 -->
-
-```python
-
-```
-
-### **Java**
-
-<!-- 这里可写当前语言的特殊实现逻辑 -->
-
-```java
-
-```
-
-### **...**
-
-```
-
+```sql
+# Write your MySQL query statement below
+SELECT
+    id,
+    sum(
+        CASE month
+            WHEN 'Jan' THEN revenue
+        END
+    ) AS Jan_Revenue,
+    sum(
+        CASE month
+            WHEN 'Feb' THEN revenue
+        END
+    ) AS Feb_Revenue,
+    sum(
+        CASE month
+            WHEN 'Mar' THEN revenue
+        END
+    ) AS Mar_Revenue,
+    sum(
+        CASE month
+            WHEN 'Apr' THEN revenue
+        END
+    ) AS Apr_Revenue,
+    sum(
+        CASE month
+            WHEN 'May' THEN revenue
+        END
+    ) AS May_Revenue,
+    sum(
+        CASE month
+            WHEN 'Jun' THEN revenue
+        END
+    ) AS Jun_Revenue,
+    sum(
+        CASE month
+            WHEN 'Jul' THEN revenue
+        END
+    ) AS Jul_Revenue,
+    sum(
+        CASE month
+            WHEN 'Aug' THEN revenue
+        END
+    ) AS Aug_Revenue,
+    sum(
+        CASE month
+            WHEN 'Sep' THEN revenue
+        END
+    ) AS Sep_Revenue,
+    sum(
+        CASE month
+            WHEN 'Oct' THEN revenue
+        END
+    ) AS Oct_Revenue,
+    sum(
+        CASE month
+            WHEN 'Nov' THEN revenue
+        END
+    ) AS Nov_Revenue,
+    sum(
+        CASE month
+            WHEN 'Dec' THEN revenue
+        END
+    ) AS Dec_Revenue
+FROM Department
+GROUP BY id;
 ```
 
 <!-- tabs:end -->

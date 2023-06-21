@@ -1,4 +1,4 @@
-# [2014. 重复 K 次的最长子序列](https://leetcode-cn.com/problems/longest-subsequence-repeated-k-times)
+# [2014. 重复 K 次的最长子序列](https://leetcode.cn/problems/longest-subsequence-repeated-k-times)
 
 [English Version](/solution/2000-2099/2014.Longest%20Subsequence%20Repeated%20k%20Times/README_EN.md)
 
@@ -22,7 +22,7 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><img alt="example 1" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2014.Longest%20Subsequence%20Repeated%20k%20Times/images/longest-subsequence-repeat-k-times.png" style="width: 457px; height: 99px;" /></p>
+<p><img alt="example 1" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2014.Longest%20Subsequence%20Repeated%20k%20Times/images/longest-subsequence-repeat-k-times.png" style="width: 457px; height: 99px;" /></p>
 
 <pre>
 <strong>输入：</strong>s = "letsleetcode", k = 2
@@ -45,14 +45,6 @@
 <strong>输入：</strong>s = "ab", k = 2
 <strong>输出：</strong>""
 <strong>解释：</strong>不存在重复 2 次的最长子序列。返回空字符串。
-</pre>
-
-<p><strong>示例 4：</strong></p>
-
-<pre>
-<strong>输入：</strong>s = "bbabbabbbbabaababab", k = 3
-<strong>输出：</strong>"bbbb"
-<strong>解释：</strong>在 "<strong><em>bb</em></strong>a<em><strong>bb</strong></em>a<em><strong>bbbb</strong></em>a<em><strong>b</strong></em>aa<em><strong>b</strong></em>a<em><strong>b</strong></em>a<em><strong>b</strong></em>" 中重复 3 次的最长子序列是 "bbbb" 。
 </pre>
 
 <p>&nbsp;</p>

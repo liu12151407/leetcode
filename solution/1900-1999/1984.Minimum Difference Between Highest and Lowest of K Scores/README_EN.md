@@ -11,7 +11,7 @@
 <p>Return <em>the <strong>minimum</strong> possible difference</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [90], k = 1
@@ -21,7 +21,7 @@
 The minimum possible difference is 0.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [9,4,1,7], k = 2
@@ -52,13 +52,8 @@ The minimum possible difference is 2.</pre>
 ```python
 class Solution:
     def minimumDifference(self, nums: List[int], k: int) -> int:
-        if k == 1:
-            return 0
         nums.sort()
-        ans = maxsize
-        for i in range(len(nums) - k + 1):
-            ans = min(ans, nums[i + k - 1] - nums[i])
-        return ans
+        return min(nums[i + k - 1] - nums[i] for i in range(len(nums) - k + 1))
 ```
 
 ### **Java**
@@ -66,15 +61,77 @@ class Solution:
 ```java
 class Solution {
     public int minimumDifference(int[] nums, int k) {
-        if (k == 1) {
-            return 0;
-        }
         Arrays.sort(nums);
-        int min = Integer.MAX_VALUE;
-        for (int i = 0; i < nums.length - k + 1; i++) {
-            min = Math.min((nums[i + k - 1] - nums[i]), min);
+        int ans = 100000;
+        for (int i = 0; i < nums.length - k + 1; ++i) {
+            ans = Math.min(ans, nums[i + k - 1] - nums[i]);
         }
-        return min;
+        return ans;
+    }
+}
+```
+
+### **TypeScript**
+
+```ts
+function minimumDifference(nums: number[], k: number): number {
+    nums.sort((a, b) => a - b);
+    const n = nums.length;
+    let ans = nums[n - 1] - nums[0];
+    for (let i = 0; i + k - 1 < n; i++) {
+        ans = Math.min(nums[i + k - 1] - nums[i], ans);
+    }
+    return ans;
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int minimumDifference(vector<int>& nums, int k) {
+        sort(nums.begin(), nums.end());
+        int ans = 1e5;
+        for (int i = 0; i < nums.size() - k + 1; ++i)
+            ans = min(ans, nums[i + k - 1] - nums[i]);
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func minimumDifference(nums []int, k int) int {
+	sort.Ints(nums)
+	ans := 100000
+	for i := 0; i < len(nums)-k+1; i++ {
+		ans = min(ans, nums[i+k-1]-nums[i])
+	}
+	return ans
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn minimum_difference(mut nums: Vec<i32>, k: i32) -> i32 {
+        nums.sort();
+        let k = k as usize;
+        let mut res = i32::MAX;
+        for i in 0..=nums.len() - k {
+            res = res.min(nums[i + k - 1] - nums[i]);
+        }
+        res
     }
 }
 ```

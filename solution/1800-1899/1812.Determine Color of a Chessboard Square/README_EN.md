@@ -6,14 +6,14 @@
 
 <p>You are given <code>coordinates</code>, a string that represents the coordinates of a square of the chessboard. Below is a chessboard for your reference.</p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1800-1899/1812.Determine%20Color%20of%20a%20Chessboard%20Square/images/screenshot-2021-02-20-at-22159-pm.png" style="width: 400px; height: 396px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1800-1899/1812.Determine%20Color%20of%20a%20Chessboard%20Square/images/screenshot-2021-02-20-at-22159-pm.png" style="width: 400px; height: 396px;" /></p>
 
 <p>Return <code>true</code><em> if the square is white, and </em><code>false</code><em> if the square is black</em>.</p>
 
 <p>The coordinate will always represent a valid chessboard square. The coordinate will always have the letter first, and the number second.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> coordinates = &quot;a1&quot;
@@ -21,7 +21,7 @@
 <strong>Explanation:</strong> From the chessboard above, the square with coordinates &quot;a1&quot; is black, so return false.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> coordinates = &quot;h3&quot;
@@ -29,7 +29,7 @@
 <strong>Explanation:</strong> From the chessboard above, the square with coordinates &quot;h3&quot; is white, so return true.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> coordinates = &quot;c7&quot;
@@ -54,9 +54,7 @@
 ```python
 class Solution:
     def squareIsWhite(self, coordinates: str) -> bool:
-        x = ord(coordinates[0]) - ord('a') + 1
-        y = int(coordinates[1])
-        return ((x + y) & 1) == 1
+        return (ord(coordinates[0]) + ord(coordinates[1])) % 2 == 1
 ```
 
 ### **Java**
@@ -64,10 +62,27 @@ class Solution:
 ```java
 class Solution {
     public boolean squareIsWhite(String coordinates) {
-        int x = coordinates.charAt(0) - 'a' + 1;
-        int y = coordinates.charAt(1) - '0';
-        return ((x + y) & 1) == 1;
+        return (coordinates.charAt(0) + coordinates.charAt(1)) % 2 == 1;
     }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool squareIsWhite(string coordinates) {
+        return (coordinates[0] + coordinates[1]) % 2;
+    }
+};
+```
+
+### **Go**
+
+```go
+func squareIsWhite(coordinates string) bool {
+	return (coordinates[0]+coordinates[1])%2 == 1
 }
 ```
 
@@ -79,10 +94,37 @@ class Solution {
  * @return {boolean}
  */
 var squareIsWhite = function (coordinates) {
-    let x = coordinates.charAt(0).charCodeAt() - "a".charCodeAt() + 1;
-    let y = Number(coordinates.charAt(1));
-    return ((x + y) & 1) == 1;
+    const x = coordinates.charAt(0).charCodeAt();
+    const y = coordinates.charAt(1).charCodeAt();
+    return (x + y) % 2 == 1;
 };
+```
+
+### **TypeScript**
+
+```ts
+function squareIsWhite(coordinates: string): boolean {
+    return ((coordinates.charCodeAt(0) + coordinates.charCodeAt(1)) & 1) === 1;
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn square_is_white(coordinates: String) -> bool {
+        let s = coordinates.as_bytes();
+        s[0] + s[1] & 1 == 1
+    }
+}
+```
+
+### **C**
+
+```c
+bool squareIsWhite(char* coordinates) {
+    return (coordinates[0] + coordinates[1]) & 1;
+}
 ```
 
 ### **...**

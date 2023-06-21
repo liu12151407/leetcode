@@ -25,10 +25,16 @@ The state column is an enum of type [&quot;approved&quot;, &quot;declined&quot;]
 
 <p>Write an SQL query to find for each month and country, the number of transactions and their total amount, the number of approved transactions and their total amount.</p>
 
-<p>The query result format is in the following example:</p>
+<p>Return the result table in <strong>any order</strong>.</p>
+
+<p>The query result format is in the following example.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
-<code>Transactions</code> table:
+<strong>Input:</strong> 
+Transactions table:
 +------+---------+----------+--------+------------+
 | id   | country | state    | amount | trans_date |
 +------+---------+----------+--------+------------+
@@ -37,8 +43,7 @@ The state column is an enum of type [&quot;approved&quot;, &quot;declined&quot;]
 | 123  | US      | approved | 2000   | 2019-01-01 |
 | 124  | DE      | approved | 2000   | 2019-01-07 |
 +------+---------+----------+--------+------------+
-
-Result table:
+<strong>Output:</strong> 
 +----------+---------+-------------+----------------+--------------------+-----------------------+
 | month    | country | trans_count | approved_count | trans_total_amount | approved_total_amount |
 +----------+---------+-------------+----------------+--------------------+-----------------------+
@@ -55,7 +60,16 @@ Result table:
 ### **SQL**
 
 ```sql
-
+# Write your MySQL query statement below
+SELECT  DATE_FORMAT(trans_date,'%Y-%m')      AS month
+       ,country
+       ,COUNT(*)                             AS trans_count
+       ,COUNT(IF(state = 'approved',1,NULL)) AS approved_count
+       ,SUM(amount)                          AS trans_total_amount
+       ,SUM(IF(state = 'approved',amount,0)) AS approved_total_amount
+FROM Transactions
+GROUP BY  month
+         ,country
 ```
 
 <!-- tabs:end -->

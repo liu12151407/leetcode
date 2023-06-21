@@ -11,7 +11,7 @@
 <p>The <strong>frequency</strong> of a character in a string is the number of times it appears in the string. For example, in the string <code>&quot;aab&quot;</code>, the <strong>frequency</strong> of <code>&#39;a&#39;</code> is <code>2</code>, while the <strong>frequency</strong> of <code>&#39;b&#39;</code> is <code>1</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;aab&quot;
@@ -19,7 +19,7 @@
 <strong>Explanation:</strong> <code>s</code> is already good.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;aaabbbcc&quot;
@@ -27,7 +27,7 @@
 <strong>Explanation:</strong> You can delete two &#39;b&#39;s resulting in the good string &quot;aaabcc&quot;.
 Another way it to delete one &#39;b&#39; and one &#39;c&#39; resulting in the good string &quot;aaabbc&quot;.</pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;ceabaacb&quot;
@@ -53,9 +53,24 @@ Note that we only care about characters that are still in the string at the end 
 ```python
 class Solution:
     def minDeletions(self, s: str) -> int:
-        counter = Counter(s)
-        vals = [v for v in counter.values()]
-        vals.sort(reverse=True)
+        cnt = Counter(s)
+        ans, pre = 0, inf
+        for v in sorted(cnt.values(), reverse=True):
+            if pre == 0:
+                ans += v
+            elif v >= pre:
+                ans += v - pre + 1
+                pre -= 1
+            else:
+                pre = v
+        return ans
+```
+
+```python
+class Solution:
+    def minDeletions(self, s: str) -> int:
+        cnt = Counter(s)
+        vals = sorted(cnt.values(), reverse=True)
         ans = 0
         for i in range(1, len(vals)):
             while vals[i] >= vals[i - 1] and vals[i] > 0:
@@ -69,20 +84,130 @@ class Solution:
 ```java
 class Solution {
     public int minDeletions(String s) {
-        int[] counter = new int[26];
-        for (char c : s.toCharArray()) {
-            ++counter[c - 'a'];
+        int[] cnt = new int[26];
+        for (int i = 0; i < s.length(); ++i) {
+            ++cnt[s.charAt(i) - 'a'];
         }
-        Arrays.sort(counter);
+        Arrays.sort(cnt);
         int ans = 0;
         for (int i = 24; i >= 0; --i) {
-            while (counter[i] >= counter[i + 1] && counter[i] > 0) {
-                --counter[i];
+            while (cnt[i] >= cnt[i + 1] && cnt[i] > 0) {
+                --cnt[i];
                 ++ans;
             }
         }
         return ans;
     }
+}
+```
+
+```java
+class Solution {
+    public int minDeletions(String s) {
+        int[] cnt = new int[26];
+        for (int i = 0; i < s.length(); ++i) {
+            ++cnt[s.charAt(i) - 'a'];
+        }
+        Arrays.sort(cnt);
+        int ans = 0, pre = 1 << 30;
+        for (int i = 25; i >= 0; --i) {
+            int v = cnt[i];
+            if (pre == 0) {
+                ans += v;
+            } else if (v >= pre) {
+                ans += v - pre + 1;
+                --pre;
+            } else {
+                pre = v;
+            }
+        }
+        return ans;
+    }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int minDeletions(string s) {
+        vector<int> cnt(26);
+        for (char& c : s) ++cnt[c - 'a'];
+        sort(cnt.rbegin(), cnt.rend());
+        int ans = 0;
+        for (int i = 1; i < 26; ++i) {
+            while (cnt[i] >= cnt[i - 1] && cnt[i] > 0) {
+                --cnt[i];
+                ++ans;
+            }
+        }
+        return ans;
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    int minDeletions(string s) {
+        vector<int> cnt(26);
+        for (char& c : s) ++cnt[c - 'a'];
+        sort(cnt.rbegin(), cnt.rend());
+        int ans = 0, pre = 1 << 30;
+        for (int& v : cnt) {
+            if (pre == 0) {
+                ans += v;
+            } else if (v >= pre) {
+                ans += v - pre + 1;
+                --pre;
+            } else {
+                pre = v;
+            }
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func minDeletions(s string) (ans int) {
+	cnt := make([]int, 26)
+	for _, c := range s {
+		cnt[c-'a']++
+	}
+	sort.Sort(sort.Reverse(sort.IntSlice(cnt)))
+	for i := 1; i < 26; i++ {
+		for cnt[i] >= cnt[i-1] && cnt[i] > 0 {
+			cnt[i]--
+			ans++
+		}
+	}
+	return
+}
+```
+
+```go
+func minDeletions(s string) (ans int) {
+	cnt := make([]int, 26)
+	for _, c := range s {
+		cnt[c-'a']++
+	}
+	sort.Sort(sort.Reverse(sort.IntSlice(cnt)))
+	pre := 1 << 30
+	for _, v := range cnt {
+		if pre == 0 {
+			ans += v
+		} else if v >= pre {
+			ans += v - pre + 1
+			pre--
+		} else {
+			pre = v
+		}
+	}
+	return
 }
 ```
 

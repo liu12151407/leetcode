@@ -1,4 +1,4 @@
-# [508. 出现次数最多的子树元素和](https://leetcode-cn.com/problems/most-frequent-subtree-sum)
+# [508. 出现次数最多的子树元素和](https://leetcode.cn/problems/most-frequent-subtree-sum)
 
 [English Version](/solution/0500-0599/0508.Most%20Frequent%20Subtree%20Sum/README_EN.md)
 
@@ -6,35 +6,38 @@
 
 <!-- 这里写题目描述 -->
 
-<p>给你一个二叉树的根结点，请你找出出现次数最多的子树元素和。一个结点的「子树元素和」定义为以该结点为根的二叉树上所有结点的元素之和（包括结点本身）。</p>
+<p>给你一个二叉树的根结点&nbsp;<code>root</code>&nbsp;，请返回出现次数最多的子树元素和。如果有多个元素出现的次数相同，返回所有出现次数最多的子树元素和（不限顺序）。</p>
 
-<p>你需要返回出现次数最多的子树元素和。如果有多个元素出现的次数相同，返回所有出现次数最多的子树元素和（不限顺序）。</p>
-
-<p>&nbsp;</p>
-
-<p><strong>示例 1：</strong><br>
-输入:</p>
-
-<pre>  5
- /  \
-2   -3
-</pre>
-
-<p>返回&nbsp;[2, -3, 4]，所有的值均只出现一次，以任意顺序返回所有值。</p>
-
-<p><strong>示例&nbsp;2：</strong><br>
-输入：</p>
-
-<pre>  5
- /  \
-2   -5
-</pre>
-
-<p>返回&nbsp;[2]，只有 2 出现两次，-5 只出现 1 次。</p>
+<p>一个结点的&nbsp;<strong>「子树元素和」</strong>&nbsp;定义为以该结点为根的二叉树上所有结点的元素之和（包括结点本身）。</p>
 
 <p>&nbsp;</p>
 
-<p><strong>提示：</strong>&nbsp;假设任意子树元素和均可以用 32 位有符号整数表示。</p>
+<p><strong>示例 1：</strong></p>
+
+<p><img src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0508.Most%20Frequent%20Subtree%20Sum/images/freq1-tree.jpg" /></p>
+
+<pre>
+<strong>输入:</strong> root = [5,2,-3]
+<strong>输出:</strong> [2,-3,4]
+</pre>
+
+<p><strong>示例&nbsp;2：</strong></p>
+
+<p><img src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0508.Most%20Frequent%20Subtree%20Sum/images/freq2-tree.jpg" /></p>
+
+<pre>
+<strong>输入:</strong> root = [5,2,-5]
+<b>输出:</b> [2]
+</pre>
+
+<p>&nbsp;</p>
+
+<p><strong>提示:</strong></p>
+
+<ul>
+	<li>节点数在&nbsp;<code>[1, 10<sup>4</sup>]</code>&nbsp;范围内</li>
+	<li><code>-10<sup>5</sup>&nbsp;&lt;= Node.val &lt;= 10<sup>5</sup></code></li>
+</ul>
 
 ## 解法
 
@@ -197,6 +200,102 @@ func findFrequentTreeSum(root *TreeNode) []int {
 		}
 	}
 	return ans
+}
+```
+
+### **TypeScript**
+
+```ts
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function findFrequentTreeSum(root: TreeNode | null): number[] {
+    const map = new Map<number, number>();
+    let max = 0;
+    const dfs = (root: TreeNode | null) => {
+        if (root == null) {
+            return 0;
+        }
+        const { val, left, right } = root;
+        const sum = val + dfs(left) + dfs(right);
+        map.set(sum, (map.get(sum) ?? 0) + 1);
+        max = Math.max(max, map.get(sum));
+        return sum;
+    };
+    dfs(root);
+    const res = [];
+    for (const [k, v] of map) {
+        if (v === max) {
+            res.push(k);
+        }
+    }
+    return res;
+}
+```
+
+### **Rust**
+
+```rust
+// Definition for a binary tree node.
+// #[derive(Debug, PartialEq, Eq)]
+// pub struct TreeNode {
+//   pub val: i32,
+//   pub left: Option<Rc<RefCell<TreeNode>>>,
+//   pub right: Option<Rc<RefCell<TreeNode>>>,
+// }
+//
+// impl TreeNode {
+//   #[inline]
+//   pub fn new(val: i32) -> Self {
+//     TreeNode {
+//       val,
+//       left: None,
+//       right: None
+//     }
+//   }
+// }
+use std::rc::Rc;
+use std::cell::RefCell;
+use std::collections::HashMap;
+impl Solution {
+    fn dfs(
+        root: &Option<Rc<RefCell<TreeNode>>>,
+        map: &mut HashMap<i32, i32>,
+        max: &mut i32,
+    ) -> i32 {
+        if root.is_none() {
+            return 0;
+        }
+        let node = root.as_ref().unwrap().borrow();
+        let sum = node.val + Self::dfs(&node.left, map, max) + Self::dfs(&node.right, map, max);
+        map.insert(sum, map.get(&sum).unwrap_or(&0) + 1);
+        *max = (*max).max(map[&sum]);
+        sum
+    }
+
+    pub fn find_frequent_tree_sum(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
+        let mut map = HashMap::new();
+        let mut max = 0;
+        let mut res = Vec::new();
+        Self::dfs(&root, &mut map, &mut max);
+        for (k, v) in map.into_iter() {
+            if v == max {
+                res.push(k);
+            }
+        }
+        res
+    }
 }
 ```
 

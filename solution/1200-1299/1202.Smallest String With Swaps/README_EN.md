@@ -11,7 +11,7 @@
 <p>Return the&nbsp;lexicographically smallest string that <code>s</code>&nbsp;can be changed to after using the swaps.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;dcab&quot;, pairs = [[0,3],[1,2]]
@@ -21,7 +21,7 @@ Swap s[0] and s[3], s = &quot;bcad&quot;
 Swap s[1] and s[2], s = &quot;bacd&quot;
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;dcab&quot;, pairs = [[0,3],[1,2],[0,2]]
@@ -31,7 +31,7 @@ Swap s[0] and s[3], s = &quot;bcad&quot;
 Swap s[0] and s[2], s = &quot;acbd&quot;
 Swap s[1] and s[2], s = &quot;abcd&quot;</pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;cba&quot;, pairs = [[0,1],[1,2]]
@@ -61,24 +61,21 @@ Swap s[0] and s[1], s = &quot;abc&quot;
 ```python
 class Solution:
     def smallestStringWithSwaps(self, s: str, pairs: List[List[int]]) -> str:
-        n = len(s)
-        p = list(range(n))
-
-        def find(x):
+        def find(x: int) -> int:
             if p[x] != x:
                 p[x] = find(p[x])
             return p[x]
 
+        n = len(s)
+        p = list(range(n))
         for a, b in pairs:
             p[find(a)] = find(b)
-
-        mp = defaultdict(list)
-        for i in range(n):
-            heapq.heappush(mp[find(i)], s[i])
-        chars = list(s)
-        for i in range(n):
-            chars[i] = heapq.heappop(mp[find(i)])
-        return ''.join(chars)
+        d = defaultdict(list)
+        for i, c in enumerate(s):
+            d[find(i)].append(c)
+        for i in d.keys():
+            d[i].sort(reverse=True)
+        return "".join(d[find(i)].pop() for i in range(n))
 ```
 
 ### **Java**
@@ -90,21 +87,27 @@ class Solution {
     public String smallestStringWithSwaps(String s, List<List<Integer>> pairs) {
         int n = s.length();
         p = new int[n];
+        List<Character>[] d = new List[n];
         for (int i = 0; i < n; ++i) {
             p[i] = i;
+            d[i] = new ArrayList<>();
         }
-        for (List<Integer> pair : pairs) {
-            p[find(pair.get(0))] = find(pair.get(1));
+        for (var pair : pairs) {
+            int a = pair.get(0), b = pair.get(1);
+            p[find(a)] = find(b);
         }
-        Map<Integer, PriorityQueue<Character>> mp = new HashMap<>();
-        char[] chars = s.toCharArray();
+        char[] cs = s.toCharArray();
         for (int i = 0; i < n; ++i) {
-            mp.computeIfAbsent(find(i), key -> new PriorityQueue<>()).offer(chars[i]);
+            d[find(i)].add(cs[i]);
+        }
+        for (var e : d) {
+            e.sort((a, b) -> b - a);
         }
         for (int i = 0; i < n; ++i) {
-            chars[i] = mp.get(find(i)).poll();
+            var e = d[find(i)];
+            cs[i] = e.remove(e.size() - 1);
         }
-        return new String(chars);
+        return String.valueOf(cs);
     }
 
     private int find(int x) {
@@ -113,6 +116,110 @@ class Solution {
         }
         return p[x];
     }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    string smallestStringWithSwaps(string s, vector<vector<int>>& pairs) {
+        int n = s.size();
+        int p[n];
+        iota(p, p + n, 0);
+        vector<char> d[n];
+        function<int(int)> find = [&](int x) -> int {
+            if (p[x] != x) {
+                p[x] = find(p[x]);
+            }
+            return p[x];
+        };
+        for (auto e : pairs) {
+            int a = e[0], b = e[1];
+            p[find(a)] = find(b);
+        }
+        for (int i = 0; i < n; ++i) {
+            d[find(i)].push_back(s[i]);
+        }
+        for (auto& e : d) {
+            sort(e.rbegin(), e.rend());
+        }
+        for (int i = 0; i < n; ++i) {
+            auto& e = d[find(i)];
+            s[i] = e.back();
+            e.pop_back();
+        }
+        return s;
+    }
+};
+```
+
+### **Go**
+
+```go
+func smallestStringWithSwaps(s string, pairs [][]int) string {
+	n := len(s)
+	p := make([]int, n)
+	d := make([][]byte, n)
+	for i := range p {
+		p[i] = i
+	}
+	var find func(int) int
+	find = func(x int) int {
+		if p[x] != x {
+			p[x] = find(p[x])
+		}
+		return p[x]
+	}
+	for _, pair := range pairs {
+		a, b := pair[0], pair[1]
+		p[find(a)] = find(b)
+	}
+	cs := []byte(s)
+	for i, c := range cs {
+		j := find(i)
+		d[j] = append(d[j], c)
+	}
+	for i := range d {
+		sort.Slice(d[i], func(a, b int) bool { return d[i][a] > d[i][b] })
+	}
+	for i := range cs {
+		j := find(i)
+		cs[i] = d[j][len(d[j])-1]
+		d[j] = d[j][:len(d[j])-1]
+	}
+	return string(cs)
+}
+```
+
+### **TypeScript**
+
+```ts
+function smallestStringWithSwaps(s: string, pairs: number[][]): string {
+    const n = s.length;
+    const p = new Array(n).fill(0).map((_, i) => i);
+    const find = (x: number): number => {
+        if (p[x] !== x) {
+            p[x] = find(p[x]);
+        }
+        return p[x];
+    };
+    const d: string[][] = new Array(n).fill(0).map(() => []);
+    for (const [a, b] of pairs) {
+        p[find(a)] = find(b);
+    }
+    for (let i = 0; i < n; ++i) {
+        d[find(i)].push(s[i]);
+    }
+    for (const e of d) {
+        e.sort((a, b) => b.charCodeAt(0) - a.charCodeAt(0));
+    }
+    const ans: string[] = [];
+    for (let i = 0; i < n; ++i) {
+        ans.push(d[find(i)].pop()!);
+    }
+    return ans.join('');
 }
 ```
 

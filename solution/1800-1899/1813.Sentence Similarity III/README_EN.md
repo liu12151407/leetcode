@@ -11,7 +11,7 @@
 <p>Given two sentences <code>sentence1</code> and <code>sentence2</code>, return <code>true</code> <em>if </em><code>sentence1</code> <em>and </em><code>sentence2</code> <em>are similar.</em> Otherwise, return <code>false</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> sentence1 = &quot;My name is Haley&quot;, sentence2 = &quot;My Haley&quot;
@@ -19,7 +19,7 @@
 <strong>Explanation:</strong> sentence2 can be turned to sentence1 by inserting &quot;name is&quot; between &quot;My&quot; and &quot;Haley&quot;.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> sentence1 = &quot;of&quot;, sentence2 = &quot;A lot of words&quot;
@@ -27,19 +27,12 @@
 <strong>Explanation: </strong>No single sentence can be inserted inside one of the sentences to make it equal to the other.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> sentence1 = &quot;Eating right now&quot;, sentence2 = &quot;Eating&quot;
 <strong>Output:</strong> true
 <strong>Explanation:</strong> sentence2 can be turned to sentence1 by inserting &quot;right now&quot; at the end of the sentence.
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> sentence1 = &quot;Luky&quot;, sentence2 = &quot;Lucccky&quot;
-<strong>Output:</strong> false
 </pre>
 
 <p>&nbsp;</p>
@@ -60,24 +53,17 @@
 ```python
 class Solution:
     def areSentencesSimilar(self, sentence1: str, sentence2: str) -> bool:
-        if sentence1 == sentence2:
-            return True
-        n1, n2 = len(sentence1), len(sentence2)
-        if n1 == n2:
-            return False
-        if n1 < n2:
-            sentence1, sentence2 = sentence2, sentence1
         words1, words2 = sentence1.split(), sentence2.split()
+        m, n = len(words1), len(words2)
+        if m < n:
+            words1, words2 = words2, words1
+            m, n = n, m
         i = j = 0
-        while i < len(words2) and words1[i] == words2[i]:
+        while i < n and words1[i] == words2[i]:
             i += 1
-        if i == len(words2):
-            return True
-        while j < len(words2) and words1[len(words1) - 1 - j] == words2[len(words2) - 1 - j]:
+        while j < n and words1[m - 1 - j] == words2[n - 1 - j]:
             j += 1
-        if j == len(words2):
-            return True
-        return i + j == len(words2)
+        return i + j >= n
 ```
 
 ### **Java**
@@ -85,35 +71,77 @@ class Solution:
 ```java
 class Solution {
     public boolean areSentencesSimilar(String sentence1, String sentence2) {
-        if (Objects.equals(sentence1, sentence2)) {
-            return true;
+        var words1 = sentence1.split(" ");
+        var words2 = sentence2.split(" ");
+        if (words1.length < words2.length) {
+            var t = words1;
+            words1 = words2;
+            words2 = t;
         }
-        int n1 = sentence1.length(), n2 = sentence2.length();
-        if (n1 == n2) {
-            return false;
-        }
-        if (n1 < n2) {
-            String t = sentence1;
-            sentence1 = sentence2;
-            sentence2 = t;
-        }
-        String[] words1 = sentence1.split(" ");
-        String[] words2 = sentence2.split(" ");
+        int m = words1.length, n = words2.length;
         int i = 0, j = 0;
-        while (i < words2.length &&  Objects.equals(words1[i], words2[i])) {
+        while (i < n && words1[i].equals(words2[i])) {
             ++i;
         }
-        if (i == words2.length) {
-            return true;
-        }
-        while (j < words2.length && Objects.equals(words1[words1.length - 1 - j], words2[words2.length - 1 - j])) {
+        while (j < n && words1[m - 1 - j].equals(words2[n - 1 - j])) {
             ++j;
         }
-        if (j == words2.length) {
-            return true;
-        }
-        return i + j == words2.length;
+        return i + j >= n;
     }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool areSentencesSimilar(string sentence1, string sentence2) {
+        auto words1 = split(sentence1, ' ');
+        auto words2 = split(sentence2, ' ');
+        if (words1.size() < words2.size()) {
+            swap(words1, words2);
+        }
+        int m = words1.size(), n = words2.size();
+        int i = 0, j = 0;
+        while (i < n && words1[i] == words2[i]) {
+            ++i;
+        }
+        while (j < n && words1[m - 1 - j] == words2[n - 1 - j]) {
+            ++j;
+        }
+        return i + j >= n;
+    }
+
+    vector<string> split(string& s, char delim) {
+        stringstream ss(s);
+        string item;
+        vector<string> res;
+        while (getline(ss, item, delim)) {
+            res.emplace_back(item);
+        }
+        return res;
+    }
+};
+```
+
+### **Go**
+
+```go
+func areSentencesSimilar(sentence1 string, sentence2 string) bool {
+	words1, words2 := strings.Fields(sentence1), strings.Fields(sentence2)
+	if len(words1) < len(words2) {
+		words1, words2 = words2, words1
+	}
+	m, n := len(words1), len(words2)
+	i, j := 0, 0
+	for i < n && words1[i] == words2[i] {
+		i++
+	}
+	for j < n && words1[m-1-j] == words2[n-1-j] {
+		j++
+	}
+	return i+j >= n
 }
 ```
 

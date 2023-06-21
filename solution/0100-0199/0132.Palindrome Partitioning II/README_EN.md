@@ -4,12 +4,12 @@
 
 ## Description
 
-<p>Given a string <code>s</code>, partition <code>s</code> such that every substring of the partition is a palindrome.</p>
+<p>Given a string <code>s</code>, partition <code>s</code> such that every <span data-keyword="substring-nonempty">substring</span> of the partition is a <span data-keyword="palindrome-string">palindrome</span>.</p>
 
-<p>Return <em>the minimum cuts needed</em> for a palindrome partitioning of <code>s</code>.</p>
+<p>Return <em>the <strong>minimum</strong> cuts needed for a palindrome partitioning of</em> <code>s</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;aab&quot;
@@ -17,14 +17,14 @@
 <strong>Explanation:</strong> The palindrome partitioning [&quot;aa&quot;,&quot;b&quot;] could be produced using 1 cut.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;a&quot;
 <strong>Output:</strong> 0
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;ab&quot;
@@ -36,7 +36,7 @@
 
 <ul>
 	<li><code>1 &lt;= s.length &lt;= 2000</code></li>
-	<li><code>s</code> consists of lower-case English letters only.</li>
+	<li><code>s</code> consists of lowercase English letters only.</li>
 </ul>
 
 ## Solutions
@@ -44,6 +44,29 @@
 <!-- tabs:start -->
 
 ### **Python3**
+
+```python
+class Solution:
+    def minCut(self, s: str) -> int:
+        @cache
+        def dfs(i):
+            if i >= n - 1:
+                return 0
+            ans = inf
+            for j in range(i, n):
+                if g[i][j]:
+                    ans = min(ans, dfs(j + 1) + (j < n - 1))
+            return ans
+
+        n = len(s)
+        g = [[True] * n for _ in range(n)]
+        for i in range(n - 1, -1, -1):
+            for j in range(i + 1, n):
+                g[i][j] = s[i] == s[j] and g[i + 1][j - 1]
+        ans = dfs(0)
+        dfs.cache_clear()
+        return ans
+```
 
 ```python
 class Solution:
@@ -64,6 +87,49 @@ class Solution:
 ```
 
 ### **Java**
+
+```java
+class Solution {
+    private boolean[][] g;
+    private int[] f;
+    private String s;
+    private int n;
+
+    public int minCut(String s) {
+        n = s.length();
+        g = new boolean[n][n];
+        for (var e : g) {
+            Arrays.fill(e, true);
+        }
+        for (int i = n - 1; i >= 0; --i) {
+            for (int j = i + 1; j < n; ++j) {
+                g[i][j] = s.charAt(i) == s.charAt(j) && g[i + 1][j - 1];
+            }
+        }
+        this.s = s;
+        f = new int[n];
+        Arrays.fill(f, -1);
+        return dfs(0);
+    }
+
+    private int dfs(int i) {
+        if (i >= n - 1) {
+            return 0;
+        }
+        if (f[i] != -1) {
+            return f[i];
+        }
+        int ans = Integer.MAX_VALUE;
+        for (int j = i; j < n; ++j) {
+            if (g[i][j]) {
+                ans = Math.min(ans, dfs(j + 1) + (j < n - 1 ? 1 : 0));
+            }
+        }
+        f[i] = ans;
+        return ans;
+    }
+}
+```
 
 ```java
 class Solution {
@@ -92,6 +158,55 @@ class Solution {
 ```
 
 ### **Go**
+
+```go
+func minCut(s string) int {
+	n := len(s)
+	f := make([]int, n)
+	g := make([][]bool, n)
+	for i := range g {
+		f[i] = -1
+		g[i] = make([]bool, n)
+		for j := range g[i] {
+			g[i][j] = true
+		}
+	}
+	for i := n - 1; i >= 0; i-- {
+		for j := i + 1; j < n; j++ {
+			g[i][j] = s[i] == s[j] && g[i+1][j-1]
+		}
+	}
+	var dfs func(i int) int
+	dfs = func(i int) int {
+		if i >= n-1 {
+			return 0
+		}
+		if f[i] != -1 {
+			return f[i]
+		}
+		ans := math.MaxInt32
+		for j := i; j < n; j++ {
+			if g[i][j] {
+				t := 1
+				if j == n-1 {
+					t = 0
+				}
+				ans = min(ans, dfs(j+1)+t)
+			}
+		}
+		f[i] = ans
+		return ans
+	}
+	return dfs(0)
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+```
 
 ```go
 func minCut(s string) int {
@@ -128,6 +243,36 @@ func min(x, y int) int {
 ```
 
 ### **C++**
+
+```cpp
+class Solution {
+public:
+    int minCut(string s) {
+        int n = s.size();
+        vector<vector<bool>> g(n, vector<bool>(n, true));
+        for (int i = n - 1; i >= 0; --i) {
+            for (int j = i + 1; j < n; ++j) {
+                g[i][j] = s[i] == s[j] && g[i + 1][j - 1];
+            }
+        }
+        vector<int> f(n, -1);
+        function<int(int)> dfs;
+        dfs = [&](int i) {
+            if (i >= n - 1) return 0;
+            if (f[i] != -1) return f[i];
+            int ans = INT_MAX;
+            for (int j = i; j < n; ++j) {
+                if (g[i][j]) {
+                    ans = min(ans, dfs(j + 1) + (j < n - 1));
+                }
+            }
+            f[i] = ans;
+            return ans;
+        };
+        return dfs(0);
+    }
+};
+```
 
 ```cpp
 class Solution {

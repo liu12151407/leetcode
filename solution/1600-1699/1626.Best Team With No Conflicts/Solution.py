@@ -1,12 +1,25 @@
+class BinaryIndexedTree:
+    def __init__(self, n):
+        self.n = n
+        self.c = [0] * (n + 1)
+
+    def update(self, x, val):
+        while x <= self.n:
+            self.c[x] = max(self.c[x], val)
+            x += x & -x
+
+    def query(self, x):
+        s = 0
+        while x:
+            s = max(s, self.c[x])
+            x -= x & -x
+        return s
+
+
 class Solution:
     def bestTeamScore(self, scores: List[int], ages: List[int]) -> int:
-        nums = list(zip(scores, ages))
-        nums.sort(key=lambda x: (x[1], x[0]))
-        dp = [num[0] for num in nums]
-        res, n = 0, len(ages)
-        for i in range(n):
-            for j in range(i):
-                if nums[j][0] <= nums[i][0]:
-                    dp[i] = max(dp[i], dp[j] + nums[i][0])
-            res = max(res, dp[i])
-        return res
+        m = max(ages)
+        tree = BinaryIndexedTree(m)
+        for score, age in sorted(zip(scores, ages)):
+            tree.update(age, score + tree.query(age))
+        return tree.query(m)

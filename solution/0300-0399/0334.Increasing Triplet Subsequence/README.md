@@ -1,4 +1,4 @@
-# [334. 递增的三元子序列](https://leetcode-cn.com/problems/increasing-triplet-subsequence)
+# [334. 递增的三元子序列](https://leetcode.cn/problems/increasing-triplet-subsequence)
 
 [English Version](/solution/0300-0399/0334.Increasing%20Triplet%20Subsequence/README_EN.md)
 
@@ -6,18 +6,18 @@
 
 <!-- 这里写题目描述 -->
 
-<p>给你一个整数数组 <code>nums</code> ，判断这个数组中是否存在长度为 <code>3</code> 的递增子序列。</p>
+<p>给你一个整数数组&nbsp;<code>nums</code> ，判断这个数组中是否存在长度为 <code>3</code> 的递增子序列。</p>
 
-<p>如果存在这样的三元组下标 <code>(i, j, k)</code> 且满足 <code>i < j < k</code> ，使得 <code>nums[i] < nums[j] < nums[k]</code> ，返回 <code>true</code> ；否则，返回 <code>false</code> 。</p>
+<p>如果存在这样的三元组下标 <code>(i, j, k)</code>&nbsp;且满足 <code>i &lt; j &lt; k</code> ，使得&nbsp;<code>nums[i] &lt; nums[j] &lt; nums[k]</code> ，返回 <code>true</code> ；否则，返回 <code>false</code> 。</p>
 
-<p> </p>
+<p>&nbsp;</p>
 
 <p><strong>示例 1：</strong></p>
 
 <pre>
 <strong>输入：</strong>nums = [1,2,3,4,5]
 <strong>输出：</strong>true
-<strong>解释：</strong>任何 i < j < k 的三元组都满足题意
+<strong>解释：</strong>任何 i &lt; j &lt; k 的三元组都满足题意
 </pre>
 
 <p><strong>示例 2：</strong></p>
@@ -32,19 +32,19 @@
 <pre>
 <strong>输入：</strong>nums = [2,1,5,0,4,6]
 <strong>输出：</strong>true
-<strong>解释：</strong>三元组 (3, 4, 5) 满足题意，因为 nums[3] == 0 < nums[4] == 4 < nums[5] == 6
+<strong>解释：</strong>三元组 (3, 4, 5) 满足题意，因为 nums[3] == 0 &lt; nums[4] == 4 &lt; nums[5] == 6
 </pre>
 
-<p> </p>
+<p>&nbsp;</p>
 
 <p><strong>提示：</strong></p>
 
 <ul>
-	<li><code>1 <= nums.length <= 10<sup>5</sup></code></li>
-	<li><code>-2<sup>31</sup> <= nums[i] <= 2<sup>31</sup> - 1</code></li>
+	<li><code>1 &lt;= nums.length &lt;= 5 * 10<sup>5</sup></code></li>
+	<li><code>-2<sup>31</sup> &lt;= nums[i] &lt;= 2<sup>31</sup> - 1</code></li>
 </ul>
 
-<p> </p>
+<p>&nbsp;</p>
 
 <p><strong>进阶：</strong>你能实现时间复杂度为 <code>O(n)</code> ，空间复杂度为 <code>O(1)</code> 的解决方案吗？</p>
 
@@ -63,7 +63,7 @@
 ```python
 class Solution:
     def increasingTriplet(self, nums: List[int]) -> bool:
-        mi, mid = float('inf'), float('inf')
+        mi, mid = inf, inf
         for num in nums:
             if num > mid:
                 return True
@@ -151,11 +151,12 @@ class Solution {
 public:
     bool increasingTriplet(vector<int>& nums) {
         int mi = INT_MAX, mid = INT_MAX;
-        for (int num : nums)
-        {
+        for (int num : nums) {
             if (num > mid) return true;
-            if (num <= mi) mi = num;
-            else mid = num;
+            if (num <= mi)
+                mi = num;
+            else
+                mid = num;
         }
         return false;
     }
@@ -178,6 +179,31 @@ func increasingTriplet(nums []int) bool {
 		}
 	}
 	return false
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn increasing_triplet(nums: Vec<i32>) -> bool {
+        let n = nums.len();
+        if n < 3 {
+            return false;
+        }
+        let mut min = i32::MAX;
+        let mut mid = i32::MAX;
+        for num in nums.into_iter() {
+            if num <= min {
+                min = num;
+            } else if num <= mid {
+                mid = num;
+            } else {
+                return true;
+            }
+        }
+        false
+    }
 }
 ```
 

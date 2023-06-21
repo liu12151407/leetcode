@@ -15,33 +15,23 @@
 <p>Given a <strong>shuffled sentence</strong> <code>s</code> containing no more than <code>9</code> words, reconstruct and return <em>the original sentence</em>.</p>
 
 <p>&nbsp;</p>
-
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
-
 <strong>Input:</strong> s = &quot;is2 sentence4 This1 a3&quot;
-
 <strong>Output:</strong> &quot;This is a sentence&quot;
-
 <strong>Explanation:</strong> Sort the words in s to their original positions &quot;This1 is2 a3 sentence4&quot;, then remove the numbers.
-
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
-
 <strong>Input:</strong> s = &quot;Myself2 Me1 I4 and3&quot;
-
 <strong>Output:</strong> &quot;Me Myself and I&quot;
-
 <strong>Explanation:</strong> Sort the words in s to their original positions &quot;Me1 Myself2 and3 I4&quot;, then remove the numbers.
-
 </pre>
 
 <p>&nbsp;</p>
-
 <p><strong>Constraints:</strong></p>
 
 <ul>
@@ -61,12 +51,12 @@
 ```python
 class Solution:
     def sortSentence(self, s: str) -> str:
-        words = s.split(' ')
-        arr = [None] * len(words)
-        for word in words:
-            idx = int(word[-1]) - 1
-            arr[idx] = word[:-1]
-        return ' '.join(arr)
+        words = s.split()
+        ans = [None] * len(words)
+        for w in words:
+            i = int(w[-1]) - 1
+            ans[i] = w[:-1]
+        return ' '.join(ans)
 ```
 
 ### **Java**
@@ -75,13 +65,52 @@ class Solution:
 class Solution {
     public String sortSentence(String s) {
         String[] words = s.split(" ");
-        String[] arr = new String[words.length];
-        for (String word : words) {
-            int idx = word.charAt(word.length() - 1) - '0' - 1;
-            arr[idx] = word.substring(0, word.length() - 1);
+        String[] ans = new String[words.length];
+        for (String w : words) {
+            int i = w.charAt(w.length() - 1) - '1';
+            ans[i] = w.substring(0, w.length() - 1);
         }
-        return String.join(" ", arr);
+        return String.join(" ", ans);
     }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    string sortSentence(string s) {
+        istringstream is(s);
+        string t;
+        vector<string> words;
+        while (is >> t) words.push_back(t);
+        vector<string> res(words.size());
+        for (auto& w : words) {
+            int i = w[w.size() - 1] - '1';
+            res[i] = w.substr(0, w.size() - 1);
+        }
+        string ans;
+        for (auto& w : res) {
+            ans += w + " ";
+        }
+        ans.pop_back();
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func sortSentence(s string) string {
+	words := strings.Split(s, " ")
+	ans := make([]string, len(words))
+	for _, w := range words {
+		i := w[len(w)-1] - '1'
+		ans[i] = w[:len(w)-1]
+	}
+	return strings.Join(ans, " ")
 }
 ```
 
@@ -93,16 +122,28 @@ class Solution {
  * @return {string}
  */
 var sortSentence = function (s) {
-    let words = s.split(" ");
-    let n = words.length;
-    let res = new Array(n);
-    for (let word of words) {
-        let key = word.slice(-1);
-        let val = word.slice(0, -1);
-        res[parseInt(key) - 1] = val;
+    const words = s.split(' ');
+    const ans = new Array(words.length);
+    for (const w of words) {
+        const i = w.charCodeAt(w.length - 1) - '1'.charCodeAt(0);
+        ans[i] = w.slice(0, w.length - 1);
     }
-    return res.join(" ");
+    return ans.join(' ');
 };
+```
+
+### **TypeScript**
+
+```ts
+function sortSentence(s: string): string {
+    const words = s.split(' ');
+    const ans = new Array(words.length);
+    for (const w of words) {
+        const i = w.charCodeAt(w.length - 1) - '1'.charCodeAt(0);
+        ans[i] = w.slice(0, w.length - 1);
+    }
+    return ans.join(' ');
+}
 ```
 
 ### **...**

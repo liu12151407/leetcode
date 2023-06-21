@@ -29,28 +29,15 @@ M             1000</pre>
 <p>Given an integer, convert it to a roman numeral.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> num = 3
 <strong>Output:</strong> &quot;III&quot;
+<strong>Explanation:</strong> 3 is represented as 3 ones.
 </pre>
 
-<p><strong>Example 2:</strong></p>
-
-<pre>
-<strong>Input:</strong> num = 4
-<strong>Output:</strong> &quot;IV&quot;
-</pre>
-
-<p><strong>Example 3:</strong></p>
-
-<pre>
-<strong>Input:</strong> num = 9
-<strong>Output:</strong> &quot;IX&quot;
-</pre>
-
-<p><strong>Example 4:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> num = 58
@@ -58,7 +45,7 @@ M             1000</pre>
 <strong>Explanation:</strong> L = 50, V = 5, III = 3.
 </pre>
 
-<p><strong>Example 5:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> num = 1994
@@ -75,6 +62,12 @@ M             1000</pre>
 
 ## Solutions
 
+**Approach 1: Greedy**
+
+We can list all possible symbols $cs$ and corresponding values $vs$ first, then enumerate the value $vs[i]$ from large to small, and use the symbol $cs[i]$ as much as possible each time until the number $num$ becomes $0$.
+
+The time complexity is $O(m)$ and the space complexity is $O(m)$, where $m$ is the number of symbols.
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -82,13 +75,14 @@ M             1000</pre>
 ```python
 class Solution:
     def intToRoman(self, num: int) -> str:
-        nums = [(1000, 'M'), (900, 'CM'), (500, 'D'), (400, 'CD'), (100, 'C'), (90, 'XC'), (50, 'L'), (40, 'XL'), (10, 'X'), (9, 'IX'), (5, 'V'), (4, 'IV'), (1, 'I')]
-        res = []
-        for k, v in nums:
-            while num >= k:
-                num -= k
-                res.append(v)
-        return ''.join(res)
+        cs = ('M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I')
+        vs = (1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
+        ans = []
+        for c, v in zip(cs, vs):
+            while num >= v:
+                num -= v
+                ans.append(c)
+        return ''.join(ans)
 ```
 
 ### **Java**
@@ -96,16 +90,17 @@ class Solution:
 ```java
 class Solution {
     public String intToRoman(int num) {
-        int[] nums = new int[]{1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
-        String[] romans = new String[]{"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < nums.length; ++i) {
-            while (num >= nums[i]) {
-                num -= nums[i];
-                sb.append(romans[i]);
+        List<String> cs
+            = List.of("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I");
+        List<Integer> vs = List.of(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1);
+        StringBuilder ans = new StringBuilder();
+        for (int i = 0, n = cs.size(); i < n; ++i) {
+            while (num >= vs.get(i)) {
+                num -= vs.get(i);
+                ans.append(cs.get(i));
             }
         }
-        return sb.toString();
+        return ans.toString();
     }
 }
 ```
@@ -116,18 +111,85 @@ class Solution {
 class Solution {
 public:
     string intToRoman(int num) {
-        vector<int> nums{1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
-        vector<string> romans{"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+        vector<string> cs = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+        vector<int> vs = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
         string ans;
-        for (int i = 0; i < nums.size(); ++i) {
-            while (num >= nums[i]) {
-                num -= nums[i];
-                ans.append(romans[i]);
+        for (int i = 0; i < cs.size(); ++i) {
+            while (num >= vs[i]) {
+                num -= vs[i];
+                ans += cs[i];
             }
         }
         return ans;
     }
 };
+```
+
+### **Go**
+
+```go
+func intToRoman(num int) string {
+	cs := []string{"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"}
+	vs := []int{1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1}
+	ans := &strings.Builder{}
+	for i, v := range vs {
+		for num >= v {
+			num -= v
+			ans.WriteString(cs[i])
+		}
+	}
+	return ans.String()
+}
+```
+
+### **TypeScript**
+
+```ts
+function intToRoman(num: number): string {
+    const cs: string[] = [
+        'M',
+        'CM',
+        'D',
+        'CD',
+        'C',
+        'XC',
+        'L',
+        'XL',
+        'X',
+        'IX',
+        'V',
+        'IV',
+        'I',
+    ];
+    const vs: number[] = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];
+    const ans: string[] = [];
+    for (let i = 0; i < vs.length; ++i) {
+        while (num >= vs[i]) {
+            num -= vs[i];
+            ans.push(cs[i]);
+        }
+    }
+    return ans.join('');
+}
+```
+
+### **C#**
+
+```cs
+public class Solution {
+    public string IntToRoman(int num) {
+        List<string> cs = new List<string>{"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+        List<int> vs = new List<int>{1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+        StringBuilder ans = new StringBuilder();
+        for (int i = 0; i < cs.Count; i++) {
+            while (num >= vs[i]) {
+                ans.Append(cs[i]);
+                num -= vs[i];
+            }
+        }
+        return ans.ToString();
+    }
+}
 ```
 
 ### **...**

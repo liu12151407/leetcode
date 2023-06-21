@@ -1,4 +1,4 @@
-# [704. 二分查找](https://leetcode-cn.com/problems/binary-search)
+# [704. 二分查找](https://leetcode.cn/problems/binary-search)
 
 [English Version](/solution/0700-0799/0704.Binary%20Search/README_EN.md)
 
@@ -84,11 +84,12 @@ class Solution {
 public:
     int search(vector<int>& nums, int target) {
         int left = 0, right = nums.size() - 1;
-        while (left < right)
-        {
+        while (left < right) {
             int mid = left + right >> 1;
-            if (nums[mid] >= target) right = mid;
-            else left = mid + 1;
+            if (nums[mid] >= target)
+                right = mid;
+            else
+                left = mid + 1;
         }
         return nums[left] == target ? left : -1;
     }
@@ -136,6 +137,55 @@ var search = function (nums, target) {
     }
     return nums[left] == target ? left : -1;
 };
+```
+
+### **Rust**
+
+循环：
+
+```rust
+use std::cmp::Ordering;
+
+impl Solution {
+    pub fn search(nums: Vec<i32>, target: i32) -> i32 {
+        let mut l = 0;
+        let mut r = nums.len();
+        while l < r {
+            let mid = l + r >> 1;
+            match nums[mid].cmp(&target) {
+                Ordering::Less => l = mid + 1,
+                Ordering::Greater => r = mid,
+                Ordering::Equal => return mid as i32,
+            }
+        }
+        -1
+    }
+}
+```
+
+递归：
+
+```rust
+use std::cmp::Ordering;
+
+impl Solution {
+    fn binary_search(nums: Vec<i32>, target: i32, l: usize, r: usize) -> i32 {
+        if l == r {
+            return if nums[l] == target { l as i32 } else { -1 };
+        }
+        let mid = l + r >> 1;
+        match nums[mid].cmp(&target) {
+            Ordering::Less => Self::binary_search(nums, target, mid + 1, r),
+            Ordering::Greater => Self::binary_search(nums, target, l, mid),
+            Ordering::Equal => mid as i32,
+        }
+    }
+
+    pub fn search(nums: Vec<i32>, target: i32) -> i32 {
+        let r = nums.len() - 1;
+        Self::binary_search(nums, target, 0, r)
+    }
+}
 ```
 
 ### **...**

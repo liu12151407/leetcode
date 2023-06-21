@@ -1,4 +1,4 @@
-# [2043. 简易银行系统](https://leetcode-cn.com/problems/simple-bank-system)
+# [2043. 简易银行系统](https://leetcode.cn/problems/simple-bank-system)
 
 [English Version](/solution/2000-2099/2043.Simple%20Bank%20System/README_EN.md)
 
@@ -63,6 +63,17 @@ bank.withdraw(10, 50);   // 返回 false ，交易无效，因为账户 10 并�
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：模拟**
+
+根据题意，我们可以使用一个数组 `balance` 来模拟银行账户的余额，数组下标从 0 开始，数组的值表示账户的余额。
+
+-   初始化时，我们将 `balance` 数组赋给成员变量 `this.balance`，并将 `balance` 的长度赋给成员变量 `this.n`。
+-   `transfer` 函数中，如果 `account1` 或 `account2` 大于 `n` 或 `balance[account1 - 1]` 小于 `money`，则返回 `false`，否则，将 `balance[account1 - 1]` 减去 `money`，将 `balance[account2 - 1]` 加上 `money`，并返回 `true`。
+-   `deposit` 函数中，如果 `account` 大于 `n`，则返回 `false`，否则，将 `balance[account - 1]` 加上 `money`，并返回 `true`。
+-   `withdraw` 函数中，如果 `account` 大于 `n` 或 `balance[account - 1]` 小于 `money`，则返回 `false`，否则，将 `balance[account - 1]` 减去 `money`，并返回 `true`。
+
+以上操作的时间复杂度均为 $O(1)$，空间复杂度为 $O(n)$。其中，$n$ 为 `balance` 的长度。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -71,7 +82,6 @@ bank.withdraw(10, 50);   // 返回 false ，交易无效，因为账户 10 并�
 
 ```python
 class Bank:
-
     def __init__(self, balance: List[int]):
         self.balance = balance
         self.n = len(balance)
@@ -94,6 +104,7 @@ class Bank:
             return False
         self.balance[account - 1] -= money
         return True
+
 
 # Your Bank object will be instantiated and called as such:
 # obj = Bank(balance)
@@ -284,6 +295,66 @@ func (this *Bank) Withdraw(account int, money int64) bool {
  * param_1 := obj.Transfer(account1,account2,money);
  * param_2 := obj.Deposit(account,money);
  * param_3 := obj.Withdraw(account,money);
+ */
+```
+
+### **Rust**
+
+```rust
+struct Bank {
+    balance: Vec<i64>,
+}
+
+/**
+ * `&self` means the method takes an immutable reference.
+ * If you need a mutable reference, change it to `&mut self` instead.
+ */
+impl Bank {
+    fn new(balance: Vec<i64>) -> Self {
+        Bank { balance }
+    }
+
+    fn transfer(&mut self, account1: i32, account2: i32, money: i64) -> bool {
+        let (account1, account2, n) = (account1 as usize, account2 as usize, self.balance.len());
+        if n < account1 || n < account2 {
+            return false;
+        }
+        if self.balance[account1 - 1] < money {
+            return false;
+        }
+        self.balance[account1 - 1] -= money;
+        self.balance[account2 - 1] += money;
+        true
+    }
+
+    fn deposit(&mut self, account: i32, money: i64) -> bool {
+        let (account,  n) = (account as usize, self.balance.len());
+        if n < account {
+            return false;
+        }
+        self.balance[account - 1] += money;
+        true
+    }
+
+    fn withdraw(&mut self, account: i32, money: i64) -> bool {
+        let (account,  n) = (account as usize, self.balance.len());
+        if n < account {
+            return false;
+        }
+        if self.balance[account - 1] < money {
+            return false;
+        }
+        self.balance[account - 1] -= money;
+        true
+    }
+}
+
+/**
+ * Your Bank object will be instantiated and called as such:
+ * let obj = Bank::new(balance);
+ * let ret_1: bool = obj.transfer(account1, account2, money);
+ * let ret_2: bool = obj.deposit(account, money);
+ * let ret_3: bool = obj.withdraw(account, money);
  */
 ```
 

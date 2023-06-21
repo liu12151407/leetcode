@@ -1,4 +1,4 @@
-# [2038. 如果相邻两个颜色均相同则删除当前颜色](https://leetcode-cn.com/problems/remove-colored-pieces-if-both-neighbors-are-the-same-color)
+# [2038. 如果相邻两个颜色均相同则删除当前颜色](https://leetcode.cn/problems/remove-colored-pieces-if-both-neighbors-are-the-same-color)
 
 [English Version](/solution/2000-2099/2038.Remove%20Colored%20Pieces%20if%20Both%20Neighbors%20are%20the%20Same%20Color/README_EN.md)
 
@@ -75,6 +75,14 @@ ABBBB<strong><em>B</em></strong>BBAA -&gt; ABBBBBBAA
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：计数**
+
+统计字符串 `colors` 中连续出现 $3$ 个 `'A'` 或 $3$ 个 `'B'` 的个数，分别记为 $a$ 和 $b$。
+
+最后判断 $a$ 是否大于 $b$，是则返回 `true`，否则返回 `false`。
+
+时间复杂度 $O(n)$，空间复杂度 $O(1)$。其中 $n$ 为字符串 `colors` 的长度。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -82,7 +90,16 @@ ABBBB<strong><em>B</em></strong>BBAA -&gt; ABBBBBBAA
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def winnerOfGame(self, colors: str) -> bool:
+        a = b = 0
+        for c, v in groupby(colors):
+            m = len(list(v)) - 2
+            if m > 0 and c == 'A':
+                a += m
+            elif m > 0 and c == 'B':
+                b += m
+        return a > b
 ```
 
 ### **Java**
@@ -90,7 +107,75 @@ ABBBB<strong><em>B</em></strong>BBAA -&gt; ABBBBBBAA
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public boolean winnerOfGame(String colors) {
+        int n = colors.length();
+        int a = 0, b = 0;
+        for (int i = 0, j = 0; i < n; i = j) {
+            while (j < n && colors.charAt(j) == colors.charAt(i)) {
+                ++j;
+            }
+            int m = j - i - 2;
+            if (m > 0) {
+                if (colors.charAt(i) == 'A') {
+                    a += m;
+                } else {
+                    b += m;
+                }
+            }
+        }
+        return a > b;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool winnerOfGame(string colors) {
+        int n = colors.size();
+        int a = 0, b = 0;
+        for (int i = 0, j = 0; i < n; i = j) {
+            while (j < n && colors[j] == colors[i]) {
+                ++j;
+            }
+            int m = j - i - 2;
+            if (m > 0) {
+                if (colors[i] == 'A') {
+                    a += m;
+                } else {
+                    b += m;
+                }
+            }
+        }
+        return a > b;
+    }
+};
+```
+
+### **Go**
+
+```go
+func winnerOfGame(colors string) bool {
+	n := len(colors)
+	a, b := 0, 0
+	for i, j := 0, 0; i < n; i = j {
+		for j < n && colors[j] == colors[i] {
+			j++
+		}
+		m := j - i - 2
+		if m > 0 {
+			if colors[i] == 'A' {
+				a += m
+			} else {
+				b += m
+			}
+		}
+	}
+	return a > b
+}
 ```
 
 ### **...**

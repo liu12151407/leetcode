@@ -1,4 +1,4 @@
-# [剑指 Offer II 045. 二叉树最底层最左边的值](https://leetcode-cn.com/problems/LwUNpT)
+# [剑指 Offer II 045. 二叉树最底层最左边的值](https://leetcode.cn/problems/LwUNpT)
 
 ## 题目描述
 
@@ -12,7 +12,7 @@
 
 <p><strong>示例 1:</strong></p>
 
-<p><img src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20045.%20%E4%BA%8C%E5%8F%89%E6%A0%91%E6%9C%80%E5%BA%95%E5%B1%82%E6%9C%80%E5%B7%A6%E8%BE%B9%E7%9A%84%E5%80%BC/images/tree1.jpg" style="width: 182px; " /></p>
+<p><img src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20045.%20%E4%BA%8C%E5%8F%89%E6%A0%91%E6%9C%80%E5%BA%95%E5%B1%82%E6%9C%80%E5%B7%A6%E8%BE%B9%E7%9A%84%E5%80%BC/images/tree1.jpg" style="width: 182px; " /></p>
 
 <pre>
 <strong>输入: </strong>root = [2,1,3]
@@ -21,7 +21,7 @@
 
 <p><strong>示例 2: </strong></p>
 
-<p><img src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20045.%20%E4%BA%8C%E5%8F%89%E6%A0%91%E6%9C%80%E5%BA%95%E5%B1%82%E6%9C%80%E5%B7%A6%E8%BE%B9%E7%9A%84%E5%80%BC/images/tree2.jpg" style="width: 242px; " /><strong> </strong></p>
+<p><img src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20045.%20%E4%BA%8C%E5%8F%89%E6%A0%91%E6%9C%80%E5%BA%95%E5%B1%82%E6%9C%80%E5%B7%A6%E8%BE%B9%E7%9A%84%E5%80%BC/images/tree2.jpg" style="width: 242px; " /><strong> </strong></p>
 
 <pre>
 <strong>输入: </strong>[1,2,3,4,null,5,6,null,null,7]
@@ -39,7 +39,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 513&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/find-bottom-left-tree-value/">https://leetcode-cn.com/problems/find-bottom-left-tree-value/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 513&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/find-bottom-left-tree-value/">https://leetcode.cn/problems/find-bottom-left-tree-value/</a></p>
 
 ## 解法
 
@@ -142,10 +142,8 @@ public:
         queue<TreeNode*> q;
         q.push(root);
         int ans = -1;
-        while (!q.empty())
-        {
-            for (int i = 0, n = q.size(); i < n; ++i)
-            {
+        while (!q.empty()) {
+            for (int i = 0, n = q.size(); i < n; ++i) {
                 TreeNode* node = q.front();
                 if (i == 0) ans = node->val;
                 q.pop();

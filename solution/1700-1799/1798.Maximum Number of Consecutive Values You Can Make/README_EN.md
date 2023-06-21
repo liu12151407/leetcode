@@ -11,7 +11,7 @@
 <p>Note that you may have multiple coins of the same value.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> coins = [1,3]
@@ -21,7 +21,7 @@
 - 1: take [1]
 You can make 2 consecutive integer values starting from 0.</pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> coins = [1,1,1,4]
@@ -37,7 +37,7 @@ You can make 2 consecutive integer values starting from 0.</pre>
 - 7: take [4,1,1,1]
 You can make 8 consecutive integer values starting from 0.</pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,4,10,3,1]
@@ -61,12 +61,12 @@ You can make 8 consecutive integer values starting from 0.</pre>
 ```python
 class Solution:
     def getMaximumConsecutive(self, coins: List[int]) -> int:
-        res = 1
-        for coin in sorted(coins):
-            if coin > res:
+        ans = 1
+        for v in sorted(coins):
+            if v > ans:
                 break
-            res += coin
-        return res
+            ans += v
+        return ans
 ```
 
 ### **Java**
@@ -74,16 +74,49 @@ class Solution:
 ```java
 class Solution {
     public int getMaximumConsecutive(int[] coins) {
-        int res = 1;
         Arrays.sort(coins);
-        for (int coin : coins) {
-            if (coin > res) {
+        int ans = 1;
+        for (int v : coins) {
+            if (v > ans) {
                 break;
             }
-            res += coin;
+            ans += v;
         }
-        return res;
+        return ans;
     }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int getMaximumConsecutive(vector<int>& coins) {
+        sort(coins.begin(), coins.end());
+        int ans = 1;
+        for (int& v : coins) {
+            if (v > ans) break;
+            ans += v;
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func getMaximumConsecutive(coins []int) int {
+	sort.Ints(coins)
+	ans := 1
+	for _, v := range coins {
+		if v > ans {
+			break
+		}
+		ans += v
+	}
+	return ans
 }
 ```
 

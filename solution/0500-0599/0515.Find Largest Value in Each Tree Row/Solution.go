@@ -11,11 +11,10 @@ func largestValues(root *TreeNode) []int {
 	if root == nil {
 		return ans
 	}
-	var q = []*TreeNode{root}
+	q := []*TreeNode{root}
 	for len(q) > 0 {
-		n := len(q)
-		t := math.MinInt32
-		for i := 0; i < n; i++ {
+		t := q[0].Val
+		for i := len(q); i > 0; i-- {
 			node := q[0]
 			q = q[1:]
 			t = max(t, node.Val)

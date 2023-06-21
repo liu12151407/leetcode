@@ -1,4 +1,4 @@
-# [987. 二叉树的垂序遍历](https://leetcode-cn.com/problems/vertical-order-traversal-of-a-binary-tree)
+# [987. 二叉树的垂序遍历](https://leetcode.cn/problems/vertical-order-traversal-of-a-binary-tree)
 
 [English Version](/solution/0900-0999/0987.Vertical%20Order%20Traversal%20of%20a%20Binary%20Tree/README_EN.md)
 
@@ -17,7 +17,7 @@
 <p> </p>
 
 <p><strong>示例 1：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0987.Vertical%20Order%20Traversal%20of%20a%20Binary%20Tree/images/vtree1.jpg" style="width: 431px; height: 304px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0987.Vertical%20Order%20Traversal%20of%20a%20Binary%20Tree/images/vtree1.jpg" style="width: 431px; height: 304px;" />
 <pre>
 <strong>输入：</strong>root = [3,9,20,null,null,15,7]
 <strong>输出：</strong>[[9],[3,15],[20],[7]]
@@ -28,7 +28,7 @@
 列  2 ：只有结点 7 在此列中。</pre>
 
 <p><strong>示例 2：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0987.Vertical%20Order%20Traversal%20of%20a%20Binary%20Tree/images/vtree2.jpg" style="width: 512px; height: 304px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0987.Vertical%20Order%20Traversal%20of%20a%20Binary%20Tree/images/vtree2.jpg" style="width: 512px; height: 304px;" />
 <pre>
 <strong>输入：</strong>root = [1,2,3,4,5,6,7]
 <strong>输出：</strong>[[4],[2],[1,5,6],[3],[7]]
@@ -43,7 +43,7 @@
 </pre>
 
 <p><strong>示例 3：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0987.Vertical%20Order%20Traversal%20of%20a%20Binary%20Tree/images/vtree3.jpg" style="width: 512px; height: 304px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0987.Vertical%20Order%20Traversal%20of%20a%20Binary%20Tree/images/vtree3.jpg" style="width: 512px; height: 304px;" />
 <pre>
 <strong>输入：</strong>root = [1,2,3,4,6,5,7]
 <strong>输出：</strong>[[4],[2],[1,5,6],[3],[7]]
@@ -132,7 +132,7 @@ class Solution {
         if (root == null) {
             return;
         }
-        list.add(new int[]{x, y, root.val});
+        list.add(new int[] {x, y, root.val});
         dfs(root.left, x - 1, y - 1, list);
         dfs(root.right, x + 1, y - 1, list);
     }
@@ -190,7 +190,7 @@ function dfs(
     root: TreeNode | null,
     depth: number,
     idx: number,
-    solution: Array<Array<number>>
+    solution: Array<Array<number>>,
 ) {
     if (!root) return;
     solution.push([root.val, depth, idx]);

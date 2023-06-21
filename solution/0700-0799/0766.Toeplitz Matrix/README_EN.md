@@ -9,8 +9,8 @@
 <p>A matrix is <strong>Toeplitz</strong> if every diagonal from top-left to bottom-right has the same elements.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0700-0799/0766.Toeplitz%20Matrix/images/ex1.jpg" style="width: 322px; height: 242px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0700-0799/0766.Toeplitz%20Matrix/images/ex1.jpg" style="width: 322px; height: 242px;" />
 <pre>
 <strong>Input:</strong> matrix = [[1,2,3,4],[5,1,2,3],[9,5,1,2]]
 <strong>Output:</strong> true
@@ -20,8 +20,8 @@ In the above grid, the&nbsp;diagonals are:
 In each diagonal all elements are the same, so the answer is True.
 </pre>
 
-<p><strong>Example 2:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0700-0799/0766.Toeplitz%20Matrix/images/ex2.jpg" style="width: 162px; height: 162px;" />
+<p><strong class="example">Example 2:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0700-0799/0766.Toeplitz%20Matrix/images/ex2.jpg" style="width: 162px; height: 162px;" />
 <pre>
 <strong>Input:</strong> matrix = [[1,2],[2,2]]
 <strong>Output:</strong> false
@@ -57,11 +57,11 @@ The diagonal &quot;[1, 2]&quot; has different elements.
 class Solution:
     def isToeplitzMatrix(self, matrix: List[List[int]]) -> bool:
         m, n = len(matrix), len(matrix[0])
-        for i in range(1, m):
-            for j in range(1, n):
-                if matrix[i][j] != matrix[i - 1][j - 1]:
-                    return False
-        return True
+        return all(
+            matrix[i][j] == matrix[i - 1][j - 1]
+            for i in range(1, m)
+            for j in range(1, n)
+        )
 ```
 
 ### **Java**
@@ -80,6 +80,62 @@ class Solution {
         return true;
     }
 }
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool isToeplitzMatrix(vector<vector<int>>& matrix) {
+        int m = matrix.size(), n = matrix[0].size();
+        for (int i = 1; i < m; ++i) {
+            for (int j = 1; j < n; ++j) {
+                if (matrix[i][j] != matrix[i - 1][j - 1]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+};
+```
+
+### **Go**
+
+```go
+func isToeplitzMatrix(matrix [][]int) bool {
+	m, n := len(matrix), len(matrix[0])
+	for i := 1; i < m; i++ {
+		for j := 1; j < n; j++ {
+			if matrix[i][j] != matrix[i-1][j-1] {
+				return false
+			}
+		}
+	}
+	return true
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number[][]} matrix
+ * @return {boolean}
+ */
+var isToeplitzMatrix = function (matrix) {
+    const m = matrix.length;
+    const n = matrix[0].length;
+    for (let i = 1; i < m; ++i) {
+        for (let j = 1; j < n; ++j) {
+            if (matrix[i][j] != matrix[i - 1][j - 1]) {
+                return false;
+            }
+        }
+    }
+    return true;
+};
 ```
 
 ### **...**

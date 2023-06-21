@@ -1,4 +1,4 @@
-# [2017. 网格游戏](https://leetcode-cn.com/problems/grid-game)
+# [2017. 网格游戏](https://leetcode.cn/problems/grid-game)
 
 [English Version](/solution/2000-2099/2017.Grid%20Game/README_EN.md)
 
@@ -18,7 +18,7 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2017.Grid%20Game/images/a1.png" style="width: 388px; height: 103px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2017.Grid%20Game/images/a1.png" style="width: 388px; height: 103px;" /></p>
 
 <pre>
 <strong>输入：</strong>grid = [[2,5,4],[1,5,1]]
@@ -29,7 +29,7 @@
 </pre>
 
 <p><strong>示例 2：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2017.Grid%20Game/images/a2.png" style="width: 384px; height: 105px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2017.Grid%20Game/images/a2.png" style="width: 384px; height: 105px;" />
 <pre>
 <strong>输入：</strong>grid = [[3,3,1],[8,5,2]]
 <strong>输出：</strong>4
@@ -39,7 +39,7 @@
 </pre>
 
 <p><strong>示例 3：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2017.Grid%20Game/images/a3.png" style="width: 493px; height: 103px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2017.Grid%20Game/images/a3.png" style="width: 493px; height: 103px;" />
 <pre>
 <strong>输入：</strong>grid = [[1,3,1,15],[1,3,3,1]]
 <strong>输出：</strong>7
@@ -63,6 +63,18 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：前缀和**
+
+我们注意到，如果确定了第一个机器人拐头向下的位置 $j$，那么第二个机器人的最优路径也就确定了，第二个机器人的最优路径就是第一行从 $j+1$ 到 $n-1$ 的前缀和，或者第二行从 $0$ 到 $j-1$ 的前缀和，取两者的最大值。
+
+我们先计算第一行的后缀点数和，记为 $s_1$，第二行的前缀点数和记为 $s_2$，初始时 $s_1 = \sum_{j=0}^{n-1} grid[0][j]$, $s_2 = 0$。
+
+然后我们枚举第一个机器人拐头向下的位置 $j$，此时更新 $s_1 = s_1 - grid[0][j]$, 那么第二个机器人的最优路径和就是 $max(s_1, s_2)$，我们取所有 $j$ 对应的 $max(s_1, s_2)$ 的最小值即可。然后更新 $s_2 = s_2 + grid[1][j]$。
+
+枚举结束后，返回答案即可。
+
+时间复杂度 $O(n)$，空间复杂度 $O(1)$。其中 $n$ 是网格的列数。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -70,7 +82,15 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def gridGame(self, grid: List[List[int]]) -> int:
+        ans = inf
+        s1, s2 = sum(grid[0]), 0
+        for j, v in enumerate(grid[0]):
+            s1 -= v
+            ans = min(ans, max(s1, s2))
+            s2 += grid[1][j]
+        return ans
 ```
 
 ### **Java**
@@ -78,7 +98,92 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public long gridGame(int[][] grid) {
+        long ans = Long.MAX_VALUE;
+        long s1 = 0, s2 = 0;
+        for (int v : grid[0]) {
+            s1 += v;
+        }
+        int n = grid[0].length;
+        for (int j = 0; j < n; ++j) {
+            s1 -= grid[0][j];
+            ans = Math.min(ans, Math.max(s1, s2));
+            s2 += grid[1][j];
+        }
+        return ans;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+using ll = long long;
+
+class Solution {
+public:
+    long long gridGame(vector<vector<int>>& grid) {
+        ll ans = LONG_MAX;
+        int n = grid[0].size();
+        ll s1 = 0, s2 = 0;
+        for (int& v : grid[0]) s1 += v;
+        for (int j = 0; j < n; ++j) {
+            s1 -= grid[0][j];
+            ans = min(ans, max(s1, s2));
+            s2 += grid[1][j];
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func gridGame(grid [][]int) int64 {
+	ans := math.MaxInt64
+	s1, s2 := 0, 0
+	for _, v := range grid[0] {
+		s1 += v
+	}
+	for j, v := range grid[0] {
+		s1 -= v
+		ans = min(ans, max(s1, s2))
+		s2 += grid[1][j]
+	}
+	return int64(ans)
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+```
+
+### **TypeScript**
+
+```ts
+function gridGame(grid: number[][]): number {
+    let ans = Number.MAX_SAFE_INTEGER;
+    let s1 = grid[0].reduce((a, b) => a + b, 0);
+    let s2 = 0;
+    for (let j = 0; j < grid[0].length; ++j) {
+        s1 -= grid[0][j];
+        ans = Math.min(ans, Math.max(s1, s2));
+        s2 += grid[1][j];
+    }
+    return ans;
+}
 ```
 
 ### **...**

@@ -1,4 +1,4 @@
-# [2103. 环和杆](https://leetcode-cn.com/problems/rings-and-rods)
+# [2103. 环和杆](https://leetcode.cn/problems/rings-and-rods)
 
 [English Version](/solution/2100-2199/2103.Rings%20and%20Rods/README_EN.md)
 
@@ -22,7 +22,7 @@
 <p>&nbsp;</p>
 
 <p><strong>示例 1：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2100-2199/2103.Rings%20and%20Rods/images/ex1final.png" style="width: 258px; height: 130px;">
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2100-2199/2103.Rings%20and%20Rods/images/ex1final.png" style="width: 258px; height: 130px;">
 <pre><strong>输入：</strong>rings = "B0B6G0R6R0R6G9"
 <strong>输出：</strong>1
 <strong>解释：</strong>
@@ -33,7 +33,7 @@
 </pre>
 
 <p><strong>示例 2：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2100-2199/2103.Rings%20and%20Rods/images/ex2final.png" style="width: 266px; height: 130px;">
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2100-2199/2103.Rings%20and%20Rods/images/ex2final.png" style="width: 266px; height: 130px;">
 <pre><strong>输入：</strong>rings = "B0R0G0R9R0B0G0"
 <strong>输出：</strong>1
 <strong>解释：</strong>
@@ -80,7 +80,7 @@ class Solution:
         for i in range(1, len(rings), 2):
             c = int(rings[i])
             mp[c].add(rings[i - 1])
-        return sum(1 for v in mp.values() if len(v) == 3)
+        return sum(len(v) == 3 for v in mp.values())
 ```
 
 ### **Java**
@@ -113,8 +113,7 @@ class Solution {
 public:
     int countPoints(string rings) {
         unordered_map<int, unordered_set<char>> mp;
-        for (int i = 1; i < rings.size(); i += 2)
-        {
+        for (int i = 1; i < rings.size(); i += 2) {
             int c = rings[i] - '0';
             mp[c].insert(rings[i - 1]);
         }
@@ -127,12 +126,79 @@ public:
 };
 ```
 
+### **Go**
+
+```go
+func countPoints(rings string) int {
+	mp := make(map[byte]map[byte]bool)
+	for i := 1; i < len(rings); i += 2 {
+		c := rings[i]
+		if len(mp[c]) == 0 {
+			mp[c] = make(map[byte]bool)
+		}
+		mp[c][rings[i-1]] = true
+	}
+	ans := 0
+	for _, v := range mp {
+		if len(v) == 3 {
+			ans++
+		}
+	}
+	return ans
+}
+```
+
 ### **TypeScript**
 
-<!-- 这里可写当前语言的特殊实现逻辑 -->
-
 ```ts
+function countPoints(rings: string): number {
+    const helper = (c: string) => c.charCodeAt(0) - 'A'.charCodeAt(0);
+    const n = rings.length;
+    const target = (1 << helper('R')) + (1 << helper('G')) + (1 << helper('B'));
+    const count = new Array(10).fill(0);
+    for (let i = 0; i < n; i += 2) {
+        count[rings[i + 1]] |= 1 << helper(rings[i]);
+    }
+    return count.reduce((r, v) => (r += v === target ? 1 : 0), 0);
+}
+```
 
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn count_points(rings: String) -> i32 {
+        let rings = rings.as_bytes();
+        let target = (1 << b'R' - b'A') + (1 << b'G' - b'A') + (1 << b'B' - b'A');
+        let n = rings.len();
+        let mut count = [0; 10];
+        let mut i = 0;
+        while i < n {
+            count[(rings[i + 1] - b'0') as usize] |= 1 << rings[i] - b'A';
+            i += 2;
+        }
+        count.iter().filter(|&v| *v == target).count() as i32
+    }
+}
+```
+
+### **C**
+
+```c
+int countPoints(char* rings) {
+    int target = (1 << ('R' - 'A')) + (1 << ('G' - 'A')) + (1 << ('B' - 'A'));
+    int count[10] = {0};
+    for (int i = 0; rings[i]; i += 2) {
+        count[rings[i + 1] - '0'] |= 1 << (rings[i] - 'A');
+    }
+    int ans = 0;
+    for (int i = 0; i < 10; i++) {
+        if (count[i] == target) {
+            ans++;
+        }
+    }
+    return ans;
+}
 ```
 
 ### **...**

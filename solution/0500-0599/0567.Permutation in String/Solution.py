@@ -1,21 +1,30 @@
 class Solution:
-    def checkInclusion(self, s1, s2):
-        """
-        :type s1: str
-        :type s2: str
-        :rtype: bool
-        """
-        if len(s1) > len(s2):
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        n, m = len(s1), len(s2)
+        if n > m:
             return False
-        flag1 = [0] * 26
-        flag2 = [0] * 26
-        for i, x in enumerate(s1):
-            flag1[ord(x) - ord('a')] += 1
+        cnt = Counter()
+        for a, b in zip(s1, s2):
+            cnt[a] -= 1
+            cnt[b] += 1
+        diff = sum(x != 0 for x in cnt.values())
+        if diff == 0:
+            return True
+        for i in range(n, m):
+            a, b = s2[i - n], s2[i]
 
-        for i, x in enumerate(s2):
-            flag2[ord(x) - ord('a')] += 1
-            if i >= len(s1):
-                flag2[ord(s2[i - len(s1)]) - ord('a')] -= 1
-            if flag1 == flag2:
+            if cnt[b] == 0:
+                diff += 1
+            cnt[b] += 1
+            if cnt[b] == 0:
+                diff -= 1
+
+            if cnt[a] == 0:
+                diff += 1
+            cnt[a] -= 1
+            if cnt[a] == 0:
+                diff -= 1
+
+            if diff == 0:
                 return True
         return False

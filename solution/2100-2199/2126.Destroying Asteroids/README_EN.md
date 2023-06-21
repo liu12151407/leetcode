@@ -11,7 +11,7 @@
 <p>Return <code>true</code><em> if <strong>all</strong> asteroids can be destroyed. Otherwise, return </em><code>false</code><em>.</em></p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> mass = 10, asteroids = [3,9,19,5,21]
@@ -25,7 +25,7 @@
 All asteroids are destroyed.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> mass = 5, asteroids = [4,9,23,4]
@@ -51,13 +51,65 @@ This is less than 23, so a collision would not destroy the last asteroid.</pre>
 ### **Python3**
 
 ```python
-
+class Solution:
+    def asteroidsDestroyed(self, mass: int, asteroids: List[int]) -> bool:
+        asteroids.sort()
+        for v in asteroids:
+            if mass < v:
+                return False
+            mass += v
+        return True
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public boolean asteroidsDestroyed(int mass, int[] asteroids) {
+        Arrays.sort(asteroids);
+        long m = mass;
+        for (int v : asteroids) {
+            if (m < v) {
+                return false;
+            }
+            m += v;
+        }
+        return true;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool asteroidsDestroyed(int mass, vector<int>& asteroids) {
+        sort(asteroids.begin(), asteroids.end());
+        long long m = mass;
+        for (int v : asteroids) {
+            if (m < v) return false;
+            m += v;
+        }
+        return true;
+    }
+};
+```
+
+### **Go**
+
+```go
+func asteroidsDestroyed(mass int, asteroids []int) bool {
+	m := mass
+	sort.Ints(asteroids)
+	for _, v := range asteroids {
+		if m < v {
+			return false
+		}
+		m += v
+	}
+	return true
+}
 ```
 
 ### **TypeScript**

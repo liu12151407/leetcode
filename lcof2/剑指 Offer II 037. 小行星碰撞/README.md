@@ -1,4 +1,4 @@
-# [剑指 Offer II 037. 小行星碰撞](https://leetcode-cn.com/problems/XagZNi)
+# [剑指 Offer II 037. 小行星碰撞](https://leetcode.cn/problems/XagZNi)
 
 ## 题目描述
 
@@ -52,7 +52,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 735&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/asteroid-collision/">https://leetcode-cn.com/problems/asteroid-collision/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 735&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/asteroid-collision/">https://leetcode.cn/problems/asteroid-collision/</a></p>
 
 ## 解法
 
@@ -60,8 +60,8 @@
 
 可以类比成左右括号匹配：
 
-- 向右移动的小行星（左括号）：不会引发碰撞，直接入栈
-- 向左移动的小行星（右括号）：可能会和之前向右移动的小行星发生碰撞，特殊处理
+-   向右移动的小行星（左括号）：不会引发碰撞，直接入栈
+-   向左移动的小行星（右括号）：可能会和之前向右移动的小行星发生碰撞，特殊处理
 
 因为答案需要碰撞后剩下的所有小行星，相当于栈里最后剩下的元素，所以可以直接用数组表示栈
 

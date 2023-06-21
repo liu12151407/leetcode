@@ -17,7 +17,7 @@
 <p><strong>Note:</strong> If <code>u<sub>j</sub></code> and <code>v<sub>j</sub></code> are already direct friends, the request is still <strong>successful</strong>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 3, restrictions = [[0,1]], requests = [[0,2],[2,1]]
@@ -27,7 +27,7 @@
 Request 1: Person 2 and person 1 cannot be friends since person 0 and person 1 would be indirect friends (1--2--0).
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 3, restrictions = [[0,1]], requests = [[1,2],[0,2]]
@@ -37,7 +37,7 @@ Request 1: Person 2 and person 1 cannot be friends since person 0 and person 1 w
 Request 1: Person 0 and person 2 cannot be friends since person 0 and person 1 would be indirect friends (0--2--1).
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 5, restrictions = [[0,1],[1,2],[2,3]], requests = [[0,4],[1,2],[3,1],[3,4]]
@@ -72,7 +72,9 @@ Request 3: Person 3 and person 4 cannot be friends since person 0 and person 1 w
 
 ```python
 class Solution:
-    def friendRequests(self, n: int, restrictions: List[List[int]], requests: List[List[int]]) -> List[bool]:
+    def friendRequests(
+        self, n: int, restrictions: List[List[int]], requests: List[List[int]]
+    ) -> List[bool]:
         p = list(range(n))
 
         def find(x):
@@ -88,7 +90,9 @@ class Solution:
             else:
                 valid = True
                 for x, y in restrictions:
-                    if (find(u) == find(x) and find(v) == find(y)) or (find(u) == find(y) and find(v) == find(x)):
+                    if (find(u) == find(x) and find(v) == find(y)) or (
+                        find(u) == find(y) and find(v) == find(x)
+                    ):
                         valid = False
                         break
                 ans.append(valid)
@@ -118,7 +122,8 @@ class Solution {
                 boolean valid = true;
                 for (int[] res : restrictions) {
                     int x = res[0], y = res[1];
-                    if ((find(u) == find(x) && find(v) == find(y)) || (find(u) == find(y) && find(v) == find(x))) {
+                    if ((find(u) == find(x) && find(v) == find(y))
+                        || (find(u) == find(y) && find(v) == find(x))) {
                         valid = false;
                         break;
                     }
@@ -154,18 +159,15 @@ public:
         p.resize(n);
         for (int i = 0; i < n; ++i) p[i] = i;
         vector<bool> ans;
-        for (auto& req : requests)
-        {
+        for (auto& req : requests) {
             int u = req[0], v = req[1];
-            if (find(u) == find(v)) ans.push_back(true);
-            else
-            {
+            if (find(u) == find(v))
+                ans.push_back(true);
+            else {
                 bool valid = true;
-                for (auto& res : restrictions)
-                {
+                for (auto& res : restrictions) {
                     int x = res[0], y = res[1];
-                    if ((find(u) == find(x) && find(v) == find(y)) || (find(u) == find(y) && find(v) == find(x)))
-                    {
+                    if ((find(u) == find(x) && find(v) == find(y)) || (find(u) == find(y) && find(v) == find(x))) {
                         valid = false;
                         break;
                     }

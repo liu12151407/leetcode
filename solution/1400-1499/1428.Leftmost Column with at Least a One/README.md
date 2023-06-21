@@ -1,4 +1,4 @@
-# [1428. 至少有一个 1 的最左端列](https://leetcode-cn.com/problems/leftmost-column-with-at-least-a-one)
+# [1428. 至少有一个 1 的最左端列](https://leetcode.cn/problems/leftmost-column-with-at-least-a-one)
 
 [English Version](/solution/1400-1499/1428.Leftmost%20Column%20with%20at%20Least%20a%20One/README_EN.md)
 
@@ -27,7 +27,7 @@
 
 <p><strong>示例 1:</strong></p>
 
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1400-1499/1428.Leftmost%20Column%20with%20at%20Least%20a%20One/images/untitled-diagram-5.jpg" style="height:81px; width:81px" /></strong></p>
+<p><strong><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1400-1499/1428.Leftmost%20Column%20with%20at%20Least%20a%20One/images/untitled-diagram-5.jpg" style="height:81px; width:81px" /></strong></p>
 
 <pre>
 <strong>输入:</strong> mat = [[0,0],[1,1]]
@@ -36,7 +36,7 @@
 
 <p><strong>示例 2:</strong></p>
 
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1400-1499/1428.Leftmost%20Column%20with%20at%20Least%20a%20One/images/untitled-diagram-4.jpg" style="height:81px; width:81px" /></strong></p>
+<p><strong><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1400-1499/1428.Leftmost%20Column%20with%20at%20Least%20a%20One/images/untitled-diagram-4.jpg" style="height:81px; width:81px" /></strong></p>
 
 <pre>
 <strong>输入:</strong> mat = [[0,0],[0,1]]
@@ -45,7 +45,7 @@
 
 <p><strong>示例 3:</strong></p>
 
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1400-1499/1428.Leftmost%20Column%20with%20at%20Least%20a%20One/images/untitled-diagram-3.jpg" style="height:81px; width:81px" /></strong></p>
+<p><strong><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1400-1499/1428.Leftmost%20Column%20with%20at%20Least%20a%20One/images/untitled-diagram-3.jpg" style="height:81px; width:81px" /></strong></p>
 
 <pre>
 <strong>输入:</strong> mat = [[0,0],[0,0]]
@@ -53,7 +53,7 @@
 
 <p><strong>示例 4:</strong></p>
 
-<p><strong><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/1400-1499/1428.Leftmost%20Column%20with%20at%20Least%20a%20One/images/untitled-diagram-6.jpg" style="height:121px; width:161px" /></strong></p>
+<p><strong><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/1400-1499/1428.Leftmost%20Column%20with%20at%20Least%20a%20One/images/untitled-diagram-6.jpg" style="height:121px; width:161px" /></strong></p>
 
 <pre>
 <strong>输入:</strong> mat = [[0,0,0,1],[0,0,1,1],[0,1,1,1]]
@@ -89,9 +89,10 @@
 # This is BinaryMatrix's API interface.
 # You should not implement it, or speculate about its implementation
 # """
-#class BinaryMatrix(object):
+# class BinaryMatrix(object):
 #    def get(self, row: int, col: int) -> int:
 #    def dimensions(self) -> list[]:
+
 
 class Solution:
     def leftMostColumnWithOne(self, binaryMatrix: 'BinaryMatrix') -> int:
@@ -170,7 +171,7 @@ class Solution {
 
 class Solution {
 public:
-    int leftMostColumnWithOne(BinaryMatrix &binaryMatrix) {
+    int leftMostColumnWithOne(BinaryMatrix& binaryMatrix) {
         vector<int> scale = binaryMatrix.dimensions();
         int rows = scale[0], cols = scale[1];
         int res = -1;

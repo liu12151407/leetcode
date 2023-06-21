@@ -13,7 +13,7 @@
 <p>A <strong>subsequence</strong> of a string is a new string generated from the original string with some characters (can be none) deleted without changing the relative order of the remaining characters.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;abcacb&quot;, p = &quot;ab&quot;, removable = [3,1,0]
@@ -24,7 +24,7 @@ If we remove the characters at indices 3, 1, and 0, &quot;<s><strong>ab</strong>
 Hence, the maximum k is 2.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;abcbddddd&quot;, p = &quot;abcd&quot;, removable = [3,2,1,4,5,6]
@@ -33,7 +33,7 @@ Hence, the maximum k is 2.
 &quot;abcd&quot; is a subsequence of &quot;<u><strong>abcd</strong></u>dddd&quot;.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;abcab&quot;, p = &quot;abc&quot;, removable = [0,1,2,3,4]
@@ -55,6 +55,46 @@ Hence, the maximum k is 2.
 
 ## Solutions
 
+Binary search.
+
+Template 1:
+
+```java
+boolean check(int x) {
+}
+
+int search(int left, int right) {
+    while (left < right) {
+        int mid = (left + right) >> 1;
+        if (check(mid)) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+    return left;
+}
+```
+
+Template 2:
+
+```java
+boolean check(int x) {
+}
+
+int search(int left, int right) {
+    while (left < right) {
+        int mid = (left + right + 1) >> 1;
+        if (check(mid)) {
+            left = mid;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return left;
+}
+```
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -62,15 +102,16 @@ Hence, the maximum k is 2.
 ```python
 class Solution:
     def maximumRemovals(self, s: str, p: str, removable: List[int]) -> int:
-        def check(mid):
-            m, n, i, j = len(s), len(p), 0, 0
-            ids = set(removable[:mid])
+        def check(k):
+            i = j = 0
+            ids = set(removable[:k])
             while i < m and j < n:
                 if i not in ids and s[i] == p[j]:
                     j += 1
                 i += 1
             return j == n
 
+        m, n = len(s), len(p)
         left, right = 0, len(removable)
         while left < right:
             mid = (left + right + 1) >> 1
@@ -186,10 +227,25 @@ public:
 
 ```go
 func maximumRemovals(s string, p string, removable []int) int {
+	check := func(k int) bool {
+		ids := make(map[int]bool)
+		for _, r := range removable[:k] {
+			ids[r] = true
+		}
+		var i, j int
+		for i < len(s) && j < len(p) {
+			if !ids[i] && s[i] == p[j] {
+				j++
+			}
+			i++
+		}
+		return j == len(p)
+	}
+
 	left, right := 0, len(removable)
 	for left < right {
 		mid := (left + right + 1) >> 1
-		if check(s, p, removable, mid) {
+		if check(mid) {
 			left = mid
 		} else {
 			right = mid - 1
@@ -197,20 +253,49 @@ func maximumRemovals(s string, p string, removable []int) int {
 	}
 	return left
 }
+```
 
-func check(s string, p string, removable []int, mid int) bool {
-	m, n, i, j := len(s), len(p), 0, 0
-	ids := make(map[int]bool)
-	for k := 0; k < mid; k++ {
-		ids[removable[k]] = true
-	}
-	for i < m && j < n {
-		if !ids[i] && s[i] == p[j] {
-			j++
-		}
-		i++
-	}
-	return j == n
+### **Rust**
+
+```rust
+use std::collections::HashSet;
+
+impl Solution {
+    pub fn maximum_removals(s: String, p: String, removable: Vec<i32>) -> i32 {
+        let m = s.len();
+        let n = p.len();
+        let s = s.as_bytes();
+        let p = p.as_bytes();
+
+        let check = |k| {
+            let mut i = 0;
+            let mut j = 0;
+            let ids: HashSet<i32> = removable[..k].iter().cloned().collect();
+            while i < m && j < n {
+                if !ids.contains(&(i as i32)) && s[i] == p[j] {
+                    j += 1;
+                }
+                i += 1;
+            }
+            j == n
+        };
+
+        let mut left = 0;
+        let mut right = removable.len();
+        while left + 1 < right {
+            let mid = left + (right - left) / 2;
+            if check(mid) {
+                left = mid;
+            } else {
+                right = mid;
+            }
+        }
+
+        if check(right) {
+            return right as i32;
+        }
+        left as i32
+    }
 }
 ```
 

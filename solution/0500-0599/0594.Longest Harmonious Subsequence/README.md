@@ -1,4 +1,4 @@
-# [594. 最长和谐子序列](https://leetcode-cn.com/problems/longest-harmonious-subsequence)
+# [594. 最长和谐子序列](https://leetcode.cn/problems/longest-harmonious-subsequence)
 
 [English Version](/solution/0500-0599/0594.Longest%20Harmonious%20Subsequence/README_EN.md)
 
@@ -72,7 +72,10 @@ class Solution:
 class Solution:
     def findLHS(self, nums: List[int]) -> int:
         counter = Counter(nums)
-        return max([counter[num] + counter[num + 1] for num in nums if num + 1 in counter], default=0)
+        return max(
+            [counter[num] + counter[num + 1] for num in nums if num + 1 in counter],
+            default=0,
+        )
 ```
 
 ### **Java**

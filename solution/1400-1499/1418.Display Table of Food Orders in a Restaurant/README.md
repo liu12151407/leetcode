@@ -1,4 +1,4 @@
-# [1418. 点菜展示表](https://leetcode-cn.com/problems/display-table-of-food-orders-in-a-restaurant)
+# [1418. 点菜展示表](https://leetcode.cn/problems/display-table-of-food-orders-in-a-restaurant)
 
 [English Version](/solution/1400-1499/1418.Display%20Table%20of%20Food%20Orders%20in%20a%20Restaurant/README_EN.md)
 
@@ -136,8 +136,7 @@ public:
         unordered_set<int> tables;
         unordered_set<string> foods;
         unordered_map<string, int> mp;
-        for (auto& order : orders)
-        {
+        for (auto& order : orders) {
             int table = stoi(order[1]);
             string food = order[2];
             tables.insert(table);
@@ -155,12 +154,10 @@ public:
         title.push_back("Table");
         for (auto e : f) title.push_back(e);
         res.push_back(title);
-        for (int table : t)
-        {
+        for (int table : t) {
             vector<string> tmp;
             tmp.push_back(to_string(table));
-            for (string food : f)
-            {
+            for (string food : f) {
                 tmp.push_back(to_string(mp[to_string(table) + "." + food]));
             }
             res.push_back(tmp);

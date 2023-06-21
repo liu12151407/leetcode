@@ -1,4 +1,4 @@
-# [LCP 24. 数字游戏](https://leetcode-cn.com/problems/5TxKeK)
+# [LCP 24. 数字游戏](https://leetcode.cn/problems/5TxKeK)
 
 ## 题目描述
 
@@ -50,8 +50,8 @@
 
 **提示：**
 
-- `1 <= nums.length <= 10^5`
-- `1 <= nums[i] <= 10^3`
+-   `1 <= nums.length <= 10^5`
+-   `1 <= nums[i] <= 10^3`
 
 ## 解法
 

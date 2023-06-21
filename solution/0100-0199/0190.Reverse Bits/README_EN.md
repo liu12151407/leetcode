@@ -9,16 +9,12 @@
 <p><strong>Note:</strong></p>
 
 <ul>
-	<li>Note that in some languages such as Java, there is no unsigned integer type. In this case, both input and output will be given as a signed integer type. They should not affect your implementation, as the integer&#39;s internal binary representation is the same, whether it is signed or unsigned.</li>
-	<li>In Java,&nbsp;the compiler represents the signed integers using <a href="https://en.wikipedia.org/wiki/Two%27s_complement" target="_blank">2&#39;s complement notation</a>. Therefore, in <strong>Example 2</strong>&nbsp;above, the input represents the signed integer <code>-3</code>&nbsp;and the output represents the signed integer <code>-1073741825</code>.</li>
+	<li>Note that in some languages, such as Java, there is no unsigned integer type. In this case, both input and output will be given as a signed integer type. They should not affect your implementation, as the integer&#39;s internal binary representation is the same, whether it is signed or unsigned.</li>
+	<li>In Java, the compiler represents the signed integers using <a href="https://en.wikipedia.org/wiki/Two%27s_complement" target="_blank">2&#39;s complement notation</a>. Therefore, in <strong class="example">Example 2</strong> above, the input represents the signed integer <code>-3</code> and the output represents the signed integer <code>-1073741825</code>.</li>
 </ul>
 
-<p><b>Follow up</b>:</p>
-
-<p>If this function is called many times, how would you optimize it?</p>
-
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 00000010100101000001111010011100
@@ -26,7 +22,7 @@
 <strong>Explanation: </strong>The input binary string <strong>00000010100101000001111010011100</strong> represents the unsigned integer 43261596, so return 964176192 which its binary representation is <strong>00111001011110000010100101000000</strong>.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 11111111111111111111111111111101
@@ -41,6 +37,9 @@
 	<li>The input must be a <strong>binary string</strong> of length <code>32</code></li>
 </ul>
 
+<p>&nbsp;</p>
+<p><strong>Follow up:</strong> If this function is called many times, how would you optimize it?</p>
+
 ## Solutions
 
 <!-- tabs:start -->
@@ -52,7 +51,7 @@ class Solution:
     def reverseBits(self, n: int) -> int:
         res = 0
         for i in range(32):
-            res |= ((n & 1) << (31 - i))
+            res |= (n & 1) << (31 - i)
             n >>= 1
         return res
 ```
@@ -104,6 +103,34 @@ var reverseBits = function (n) {
     }
     return res >>> 0;
 };
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn reverse_bits(mut x: u32) -> u32 {
+        let mut res = 0;
+        for _ in 0..32 {
+            res = (res << 1) | (x & 1);
+            x >>= 1;
+        }
+        res
+    }
+}
+```
+
+### **Go**
+
+```go
+func reverseBits(num uint32) uint32 {
+	var ans uint32 = 0
+	for i := 0; i < 32; i++ {
+		ans |= (num & 1) << (31 - i)
+		num >>= 1
+	}
+	return ans
+}
 ```
 
 ### **...**

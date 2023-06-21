@@ -1,4 +1,4 @@
-# [563. 二叉树的坡度](https://leetcode-cn.com/problems/binary-tree-tilt)
+# [563. 二叉树的坡度](https://leetcode.cn/problems/binary-tree-tilt)
 
 [English Version](/solution/0500-0599/0563.Binary%20Tree%20Tilt/README_EN.md)
 
@@ -6,16 +6,16 @@
 
 <!-- 这里写题目描述 -->
 
-<p>给定一个二叉树，计算 <strong>整个树 </strong>的坡度 。</p>
+<p>给你一个二叉树的根节点 <code>root</code> ，计算并返回 <strong>整个树 </strong>的坡度 。</p>
 
 <p>一个树的<strong> 节点的坡度 </strong>定义即为，该节点左子树的节点之和和右子树节点之和的 <strong>差的绝对值 </strong>。如果没有左子树的话，左子树的节点之和为 0 ；没有右子树的话也是一样。空结点的坡度是 0 。</p>
 
 <p><strong>整个树</strong> 的坡度就是其所有节点的坡度之和。</p>
 
-<p> </p>
+<p>&nbsp;</p>
 
 <p><strong>示例 1：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0563.Binary%20Tree%20Tilt/images/tilt1.jpg" style="width: 712px; height: 182px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0563.Binary%20Tree%20Tilt/images/tilt1.jpg" style="width: 712px; height: 182px;" />
 <pre>
 <strong>输入：</strong>root = [1,2,3]
 <strong>输出：</strong>1
@@ -27,7 +27,7 @@
 </pre>
 
 <p><strong>示例 2：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0563.Binary%20Tree%20Tilt/images/tilt2.jpg" style="width: 800px; height: 203px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0563.Binary%20Tree%20Tilt/images/tilt2.jpg" style="width: 800px; height: 203px;" />
 <pre>
 <strong>输入：</strong>root = [4,2,9,3,5,null,7]
 <strong>输出：</strong>15
@@ -42,19 +42,19 @@
 </pre>
 
 <p><strong>示例 3：</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0563.Binary%20Tree%20Tilt/images/tilt3.jpg" style="width: 800px; height: 293px;" />
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0563.Binary%20Tree%20Tilt/images/tilt3.jpg" style="width: 800px; height: 293px;" />
 <pre>
 <strong>输入：</strong>root = [21,7,14,1,1,2,2,3,3]
 <strong>输出：</strong>9
 </pre>
 
-<p> </p>
+<p>&nbsp;</p>
 
 <p><strong>提示：</strong></p>
 
 <ul>
 	<li>树中节点数目的范围在 <code>[0, 10<sup>4</sup>]</code> 内</li>
-	<li><code>-1000 <= Node.val <= 1000</code></li>
+	<li><code>-1000 &lt;= Node.val &lt;= 1000</code></li>
 </ul>
 
 ## 解法

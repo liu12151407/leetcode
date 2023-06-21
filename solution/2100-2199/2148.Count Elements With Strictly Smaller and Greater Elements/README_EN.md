@@ -7,7 +7,7 @@
 <p>Given an integer array <code>nums</code>, return <em>the number of elements that have <strong>both</strong> a strictly smaller and a strictly greater element appear in </em><code>nums</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [11,7,2,15]
@@ -17,7 +17,7 @@ Element 11 has element 7 strictly smaller than it and element 15 strictly greate
 In total there are 2 elements having both a strictly smaller and a strictly greater element appear in <code>nums</code>.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [-3,3,3,90]
@@ -67,7 +67,6 @@ class Solution {
         return ans;
     }
 }
-
 ```
 
 ### **C++**
@@ -77,8 +76,7 @@ class Solution {
 public:
     int countElements(vector<int>& nums) {
         int mi = 1e6, mx = -1e6;
-        for (int num : nums)
-        {
+        for (int num : nums) {
             mi = min(mi, num);
             mx = max(mx, num);
         }
@@ -118,7 +116,8 @@ func countElements(nums []int) int {
 
 ```ts
 function countElements(nums: number[]): number {
-    const min = Math.min(...nums), max = Math.max(...nums);
+    const min = Math.min(...nums),
+        max = Math.max(...nums);
     let ans = 0;
     for (let i = 0; i < nums.length; ++i) {
         let cur = nums[i];
@@ -127,7 +126,7 @@ function countElements(nums: number[]): number {
         }
     }
     return ans;
-};
+}
 ```
 
 ### **...**

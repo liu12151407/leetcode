@@ -17,9 +17,9 @@
 	<li>(Optional) A sign character (either <code>&#39;+&#39;</code> or <code>&#39;-&#39;</code>).</li>
 	<li>One of the following formats:
 	<ol>
-		<li>At least one digit, followed by a dot <code>&#39;.&#39;</code>.</li>
-		<li>At least one digit, followed by a dot <code>&#39;.&#39;</code>, followed by at least one digit.</li>
-		<li>A dot <code>&#39;.&#39;</code>, followed by at least one digit.</li>
+		<li>One or more digits, followed by a dot <code>&#39;.&#39;</code>.</li>
+		<li>One or more digits, followed by a dot <code>&#39;.&#39;</code>, followed by one or more digits.</li>
+		<li>A dot <code>&#39;.&#39;</code>, followed by one or more digits.</li>
 	</ol>
 	</li>
 </ol>
@@ -28,7 +28,7 @@
 
 <ol>
 	<li>(Optional) A sign character (either <code>&#39;+&#39;</code> or <code>&#39;-&#39;</code>).</li>
-	<li>At least one digit.</li>
+	<li>One or more digits.</li>
 </ol>
 
 <p>For example, all the following are valid numbers: <code>[&quot;2&quot;, &quot;0089&quot;, &quot;-0.1&quot;, &quot;+3.14&quot;, &quot;4.&quot;, &quot;-.9&quot;, &quot;2e10&quot;, &quot;-90E3&quot;, &quot;3e+7&quot;, &quot;+6e-1&quot;, &quot;53.5e93&quot;, &quot;-123.456e789&quot;]</code>, while the following are not valid numbers: <code>[&quot;abc&quot;, &quot;1a&quot;, &quot;1e&quot;, &quot;e3&quot;, &quot;99e2.5&quot;, &quot;--6&quot;, &quot;-+3&quot;, &quot;95a54e53&quot;]</code>.</p>
@@ -36,32 +36,25 @@
 <p>Given a string <code>s</code>, return <code>true</code><em> if </em><code>s</code><em> is a <strong>valid number</strong></em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;0&quot;
 <strong>Output:</strong> true
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;e&quot;
 <strong>Output:</strong> false
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;.&quot;
 <strong>Output:</strong> false
-</pre>
-
-<p><strong>Example 4:</strong></p>
-
-<pre>
-<strong>Input:</strong> s = &quot;.1&quot;
-<strong>Output:</strong> true
 </pre>
 
 <p>&nbsp;</p>
@@ -79,13 +72,162 @@
 ### **Python3**
 
 ```python
-
+class Solution:
+    def isNumber(self, s: str) -> bool:
+        n = len(s)
+        i = 0
+        if s[i] in '+-':
+            i += 1
+        if i == n:
+            return False
+        if s[i] == '.' and (i + 1 == n or s[i + 1] in 'eE'):
+            return False
+        dot = e = 0
+        j = i
+        while j < n:
+            if s[j] == '.':
+                if e or dot:
+                    return False
+                dot += 1
+            elif s[j] in 'eE':
+                if e or j == i or j == n - 1:
+                    return False
+                e += 1
+                if s[j + 1] in '+-':
+                    j += 1
+                    if j == n - 1:
+                        return False
+            elif not s[j].isnumeric():
+                return False
+            j += 1
+        return True
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public boolean isNumber(String s) {
+        int n = s.length();
+        int i = 0;
+        if (s.charAt(i) == '+' || s.charAt(i) == '-') {
+            ++i;
+        }
+        if (i == n) {
+            return false;
+        }
+        if (s.charAt(i) == '.'
+            && (i + 1 == n || s.charAt(i + 1) == 'e' || s.charAt(i + 1) == 'E')) {
+            return false;
+        }
+        int dot = 0, e = 0;
+        for (int j = i; j < n; ++j) {
+            if (s.charAt(j) == '.') {
+                if (e > 0 || dot > 0) {
+                    return false;
+                }
+                ++dot;
+            } else if (s.charAt(j) == 'e' || s.charAt(j) == 'E') {
+                if (e > 0 || j == i || j == n - 1) {
+                    return false;
+                }
+                ++e;
+                if (s.charAt(j + 1) == '+' || s.charAt(j + 1) == '-') {
+                    if (++j == n - 1) {
+                        return false;
+                    }
+                }
+            } else if (s.charAt(j) < '0' || s.charAt(j) > '9') {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool isNumber(string s) {
+        int n = s.size();
+        int i = 0;
+        if (s[i] == '+' || s[i] == '-') ++i;
+        if (i == n) return false;
+        if (s[i] == '.' && (i + 1 == n || s[i + 1] == 'e' || s[i + 1] == 'E')) return false;
+        int dot = 0, e = 0;
+        for (int j = i; j < n; ++j) {
+            if (s[j] == '.') {
+                if (e || dot) return false;
+                ++dot;
+            } else if (s[j] == 'e' || s[j] == 'E') {
+                if (e || j == i || j == n - 1) return false;
+                ++e;
+                if (s[j + 1] == '+' || s[j + 1] == '-') {
+                    if (++j == n - 1) return false;
+                }
+            } else if (s[j] < '0' || s[j] > '9')
+                return false;
+        }
+        return true;
+    }
+};
+```
+
+### **Go**
+
+```go
+func isNumber(s string) bool {
+	i, n := 0, len(s)
+	if s[i] == '+' || s[i] == '-' {
+		i++
+	}
+	if i == n {
+		return false
+	}
+	if s[i] == '.' && (i+1 == n || s[i+1] == 'e' || s[i+1] == 'E') {
+		return false
+	}
+	var dot, e int
+	for j := i; j < n; j++ {
+		if s[j] == '.' {
+			if e > 0 || dot > 0 {
+				return false
+			}
+			dot++
+		} else if s[j] == 'e' || s[j] == 'E' {
+			if e > 0 || j == i || j == n-1 {
+				return false
+			}
+			e++
+			if s[j+1] == '+' || s[j+1] == '-' {
+				j++
+				if j == n-1 {
+					return false
+				}
+			}
+		} else if s[j] < '0' || s[j] > '9' {
+			return false
+		}
+	}
+	return true
+}
+```
+
+### **C#**
+
+```cs
+using System.Text.RegularExpressions;
+
+public class Solution {
+    private readonly Regex _isNumber_Regex = new Regex(@"^\s*[+-]?(\d+(\.\d*)?|\.\d+)([Ee][+-]?\d+)?\s*$");
+
+    public bool IsNumber(string s) {
+        return _isNumber_Regex.IsMatch(s);
+    }
+}
 ```
 
 ### **...**

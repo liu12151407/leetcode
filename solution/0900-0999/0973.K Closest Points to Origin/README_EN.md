@@ -11,8 +11,8 @@
 <p>You may return the answer in <strong>any order</strong>. The answer is <strong>guaranteed</strong> to be <strong>unique</strong> (except for the order that it is in).</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0973.K%20Closest%20Points%20to%20Origin/images/closestplane1.jpg" style="width: 400px; height: 400px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0900-0999/0973.K%20Closest%20Points%20to%20Origin/images/closestplane1.jpg" style="width: 400px; height: 400px;" />
 <pre>
 <strong>Input:</strong> points = [[1,3],[-2,2]], k = 1
 <strong>Output:</strong> [[-2,2]]
@@ -23,7 +23,7 @@ Since sqrt(8) &lt; sqrt(10), (-2, 2) is closer to the origin.
 We only want the closest k = 1 points from the origin, so the answer is just [[-2,2]].
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> points = [[3,3],[5,-1],[-2,4]], k = 2
@@ -46,13 +46,74 @@ We only want the closest k = 1 points from the origin, so the answer is just [[-
 ### **Python3**
 
 ```python
-
+class Solution:
+    def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
+        points.sort(key=lambda p: p[0] * p[0] + p[1] * p[1])
+        return points[:k]
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int[][] kClosest(int[][] points, int k) {
+        Arrays.sort(points, (a, b) -> {
+            int d1 = a[0] * a[0] + a[1] * a[1];
+            int d2 = b[0] * b[0] + b[1] * b[1];
+            return d1 - d2;
+        });
+        return Arrays.copyOfRange(points, 0, k);
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
+        sort(points.begin(), points.end(), [](const vector<int>& a, const vector<int>& b) {
+            return a[0] * a[0] + a[1] * a[1] < b[0] * b[0] + b[1] * b[1];
+        });
+        return vector<vector<int>>(points.begin(), points.begin() + k);
+    }
+};
+```
+
+### **Go**
+
+```go
+func kClosest(points [][]int, k int) [][]int {
+	sort.Slice(points, func(i, j int) bool {
+		a, b := points[i], points[j]
+		return a[0]*a[0]+a[1]*a[1] < b[0]*b[0]+b[1]*b[1]
+	})
+	return points[:k]
+}
+```
+
+### **TypeScript**
+
+```ts
+function kClosest(points: number[][], k: number): number[][] {
+    return points
+        .sort((a, b) => a[0] ** 2 + a[1] ** 2 - (b[0] ** 2 + b[1] ** 2))
+        .slice(0, k);
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn k_closest(mut points: Vec<Vec<i32>>, k: i32) -> Vec<Vec<i32>> {
+        points.sort_unstable_by(|a, b| {
+            (a[0].pow(2) + a[1].pow(2)).cmp(&(b[0].pow(2) + b[1].pow(2)))
+        });
+        points[0..k as usize].to_vec()
+    }
+}
 ```
 
 ### **...**

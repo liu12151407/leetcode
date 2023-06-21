@@ -4,28 +4,28 @@
 
 ## Description
 
-<p>Given a binary search tree (BST), find the lowest common ancestor (LCA) of two given nodes in the BST.</p>
+<p>Given a binary search tree (BST), find the lowest common ancestor (LCA) node of two given nodes in the BST.</p>
 
-<p>According to the <a href="https://en.wikipedia.org/wiki/Lowest_common_ancestor" target="_blank">definition of LCA on Wikipedia</a>: &ldquo;The lowest common ancestor is defined between two nodes <code>p</code> and <code>q</code> as the lowest node in <code>T</code> that has both <code>p</code> and <code>q</code> as descendants (where we allow <b>a node to be a descendant of itself</b>).&rdquo;</p>
+<p>According to the <a href="https://en.wikipedia.org/wiki/Lowest_common_ancestor" target="_blank">definition of LCA on Wikipedia</a>: &ldquo;The lowest common ancestor is defined between two nodes <code>p</code> and <code>q</code> as the lowest node in <code>T</code> that has both <code>p</code> and <code>q</code> as descendants (where we allow <strong>a node to be a descendant of itself</strong>).&rdquo;</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0200-0299/0235.Lowest%20Common%20Ancestor%20of%20a%20Binary%20Search%20Tree/images/binarysearchtree_improved.png" style="width: 200px; height: 190px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0200-0299/0235.Lowest%20Common%20Ancestor%20of%20a%20Binary%20Search%20Tree/images/binarysearchtree_improved.png" style="width: 200px; height: 190px;" />
 <pre>
 <strong>Input:</strong> root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8
 <strong>Output:</strong> 6
 <strong>Explanation:</strong> The LCA of nodes 2 and 8 is 6.
 </pre>
 
-<p><strong>Example 2:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0200-0299/0235.Lowest%20Common%20Ancestor%20of%20a%20Binary%20Search%20Tree/images/binarysearchtree_improved.png" style="width: 200px; height: 190px;" />
+<p><strong class="example">Example 2:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0200-0299/0235.Lowest%20Common%20Ancestor%20of%20a%20Binary%20Search%20Tree/images/binarysearchtree_improved.png" style="width: 200px; height: 190px;" />
 <pre>
 <strong>Input:</strong> root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 4
 <strong>Output:</strong> 2
 <strong>Explanation:</strong> The LCA of nodes 2 and 4 is 2, since a node can be a descendant of itself according to the LCA definition.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> root = [2,1], p = 2, q = 1
@@ -59,12 +59,15 @@ Iterative:
 #         self.left = None
 #         self.right = None
 
+
 class Solution:
-    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-        while root:
-            if root.val < p.val and root.val < q.val:
+    def lowestCommonAncestor(
+        self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode'
+    ) -> 'TreeNode':
+        while 1:
+            if root.val < min(p.val, q.val):
                 root = root.right
-            elif root.val > p.val and root.val > q.val:
+            elif root.val > max(p.val, q.val):
                 root = root.left
             else:
                 return root
@@ -80,13 +83,14 @@ Recursive:
 #         self.left = None
 #         self.right = None
 
+
 class Solution:
-    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-        if root is None:
-            return None
-        if root.val < p.val and root.val < q.val:
+    def lowestCommonAncestor(
+        self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode'
+    ) -> 'TreeNode':
+        if root.val < min(p.val, q.val):
             return self.lowestCommonAncestor(root.right, p, q)
-        if root.val > p.val and root.val > q.val:
+        if root.val > max(p.val, q.val):
             return self.lowestCommonAncestor(root.left, p, q)
         return root
 ```
@@ -108,12 +112,15 @@ Iterative:
 
 class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        while (root != null) {
-            if (root.val < p.val && root.val < q.val) root = root.right;
-            else if (root.val > p.val && root.val > q.val) root = root.left;
-            else return root;
+        while (true) {
+            if (root.val < Math.min(p.val, q.val)) {
+                root = root.right;
+            } else if (root.val > Math.max(p.val, q.val)) {
+                root = root.left;
+            } else {
+                return root;
+            }
         }
-        return root;
     }
 }
 ```
@@ -133,11 +140,122 @@ Recursive:
 
 class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null) return null;
-        if (root.val < p.val && root.val < q.val) return lowestCommonAncestor(root.right, p, q);
-        if (root.val > p.val && root.val > q.val) return lowestCommonAncestor(root.left, p, q);
+        if (root.val < Math.min(p.val, q.val)) {
+            return lowestCommonAncestor(root.right, p, q);
+        }
+        if (root.val > Math.max(p.val, q.val)) {
+            return lowestCommonAncestor(root.left, p, q);
+        }
         return root;
     }
+}
+```
+
+### **C++**
+
+Iterative:
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        while (1) {
+            if (root->val < min(p->val, q->val)) {
+                root = root->right;
+            } else if (root->val > max(p->val, q->val)) {
+                root = root->left;
+            } else {
+                return root;
+            }
+        }
+    }
+};
+```
+
+Recursive:
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if (root->val < min(p->val, q->val)) {
+            return lowestCommonAncestor(root->right, p, q);
+        }
+        if (root->val > max(p->val, q->val)) {
+            return lowestCommonAncestor(root->left, p, q);
+        }
+        return root;
+    }
+};
+```
+
+### **Go**
+
+Iterative:
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val   int
+ *     Left  *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+
+func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
+	for {
+		if root.Val < p.Val && root.Val < q.Val {
+			root = root.Right
+		} else if root.Val > p.Val && root.Val > q.Val {
+			root = root.Left
+		} else {
+			return root
+		}
+	}
+}
+```
+
+Recursive:
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val   int
+ *     Left  *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+
+func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
+	if root.Val < p.Val && root.Val < q.Val {
+		return lowestCommonAncestor(root.Right, p, q)
+	}
+	if root.Val > p.Val && root.Val > q.Val {
+		return lowestCommonAncestor(root.Left, p, q)
+	}
+	return root
 }
 ```
 
@@ -163,7 +281,7 @@ Iterative:
 function lowestCommonAncestor(
     root: TreeNode | null,
     p: TreeNode | null,
-    q: TreeNode | null
+    q: TreeNode | null,
 ): TreeNode | null {
     while (root) {
         if (root.val > p.val && root.val > q.val) {
@@ -197,7 +315,7 @@ Recursive:
 function lowestCommonAncestor(
     root: TreeNode | null,
     p: TreeNode | null,
-    q: TreeNode | null
+    q: TreeNode | null,
 ): TreeNode | null {
     if (root.val > p.val && root.val > q.val)
         return lowestCommonAncestor(root.left, p, q);
@@ -205,113 +323,6 @@ function lowestCommonAncestor(
         return lowestCommonAncestor(root.right, p, q);
     return root;
 }
-```
-
-### **Go**
-
-Iterative:
-
-```go
-/**
- * Definition for a binary tree node.
- * type TreeNode struct {
- *     Val   int
- *     Left  *TreeNode
- *     Right *TreeNode
- * }
- */
-
-func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
-	for root != nil {
-		if root.Val > p.Val && root.Val > q.Val {
-			root = root.Left
-		} else if root.Val < p.Val && root.Val < q.Val {
-			root = root.Right
-		} else {
-			return root
-		}
-	}
-	return nil
-}
-```
-
-Recursive:
-
-```go
-/**
- * Definition for a binary tree node.
- * type TreeNode struct {
- *     Val   int
- *     Left  *TreeNode
- *     Right *TreeNode
- * }
- */
-
-func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
-    if root == nil {
-        return root
-    }
-    if root.Val < p.Val && root.Val < q.Val {
-        return lowestCommonAncestor(root.Right, p, q)
-    }
-    if root.Val > p.Val && root.Val > q.Val {
-        return lowestCommonAncestor(root.Left, p, q)
-    }
-    return root
-}
-```
-
-### **C++**
-
-Iterative:
-
-```cpp
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
-
-class Solution {
-public:
-    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        while (root)
-        {
-            if (root->val < p->val && root->val < q->val) root = root->right;
-            else if (root->val > p->val && root->val > q->val) root = root->left;
-            else return root;
-        }
-        return root;
-    }
-};
-```
-
-Recursive:
-
-```cpp
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
-
-class Solution {
-public:
-    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        if (!root) return root;
-        if (root->val < p->val && root->val < q->val) return lowestCommonAncestor(root->right, p, q);
-        if (root->val > p->val && root->val > q->val) return lowestCommonAncestor(root->left, p, q);
-        return root;
-    }
-};
 ```
 
 ### **...**

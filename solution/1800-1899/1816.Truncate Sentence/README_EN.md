@@ -13,7 +13,7 @@
 <p>You are given a sentence <code>s</code>​​​​​​ and an integer <code>k</code>​​​​​​. You want to <strong>truncate</strong> <code>s</code>​​​​​​ such that it contains only the <strong>first</strong> <code>k</code>​​​​​​ words. Return <code>s</code>​​​​<em>​​ after <strong>truncating</strong> it.</em></p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;Hello how are you Contestant&quot;, k = 4
@@ -24,7 +24,7 @@ The first 4 words are [&quot;Hello&quot;, &quot;how&quot;, &quot;are&quot;, &quo
 Hence, you should return &quot;Hello how are you&quot;.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;What is the solution to this problem&quot;, k = 4
@@ -34,7 +34,7 @@ The words in s are [&quot;What&quot;, &quot;is&quot; &quot;the&quot;, &quot;solu
 The first 4 words are [&quot;What&quot;, &quot;is&quot;, &quot;the&quot;, &quot;solution&quot;].
 Hence, you should return &quot;What is the solution&quot;.</pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;chopper is not a tanuki&quot;, k = 5
@@ -68,8 +68,7 @@ class Solution:
 class Solution:
     def truncateSentence(self, s: str, k: int) -> str:
         for i, c in enumerate(s):
-            if c == ' ':
-                k -= 1
+            k -= c == ' '
             if k == 0:
                 return s[:i]
         return s
@@ -132,7 +131,7 @@ func truncateSentence(s string, k int) string {
  */
 var truncateSentence = function (s, k) {
     for (let i = 0; i < s.length; ++i) {
-        if (s[i] == " " && --k == 0) {
+        if (s[i] == ' ' && --k == 0) {
             return s.slice(0, i);
         }
     }

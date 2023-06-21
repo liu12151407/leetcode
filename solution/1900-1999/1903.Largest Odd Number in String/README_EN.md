@@ -9,7 +9,7 @@
 <p>A <strong>substring</strong> is a contiguous sequence of characters within a string.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> num = &quot;52&quot;
@@ -17,7 +17,7 @@
 <strong>Explanation:</strong> The only non-empty substrings are &quot;5&quot;, &quot;2&quot;, and &quot;52&quot;. &quot;5&quot; is the only odd number.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> num = &quot;4206&quot;
@@ -25,7 +25,7 @@
 <strong>Explanation:</strong> There are no odd numbers in &quot;4206&quot;.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> num = &quot;35427&quot;
@@ -52,7 +52,7 @@ class Solution:
     def largestOddNumber(self, num: str) -> str:
         for i in range(len(num) - 1, -1, -1):
             if (int(num[i]) & 1) == 1:
-                return num[:i + 1]
+                return num[: i + 1]
         return ''
 ```
 
@@ -86,7 +86,7 @@ var largestOddNumber = function (num) {
             return num.slice(0, j + 1);
         }
     }
-    return "";
+    return '';
 };
 ```
 

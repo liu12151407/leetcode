@@ -11,12 +11,12 @@
  * @return {ListNode}
  */
 var deleteNode = function (head, val) {
-    const dummy = new ListNode(0);
-    dummy.next = head;
-    let pre = dummy;
-    while (pre.next && pre.next.val != val) {
-        pre = pre.next;
+    const dummy = new ListNode(0, head);
+    for (let cur = dummy; cur.next; cur = cur.next) {
+        if (cur.next.val == val) {
+            cur.next = cur.next.next;
+            break;
+        }
     }
-    pre.next = pre.next ? pre.next.next : null;
     return dummy.next;
 };

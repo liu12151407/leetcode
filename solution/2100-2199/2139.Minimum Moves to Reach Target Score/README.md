@@ -1,4 +1,4 @@
-# [2139. 得到目标值的最少行动次数](https://leetcode-cn.com/problems/minimum-moves-to-reach-target-score)
+# [2139. 得到目标值的最少行动次数](https://leetcode.cn/problems/minimum-moves-to-reach-target-score)
 
 [English Version](/solution/2100-2199/2139.Minimum%20Moves%20to%20Reach%20Target%20Score/README_EN.md)
 
@@ -72,7 +72,15 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def minMoves(self, target: int, maxDoubles: int) -> int:
+        if target == 1:
+            return 0
+        if maxDoubles == 0:
+            return target - 1
+        if target % 2 == 0 and maxDoubles:
+            return 1 + self.minMoves(target >> 1, maxDoubles - 1)
+        return 1 + self.minMoves(target - 1, maxDoubles)
 ```
 
 ### **Java**
@@ -80,7 +88,51 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public int minMoves(int target, int maxDoubles) {
+        if (target == 1) {
+            return 0;
+        }
+        if (maxDoubles == 0) {
+            return target - 1;
+        }
+        if (target % 2 == 0 && maxDoubles > 0) {
+            return 1 + minMoves(target >> 1, maxDoubles - 1);
+        }
+        return 1 + minMoves(target - 1, maxDoubles);
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int minMoves(int target, int maxDoubles) {
+        if (target == 1) return 0;
+        if (maxDoubles == 0) return target - 1;
+        if (target % 2 == 0 && maxDoubles) return 1 + minMoves(target >> 1, maxDoubles - 1);
+        return 1 + minMoves(target - 1, maxDoubles);
+    }
+};
+```
+
+### **Go**
+
+```go
+func minMoves(target int, maxDoubles int) int {
+	if target == 1 {
+		return 0
+	}
+	if maxDoubles == 0 {
+		return target - 1
+	}
+	if target%2 == 0 && maxDoubles > 0 {
+		return 1 + minMoves(target>>1, maxDoubles-1)
+	}
+	return 1 + minMoves(target-1, maxDoubles)
+}
 ```
 
 ### **TypeScript**

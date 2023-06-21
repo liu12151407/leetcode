@@ -17,14 +17,14 @@
 </ul>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0501.Find%20Mode%20in%20Binary%20Search%20Tree/images/mode-tree.jpg" style="width: 142px; height: 222px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0501.Find%20Mode%20in%20Binary%20Search%20Tree/images/mode-tree.jpg" style="width: 142px; height: 222px;" />
 <pre>
 <strong>Input:</strong> root = [1,null,2,2]
 <strong>Output:</strong> [2]
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> root = [0]
@@ -159,13 +159,12 @@ public:
         if (!root) return;
         dfs(root->left);
         cnt = prev != nullptr && prev->val == root->val ? cnt + 1 : 1;
-        if (cnt > mx)
-        {
+        if (cnt > mx) {
             ans.clear();
             ans.push_back(root->val);
             mx = cnt;
-        }
-        else if (cnt == mx) ans.push_back(root->val);
+        } else if (cnt == mx)
+            ans.push_back(root->val);
         prev = root;
         dfs(root->right);
     }

@@ -1,4 +1,4 @@
-# [剑指 Offer II 013. 二维子矩阵的和](https://leetcode-cn.com/problems/O4NDxx)
+# [剑指 Offer II 013. 二维子矩阵的和](https://leetcode.cn/problems/O4NDxx)
 
 ## 题目描述
 
@@ -21,7 +21,7 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><img src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20013.%20%E4%BA%8C%E7%BB%B4%E5%AD%90%E7%9F%A9%E9%98%B5%E7%9A%84%E5%92%8C/images/1626332422-wUpUHT-image.png" style="width: 200px;" /></p>
+<p><img src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20013.%20%E4%BA%8C%E7%BB%B4%E5%AD%90%E7%9F%A9%E9%98%B5%E7%9A%84%E5%92%8C/images/1626332422-wUpUHT-image.png" style="width: 200px;" /></p>
 
 <pre>
 <strong>输入:</strong>
@@ -53,7 +53,7 @@ numMatrix.sumRegion(1, 2, 2, 4); // return 12 (蓝色矩形框的元素总和)
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 304&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/range-sum-query-2d-immutable/">https://leetcode-cn.com/problems/range-sum-query-2d-immutable/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 304&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/range-sum-query-2d-immutable/">https://leetcode.cn/problems/range-sum-query-2d-immutable/</a></p>
 
 ## 解法
 
@@ -69,16 +69,25 @@ numMatrix.sumRegion(1, 2, 2, 4); // return 12 (蓝色矩形框的元素总和)
 
 ```python
 class NumMatrix:
-
     def __init__(self, matrix: List[List[int]]):
         m, n = len(matrix), len(matrix[0])
         self.pre = [[0] * (n + 1) for _ in range(m + 1)]
         for i in range(1, m + 1):
             for j in range(1, n + 1):
-                self.pre[i][j] = self.pre[i - 1][j] + self.pre[i][j - 1] - self.pre[i - 1][j - 1] + matrix[i - 1][j - 1]
+                self.pre[i][j] = (
+                    self.pre[i - 1][j]
+                    + self.pre[i][j - 1]
+                    - self.pre[i - 1][j - 1]
+                    + matrix[i - 1][j - 1]
+                )
 
     def sumRegion(self, row1: int, col1: int, row2: int, col2: int) -> int:
-        return self.pre[row2 + 1][col2 + 1] - self.pre[row2 + 1][col1] - self.pre[row1][col2 + 1] + self.pre[row1][col1]
+        return (
+            self.pre[row2 + 1][col2 + 1]
+            - self.pre[row2 + 1][col1]
+            - self.pre[row1][col2 + 1]
+            + self.pre[row1][col1]
+        )
 
 
 # Your NumMatrix object will be instantiated and called as such:
@@ -99,13 +108,15 @@ class NumMatrix {
         pre = new int[m + 1][n + 1];
         for (int i = 1; i <= m; ++i) {
             for (int j = 1; j <= n; ++j) {
-                pre[i][j] = pre[i - 1][j] + pre[i][j - 1] - pre[i - 1][j - 1] + matrix[i - 1][j - 1];
+                pre[i][j]
+                    = pre[i - 1][j] + pre[i][j - 1] - pre[i - 1][j - 1] + matrix[i - 1][j - 1];
             }
         }
     }
 
     public int sumRegion(int row1, int col1, int row2, int col2) {
-        return pre[row2 + 1][col2 + 1] - pre[row2 + 1][col1] - pre[row1][col2 + 1] + pre[row1][col1];
+        return pre[row2 + 1][col2 + 1] - pre[row2 + 1][col1] - pre[row1][col2 + 1]
+            + pre[row1][col1];
     }
 }
 

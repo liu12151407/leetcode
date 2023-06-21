@@ -1,4 +1,4 @@
-# [2121. 相同元素的间隔之和](https://leetcode-cn.com/problems/intervals-between-identical-elements)
+# [2121. 相同元素的间隔之和](https://leetcode.cn/problems/intervals-between-identical-elements)
 
 [English Version](/solution/2100-2199/2121.Intervals%20Between%20Identical%20Elements/README_EN.md)
 
@@ -122,15 +122,13 @@ public:
         int n = arr.size();
         for (int i = 0; i < n; ++i) d[arr[i]].push_back(i);
         vector<long long> ans(n);
-        for (auto& item : d)
-        {
+        for (auto& item : d) {
             auto& v = item.second;
             int m = v.size();
             long long val = 0;
             for (int e : v) val += e;
             val -= m * v[0];
-            for (int i = 0; i < v.size(); ++i)
-            {
+            for (int i = 0; i < v.size(); ++i) {
                 int delta = i >= 1 ? v[i] - v[i - 1] : 0;
                 val += i * delta - (m - i) * delta;
                 ans[v[i]] = val;

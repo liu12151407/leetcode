@@ -1,14 +1,11 @@
 class Solution {
     public int numEquivDominoPairs(int[][] dominoes) {
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int[] d : dominoes) {
-            int x = d[0] < d[1] ? d[0] * 10 + d[1] : d[1] * 10 + d[0];
-            map.put(x, map.getOrDefault(x, 0) + 1);
+        int[] cnt = new int[100];
+        int ans = 0;
+        for (var e : dominoes) {
+            int x = e[0] < e[1] ? e[0] * 10 + e[1] : e[1] * 10 + e[0];
+            ans += cnt[x]++;
         }
-        int res = 0;
-        for (int v : map.values()) {
-            res += v * (v - 1) / 2;
-        }
-        return res;
+        return ans;
     }
 }

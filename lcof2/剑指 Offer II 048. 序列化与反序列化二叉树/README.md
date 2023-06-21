@@ -1,4 +1,4 @@
-# [剑指 Offer II 048. 序列化与反序列化二叉树](https://leetcode-cn.com/problems/h54YBf)
+# [剑指 Offer II 048. 序列化与反序列化二叉树](https://leetcode.cn/problems/h54YBf)
 
 ## 题目描述
 
@@ -12,7 +12,7 @@
 
 <p><strong>示例 1：</strong></p>
 
-<p><img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20048.%20%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%BA%8C%E5%8F%89%E6%A0%91/images/serdeser.jpg" style="width: 442px; height: 324px;" /></p>
+<p><img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20048.%20%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%BA%8C%E5%8F%89%E6%A0%91/images/serdeser.jpg" style="width: 442px; height: 324px;" /></p>
 
 <pre>
 <strong>输入：</strong>root = [1,2,3,null,null,4,5]
@@ -52,7 +52,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 297&nbsp;题相同：<a href="https://leetcode-cn.com/problems/serialize-and-deserialize-binary-tree/">https://leetcode-cn.com/problems/serialize-and-deserialize-binary-tree/</a>&nbsp;</p>
+<p><meta charset="UTF-8" />注意：本题与主站 297&nbsp;题相同：<a href="https://leetcode.cn/problems/serialize-and-deserialize-binary-tree/">https://leetcode.cn/problems/serialize-and-deserialize-binary-tree/</a>&nbsp;</p>
 
 ## 解法
 
@@ -72,8 +72,8 @@
 #         self.left = None
 #         self.right = None
 
-class Codec:
 
+class Codec:
     def serialize(self, root):
         """Encodes a tree to a single string.
 
@@ -96,7 +96,6 @@ class Codec:
         preorder(root)
         return ''.join(res)
 
-
     def deserialize(self, data):
         """Decodes your encoded data to tree.
 
@@ -114,6 +113,7 @@ class Codec:
             return TreeNode(int(first), inner(), inner())
 
         return inner()
+
 
 # Your Codec object will be instantiated and called as such:
 # ser = Codec()
@@ -203,7 +203,6 @@ public class Codec {
  */
 class Codec {
 public:
-
     // Encodes a tree to a single string.
     string serialize(TreeNode* root) {
         if (!root) return "";
@@ -213,9 +212,9 @@ public:
     }
 
     void preorder(TreeNode* root, string& s) {
-        if (!root) s += "# ";
-        else
-        {
+        if (!root)
+            s += "# ";
+        else {
             s += to_string(root->val) + " ";
             preorder(root->left, s);
             preorder(root->right, s);
@@ -263,7 +262,7 @@ public:
  * @return {string}
  */
 var serialize = function (root) {
-    return rserialize(root, "");
+    return rserialize(root, '');
 };
 
 /**
@@ -273,15 +272,15 @@ var serialize = function (root) {
  * @return {TreeNode}
  */
 var deserialize = function (data) {
-    const dataArray = data.split(",");
+    const dataArray = data.split(',');
     return rdeserialize(dataArray);
 };
 
 const rserialize = (root, str) => {
     if (root === null) {
-        str += "#,";
+        str += '#,';
     } else {
-        str += root.val + "" + ",";
+        str += root.val + '' + ',';
         str = rserialize(root.left, str);
         str = rserialize(root.right, str);
     }
@@ -289,7 +288,7 @@ const rserialize = (root, str) => {
 };
 
 const rdeserialize = dataList => {
-    if (dataList[0] === "#") {
+    if (dataList[0] === '#') {
         dataList.shift();
         return null;
     }

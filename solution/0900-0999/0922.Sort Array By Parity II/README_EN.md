@@ -11,7 +11,7 @@
 <p>Return <em>any answer array that satisfies this condition</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [4,2,5,7]
@@ -19,7 +19,7 @@
 <strong>Explanation:</strong> [4,7,2,5], [2,5,4,7], [2,7,4,5] would also have been accepted.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [2,3]
@@ -35,6 +35,9 @@
 	<li>Half of the integers in <code>nums</code> are even.</li>
 	<li><code>0 &lt;= nums[i] &lt;= 1000</code></li>
 </ul>
+
+<p>&nbsp;</p>
+<p><strong>Follow Up:</strong> Could you solve it in-place?</p>
 
 ## Solutions
 
@@ -79,13 +82,10 @@ class Solution {
 ```cpp
 class Solution {
 public:
-    vector<int> sortArrayByParityII(vector<int> &nums) {
-        for (int i = 0, j = 1; i < nums.size(); i += 2)
-        {
-            if ((nums[i] & 1) == 1)
-            {
-                while ((nums[j] & 1) == 1)
-                {
+    vector<int> sortArrayByParityII(vector<int>& nums) {
+        for (int i = 0, j = 1; i < nums.size(); i += 2) {
+            if ((nums[i] & 1) == 1) {
+                while ((nums[j] & 1) == 1) {
                     j += 2;
                 }
                 swap(nums[i], nums[j]);

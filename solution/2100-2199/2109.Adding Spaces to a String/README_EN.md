@@ -13,7 +13,7 @@
 <p>Return<strong> </strong><em>the modified string <strong>after</strong> the spaces have been added.</em></p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;LeetcodeHelpsMeLearn&quot;, spaces = [8,13,15]
@@ -23,7 +23,7 @@ The indices 8, 13, and 15 correspond to the underlined characters in &quot;Leetc
 We then place spaces before those characters.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;icodeinpython&quot;, spaces = [1,5,7,9]
@@ -33,7 +33,7 @@ The indices 1, 5, 7, and 9 correspond to the underlined characters in &quot;i<u>
 We then place spaces before those characters.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;spacing&quot;, spaces = [0,1,2,3,4,5,6]
@@ -72,6 +72,20 @@ class Solution:
         return ''.join(ans)
 ```
 
+```python
+class Solution:
+    def addSpaces(self, s: str, spaces: List[int]) -> str:
+        ans = []
+        i, j = len(s) - 1, len(spaces) - 1
+        while i >= 0:
+            ans.append(s[i])
+            if j >= 0 and i == spaces[j]:
+                ans.append(' ')
+                j -= 1
+            i -= 1
+        return ''.join(ans[::-1])
+```
+
 ### **Java**
 
 ```java
@@ -97,10 +111,8 @@ class Solution {
 public:
     string addSpaces(string s, vector<int>& spaces) {
         string ans = "";
-        for (int i = 0, j = 0; i < s.size(); ++i)
-        {
-            if (j < spaces.size() && i == spaces[j])
-            {
+        for (int i = 0, j = 0; i < s.size(); ++i) {
+            if (j < spaces.size() && i == spaces[j]) {
                 ans += ' ';
                 ++j;
             }
@@ -130,7 +142,17 @@ func addSpaces(s string, spaces []int) string {
 ### **TypeScript**
 
 ```ts
-
+function addSpaces(s: string, spaces: number[]): string {
+    let ans = '';
+    for (let i = 0, j = 0; i < s.length; i++) {
+        if (j < spaces.length && i === spaces[j]) {
+            ans += ' ';
+            ++j;
+        }
+        ans += s[i];
+    }
+    return ans;
+}
 ```
 
 ### **...**

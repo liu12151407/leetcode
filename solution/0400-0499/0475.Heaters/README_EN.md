@@ -13,7 +13,7 @@
 <p><strong>Notice</strong> that&nbsp;all the <code>heaters</code> follow your radius standard, and the warm radius will the same.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> houses = [1,2,3], heaters = [2]
@@ -21,7 +21,7 @@
 <strong>Explanation:</strong> The only heater was placed in the position 2, and if we use the radius 1 standard, then all the houses can be warmed.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> houses = [1,2,3,4], heaters = [1,4]
@@ -29,7 +29,7 @@
 <strong>Explanation:</strong> The two heater was placed in the position 1 and 4. We need to use radius 1 standard, then all the houses can be warmed.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> houses = [1,5], heaters = [2]
@@ -109,17 +109,22 @@ class Solution {
 function findRadius(houses: number[], heaters: number[]): number {
     houses.sort((a, b) => a - b);
     heaters.sort((a, b) => a - b);
-    const m = houses.length, n = heaters.length;
+    const m = houses.length,
+        n = heaters.length;
     let ans = 0;
     for (let i = 0, j = 0; i < m; i++) {
         let cur = Math.abs(houses[i] - heaters[j]);
-        while (j + 1 < n && (Math.abs(houses[i] - heaters[j]) >= Math.abs(houses[i] - heaters[j + 1]))) {
+        while (
+            j + 1 < n &&
+            Math.abs(houses[i] - heaters[j]) >=
+                Math.abs(houses[i] - heaters[j + 1])
+        ) {
             cur = Math.min(Math.abs(houses[i] - heaters[++j]), cur);
         }
         ans = Math.max(cur, ans);
     }
     return ans;
-};
+}
 ```
 
 ### **C++**
@@ -133,8 +138,10 @@ public:
         int left = 0, right = 1e9;
         while (left < right) {
             int mid = left + right >> 1;
-            if (check(houses, heaters, mid)) right = mid;
-            else left = mid + 1;
+            if (check(houses, heaters, mid))
+                right = mid;
+            else
+                left = mid + 1;
         }
         return left;
     }
@@ -142,14 +149,15 @@ public:
     bool check(vector<int>& houses, vector<int>& heaters, int r) {
         int m = houses.size(), n = heaters.size();
         int i = 0, j = 0;
-        while (i < m)
-        {
+        while (i < m) {
             if (j >= n) return false;
             int mi = heaters[j] - r;
             int mx = heaters[j] + r;
             if (houses[i] < mi) return false;
-            if (houses[i] > mx) ++j;
-            else ++i;
+            if (houses[i] > mx)
+                ++j;
+            else
+                ++i;
         }
         return true;
     }

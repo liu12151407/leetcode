@@ -13,18 +13,18 @@
 <p>Return <em>the <strong>time taken</strong> for the person at position </em><code>k</code><em>&nbsp;</em><strong><em>(0-indexed)</em>&nbsp;</strong><em>to finish buying tickets</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> tickets = [2,3,2], k = 2
 <strong>Output:</strong> 6
-<strong>Explanation:</strong>
+<strong>Explanation:</strong> 
 - In the first pass, everyone in the line buys a ticket and the line becomes [1, 2, 1].
 - In the second pass, everyone in the line buys a ticket and the line becomes [0, 1, 0].
 The person at&nbsp;position 2 has successfully bought 2 tickets and it took 3 + 3 = 6 seconds.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> tickets = [5,1,1,1], k = 0

@@ -1,4 +1,4 @@
-# [1998. 数组的最大公因数排序](https://leetcode-cn.com/problems/gcd-sort-of-an-array)
+# [1998. 数组的最大公因数排序](https://leetcode.cn/problems/gcd-sort-of-an-array)
 
 [English Version](/solution/1900-1999/1998.GCD%20Sort%20of%20an%20Array/README_EN.md)
 
@@ -66,12 +66,14 @@
 # 初始化，p存储每个点的父节点
 p = list(range(n))
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
         # 路径压缩
         p[x] = find(p[x])
     return p[x]
+
 
 # 合并a和b所在的两个集合
 p[find(a)] = find(b)
@@ -84,12 +86,14 @@ p[find(a)] = find(b)
 p = list(range(n))
 size = [1] * n
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
         # 路径压缩
         p[x] = find(p[x])
     return p[x]
+
 
 # 合并a和b所在的两个集合
 if find(a) != find(b):
@@ -104,6 +108,7 @@ if find(a) != find(b):
 p = list(range(n))
 d = [0] * n
 
+
 # 返回x的祖宗节点
 def find(x):
     if p[x] != x:
@@ -111,6 +116,7 @@ def find(x):
         d[x] += d[p[x]]
         p[x] = t
     return p[x]
+
 
 # 合并a和b所在的两个集合
 p[find(a)] = find(b)
@@ -132,7 +138,7 @@ d[find(a)] = distance
 ```python
 class Solution:
     def gcdSort(self, nums: List[int]) -> bool:
-        n = 10 ** 5 + 10
+        n = 10**5 + 10
         p = list(range(n))
         f = defaultdict(list)
         mx = max(nums)
@@ -224,19 +230,16 @@ public:
         int mx = 0;
         for (auto num : nums) mx = max(mx, num);
         unordered_map<int, vector<int>> f;
-        for (int i = 2; i <= mx; ++i)
-        {
+        for (int i = 2; i <= mx; ++i) {
             if (!f[i].empty()) continue;
             for (int j = i; j <= mx; j += i) f[j].push_back(i);
         }
-        for (int i : nums)
-        {
+        for (int i : nums) {
             for (int j : f[i]) p[find(i)] = find(j);
         }
         vector<int> s = nums;
         sort(s.begin(), s.end());
-        for (int i = 0; i < nums.size(); ++i)
-        {
+        for (int i = 0; i < nums.size(); ++i) {
             if (s[i] != nums[i] && find(s[i]) != find(nums[i])) return false;
         }
         return true;

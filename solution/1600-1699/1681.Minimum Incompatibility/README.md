@@ -1,4 +1,4 @@
-# [1681. 最小不兼容性](https://leetcode-cn.com/problems/minimum-incompatibility)
+# [1681. 最小不兼容性](https://leetcode.cn/problems/minimum-incompatibility)
 
 [English Version](/solution/1600-1699/1681.Minimum%20Incompatibility/README_EN.md)
 
@@ -56,6 +56,8 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：状态压缩 + 记忆化搜索**
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -63,7 +65,28 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
+class Solution:
+    def minimumIncompatibility(self, nums: List[int], k: int) -> int:
+        @cache
+        def dfs(mask):
+            if mask == (1 << n) - 1:
+                return 0
+            d = {v: i for i, v in enumerate(nums) if (mask >> i & 1) == 0}
+            ans = inf
+            if len(d) < m:
+                return ans
+            for vs in combinations(d.keys(), m):
+                nxt = mask
+                for v in vs:
+                    nxt |= 1 << d[v]
+                ans = min(ans, max(vs) - min(vs) + dfs(nxt))
+            return ans
 
+        n = len(nums)
+        m = n // k
+        ans = dfs(0)
+        dfs.cache_clear()
+        return ans if ans < inf else -1
 ```
 
 ### **Java**

@@ -1,4 +1,4 @@
-# [1294. 不同国家的天气类型](https://leetcode-cn.com/problems/weather-type-in-each-country)
+# [1294. 不同国家的天气类型](https://leetcode.cn/problems/weather-type-in-each-country)
 
 [English Version](/solution/1200-1299/1294.Weather%20Type%20in%20Each%20Country/README_EN.md)
 
@@ -106,7 +106,19 @@ Morocco 11 月的平均 weather_state 为 (25 + 27 + 31) / 3 = 27.667 所以天�
 ### **SQL**
 
 ```sql
-
+# Write your MySQL query statement below
+SELECT
+    country_name,
+    CASE
+        WHEN avg(weather_state) <= 15 THEN 'Cold'
+        WHEN avg(weather_state) >= 25 THEN 'Hot'
+        ELSE 'Warm'
+    END AS weather_type
+FROM
+    Weather AS w
+    JOIN Countries AS c ON w.country_id = c.country_id
+WHERE date_format(day, '%Y-%m') = '2019-11'
+GROUP BY w.country_id;
 ```
 
 <!-- tabs:end -->

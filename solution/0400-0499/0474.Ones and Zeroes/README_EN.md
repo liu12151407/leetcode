@@ -11,7 +11,7 @@
 <p>A set <code>x</code> is a <strong>subset</strong> of a set <code>y</code> if all elements of <code>x</code> are also elements of <code>y</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> strs = [&quot;10&quot;,&quot;0001&quot;,&quot;111001&quot;,&quot;1&quot;,&quot;0&quot;], m = 5, n = 3
@@ -21,7 +21,7 @@ Other valid but smaller subsets include {&quot;0001&quot;, &quot;1&quot;} and {&
 {&quot;111001&quot;} is an invalid subset because it contains 4 1&#39;s, greater than the maximum of 3.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> strs = [&quot;10&quot;,&quot;0&quot;,&quot;1&quot;], m = 1, n = 1
@@ -105,7 +105,7 @@ class Solution {
                 ++n0;
             }
         }
-        return new int[]{n0, s.length() - n0};
+        return new int[] {n0, s.length() - n0};
     }
 }
 ```
@@ -117,8 +117,7 @@ class Solution {
 public:
     int findMaxForm(vector<string>& strs, int m, int n) {
         vector<vector<int>> dp(m + 1, vector<int>(n + 1));
-        for (auto s : strs)
-        {
+        for (auto s : strs) {
             vector<int> t = count(s);
             for (int i = m; i >= t[0]; --i)
                 for (int j = n; j >= t[1]; --j)

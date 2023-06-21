@@ -1,4 +1,4 @@
-# [455. 分发饼干](https://leetcode-cn.com/problems/assign-cookies)
+# [455. 分发饼干](https://leetcode.cn/problems/assign-cookies)
 
 [English Version](/solution/0400-0499/0455.Assign%20Cookies/README_EN.md)
 
@@ -47,6 +47,19 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：排序 + 双指针**
+
+根据题目描述，我们应该优先将饼干分配给胃口值小的孩子，这样可以尽可能满足更多的孩子。
+
+因此，我们首先对两个数组进行排序，然后用两个指针 $i$ 和 $j$ 分别指向数组 $g$ 和 $s$ 的头部，每次比较 $g[i]$ 和 $s[j]$ 的大小：
+
+-   如果 $s[j] \lt g[i]$，说明当前饼干 $s[j]$ 无法满足当前孩子 $g[i]$，我们应该将尺寸更大的饼干分配给当前孩子，因此 $j$ 应该右移一位；如果 $j$ 越界，说明无法满足当前孩子，此时成功分配的孩子数量为 $i$，直接返回即可；
+-   如果 $s[j] \ge g[i]$，说明当前饼干 $s[j]$ 可以满足当前孩子 $g[i]$，我们将当前饼干分配给当前孩子，因此 $i$ 和 $j$ 都应该右移一位。
+
+如果遍历完数组 $g$，则说明所有孩子都已经分配到饼干，则返回孩子总数即可。
+
+时间复杂度 $O(m \times \log m + n \times \log n)$，空间复杂度 $O(\log m + \log n)$。其中 $m$ 和 $n$ 分别为数组 $g$ 和 $s$ 的长度。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -54,7 +67,18 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def findContentChildren(self, g: List[int], s: List[int]) -> int:
+        g.sort()
+        s.sort()
+        j = 0
+        for i, x in enumerate(g):
+            while j < len(s) and s[j] < g[i]:
+                j += 1
+            if j >= len(s):
+                return i
+            j += 1
+        return len(g)
 ```
 
 ### **Java**
@@ -62,7 +86,65 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public int findContentChildren(int[] g, int[] s) {
+        Arrays.sort(g);
+        Arrays.sort(s);
+        int m = g.length;
+        int n = s.length;
+        for (int i = 0, j = 0; i < m; ++i) {
+            while (j < n && s[j] < g[i]) {
+                ++j;
+            }
+            if (j++ >= n) {
+                return i;
+            }
+        }
+        return m;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int findContentChildren(vector<int>& g, vector<int>& s) {
+        sort(g.begin(), g.end());
+        sort(s.begin(), s.end());
+        int m = g.size(), n = s.size();
+        for (int i = 0, j = 0; i < m; ++i) {
+            while (j < n && s[j] < g[i]) {
+                ++j;
+            }
+            if (j++ >= n) {
+                return i;
+            }
+        }
+        return m;
+    }
+};
+```
+
+### **Go**
+
+```go
+func findContentChildren(g []int, s []int) int {
+	sort.Ints(g)
+	sort.Ints(s)
+	j := 0
+	for i, x := range g {
+		for j < len(s) && s[j] < x {
+			j++
+		}
+		if j >= len(s) {
+			return i
+		}
+		j++
+	}
+	return len(g)
+}
 ```
 
 ### **JavaScript**
@@ -74,22 +156,40 @@
  * @return {number}
  */
 var findContentChildren = function (g, s) {
-    let len1 = g.length,
-        len2 = s.length;
-    if (len2 === 0) return 0;
     g.sort((a, b) => a - b);
     s.sort((a, b) => a - b);
-    let i = 0,
-        j = 0;
-    while (i < len1 && j < len2) {
-        while (s[j] < g[i]) j++;
-        if (s[j] >= g[i]) {
-            i++;
-            j++;
-        } else break;
+    const m = g.length;
+    const n = s.length;
+    for (let i = 0, j = 0; i < m; ++i) {
+        while (j < n && s[j] < g[i]) {
+            ++j;
+        }
+        if (j++ >= n) {
+            return i;
+        }
     }
-    return i;
+    return m;
 };
+```
+
+### **TypeScript**
+
+```ts
+function findContentChildren(g: number[], s: number[]): number {
+    g.sort((a, b) => a - b);
+    s.sort((a, b) => a - b);
+    const m = g.length;
+    const n = s.length;
+    for (let i = 0, j = 0; i < m; ++i) {
+        while (j < n && s[j] < g[i]) {
+            ++j;
+        }
+        if (j++ >= n) {
+            return i;
+        }
+    }
+    return m;
+}
 ```
 
 ### **...**

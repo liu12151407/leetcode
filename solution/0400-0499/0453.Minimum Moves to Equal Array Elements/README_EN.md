@@ -9,7 +9,7 @@
 <p>In one move, you can increment <code>n - 1</code> elements of the array by <code>1</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,2,3]
@@ -18,7 +18,7 @@
 [1,2,3]  =&gt;  [2,3,3]  =&gt;  [3,4,3]  =&gt;  [4,4,4]
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> nums = [1,1,1]
@@ -32,6 +32,7 @@
 	<li><code>n == nums.length</code></li>
 	<li><code>1 &lt;= nums.length &lt;= 10<sup>5</sup></code></li>
 	<li><code>-10<sup>9</sup> &lt;= nums[i] &lt;= 10<sup>9</sup></code></li>
+	<li>The answer is guaranteed to fit in a <strong>32-bit</strong> integer.</li>
 </ul>
 
 ## Solutions
@@ -60,10 +61,10 @@ class Solution {
 class Solution {
     public int minMoves(int[] nums) {
         int s = 0;
-        int mi = Integer.MAX_VALUE;
-        for (int num : nums) {
-            s += num;
-            mi = Math.min(mi, num);
+        int mi = 1 << 30;
+        for (int x : nums) {
+            s += x;
+            mi = Math.min(mi, x);
         }
         return s - mi * nums.length;
     }
@@ -77,11 +78,10 @@ class Solution {
 public:
     int minMoves(vector<int>& nums) {
         int s = 0;
-        int mi = INT_MAX;
-        for (int num : nums)
-        {
-            s += num;
-            mi = min(mi, num);
+        int mi = 1 << 30;
+        for (int x : nums) {
+            s += x;
+            mi = min(mi, x);
         }
         return s - mi * nums.size();
     }
@@ -92,16 +92,29 @@ public:
 
 ```go
 func minMoves(nums []int) int {
-	mi := math.MaxInt32
+	mi := 1 << 30
 	s := 0
-	for _, num := range nums {
-		s += num
-		if num < mi {
-			mi = num
+	for _, x := range nums {
+		s += x
+		if x < mi {
+			mi = x
 		}
 	}
 	return s - mi*len(nums)
+}
+```
 
+### **TypeScript**
+
+```ts
+function minMoves(nums: number[]): number {
+    let mi = 1 << 30;
+    let s = 0;
+    for (const x of nums) {
+        s += x;
+        mi = Math.min(mi, x);
+    }
+    return s - mi * nums.length;
 }
 ```
 

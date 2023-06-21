@@ -1,4 +1,4 @@
-# [1218. 最长定差子序列](https://leetcode-cn.com/problems/longest-arithmetic-subsequence-of-given-difference)
+# [1218. 最长定差子序列](https://leetcode.cn/problems/longest-arithmetic-subsequence-of-given-difference)
 
 [English Version](/solution/1200-1299/1218.Longest%20Arithmetic%20Subsequence%20of%20Given%20Difference/README_EN.md)
 
@@ -47,6 +47,10 @@
 ## 解法
 
 <!-- 这里可写通用的实现逻辑 -->
+
+**方法一：动态规划**
+
+时间复杂度 $O(n)$。
 
 <!-- tabs:start -->
 
@@ -117,6 +121,25 @@ func max(a, b int) int {
 	}
 	return b
 }
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {number[]} arr
+ * @param {number} difference
+ * @return {number}
+ */
+var longestSubsequence = function (arr, difference) {
+    let ans = 1;
+    const dp = new Map();
+    for (const v of arr) {
+        dp.set(v, (dp.get(v - difference) || 0) + 1);
+        ans = Math.max(ans, dp.get(v));
+    }
+    return ans;
+};
 ```
 
 ### **...**

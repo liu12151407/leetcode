@@ -1,4 +1,4 @@
-# [1366. 通过投票对团队排名](https://leetcode-cn.com/problems/rank-teams-by-votes)
+# [1366. 通过投票对团队排名](https://leetcode.cn/problems/rank-teams-by-votes)
 
 [English Version](/solution/1300-1399/1366.Rank%20Teams%20by%20Votes/README_EN.md)
 
@@ -80,6 +80,12 @@ C 队获得两票「排位第一」，两票「排位第二」，两票「排位
 
 <!-- 这里可写通用的实现逻辑 -->
 
+**方法一：计数 + 自定义排序**
+
+对于每个候选人，我们可以统计他在每个排位上的票数，然后根据不同的排位依次比较票数，票数相同则比较字母。
+
+时间复杂度 $O(n^2 \times \log n)$，空间复杂度 $O(n^2)$。其中 $n$ 为候选人的数量。
+
 <!-- tabs:start -->
 
 ### **Python3**
@@ -87,7 +93,14 @@ C 队获得两票「排位第一」，两票「排位第二」，两票「排位
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-
+class Solution:
+    def rankTeams(self, votes: List[str]) -> str:
+        n = len(votes[0])
+        cnt = defaultdict(lambda: [0] * n)
+        for vote in votes:
+            for i, c in enumerate(vote):
+                cnt[c][i] += 1
+        return "".join(sorted(votes[0], key=lambda x: (cnt[x], -ord(x)), reverse=True))
 ```
 
 ### **Java**
@@ -95,7 +108,90 @@ C 队获得两票「排位第一」，两票「排位第二」，两票「排位
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```java
+class Solution {
+    public String rankTeams(String[] votes) {
+        int n = votes[0].length();
+        int[][] cnt = new int[26][n];
+        for (var vote : votes) {
+            for (int i = 0; i < n; ++i) {
+                cnt[vote.charAt(i) - 'A'][i]++;
+            }
+        }
+        Character[] cs = new Character[n];
+        for (int i = 0; i < n; ++i) {
+            cs[i] = votes[0].charAt(i);
+        }
+        Arrays.sort(cs, (a, b) -> {
+            int i = a - 'A', j = b - 'A';
+            for (int k = 0; k < n; ++k) {
+                int d = cnt[i][k] - cnt[j][k];
+                if (d != 0) {
+                    return d > 0 ? -1 : 1;
+                }
+            }
+            return a - b;
+        });
+        StringBuilder ans = new StringBuilder();
+        for (char c : cs) {
+            ans.append(c);
+        }
+        return ans.toString();
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    string rankTeams(vector<string>& votes) {
+        int n = votes[0].size();
+        int cnt[26][n];
+        memset(cnt, 0, sizeof cnt);
+        for (auto& vote : votes) {
+            for (int i = 0; i < n; ++i) {
+                cnt[vote[i] - 'A'][i]++;
+            }
+        }
+        string ans = votes[0];
+        sort(ans.begin(), ans.end(), [&](auto& a, auto& b) {
+            int i = a - 'A', j = b - 'A';
+            for (int k = 0; k < n; ++k) {
+                if (cnt[i][k] != cnt[j][k]) {
+                    return cnt[i][k] > cnt[j][k];
+                }
+            }
+            return a < b;
+        });
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func rankTeams(votes []string) string {
+	cnt := [26][26]int{}
+	for _, vote := range votes {
+		for i, c := range vote {
+			cnt[c-'A'][i]++
+		}
+	}
+	ans := []byte(votes[0])
+	sort.Slice(ans, func(i, j int) bool {
+		cnt1, cnt2 := cnt[ans[i]-'A'], cnt[ans[j]-'A']
+		for k, a := range cnt1 {
+			b := cnt2[k]
+			if a != b {
+				return a > b
+			}
+		}
+		return ans[i] < ans[j]
+	})
+	return string(ans)
+}
 ```
 
 ### **...**

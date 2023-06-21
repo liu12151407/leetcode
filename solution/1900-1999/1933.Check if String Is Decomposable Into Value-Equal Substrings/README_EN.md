@@ -18,7 +18,7 @@
 <p>A <strong>substring</strong> is a contiguous sequence of characters in a string.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;000111000&quot;
@@ -26,7 +26,7 @@
 <strong>Explanation: </strong>s cannot be decomposed according to the rules because [&quot;000&quot;, &quot;111&quot;, &quot;000&quot;] does not have a substring of length 2.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;00011111222&quot;
@@ -34,7 +34,7 @@
 <strong>Explanation: </strong>s can be decomposed into [&quot;000&quot;, &quot;111&quot;, &quot;11&quot;, &quot;222&quot;].
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;011100022233&quot;
@@ -57,13 +57,92 @@
 ### **Python3**
 
 ```python
-
+class Solution:
+    def isDecomposable(self, s: str) -> bool:
+        i, n = 0, len(s)
+        cnt2 = 0
+        while i < n:
+            j = i
+            while j < n and s[j] == s[i]:
+                j += 1
+            if (j - i) % 3 == 1:
+                return False
+            cnt2 += (j - i) % 3 == 2
+            if cnt2 > 1:
+                return False
+            i = j
+        return cnt2 == 1
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public boolean isDecomposable(String s) {
+        int i = 0, n = s.length();
+        int cnt2 = 0;
+        while (i < n) {
+            int j = i;
+            while (j < n && s.charAt(j) == s.charAt(i)) {
+                ++j;
+            }
+            if ((j - i) % 3 == 1) {
+                return false;
+            }
+            if ((j - i) % 3 == 2 && ++cnt2 > 1) {
+                return false;
+            }
+            i = j;
+        }
+        return cnt2 == 1;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    bool isDecomposable(string s) {
+        int i = 0, n = s.size();
+        int cnt2 = 0;
+        while (i < n) {
+            int j = i;
+            while (j < n && s[j] == s[i]) ++j;
+            if ((j - i) % 3 == 1) return false;
+            if ((j - i) % 3 == 2 && ++cnt2 > 1) return false;
+            i = j;
+        }
+        return cnt2 == 1;
+    }
+};
+```
+
+### **Go**
+
+```go
+func isDecomposable(s string) bool {
+	i, n := 0, len(s)
+	cnt2 := 0
+	for i < n {
+		j := i
+		for j < n && s[j] == s[i] {
+			j++
+		}
+		if (j-i)%3 == 1 {
+			return false
+		}
+		if (j-i)%3 == 2 {
+			cnt2++
+			if cnt2 > 1 {
+				return false
+			}
+		}
+		i = j
+	}
+	return cnt2 == 1
+}
 ```
 
 ### **...**

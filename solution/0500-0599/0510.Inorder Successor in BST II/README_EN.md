@@ -20,41 +20,20 @@ class Node {
 </pre>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0510.Inorder%20Successor%20in%20BST%20II/images/285_example_1.png" style="width: 122px; height: 117px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0510.Inorder%20Successor%20in%20BST%20II/images/285_example_1.png" style="width: 122px; height: 117px;" />
 <pre>
 <strong>Input:</strong> tree = [2,1,3], node = 1
 <strong>Output:</strong> 2
 <strong>Explanation:</strong> 1&#39;s in-order successor node is 2. Note that both the node and the return value is of Node type.
 </pre>
 
-<p><strong>Example 2:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0510.Inorder%20Successor%20in%20BST%20II/images/285_example_2.png" style="width: 246px; height: 229px;" />
+<p><strong class="example">Example 2:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0510.Inorder%20Successor%20in%20BST%20II/images/285_example_2.png" style="width: 246px; height: 229px;" />
 <pre>
 <strong>Input:</strong> tree = [5,3,6,2,4,null,null,1], node = 6
 <strong>Output:</strong> null
 <strong>Explanation:</strong> There is no in-order successor of the current node, so the answer is null.
-</pre>
-
-<p><strong>Example 3:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0510.Inorder%20Successor%20in%20BST%20II/images/285_example_34.png" style="width: 438px; height: 335px;" />
-<pre>
-<strong>Input:</strong> tree = [15,6,18,3,7,17,20,2,4,null,13,null,null,null,null,null,null,null,null,9], node = 15
-<strong>Output:</strong> 17
-</pre>
-
-<p><strong>Example 4:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0500-0599/0510.Inorder%20Successor%20in%20BST%20II/images/285_example_34.png" style="width: 438px; height: 335px;" />
-<pre>
-<strong>Input:</strong> tree = [15,6,18,3,7,17,20,2,4,null,13,null,null,null,null,null,null,null,null,9], node = 13
-<strong>Output:</strong> 15
-</pre>
-
-<p><strong>Example 5:</strong></p>
-
-<pre>
-<strong>Input:</strong> tree = [0], node = 0
-<strong>Output:</strong> null
 </pre>
 
 <p>&nbsp;</p>
@@ -128,7 +107,6 @@ class Solution {
         return node.parent;
     }
 }
-
 ```
 
 ### **C++**
@@ -148,8 +126,7 @@ public:
 class Solution {
 public:
     Node* inorderSuccessor(Node* node) {
-        if (node->right)
-        {
+        if (node->right) {
             node = node->right;
             while (node->left) node = node->left;
             return node;
@@ -174,17 +151,17 @@ public:
  */
 
 func inorderSuccessor(node *Node) *Node {
-    if node.Right != nil {
-        node = node.Right
-        for node.Left != nil {
-            node = node.Left
-        }
-        return node
-    }
-    for node.Parent != nil && node == node.Parent.Right {
-        node = node.Parent
-    }
-    return node.Parent
+	if node.Right != nil {
+		node = node.Right
+		for node.Left != nil {
+			node = node.Left
+		}
+		return node
+	}
+	for node.Parent != nil && node == node.Parent.Right {
+		node = node.Parent
+	}
+	return node.Parent
 }
 ```
 

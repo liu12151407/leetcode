@@ -1,4 +1,4 @@
-# [剑指 Offer II 046. 二叉树的右侧视图](https://leetcode-cn.com/problems/WNC0Lk)
+# [剑指 Offer II 046. 二叉树的右侧视图](https://leetcode.cn/problems/WNC0Lk)
 
 ## 题目描述
 
@@ -10,7 +10,7 @@
 
 <p><strong>示例 1:</strong></p>
 
-<p><img src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20046.%20%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%8F%B3%E4%BE%A7%E8%A7%86%E5%9B%BE/images/tree.jpg" style="width: 270px; " /></p>
+<p><img src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/lcof2/%E5%89%91%E6%8C%87%20Offer%20II%20046.%20%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%8F%B3%E4%BE%A7%E8%A7%86%E5%9B%BE/images/tree.jpg" style="width: 270px; " /></p>
 
 <pre>
 <strong>输入:</strong>&nbsp;[1,2,3,null,5,null,4]
@@ -42,7 +42,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 199&nbsp;题相同：<a href="https://leetcode-cn.com/problems/binary-tree-right-side-view/">https://leetcode-cn.com/problems/binary-tree-right-side-view/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 199&nbsp;题相同：<a href="https://leetcode.cn/problems/binary-tree-right-side-view/">https://leetcode.cn/problems/binary-tree-right-side-view/</a></p>
 
 ## 解法
 
@@ -147,8 +147,7 @@ public:
         if (!root) return ans;
         queue<TreeNode*> q;
         q.push(root);
-        while (!q.empty())
-        {
+        while (!q.empty()) {
             ans.push_back(q.front()->val);
             for (int i = q.size(); i > 0; --i) {
                 auto node = q.front();

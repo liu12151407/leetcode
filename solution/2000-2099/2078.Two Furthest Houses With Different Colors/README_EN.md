@@ -11,8 +11,8 @@
 <p>The distance between the <code>i<sup>th</sup></code> and <code>j<sup>th</sup></code> houses is <code>abs(i - j)</code>, where <code>abs(x)</code> is the <strong>absolute value</strong> of <code>x</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2078.Two%20Furthest%20Houses%20With%20Different%20Colors/images/eg1.png" style="width: 610px; height: 84px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2078.Two%20Furthest%20Houses%20With%20Different%20Colors/images/eg1.png" style="width: 610px; height: 84px;" />
 <pre>
 <strong>Input:</strong> colors = [<u><strong>1</strong></u>,1,1,<strong><u>6</u></strong>,1,1,1]
 <strong>Output:</strong> 3
@@ -22,8 +22,8 @@ House 0 has color 1, and house 3 has color 6. The distance between them is abs(0
 Note that houses 3 and 6 can also produce the optimal answer.
 </pre>
 
-<p><strong>Example 2:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2078.Two%20Furthest%20Houses%20With%20Different%20Colors/images/eg2.png" style="width: 426px; height: 84px;" />
+<p><strong class="example">Example 2:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/2000-2099/2078.Two%20Furthest%20Houses%20With%20Different%20Colors/images/eg2.png" style="width: 426px; height: 84px;" />
 <pre>
 <strong>Input:</strong> colors = [<u><strong>1</strong></u>,8,3,8,<u><strong>3</strong></u>]
 <strong>Output:</strong> 4
@@ -32,7 +32,7 @@ The furthest two houses with different colors are house 0 and house 4.
 House 0 has color 1, and house 4 has color 3. The distance between them is abs(0 - 4) = 4.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> colors = [<u><strong>0</strong></u>,<strong><u>1</u></strong>]
@@ -68,6 +68,20 @@ class Solution:
         return ans
 ```
 
+```python
+class Solution:
+    def maxDistance(self, colors: List[int]) -> int:
+        n = len(colors)
+        if colors[0] != colors[-1]:
+            return n - 1
+        i, j = 1, n - 2
+        while colors[i] == colors[0]:
+            i += 1
+        while colors[j] == colors[0]:
+            j -= 1
+        return max(n - i - 1, j)
+```
+
 ### **Java**
 
 ```java
@@ -86,6 +100,23 @@ class Solution {
 }
 ```
 
+```java
+class Solution {
+    public int maxDistance(int[] colors) {
+        int n = colors.length;
+        if (colors[0] != colors[n - 1]) {
+            return n - 1;
+        }
+        int i = 0, j = n - 1;
+        while (colors[++i] == colors[0])
+            ;
+        while (colors[--j] == colors[0])
+            ;
+        return Math.max(n - i - 1, j);
+    }
+}
+```
+
 ### **C++**
 
 ```cpp
@@ -98,6 +129,22 @@ public:
                 if (colors[i] != colors[j])
                     ans = max(ans, abs(i - j));
         return ans;
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    int maxDistance(vector<int>& colors) {
+        int n = colors.size();
+        if (colors[0] != colors[n - 1]) return n - 1;
+        int i = 0, j = n;
+        while (colors[++i] == colors[0])
+            ;
+        while (colors[--j] == colors[0])
+            ;
+        return max(n - i - 1, j);
     }
 };
 ```
@@ -129,6 +176,30 @@ func abs(x int) int {
 		return x
 	}
 	return -x
+}
+```
+
+```go
+func maxDistance(colors []int) int {
+	n := len(colors)
+	if colors[0] != colors[n-1] {
+		return n - 1
+	}
+	i, j := 1, n-2
+	for colors[i] == colors[0] {
+		i++
+	}
+	for colors[j] == colors[0] {
+		j--
+	}
+	return max(n-i-1, j)
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }
 ```
 

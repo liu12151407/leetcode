@@ -1,4 +1,4 @@
-# [面试题 16.16. 部分排序](https://leetcode-cn.com/problems/sub-sort-lcci)
+# [面试题 16.16. 部分排序](https://leetcode.cn/problems/sub-sort-lcci)
 
 [English Version](/lcci/16.15.Master%20Mind/README_EN.md)
 
@@ -18,7 +18,6 @@
 ## 解法
 
 <!-- 这里可写通用的实现逻辑 -->
-
 <!-- tabs:start -->
 
 ### **Python3**

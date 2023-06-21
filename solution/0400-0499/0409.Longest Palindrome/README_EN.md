@@ -9,27 +9,20 @@
 <p>Letters are <strong>case sensitive</strong>, for example,&nbsp;<code>&quot;Aa&quot;</code> is not considered a palindrome here.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;abccccdd&quot;
 <strong>Output:</strong> 7
-<strong>Explanation:</strong>
-One longest palindrome that can be built is &quot;dccaccd&quot;, whose length is 7.
+<strong>Explanation:</strong> One longest palindrome that can be built is &quot;dccaccd&quot;, whose length is 7.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> s = &quot;a&quot;
 <strong>Output:</strong> 1
-</pre>
-
-<p><strong>Example 3:</strong></p>
-
-<pre>
-<strong>Input:</strong> s = &quot;bb&quot;
-<strong>Output:</strong> 2
+<strong>Explanation:</strong> The longest palindrome that can be built is &quot;a&quot;, whose length is 1.
 </pre>
 
 <p>&nbsp;</p>
@@ -49,10 +42,12 @@ One longest palindrome that can be built is &quot;dccaccd&quot;, whose length is
 ```python
 class Solution:
     def longestPalindrome(self, s: str) -> int:
-        n = len(s)
-        counter = Counter(s)
-        odd_cnt = sum(e % 2 for e in counter.values())
-        return n if odd_cnt == 0 else n - odd_cnt + 1
+        cnt = Counter(s)
+        ans = 0
+        for v in cnt.values():
+            ans += v - (v & 1)
+            ans += (ans & 1 ^ 1) and (v & 1)
+        return ans
 ```
 
 ### **Java**
@@ -60,17 +55,59 @@ class Solution:
 ```java
 class Solution {
     public int longestPalindrome(String s) {
-        int[] counter = new int[128];
-        for (char c : s.toCharArray()) {
-            ++counter[c];
+        int[] cnt = new int[128];
+        for (int i = 0; i < s.length(); ++i) {
+            ++cnt[s.charAt(i)];
         }
-        int oddCnt = 0;
-        for (int e : counter) {
-            oddCnt += (e % 2);
+        int ans = 0;
+        for (int v : cnt) {
+            ans += v - (v & 1);
+            if (ans % 2 == 0 && v % 2 == 1) {
+                ++ans;
+            }
         }
-        int n = s.length();
-        return oddCnt == 0 ? n : n - oddCnt + 1;
+        return ans;
     }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int longestPalindrome(string s) {
+        int cnt[128]{};
+        for (char& c : s) {
+            ++cnt[c];
+        }
+        int ans = 0;
+        for (int v : cnt) {
+            ans += v - (v & 1);
+            if (ans % 2 == 0 && v % 2 == 1) {
+                ++ans;
+            }
+        }
+        return ans;
+    }
+};
+```
+
+### **Go**
+
+```go
+func longestPalindrome(s string) (ans int) {
+	cnt := [128]int{}
+	for _, c := range s {
+		cnt[c]++
+	}
+	for _, v := range cnt {
+		ans += v - (v & 1)
+		if ans&1 == 0 && v&1 == 1 {
+			ans++
+		}
+	}
+	return
 }
 ```
 
@@ -92,39 +129,47 @@ function longestPalindrome(s: string): number {
 }
 ```
 
-### **C++**
-
-```cpp
-class Solution {
-public:
-    int longestPalindrome(string s) {
-        vector<int> counter(128);
-        for (char c : s) ++counter[c];
-        int oddCnt = 0;
-        for (int e : counter) oddCnt += e % 2;
-        int n = s.size();
-        return oddCnt == 0 ? n : n - oddCnt + 1;
+```ts
+function longestPalindrome(s: string): number {
+    const map = new Map();
+    for (const c of s) {
+        map.set(c, (map.get(c) ?? 0) + 1);
     }
-};
+    let hasOdd = false;
+    let res = 0;
+    for (const v of map.values()) {
+        res += v;
+        if (v & 1) {
+            hasOdd = true;
+            res--;
+        }
+    }
+    return res + (hasOdd ? 1 : 0);
+}
 ```
 
-### **Go**
+### **Rust**
 
-```go
-func longestPalindrome(s string) int {
-	counter := make([]int, 128)
-	for _, c := range s {
-		counter[c]++
-	}
-	oddCnt := 0
-	for _, e := range counter {
-		oddCnt += e % 2
-	}
-	n := len(s)
-	if oddCnt == 0 {
-		return n
-	}
-	return n - oddCnt + 1
+```rust
+use std::collections::HashMap;
+
+impl Solution {
+    pub fn longest_palindrome(s: String) -> i32 {
+        let mut map: HashMap<char, i32> = HashMap::new();
+        for c in s.chars() {
+            map.insert(c, map.get(&c).unwrap_or(&0) + 1);
+        }
+        let mut has_odd = false;
+        let mut res = 0;
+        for v in map.values() {
+            res += v;
+            if v % 2 == 1 {
+                has_odd = true;
+                res -= 1;
+            }
+        }
+        res + if has_odd { 1 } else { 0 }
+    }
 }
 ```
 

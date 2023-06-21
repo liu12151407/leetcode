@@ -1,4 +1,4 @@
-# [584. 寻找用户推荐人](https://leetcode-cn.com/problems/find-customer-referee)
+# [584. 寻找用户推荐人](https://leetcode.cn/problems/find-customer-referee)
 
 [English Version](/solution/0500-0599/0584.Find%20Customer%20Referee/README_EN.md)
 
@@ -45,7 +45,19 @@
 ### **SQL**
 
 ```sql
+SELECT
+    name
+FROM Customer
+WHERE referee_id != 2 OR referee_id IS NULL;
+```
 
+MySQL 可使用 `IFNULL()`：
+
+```sql
+SELECT
+    name
+FROM customer
+WHERE IFNULL(referee_id, 0) != 2;
 ```
 
 <!-- tabs:end -->

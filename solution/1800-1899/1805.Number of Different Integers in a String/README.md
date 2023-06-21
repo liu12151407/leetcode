@@ -1,4 +1,4 @@
-# [1805. 字符串中不同整数的数目](https://leetcode-cn.com/problems/number-of-different-integers-in-a-string)
+# [1805. 字符串中不同整数的数目](https://leetcode.cn/problems/number-of-different-integers-in-a-string)
 
 [English Version](/solution/1800-1899/1805.Number%20of%20Different%20Integers%20in%20a%20String/README_EN.md)
 
@@ -52,7 +52,15 @@
 
 <!-- 这里可写通用的实现逻辑 -->
 
-将 `word` 按照字母切分，得到数字数组 `nums`，然后利用 set 去重，返回 set 的长度即可。
+**方法一：双指针 + 模拟**
+
+遍历字符串 `word`，找到每个整数的起始位置和结束位置，截取出这一个子串，将其存入哈希表 $s$ 中。
+
+遍历结束，返回哈希表 $s$ 的大小即可。
+
+> 注意，每个子串所表示的整数可能很大，我们不能直接将其转为整数。因此，我们可以去掉每个子串的前导零之后，再存入哈希表。
+
+时间复杂度 $O(n)$，空间复杂度 $O(n)$。其中 $n$ 为字符串 `word` 的长度。
 
 <!-- tabs:start -->
 
@@ -61,12 +69,21 @@
 <!-- 这里可写当前语言的特殊实现逻辑 -->
 
 ```python
-import re
-
 class Solution:
     def numDifferentIntegers(self, word: str) -> int:
-        nums = re.split(r'[a-z]+', word)
-        return len({int(num) for num in nums if num != ''})
+        s = set()
+        i, n = 0, len(word)
+        while i < n:
+            if word[i].isdigit():
+                while i < n and word[i] == '0':
+                    i += 1
+                j = i
+                while j < n and word[j].isdigit():
+                    j += 1
+                s.add(word[i:j])
+                i = j
+            i += 1
+        return len(s)
 ```
 
 ### **Java**
@@ -76,19 +93,112 @@ class Solution:
 ```java
 class Solution {
     public int numDifferentIntegers(String word) {
-        String[] nums = word.split("[a-z]+");
-        Set<String> numSet = new HashSet<>();
-        for (String num : nums) {
-            if ("".equals(num)) {
-                continue;
+        Set<String> s = new HashSet<>();
+        int n = word.length();
+        for (int i = 0; i < n; ++i) {
+            if (Character.isDigit(word.charAt(i))) {
+                while (i < n && word.charAt(i) == '0') {
+                    ++i;
+                }
+                int j = i;
+                while (j < n && Character.isDigit(word.charAt(j))) {
+                    ++j;
+                }
+                s.add(word.substring(i, j));
+                i = j;
             }
-            int j = 0;
-            while (j < num.length() - 1 && num.charAt(j) == '0') {
-                ++j;
-            }
-            numSet.add(num.substring(j));
         }
-        return numSet.size();
+        return s.size();
+    }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int numDifferentIntegers(string word) {
+        unordered_set<string> s;
+        int n = word.size();
+        for (int i = 0; i < n; ++i) {
+            if (isdigit(word[i])) {
+                while (i < n && word[i] == '0') ++i;
+                int j = i;
+                while (j < n && isdigit(word[j])) ++j;
+                s.insert(word.substr(i, j - i));
+                i = j;
+            }
+        }
+        return s.size();
+    }
+};
+```
+
+### **Go**
+
+```go
+func numDifferentIntegers(word string) int {
+	s := map[string]struct{}{}
+	n := len(word)
+	for i := 0; i < n; i++ {
+		if word[i] >= '0' && word[i] <= '9' {
+			for i < n && word[i] == '0' {
+				i++
+			}
+			j := i
+			for j < n && word[j] >= '0' && word[j] <= '9' {
+				j++
+			}
+			s[word[i:j]] = struct{}{}
+			i = j
+		}
+	}
+	return len(s)
+}
+```
+
+### **TypeScript**
+
+```ts
+function numDifferentIntegers(word: string): number {
+    return new Set(
+        word
+            .replace(/\D+/g, ' ')
+            .trim()
+            .split(' ')
+            .filter(v => v !== '')
+            .map(v => v.replace(/^0+/g, '')),
+    ).size;
+}
+```
+
+### **Rust**
+
+```rust
+use std::collections::HashSet;
+impl Solution {
+    pub fn num_different_integers(word: String) -> i32 {
+        let s = word.as_bytes();
+        let n = s.len();
+        let mut set = HashSet::new();
+        let mut i = 0;
+        while i < n {
+            if s[i] >= b'0' && s[i] <= b'9' {
+                let mut j = i;
+                while j < n && s[j] >= b'0' && s[j] <= b'9' {
+                    j += 1;
+                }
+                while i < j - 1 && s[i] == b'0' {
+                    i += 1;
+                }
+                set.insert(String::from_utf8(s[i..j].to_vec()).unwrap());
+                i = j;
+            } else {
+                i += 1;
+            }
+        }
+        set.len() as i32
     }
 }
 ```

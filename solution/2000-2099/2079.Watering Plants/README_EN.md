@@ -19,7 +19,7 @@
 <p>Given a <strong>0-indexed</strong> integer array <code>plants</code> of <code>n</code> integers, where <code>plants[i]</code> is the amount of water the <code>i<sup>th</sup></code> plant needs, and an integer <code>capacity</code> representing the watering can capacity, return <em>the <strong>number of steps</strong> needed to water all the plants</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> plants = [2,2,3,3], capacity = 5
@@ -34,7 +34,7 @@
 Steps needed = 1 + 1 + 2 + 3 + 3 + 4 = 14.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> plants = [1,1,1,4,2,3], capacity = 4
@@ -47,7 +47,7 @@ Steps needed = 1 + 1 + 2 + 3 + 3 + 4 = 14.
 Steps needed = 3 + 3 + 4 + 4 + 5 + 5 + 6 = 30.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> plants = [7,7,7,7,7,7,7], capacity = 8
@@ -113,15 +113,11 @@ class Solution {
 public:
     int wateringPlants(vector<int>& plants, int capacity) {
         int ans = 0, cap = capacity;
-        for (int i = 0; i < plants.size(); ++i)
-        {
-            if (cap >= plants[i])
-            {
+        for (int i = 0; i < plants.size(); ++i) {
+            if (cap >= plants[i]) {
                 cap -= plants[i];
                 ++ans;
-            }
-            else
-            {
+            } else {
                 cap = capacity - plants[i];
                 ans += i * 2 + 1;
             }
@@ -146,6 +142,67 @@ func wateringPlants(plants []int, capacity int) int {
 		}
 	}
 	return ans
+}
+```
+
+### **TypeScript**
+
+```ts
+function wateringPlants(plants: number[], capacity: number): number {
+    const n = plants.length;
+    let ans = 0;
+    let water = capacity;
+    for (let i = 0; i < n; i++) {
+        if (water < plants[i]) {
+            ans += i * 2 + 1;
+            water = capacity - plants[i];
+        } else {
+            ans++;
+            water -= plants[i];
+        }
+    }
+    return ans;
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn watering_plants(plants: Vec<i32>, capacity: i32) -> i32 {
+        let n = plants.len();
+        let mut ans = 0;
+        let mut water = capacity;
+        for i in 0..n {
+            if water < plants[i] {
+                ans += 2 * i + 1;
+                water = capacity - plants[i];
+            } else {
+                ans += 1;
+                water -= plants[i];
+            }
+        }
+        ans as i32
+    }
+}
+```
+
+### **C**
+
+```c
+int wateringPlants(int* plants, int plantsSize, int capacity) {
+    int ans = 0;
+    int water = capacity;
+    for (int i = 0; i < plantsSize; i++) {
+        if (water < plants[i]) {
+            ans += i * 2 + 1;
+            water = capacity - plants[i];
+        } else {
+            ans++;
+            water -= plants[i];
+        }
+    }
+    return ans;
 }
 ```
 

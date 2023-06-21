@@ -9,15 +9,15 @@
 <p>Return <em>the number of connected components in the graph</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0300-0399/0323.Number%20of%20Connected%20Components%20in%20an%20Undirected%20Graph/images/conn1-graph.jpg" style="width: 382px; height: 222px;" />
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0300-0399/0323.Number%20of%20Connected%20Components%20in%20an%20Undirected%20Graph/images/conn1-graph.jpg" style="width: 382px; height: 222px;" />
 <pre>
 <strong>Input:</strong> n = 5, edges = [[0,1],[1,2],[3,4]]
 <strong>Output:</strong> 2
 </pre>
 
-<p><strong>Example 2:</strong></p>
-<img alt="" src="https://cdn.jsdelivr.net/gh/doocs/leetcode@main/solution/0300-0399/0323.Number%20of%20Connected%20Components%20in%20an%20Undirected%20Graph/images/conn2-graph.jpg" style="width: 382px; height: 222px;" />
+<p><strong class="example">Example 2:</strong></p>
+<img alt="" src="https://fastly.jsdelivr.net/gh/doocs/leetcode@main/solution/0300-0399/0323.Number%20of%20Connected%20Components%20in%20an%20Undirected%20Graph/images/conn2-graph.jpg" style="width: 382px; height: 222px;" />
 <pre>
 <strong>Input:</strong> n = 5, edges = [[0,1],[1,2],[2,3],[3,4]]
 <strong>Output:</strong> 1
@@ -44,13 +44,12 @@
 ```python
 class Solution:
     def countComponents(self, n: int, edges: List[List[int]]) -> int:
-        p = list(range(n))
-
         def find(x):
             if p[x] != x:
                 p[x] = find(p[x])
             return p[x]
 
+        p = list(range(n))
         for a, b in edges:
             p[find(a)] = find(b)
         return sum(i == find(i) for i in range(n))
@@ -68,16 +67,16 @@ class Solution {
             p[i] = i;
         }
         for (int[] e : edges) {
-            p[find(e[0])] = find(e[1]);
+            int a = e[0], b = e[1];
+            p[find(a)] = find(b);
         }
-
-        int cnt = 0;
+        int ans = 0;
         for (int i = 0; i < n; ++i) {
             if (i == find(i)) {
-                ++cnt;
+                ++ans;
             }
         }
-        return cnt;
+        return ans;
     }
 
     private int find(int x) {
@@ -94,23 +93,21 @@ class Solution {
 ```cpp
 class Solution {
 public:
-    vector<int> p;
-
     int countComponents(int n, vector<vector<int>>& edges) {
-        p.resize(n);
+        vector<int> p(n);
+        iota(p.begin(), p.end(), 0);
         for (int i = 0; i < n; ++i) p[i] = i;
-        for (auto e : edges) p[find(e[0])] = find(e[1]);
-        int cnt = 0;
-        for (int i = 0; i < n; ++i)
-        {
-            if (i == find(i)) ++cnt;
+        function<int(int)> find = [&](int x) -> int {
+            if (p[x] != x) p[x] = find(p[x]);
+            return p[x];
+        };
+        for (auto& e : edges) {
+            int a = e[0], b = e[1];
+            p[find(a)] = find(b);
         }
-        return cnt;
-    }
-
-    int find(int x) {
-        if (p[x] != x) p[x] = find(p[x]);
-        return p[x];
+        int ans = 0;
+        for (int i = 0; i < n; ++i) ans += i == find(i);
+        return ans;
     }
 };
 ```
@@ -118,31 +115,61 @@ public:
 ### **Go**
 
 ```go
-var p []int
-
-func countComponents(n int, edges [][]int) int {
-	p = make([]int, n)
-	for i := 1; i < n; i++ {
+func countComponents(n int, edges [][]int) (ans int) {
+	p := make([]int, n)
+	for i := range p {
 		p[i] = i
 	}
-	for _, e := range edges {
-		p[find(e[0])] = find(e[1])
+	var find func(int) int
+	find = func(x int) int {
+		if p[x] != x {
+			p[x] = find(p[x])
+		}
+		return p[x]
 	}
-	cnt := 0
+	for _, e := range edges {
+		a, b := e[0], e[1]
+		p[find(a)] = find(b)
+	}
 	for i := 0; i < n; i++ {
 		if i == find(i) {
-			cnt++
+			ans++
 		}
 	}
-	return cnt
+	return
 }
+```
 
-func find(x int) int {
-	if p[x] != x {
-		p[x] = find(p[x])
-	}
-	return p[x]
-}
+### **JavaScript**
+
+```js
+/**
+ * @param {number} n
+ * @param {number[][]} edges
+ * @return {number}
+ */
+var countComponents = function (n, edges) {
+    let p = new Array(n);
+    for (let i = 0; i < n; ++i) {
+        p[i] = i;
+    }
+    function find(x) {
+        if (p[x] != x) {
+            p[x] = find(p[x]);
+        }
+        return p[x];
+    }
+    for (const [a, b] of edges) {
+        p[find(a)] = find(b);
+    }
+    let ans = 0;
+    for (let i = 0; i < n; ++i) {
+        if (i == find(i)) {
+            ++ans;
+        }
+    }
+    return ans;
+};
 ```
 
 ### **...**

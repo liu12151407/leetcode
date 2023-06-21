@@ -9,35 +9,28 @@
 <p>Given an integer <code>n</code>, return <code>true</code> <em>if</em> <code>n</code> <em>is an <strong>ugly number</strong></em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 6
 <strong>Output:</strong> true
-<strong>Explanation:</strong> 6 = 2 &times; 3</pre>
-
-<p><strong>Example 2:</strong></p>
-
-<pre>
-<strong>Input:</strong> n = 8
-<strong>Output:</strong> true
-<strong>Explanation:</strong> 8 = 2 &times; 2 &times; 2
+<strong>Explanation:</strong> 6 = 2 &times; 3
 </pre>
 
-<p><strong>Example 3:</strong></p>
-
-<pre>
-<strong>Input:</strong> n = 14
-<strong>Output:</strong> false
-<strong>Explanation:</strong> 14 is not ugly since it includes the prime factor 7.
-</pre>
-
-<p><strong>Example 4:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> n = 1
 <strong>Output:</strong> true
 <strong>Explanation:</strong> 1 has no prime factors, therefore all of its prime factors are limited to 2, 3, and 5.
+</pre>
+
+<p><strong class="example">Example 3:</strong></p>
+
+<pre>
+<strong>Input:</strong> n = 14
+<strong>Output:</strong> false
+<strong>Explanation:</strong> 14 is not ugly since it includes the prime factor 7.
 </pre>
 
 <p>&nbsp;</p>
@@ -58,12 +51,9 @@ class Solution:
     def isUgly(self, n: int) -> bool:
         if n < 1:
             return False
-        while n % 2 == 0:
-            n //= 2
-        while n % 3 == 0:
-            n //= 3
-        while n % 5 == 0:
-            n //= 5
+        for x in [2, 3, 5]:
+            while n % x == 0:
+                n //= x
         return n == 1
 ```
 
@@ -117,17 +107,58 @@ public:
  */
 var isUgly = function (n) {
     if (n < 1) return false;
-    while (n % 2 == 0) {
+    while (n % 2 === 0) {
         n /= 2;
     }
-    while (n % 3 == 0) {
+    while (n % 3 === 0) {
         n /= 3;
     }
-    while (n % 5 == 0) {
+    while (n % 5 === 0) {
         n /= 5;
     }
-    return n == 1;
+    return n === 1;
 };
+```
+
+### **Go**
+
+```go
+func isUgly(n int) bool {
+	if n < 1 {
+		return false
+	}
+	for _, x := range []int{2, 3, 5} {
+		for n%x == 0 {
+			n /= x
+		}
+	}
+	return n == 1
+}
+```
+
+### **PHP**
+
+```php
+class Solution {
+    /**
+     * @param Integer $n
+     * @return Boolean
+     */
+    function isUgly($n) {
+        while ($n) {
+            if ($n % 2 == 0) {
+                $n = $n / 2;
+            } elseif ($n % 3 == 0) {
+                $n = $n / 3;
+            } elseif ($n % 5 == 0) {
+                $n = $n / 5;
+            } else {
+                break;
+            }
+        }
+        return $n == 1;
+    }
+}
 ```
 
 ### **...**

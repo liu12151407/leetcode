@@ -1,4 +1,4 @@
-# [288. 单词的唯一缩写](https://leetcode-cn.com/problems/unique-word-abbreviation)
+# [288. 单词的唯一缩写](https://leetcode.cn/problems/unique-word-abbreviation)
 
 [English Version](/solution/0200-0299/0288.Unique%20Word%20Abbreviation/README_EN.md)
 
@@ -36,10 +36,10 @@
 
 <pre>
 <strong>输入</strong>
-["ValidWordAbbr", "isUnique", "isUnique", "isUnique", "isUnique"]
-[[["deer", "door", "cake", "card"]], ["dear"], ["cart"], ["cane"], ["make"]]
+["ValidWordAbbr", "isUnique", "isUnique", "isUnique", "isUnique", "isUnique"]
+[[["deer", "door", "cake", "card"]], ["dear"], ["cart"], ["cane"], ["make"], ["cake"]]
 <strong>输出
-</strong>[null, false, true, false, true]
+</strong>[null, false, true, false, true, true]
 
 <strong>解释</strong>
 ValidWordAbbr validWordAbbr = new ValidWordAbbr(["deer", "door", "cake", "card"]);
@@ -77,7 +77,6 @@ validWordAbbr.isUnique("cake"); // 返回 true，因为 "cake" 已经存在于�
 
 ```python
 class ValidWordAbbr:
-
     def __init__(self, dictionary: List[str]):
         self.words = defaultdict(set)
         for word in dictionary:
@@ -141,8 +140,7 @@ public:
     unordered_map<string, unordered_set<string>> words;
 
     ValidWordAbbr(vector<string>& dictionary) {
-        for (auto word : dictionary)
-        {
+        for (auto word : dictionary) {
             auto abbr = wordAbbr(word);
             words[abbr].insert(word);
         }

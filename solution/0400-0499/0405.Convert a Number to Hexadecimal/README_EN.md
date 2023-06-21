@@ -8,11 +8,13 @@
 
 <p>All the letters in the answer string should be lowercase characters, and there should not be any leading zeros in the answer except for the zero itself.</p>
 
+<p><strong>Note:&nbsp;</strong>You are not allowed to use any built-in library method to directly solve this problem.</p>
+
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 <pre><strong>Input:</strong> num = 26
 <strong>Output:</strong> "1a"
-</pre><p><strong>Example 2:</strong></p>
+</pre><p><strong class="example">Example 2:</strong></p>
 <pre><strong>Input:</strong> num = -1
 <strong>Output:</strong> "ffffffff"
 </pre>
@@ -22,9 +24,6 @@
 <ul>
 	<li><code>-2<sup>31</sup> &lt;= num &lt;= 2<sup>31</sup> - 1</code></li>
 </ul>
-
-<p>&nbsp;</p>
-<p><strong>Follow up:</strong> Could you solve it without using any built-in library method?</p>
 
 ## Solutions
 
@@ -40,7 +39,7 @@ class Solution:
         chars = '0123456789abcdef'
         s = []
         for i in range(7, -1, -1):
-            x = (num >> (4 * i)) & 0xf
+            x = (num >> (4 * i)) & 0xF
             if s or x != 0:
                 s.append(chars[x])
         return ''.join(s)
@@ -96,11 +95,9 @@ public:
     string toHex(int num) {
         if (num == 0) return "0";
         string s = "";
-        for (int i = 7; i >= 0; --i)
-        {
+        for (int i = 7; i >= 0; --i) {
             int x = (num >> (4 * i)) & 0xf;
-            if (s.size() > 0 || x != 0)
-            {
+            if (s.size() > 0 || x != 0) {
                 char c = x < 10 ? (char) (x + '0') : (char) (x - 10 + 'a');
                 s += c;
             }

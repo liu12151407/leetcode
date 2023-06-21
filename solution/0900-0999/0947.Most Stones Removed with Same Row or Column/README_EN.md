@@ -11,7 +11,7 @@
 <p>Given an array <code>stones</code> of length <code>n</code> where <code>stones[i] = [x<sub>i</sub>, y<sub>i</sub>]</code> represents the location of the <code>i<sup>th</sup></code> stone, return <em>the largest possible number of stones that can be removed</em>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> stones = [[0,0],[0,1],[1,0],[1,2],[2,1],[2,2]]
@@ -25,7 +25,7 @@
 Stone [0,0] cannot be removed since it does not share a row/column with another stone still on the plane.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> stones = [[0,0],[0,2],[1,1],[2,0],[2,2]]
@@ -37,7 +37,7 @@ Stone [0,0] cannot be removed since it does not share a row/column with another 
 Stones [0,0] and [1,1] cannot be removed since they do not share a row/column with another stone still on the plane.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> stones = [[0,0]]
@@ -63,20 +63,17 @@ Stones [0,0] and [1,1] cannot be removed since they do not share a row/column wi
 ```python
 class Solution:
     def removeStones(self, stones: List[List[int]]) -> int:
-        n = 10010
-        p = list(range(n << 1))
-
         def find(x):
             if p[x] != x:
                 p[x] = find(p[x])
             return p[x]
 
+        n = 10010
+        p = list(range(n << 1))
         for x, y in stones:
             p[find(x)] = find(y + n)
 
-        s = set()
-        for x, _ in stones:
-            s.add(find(x))
+        s = {find(x) for x, _ in stones}
         return len(stones) - len(s)
 ```
 
@@ -92,12 +89,12 @@ class Solution {
         for (int i = 0; i < p.length; ++i) {
             p[i] = i;
         }
-        for (int[] e : stones) {
-            p[find(e[0])] = find(e[1] + n);
+        for (int[] stone : stones) {
+            p[find(stone[0])] = find(stone[1] + n);
         }
         Set<Integer> s = new HashSet<>();
-        for (int[] e : stones) {
-            s.add(find(e[0]));
+        for (int[] stone : stones) {
+            s.add(find(stone[0]));
         }
         return stones.length - s.size();
     }
@@ -118,26 +115,18 @@ class Solution {
 public:
     vector<int> p;
 
-    int removeStones(vector<vector<int>> &stones) {
+    int removeStones(vector<vector<int>>& stones) {
         int n = 10010;
         p.resize(n << 1);
-        for (int i = 0; i < p.size(); ++i)
-            p[i] = i;
-        for (auto e : stones)
-        {
-            p[find(e[0])] = find(e[1] + 10010);
-        }
+        for (int i = 0; i < p.size(); ++i) p[i] = i;
+        for (auto& stone : stones) p[find(stone[0])] = find(stone[1] + n);
         unordered_set<int> s;
-        for (auto e : stones)
-        {
-            s.insert(find(e[0]));
-        }
+        for (auto& stone : stones) s.insert(find(stone[0]));
         return stones.size() - s.size();
     }
 
     int find(int x) {
-        if (p[x] != x)
-            p[x] = find(p[x]);
+        if (p[x] != x) p[x] = find(p[x]);
         return p[x];
     }
 };
@@ -146,29 +135,27 @@ public:
 ### **Go**
 
 ```go
-var p []int
-
 func removeStones(stones [][]int) int {
 	n := 10010
-	p = make([]int, n<<1)
-	for i := 0; i < len(p); i++ {
+	p := make([]int, n<<1)
+	for i := range p {
 		p[i] = i
 	}
-	for _, e := range stones {
-		p[find(e[0])] = find(e[1] + n)
+	var find func(x int) int
+	find = func(x int) int {
+		if p[x] != x {
+			p[x] = find(p[x])
+		}
+		return p[x]
+	}
+	for _, stone := range stones {
+		p[find(stone[0])] = find(stone[1] + n)
 	}
 	s := make(map[int]bool)
-	for _, e := range stones {
-		s[find(e[0])] = true
+	for _, stone := range stones {
+		s[find(stone[0])] = true
 	}
 	return len(stones) - len(s)
-}
-
-func find(x int) int {
-	if p[x] != x {
-		p[x] = find(p[x])
-	}
-	return p[x]
 }
 ```
 

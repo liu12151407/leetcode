@@ -15,7 +15,7 @@
 <p>We know that there is a defect in <strong>at most one</strong> of the sensors. Return <em>the sensor number (</em><code>1</code><em> or </em><code>2</code><em>) with the defect. If there is <strong>no defect</strong> in either sensor or if it is<strong> impossible</strong> to determine the defective sensor, return </em><code>-1</code><em>.</em></p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> sensor1 = [2,3,4,5], sensor2 = [2,1,3,4]
@@ -24,7 +24,7 @@
 The second data point from sensor 2 is dropped, and the last value of sensor 1 is replaced by a 5.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> sensor1 = [2,2,2,2,2], sensor2 = [2,2,2,2,5]
@@ -33,7 +33,7 @@ The second data point from sensor 2 is dropped, and the last value of sensor 1 i
 Dropping the last value for either sensor could produce the output for the other sensor.
 </pre>
 
-<p><strong>Example 3:</strong></p>
+<p><strong class="example">Example 3:</strong></p>
 
 <pre>
 <strong>Input:</strong> sensor1 = [2,3,2,2,3,2], sensor2 = [2,3,2,3,2,7]
@@ -58,13 +58,79 @@ The fourth data point from sensor 1 is dropped, and the last value of sensor 1 i
 ### **Python3**
 
 ```python
-
+class Solution:
+    def badSensor(self, sensor1: List[int], sensor2: List[int]) -> int:
+        i, n = 0, len(sensor1)
+        while i < n - 1:
+            if sensor1[i] != sensor2[i]:
+                break
+            i += 1
+        while i < n - 1:
+            if sensor1[i + 1] != sensor2[i]:
+                return 1
+            if sensor1[i] != sensor2[i + 1]:
+                return 2
+            i += 1
+        return -1
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    public int badSensor(int[] sensor1, int[] sensor2) {
+        int i = 0;
+        int n = sensor1.length;
+        for (; i < n - 1 && sensor1[i] == sensor2[i]; ++i) {
+        }
+        for (; i < n - 1; ++i) {
+            if (sensor1[i + 1] != sensor2[i]) {
+                return 1;
+            }
+            if (sensor1[i] != sensor2[i + 1]) {
+                return 2;
+            }
+        }
+        return -1;
+    }
+}
+```
 
+### **C++**
+
+```cpp
+class Solution {
+public:
+    int badSensor(vector<int>& sensor1, vector<int>& sensor2) {
+        int i = 0;
+        int n = sensor1.size();
+        for (; i < n - 1 && sensor1[i] == sensor2[i]; ++i) {}
+        for (; i < n - 1; ++i) {
+            if (sensor1[i + 1] != sensor2[i]) return 1;
+            if (sensor1[i] != sensor2[i + 1]) return 2;
+        }
+        return -1;
+    }
+};
+```
+
+### **Go**
+
+```go
+func badSensor(sensor1 []int, sensor2 []int) int {
+	i, n := 0, len(sensor1)
+	for ; i < n-1 && sensor1[i] == sensor2[i]; i++ {
+	}
+	for ; i < n-1; i++ {
+		if sensor1[i+1] != sensor2[i] {
+			return 1
+		}
+		if sensor1[i] != sensor2[i+1] {
+			return 2
+		}
+	}
+	return -1
+}
 ```
 
 ### **...**

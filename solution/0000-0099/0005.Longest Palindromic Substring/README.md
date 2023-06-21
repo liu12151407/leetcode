@@ -1,4 +1,4 @@
-# [5. 最长回文子串](https://leetcode-cn.com/problems/longest-palindromic-substring)
+# [5. 最长回文子串](https://leetcode.cn/problems/longest-palindromic-substring)
 
 [English Version](/solution/0000-0099/0005.Longest%20Palindromic%20Substring/README_EN.md)
 
@@ -8,7 +8,9 @@
 
 <p>给你一个字符串 <code>s</code>，找到 <code>s</code> 中最长的回文子串。</p>
 
-<p> </p>
+<p>如果字符串的反序与原始字符串相同，则该字符串称为回文字符串。</p>
+
+<p>&nbsp;</p>
 
 <p><strong>示例 1：</strong></p>
 
@@ -25,39 +27,36 @@
 <strong>输出：</strong>"bb"
 </pre>
 
-<p><strong>示例 3：</strong></p>
-
-<pre>
-<strong>输入：</strong>s = "a"
-<strong>输出：</strong>"a"
-</pre>
-
-<p><strong>示例 4：</strong></p>
-
-<pre>
-<strong>输入：</strong>s = "ac"
-<strong>输出：</strong>"a"
-</pre>
-
-<p> </p>
+<p>&nbsp;</p>
 
 <p><strong>提示：</strong></p>
 
 <ul>
-	<li><code>1 <= s.length <= 1000</code></li>
-	<li><code>s</code> 仅由数字和英文字母（大写和/或小写）组成</li>
+	<li><code>1 &lt;= s.length &lt;= 1000</code></li>
+	<li><code>s</code> 仅由数字和英文字母组成</li>
 </ul>
 
 ## 解法
 
 <!-- 这里可写通用的实现逻辑 -->
 
-动态规划法。
+**方法一：动态规划**
 
-设 `dp[i][j]` 表示字符串 `s[i..j]` 是否为回文串。
+我们定义 $f[i][j]$ 表示字符串 $s[i..j]$ 是否为回文串，初始时 $f[i][j] = true$。
 
-- 当 `j - i < 2`，即字符串长度为 2 时，只要 `s[i] == s[j]`，`dp[i][j]` 就为 true。
-- 当 `j - i >= 2`，`dp[i][j] = dp[i + 1][j - 1] && s[i] == s[j]`。
+接下来，我们定义变量 $k$ 和 $mx$，其中 $k$ 表示最长回文串的起始位置，$mx$ 表示最长回文串的长度。初始时 $k = 0$, $mx = 1$。
+
+考虑 $f[i][j]$，如果 $s[i] = s[j]$，那么 $f[i][j] = f[i + 1][j - 1]$；否则 $f[i][j] = false$。如果 $f[i][j] = true$ 并且 $mx \lt j - i + 1$，那么我们更新 $k = i$, $mx = j - i + 1$。
+
+由于 $f[i][j]$ 依赖于 $f[i + 1][j - 1]$，因此我们需要保证 $i + 1$ 在 $j - 1$ 之前，因此我们需要从大到小地枚举 $i$，从小到大地枚举 $j$。
+
+时间复杂度 $O(n^2)$，空间复杂度 $O(n^2)$。其中 $n$ 是字符串 $s$ 的长度。
+
+**方法二：枚举回文中间点**
+
+我们可以枚举回文中间点，向两边扩散，找到最长的回文串。
+
+时间复杂度 $O(n^2)$，空间复杂度 $O(1)$。其中 $n$ 是字符串 $s$ 的长度。
 
 <!-- tabs:start -->
 
@@ -69,17 +68,36 @@
 class Solution:
     def longestPalindrome(self, s: str) -> str:
         n = len(s)
-        dp = [[False] * n for _ in range(n)]
+        f = [[True] * n for _ in range(n)]
+        k, mx = 0, 1
+        for i in range(n - 2, -1, -1):
+            for j in range(i + 1, n):
+                f[i][j] = False
+                if s[i] == s[j]:
+                    f[i][j] = f[i + 1][j - 1]
+                    if f[i][j] and mx < j - i + 1:
+                        k, mx = i, j - i + 1
+        return s[k : k + mx]
+```
+
+```python
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        def f(l, r):
+            while l >= 0 and r < n and s[l] == s[r]:
+                l, r = l - 1, r + 1
+            return r - l - 1
+
+        n = len(s)
         start, mx = 0, 1
-        for j in range(n):
-            for i in range(j + 1):
-                if j - i < 2:
-                    dp[i][j] = s[i] == s[j]
-                else:
-                    dp[i][j] = dp[i + 1][j - 1] and s[i] == s[j]
-                if dp[i][j] and mx < j - i + 1:
-                    start, mx = i, j - i + 1
-        return s[start:start + mx]
+        for i in range(n):
+            a = f(i, i)
+            b = f(i, i + 1)
+            t = max(a, b)
+            if mx < t:
+                mx = t
+                start = i - ((t - 1) >> 1)
+        return s[start : start + mx]
 ```
 
 ### **Java**
@@ -90,22 +108,55 @@ class Solution:
 class Solution {
     public String longestPalindrome(String s) {
         int n = s.length();
-        boolean[][] dp = new boolean[n][n];
-        int mx = 1, start = 0;
-        for (int j = 0; j < n; ++j) {
-            for (int i = 0; i <= j; ++i) {
-                if (j - i < 2) {
-                    dp[i][j] = s.charAt(i) == s.charAt(j);
-                } else {
-                    dp[i][j] = dp[i + 1][j - 1] && s.charAt(i) == s.charAt(j);
-                }
-                if (dp[i][j] && mx < j - i + 1) {
-                    mx = j - i + 1;
-                    start = i;
+        boolean[][] f = new boolean[n][n];
+        for (var g : f) {
+            Arrays.fill(g, true);
+        }
+        int k = 0, mx = 1;
+        for (int i = n - 2; i >= 0; --i) {
+            for (int j = i + 1; j < n; ++j) {
+                f[i][j] = false;
+                if (s.charAt(i) == s.charAt(j)) {
+                    f[i][j] = f[i + 1][j - 1];
+                    if (f[i][j] && mx < j - i + 1) {
+                        mx = j - i + 1;
+                        k = i;
+                    }
                 }
             }
         }
+        return s.substring(k, k + mx);
+    }
+}
+```
+
+```java
+class Solution {
+    private String s;
+    private int n;
+
+    public String longestPalindrome(String s) {
+        this.s = s;
+        n = s.length();
+        int start = 0, mx = 1;
+        for (int i = 0; i < n; ++i) {
+            int a = f(i, i);
+            int b = f(i, i + 1);
+            int t = Math.max(a, b);
+            if (mx < t) {
+                mx = t;
+                start = i - ((t - 1) >> 1);
+            }
+        }
         return s.substring(start, start + mx);
+    }
+
+    private int f(int l, int r) {
+        while (l >= 0 && r < n && s.charAt(l) == s.charAt(r)) {
+            --l;
+            ++r;
+        }
+        return r - l - 1;
     }
 }
 ```
@@ -117,19 +168,44 @@ class Solution {
 public:
     string longestPalindrome(string s) {
         int n = s.size();
-        vector<vector<bool>> dp(n, vector<bool>(n, false));
+        vector<vector<bool>> f(n, vector<bool>(n, true));
+        int k = 0, mx = 1;
+        for (int i = n - 2; ~i; --i) {
+            for (int j = i + 1; j < n; ++j) {
+                f[i][j] = false;
+                if (s[i] == s[j]) {
+                    f[i][j] = f[i + 1][j - 1];
+                    if (f[i][j] && mx < j - i + 1) {
+                        mx = j - i + 1;
+                        k = i;
+                    }
+                }
+            }
+        }
+        return s.substr(k, mx);
+    }
+};
+```
+
+```cpp
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        int n = s.size();
         int start = 0, mx = 1;
-        for (int j = 0; j < n; ++j) {
-            for (int i = 0; i <= j; ++i) {
-                if (j - i < 2) {
-                    dp[i][j] = s[i] == s[j];
-                } else {
-                    dp[i][j] = dp[i + 1][j - 1] && s[i] == s[j];
-                }
-                if (dp[i][j] && mx < j - i + 1) {
-                    start = i;
-                    mx = j - i + 1;
-                }
+        auto f = [&](int l, int r) {
+            while (l >= 0 && r < n && s[l] == s[r]) {
+                l--, r++;
+            }
+            return r - l - 1;
+        };
+        for (int i = 0; i < n; ++i) {
+            int a = f(i, i);
+            int b = f(i, i + 1);
+            int t = max(a, b);
+            if (mx < t) {
+                mx = t;
+                start = i - (t - 1 >> 1);
             }
         }
         return s.substr(start, mx);
@@ -142,55 +218,174 @@ public:
 ```go
 func longestPalindrome(s string) string {
 	n := len(s)
-	dp := make([][]bool, n)
-	for i := 0; i < n; i++ {
-		dp[i] = make([]bool, n)
+	f := make([][]bool, n)
+	for i := range f {
+		f[i] = make([]bool, n)
+		for j := range f[i] {
+			f[i][j] = true
+		}
 	}
-	mx, start := 1, 0
-	for j := 0; j < n; j++ {
-		for i := 0; i <= j; i++ {
-			if j-i < 2 {
-				dp[i][j] = s[i] == s[j]
-			} else {
-				dp[i][j] = dp[i+1][j-1] && s[i] == s[j]
-			}
-			if dp[i][j] && mx < j-i+1 {
-				mx, start = j-i+1, i
+	k, mx := 0, 1
+	for i := n - 2; i >= 0; i-- {
+		for j := i + 1; j < n; j++ {
+			f[i][j] = false
+			if s[i] == s[j] {
+				f[i][j] = f[i+1][j-1]
+				if f[i][j] && mx < j-i+1 {
+					mx = j - i + 1
+					k = i
+				}
 			}
 		}
 	}
+	return s[k : k+mx]
+}
+```
+
+```go
+func longestPalindrome(s string) string {
+	n := len(s)
+	start, mx := 0, 1
+	f := func(l, r int) int {
+		for l >= 0 && r < n && s[l] == s[r] {
+			l, r = l-1, r+1
+		}
+		return r - l - 1
+	}
+	for i := range s {
+		a, b := f(i, i), f(i, i+1)
+		t := max(a, b)
+		if mx < t {
+			mx = t
+			start = i - ((t - 1) >> 1)
+		}
+	}
 	return s[start : start+mx]
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }
 ```
 
 ### **C#**
 
 ```cs
-public class Solution{
+public class Solution {
     public string LongestPalindrome(string s) {
         int n = s.Length;
-        bool[,] dp = new bool[n, n];
-        int mx = 1, start = 0;
-        for (int j = 0; j < n; ++j)
-        {
-            for (int i = 0; i <= j; ++i)
-            {
-                if (j - i < 2)
-                {
-                    dp[i, j] = s[i] == s[j];
-                }
-                else
-                {
-                    dp[i, j] = dp[i + 1, j - 1] && s[i] == s[j];
-                }
-                if (dp[i, j] && mx < j - i + 1)
-                {
-                    mx = j - i + 1;
-                    start = i;
+        bool[,] f = new bool[n, n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; ++j) {
+                f[i, j] = true;
+            }
+        }
+        int k = 0, mx = 1;
+        for (int i = n - 2; i >= 0; --i) {
+            for (int j = i + 1; j < n; ++j) {
+                f[i, j] = false;
+                if (s[i] == s[j]) {
+                    f[i, j] = f[i + 1, j - 1];
+                    if (f[i, j] && mx < j - i + 1) {
+                        mx = j - i + 1;
+                        k = i;
+                    }
                 }
             }
         }
-        return s.Substring(start, mx);
+        return s.Substring(k, mx);
+    }
+}
+```
+
+### **JavaScript**
+
+```js
+/**
+ * @param {string} s
+ * @return {string}
+ */
+var longestPalindrome = function (s) {
+    const n = s.length;
+    const f = Array(n)
+        .fill(0)
+        .map(() => Array(n).fill(true));
+    let k = 0;
+    let mx = 1;
+    for (let i = n - 2; i >= 0; --i) {
+        for (let j = i + 1; j < n; ++j) {
+            f[i][j] = false;
+            if (s[i] === s[j]) {
+                f[i][j] = f[i + 1][j - 1];
+                if (f[i][j] && mx < j - i + 1) {
+                    mx = j - i + 1;
+                    k = i;
+                }
+            }
+        }
+    }
+    return s.slice(k, k + mx);
+};
+```
+
+### **TypeScript**
+
+```ts
+function longestPalindrome(s: string): string {
+    const n = s.length;
+    const f: boolean[][] = Array(n)
+        .fill(0)
+        .map(() => Array(n).fill(true));
+    let k = 0;
+    let mx = 1;
+    for (let i = n - 2; i >= 0; --i) {
+        for (let j = i + 1; j < n; ++j) {
+            f[i][j] = false;
+            if (s[i] === s[j]) {
+                f[i][j] = f[i + 1][j - 1];
+                if (f[i][j] && mx < j - i + 1) {
+                    mx = j - i + 1;
+                    k = i;
+                }
+            }
+        }
+    }
+    return s.slice(k, k + mx);
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn longest_palindrome(s: String) -> String {
+        let n = s.len();
+        let s = s.as_bytes();
+        let is_pass = |mut l, mut r| {
+            while l < r {
+                if s[l] != s[r] {
+                    return false;
+                }
+                l += 1;
+                r -= 1;
+            }
+            true
+        };
+        let mut res = &s[0..1];
+        for i in 0..n - 1 {
+            for j in (i + 1..n).rev() {
+                if res.len() > j - i {
+                    break;
+                }
+                if is_pass(i, j) {
+                    res = &s[i..=j];
+                }
+            }
+        }
+        res.into_iter().map(|c| char::from(*c)).collect()
     }
 }
 ```

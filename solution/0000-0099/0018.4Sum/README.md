@@ -1,4 +1,4 @@
-# [18. 四数之和](https://leetcode-cn.com/problems/4sum)
+# [18. 四数之和](https://leetcode.cn/problems/4sum)
 
 [English Version](/solution/0000-0099/0018.4Sum/README_EN.md)
 
@@ -6,11 +6,17 @@
 
 <!-- 这里写题目描述 -->
 
-<p>给定一个包含 <em>n</em> 个整数的数组 <code>nums</code> 和一个目标值 <code>target</code>，判断 <code>nums</code> 中是否存在四个元素 <em>a，</em><em>b，c</em> 和 <em>d</em> ，使得 <em>a</em> + <em>b</em> + <em>c</em> + <em>d</em> 的值与 <code>target</code> 相等？找出所有满足条件且不重复的四元组。</p>
+<p>给你一个由 <code>n</code> 个整数组成的数组&nbsp;<code>nums</code> ，和一个目标值 <code>target</code> 。请你找出并返回满足下述全部条件且<strong>不重复</strong>的四元组&nbsp;<code>[nums[a], nums[b], nums[c], nums[d]]</code>&nbsp;（若两个四元组元素一一对应，则认为两个四元组重复）：</p>
 
-<p><strong>注意：</strong>答案中不可以包含重复的四元组。</p>
+<ul>
+	<li><code>0 &lt;= a, b, c, d&nbsp;&lt; n</code></li>
+	<li><code>a</code>、<code>b</code>、<code>c</code> 和 <code>d</code> <strong>互不相同</strong></li>
+	<li><code>nums[a] + nums[b] + nums[c] + nums[d] == target</code></li>
+</ul>
 
-<p> </p>
+<p>你可以按 <strong>任意顺序</strong> 返回答案 。</p>
+
+<p>&nbsp;</p>
 
 <p><strong>示例 1：</strong></p>
 
@@ -22,25 +28,29 @@
 <p><strong>示例 2：</strong></p>
 
 <pre>
-<strong>输入：</strong>nums = [], target = 0
-<strong>输出：</strong>[]
+<strong>输入：</strong>nums = [2,2,2,2,2], target = 8
+<strong>输出：</strong>[[2,2,2,2]]
 </pre>
 
-<p> </p>
+<p>&nbsp;</p>
 
 <p><strong>提示：</strong></p>
 
 <ul>
-	<li><code>0 <= nums.length <= 200</code></li>
-	<li><code>-10<sup>9</sup> <= nums[i] <= 10<sup>9</sup></code></li>
-	<li><code>-10<sup>9</sup> <= target <= 10<sup>9</sup></code></li>
+	<li><code>1 &lt;= nums.length &lt;= 200</code></li>
+	<li><code>-10<sup>9</sup> &lt;= nums[i] &lt;= 10<sup>9</sup></code></li>
+	<li><code>-10<sup>9</sup> &lt;= target &lt;= 10<sup>9</sup></code></li>
 </ul>
 
 ## 解法
 
 <!-- 这里可写通用的实现逻辑 -->
 
-“排序 + 双指针”实现。
+**方法一：排序 + 双指针**
+
+该题和 [0015.三数之和](https://leetcode.cn/problems/3sum/) 相似，解法也相似。
+
+时间复杂度为 $O(n^3)$，空间复杂度为 $O(\log n)$，其中 $n$ 是数组的长度。
 
 <!-- tabs:start -->
 
@@ -165,40 +175,35 @@ public:
 
 ```go
 func fourSum(nums []int, target int) [][]int {
-	n, res := len(nums), make([][]int, 0)
-	if n < 4 {
-		return res
-	}
+	ans, n := [][]int{}, len(nums)
 	sort.Ints(nums)
-	for i := 0; i < n-3; i++ {
-		if i > 0 && nums[i] == nums[i-1] {
-			continue
-		}
-		for j := i + 1; j < n-2; j++ {
-			if j > i+1 && nums[j] == nums[j-1] {
-				continue
-			}
-			k, l := j+1, n-1
-			for k < l {
-				if nums[i]+nums[j]+nums[k]+nums[l] == target {
-					res = append(res, []int{nums[i], nums[j], nums[k], nums[l]})
-					k++
-					l--
-					for k < n && nums[k] == nums[k-1] {
-						k++
+	for i := 0; i < n; i++ {
+		for j := i + 1; j < n; j++ {
+			for l, r := j+1, n-1; l < r; {
+				if nums[i]+nums[j]+nums[l]+nums[r] == target {
+					ans = append(ans, []int{nums[i], nums[j], nums[l], nums[r]})
+					l, r = l+1, r-1
+					for l < r && nums[l] == nums[l-1] {
+						l++
 					}
-					for l > j && nums[l] == nums[l+1] {
-						l--
+					for l < r && nums[r] == nums[r+1] {
+						r--
 					}
-				} else if nums[i]+nums[j]+nums[k]+nums[l] < target {
-					k++
+				} else if nums[i]+nums[j]+nums[l]+nums[r] < target {
+					l++
 				} else {
-					l--
+					r--
 				}
 			}
+			for j+1 < n && nums[j+1] == nums[j] {
+				j++
+			}
+		}
+		for i+1 < n && nums[i+1] == nums[i] {
+			i++
 		}
 	}
-	return res
+	return ans
 }
 ```
 

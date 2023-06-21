@@ -1,4 +1,4 @@
-# [682. 棒球比赛](https://leetcode-cn.com/problems/baseball-game)
+# [682. 棒球比赛](https://leetcode.cn/problems/baseball-game)
 
 [English Version](/solution/0600-0699/0682.Baseball%20Game/README_EN.md)
 
@@ -132,18 +132,18 @@ class Solution {
 public:
     int calPoints(vector<string>& ops) {
         vector<int> stk;
-        for (auto& op : ops)
-        {
+        for (auto& op : ops) {
             int n = stk.size();
-            if (op == "+")
-            {
+            if (op == "+") {
                 int a = stk[n - 1];
                 int b = stk[n - 2];
                 stk.push_back(a + b);
-            }
-            else if (op == "D") stk.push_back(stk[n - 1] * 2);
-            else if (op == "C") stk.pop_back();
-            else stk.push_back(stoi(op));
+            } else if (op == "D")
+                stk.push_back(stk[n - 1] * 2);
+            else if (op == "C")
+                stk.pop_back();
+            else
+                stk.push_back(stoi(op));
         }
         return accumulate(stk.begin(), stk.end(), 0);
     }
@@ -174,6 +174,55 @@ func calPoints(ops []string) int {
 		ans += score
 	}
 	return ans
+}
+```
+
+### **TypeScript**
+
+```ts
+function calPoints(ops: string[]): number {
+    const stack = [];
+    for (const op of ops) {
+        const n = stack.length;
+        if (op === '+') {
+            stack.push(stack[n - 1] + stack[n - 2]);
+        } else if (op === 'D') {
+            stack.push(stack[n - 1] * 2);
+        } else if (op === 'C') {
+            stack.pop();
+        } else {
+            stack.push(Number(op));
+        }
+    }
+    return stack.reduce((p, v) => p + v);
+}
+```
+
+### **Rust**
+
+```rust
+impl Solution {
+    pub fn cal_points(ops: Vec<String>) -> i32 {
+        let mut stack = vec![];
+        for op in ops {
+            match op.as_str() {
+                "+" => {
+                    let n = stack.len();
+                    stack.push(stack[n - 1] + stack[n - 2]);
+                }
+                "D" => {
+                    stack.push(stack.last().unwrap() * 2);
+                }
+                "C" => {
+                    stack.pop();
+                }
+                n => {
+                    stack.push(n.parse::<i32>().unwrap());
+                }
+            }
+        }
+        stack.into_iter().sum()
+    }
 }
 ```
 

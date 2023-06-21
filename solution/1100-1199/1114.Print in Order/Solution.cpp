@@ -1,34 +1,34 @@
+#include <semaphore.h>
+
 class Foo {
+private:
+    sem_t a, b, c;
+
 public:
     Foo() {
-        _mutex1.lock();
-        _mutex2.lock();
+        sem_init(&a, 0, 1);
+        sem_init(&b, 0, 0);
+        sem_init(&c, 0, 0);
     }
 
     void first(function<void()> printFirst) {
-        
+        sem_wait(&a);
+        // printFirst() outputs "first". Do not change or remove this line.
         printFirst();
-        _mutex1.unlock();
+        sem_post(&b);
     }
 
     void second(function<void()> printSecond) {
-        
-        _mutex1.lock();
+        sem_wait(&b);
+        // printSecond() outputs "second". Do not change or remove this line.
         printSecond();
-        _mutex1.unlock();
-        _mutex2.unlock();
+        sem_post(&c);
     }
 
     void third(function<void()> printThird) {
-        
-        _mutex2.lock();
+        sem_wait(&c);
+        // printThird() outputs "third". Do not change or remove this line.
         printThird();
-        _mutex2.unlock();
+        sem_post(&a);
     }
-    
-    
-private:
-    std::mutex _mutex1;
-    std::mutex _mutex2;
-    
 };

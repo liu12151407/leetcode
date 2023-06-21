@@ -4,20 +4,20 @@
 
 ## Description
 
-<p>A decimal number can be converted to its&nbsp;<em>Hexspeak representation</em>&nbsp;by first converting it to an uppercase hexadecimal string, then replacing all occurrences of the digit <code>0</code> with the letter <code>O</code>, and the digit <code>1</code> with the letter <code>I</code>.&nbsp; Such a representation&nbsp;is <em>valid</em>&nbsp;if and only if it consists only of the letters in the set <code>{&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;, &quot;F&quot;, &quot;I&quot;, &quot;O&quot;}</code>.</p>
+<p>A decimal number can be converted to its <strong>Hexspeak representation</strong> by first converting it to an uppercase hexadecimal string, then replacing all occurrences of the digit <code>&#39;0&#39;</code> with the letter <code>&#39;O&#39;</code>, and the digit <code>&#39;1&#39;</code> with the letter <code>&#39;I&#39;</code>. Such a representation is valid if and only if it consists only of the letters in the set <code>{&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;, &#39;I&#39;, &#39;O&#39;}</code>.</p>
 
-<p>Given a string <code>num</code>&nbsp;representing a decimal integer <code>N</code>, return the Hexspeak representation of <code>N</code> if it is valid, otherwise return <code>&quot;ERROR&quot;</code>.</p>
+<p>Given a string <code>num</code> representing a decimal integer <code>n</code>, <em>return the <strong>Hexspeak representation</strong> of </em><code>n</code><em> if it is valid, otherwise return </em><code>&quot;ERROR&quot;</code>.</p>
 
 <p>&nbsp;</p>
-<p><strong>Example 1:</strong></p>
+<p><strong class="example">Example 1:</strong></p>
 
 <pre>
 <strong>Input:</strong> num = &quot;257&quot;
 <strong>Output:</strong> &quot;IOI&quot;
-<b>Explanation: </b> 257 is 101 in hexadecimal.
+<strong>Explanation:</strong> 257 is 101 in hexadecimal.
 </pre>
 
-<p><strong>Example 2:</strong></p>
+<p><strong class="example">Example 2:</strong></p>
 
 <pre>
 <strong>Input:</strong> num = &quot;3&quot;
@@ -28,9 +28,9 @@
 <p><strong>Constraints:</strong></p>
 
 <ul>
-	<li><code>1 &lt;= N &lt;= 10^12</code></li>
-	<li>There are no leading zeros in the given string.</li>
-	<li>All answers must be in uppercase letters.</li>
+	<li><code>1 &lt;= num.length &lt;= 12</code></li>
+	<li><code>num</code> does not contain leading zeros.</li>
+	<li>num represents an integer in the range <code>[1, 10<sup>12</sup>]</code>.</li>
 </ul>
 
 ## Solutions
@@ -40,13 +40,70 @@
 ### **Python3**
 
 ```python
-
+class Solution:
+    def toHexspeak(self, num: str) -> str:
+        s = set('ABCDEFIO')
+        t = hex(int(num))[2:].upper().replace('0', 'O').replace('1', 'I')
+        return t if all(c in s for c in t) else 'ERROR'
 ```
 
 ### **Java**
 
 ```java
+class Solution {
+    private static final Set<Character> S = Set.of('A', 'B', 'C', 'D', 'E', 'F', 'I', 'O');
 
+    public String toHexspeak(String num) {
+        String t
+            = Long.toHexString(Long.valueOf(num)).toUpperCase().replace("0", "O").replace("1", "I");
+        for (char c : t.toCharArray()) {
+            if (!S.contains(c)) {
+                return "ERROR";
+            }
+        }
+        return t;
+    }
+}
+```
+
+### **C++**
+
+```cpp
+class Solution {
+public:
+    string toHexspeak(string num) {
+        stringstream ss;
+        ss << hex << stol(num);
+        string t = ss.str();
+        for (int i = 0; i < t.size(); ++i) {
+            if (t[i] >= '2' && t[i] <= '9') return "ERROR";
+            if (t[i] == '0')
+                t[i] = 'O';
+            else if (t[i] == '1')
+                t[i] = 'I';
+            else
+                t[i] = t[i] - 32;
+        }
+        return t;
+    }
+};
+```
+
+### **Go**
+
+```go
+func toHexspeak(num string) string {
+	x, _ := strconv.Atoi(num)
+	t := strings.ToUpper(fmt.Sprintf("%x", x))
+	t = strings.ReplaceAll(t, "0", "O")
+	t = strings.ReplaceAll(t, "1", "I")
+	for _, c := range t {
+		if c >= '2' && c <= '9' {
+			return "ERROR"
+		}
+	}
+	return t
+}
 ```
 
 ### **...**

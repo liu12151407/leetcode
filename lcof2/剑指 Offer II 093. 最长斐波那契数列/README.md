@@ -1,4 +1,4 @@
-# [剑指 Offer II 093. 最长斐波那契数列](https://leetcode-cn.com/problems/Q91FMA)
+# [剑指 Offer II 093. 最长斐波那契数列](https://leetcode.cn/problems/Q91FMA)
 
 ## 题目描述
 
@@ -49,7 +49,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 873&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/length-of-longest-fibonacci-subsequence/">https://leetcode-cn.com/problems/length-of-longest-fibonacci-subsequence/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 873&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/length-of-longest-fibonacci-subsequence/">https://leetcode.cn/problems/length-of-longest-fibonacci-subsequence/</a></p>
 
 ## 解法
 
@@ -57,8 +57,8 @@
 
 动态规划。
 
-- 状态表示：`dp[j][i]` 表示斐波那契式最后两项为 `arr[j]`, `arr[i]` 时的最大子序列长度。
-- 状态计算：`dp[j][i] = dp[k][j] + 1`（当且仅当 `k < j < i`，并且 `arr[k] + arr[j] == arr[i]`）, `ans = max(ans, dp[j][i])`。
+-   状态表示：`dp[j][i]` 表示斐波那契式最后两项为 `arr[j]`, `arr[i]` 时的最大子序列长度。
+-   状态计算：`dp[j][i] = dp[k][j] + 1`（当且仅当 `k < j < i`，并且 `arr[k] + arr[j] == arr[i]`）, `ans = max(ans, dp[j][i])`。
 
 <!-- tabs:start -->
 
@@ -133,22 +133,17 @@ public:
         int n = arr.size();
         for (int i = 0; i < n; ++i) mp[arr[i]] = i;
         vector<vector<int>> dp(n, vector<int>(n));
-        for (int i = 0; i < n; ++i)
-        {
+        for (int i = 0; i < n; ++i) {
             for (int j = 0; j < i; ++j)
                 dp[j][i] = 2;
         }
         int ans = 0;
-        for (int i = 0; i < n; ++i)
-        {
-            for (int j = 0; j < i; ++j)
-            {
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < i; ++j) {
                 int delta = arr[i] - arr[j];
-                if (mp.count(delta))
-                {
+                if (mp.count(delta)) {
                     int k = mp[delta];
-                    if (k < j)
-                    {
+                    if (k < j) {
                         dp[j][i] = dp[k][j] + 1;
                         ans = max(ans, dp[j][i]);
                     }

@@ -1,4 +1,4 @@
-# [剑指 Offer II 018. 有效的回文](https://leetcode-cn.com/problems/XltzEq)
+# [剑指 Offer II 018. 有效的回文](https://leetcode.cn/problems/XltzEq)
 
 ## 题目描述
 
@@ -35,7 +35,7 @@
 
 <p>&nbsp;</p>
 
-<p><meta charset="UTF-8" />注意：本题与主站 125&nbsp;题相同：&nbsp;<a href="https://leetcode-cn.com/problems/valid-palindrome/">https://leetcode-cn.com/problems/valid-palindrome/</a></p>
+<p><meta charset="UTF-8" />注意：本题与主站 125&nbsp;题相同：&nbsp;<a href="https://leetcode.cn/problems/valid-palindrome/">https://leetcode.cn/problems/valid-palindrome/</a></p>
 
 ## 解法
 
@@ -121,6 +121,56 @@ func isalnum(b byte) bool {
 	return b >= '0' && b <= '9' ||
 		b >= 'a' && b <= 'z' ||
 		b >= 'A' && b <= 'Z'
+}
+```
+
+### **TypeScript**
+
+```ts
+function isPalindrome(s: string): boolean {
+    const str = s.replace(/[^a-zA-Z0-9]/g, '');
+    let l = 0;
+    let r = str.length - 1;
+    while (l < r) {
+        if (str[l].toLocaleLowerCase() !== str[r].toLocaleLowerCase()) {
+            return false;
+        }
+        l++;
+        r--;
+    }
+    return true;
+}
+```
+
+### **Rust**
+
+使用 `is_alphabetic()` 与 `is_numeric()` 过滤字符
+
+```rust
+impl Solution {
+    pub fn is_palindrome(s: String) -> bool {
+        let ss: Vec<char> = s.chars().collect();
+        let mut l = 0;
+        let mut r = ss.len() - 1;
+        while l < r {
+            while l < r && !(ss[l].is_alphabetic() || ss[l].is_numeric()) {
+                l += 1;
+            }
+            while l < r && !(ss[r].is_alphabetic() || ss[r].is_numeric()) {
+                r -= 1;
+            }
+            if ss[l].to_ascii_lowercase() != ss[r].to_ascii_lowercase() {
+                return false;
+            }
+            // 防止 usize 破界
+            if r == 0 {
+                return true;
+            }
+            l += 1;
+            r -= 1;
+        }
+        true
+    }
 }
 ```
 
